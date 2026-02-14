@@ -25,3 +25,25 @@
 
 ## Audit Requirement
 - Execution logs must be generated for significant structural changes and stored in `07_LOGS`.
+
+## Environment Restriction Policy
+Agents are strictly prohibited from:
+- Installing software
+- Modifying system-level configurations
+- Executing environment-level commands
+All operations must remain repository-scoped only.
+
+## Phase 2 Agent Execution Protocol
+Agents are authorized to:
+- Create internal modular directories
+- Generate architecture documentation
+- Define structural contracts
+
+Agents are NOT authorized to:
+- Write executable production code
+- Connect to external APIs
+- Install dependencies
+- Modify CI/CD workflows
+- Create new root-level directories
+
+All changes must remain structural and documentary.
