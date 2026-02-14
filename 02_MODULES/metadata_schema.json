@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Module Metadata Schema",
+  "description": "Schema for OMEGA modules based on Doc 10.2 filters",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string" },
+    "type": { "type": "string", "enum": ["Expert", "Full Project", "Scripts/EA"] },
+    "core_module": { "type": "string", "enum": ["Core", "RiskManager", "Bridge", "Engineering", "Include"] },
+    "status": { "type": "string", "enum": ["Completo", "Pendente", "Em Revisão"] },
+    "golden_points": { "type": "integer" },
+    "created_at": { "type": "string", "format": "date" },
+    "tags": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": ["name", "type", "core_module", "status"]
+}
