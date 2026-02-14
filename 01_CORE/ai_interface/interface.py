@@ -1,21 +1,15 @@
-"""
-IA Agent Interface - OMEGA_INTELLIGENCE_OS
-Facilitates assisted execution and status monitoring as per Doc 10.
-"""
+import sys
+import os
 
-class AgentInterface:
-    def __init__(self):
-        self.status = "IDLE"
-    
-    def report_status(self):
-        return {
-            "status": self.status,
-            "timestamp": "REALTIME"
-        }
-    
-    def execute_task(self, task_id, params):
-        self.status = "EXECUTING"
-        # Logic to delegate task would go here
-        print(f"Executing Agent Task: {task_id}")
-        self.status = "IDLE"
-        return True
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from audit.audit import log_event
+
+class AIInterface:
+    def execute_task(self, task_name, data):
+        log_event("AI_EXEC", f"Executing task: {task_name}")
+        # Simulação de processamento de dados
+        return {"status": "completed", "task": task_name}
+
+if __name__ == "__main__":
+    ai = AIInterface()
+    ai.execute_task("Startup Sequence", {})

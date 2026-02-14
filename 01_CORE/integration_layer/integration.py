@@ -1,17 +1,22 @@
-"""
-Integration Layer - OMEGA_INTELLIGENCE_OS
-Handles integration with GitHub, ClickUp, and internal modules as per Doc 10.
-"""
+import sys
+import os
 
-class IntegrationHandler:
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from audit.audit import log_event
+from conflict_management.conflict_manager import ConflictManager
+
+class IntegrationLayer:
     def __init__(self):
-        self.connected_services = ["GITHUB"] # N8N removed per user instruction
+        self.conflict_manager = ConflictManager()
+        log_event("SYSTEM", "Integration Layer initialized")
 
-    def sync_github(self, data):
-        print("Syncing with GitHub...")
-        # Git command logic would go here
+    def process_module(self, module_name):
+        log_event("PROCESS", f"Processing module: {module_name}")
+        # Simulação de verificação de integridade
+        if "error" in module_name.lower():
+            self.conflict_manager.add_conflict(f"Module {module_name} has an error")
         return True
 
-    def log_external_action(self, service, action):
-        print(f"External Action: {service} -> {action}")
-        return True
+if __name__ == "__main__":
+    il = IntegrationLayer()
+    il.process_module("Test Module")

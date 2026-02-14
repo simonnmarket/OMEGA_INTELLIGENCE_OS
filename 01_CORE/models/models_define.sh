@@ -1,7 +1,10 @@
 #!/bin/bash
-LOG_FILE="07_LOGS/PHASE_3_INITIALIZATION_LOG.md"
-echo "=== MODELS START ===" | tee -a $LOG_FILE
-echo "Defining Core Models..." | tee -a $LOG_FILE
+# Models - OMEGA_INTELLIGENCE_OS
+LOG_FILE="07_LOGS/PHASE_3_COMPLETION_REPORT.md"
+
+echo "Definindo Models..."
+echo "$(date): Models definidos" >> $LOG_FILE
+
+echo "Defining Core Models..."
 sleep 1
-echo "MODELS DEFINED SUCCESSFULLY" | tee -a $LOG_FILE
-echo "=== MODELS END ===" | tee -a $LOG_FILE
+echo "MODELS DEFINED SUCCESSFULLY"

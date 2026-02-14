@@ -1,24 +1,22 @@
-"""
-Audit Module - OMEGA_INTELLIGENCE_OS
-Implements immutable logging and decision tracking as per Doc 10 and Doc 8.
-"""
-import datetime
-import os
+import json, os, datetime
 
-class AuditLogger:
-    def __init__(self, log_dir="07_LOGS"):
-        self.log_dir = log_dir
-        os.makedirs(self.log_dir, exist_ok=True)
+LOG_FILE = "07_LOGS/audit_log.json"
 
-    def log_event(self, event_type, message, agent_id="SYSTEM"):
-        timestamp = datetime.datetime.now().isoformat()
-        log_entry = f"[{timestamp}] [{event_type}] [{agent_id}] {message}\n"
-        
-        # Log to daily file
-        date_str = datetime.datetime.now().strftime("%Y-%m-%d")
-        file_path = os.path.join(self.log_dir, f"audit_{date_str}.log")
-        
-        with open(file_path, "a") as f:
-            f.write(log_entry)
-        
-        return True
+def log_event(event_type, message):
+    entry = {
+        "timestamp": str(datetime.datetime.now()),
+        "event_type": event_type,
+        "message": message
+    }
+    if os.path.exists(LOG_FILE):
+        with open(LOG_FILE, "r") as f:
+            try:
+                data = json.load(f)
+            except json.JSONDecodeError:
+                data = []
+    else:
+        data = []
+    data.append(entry)
+    with open(LOG_FILE, "w") as f:
+        json.dump(data, f, indent=4)
+    print(f"Audit: {message}")

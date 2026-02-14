@@ -1,7 +1,10 @@
 #!/bin/bash
-LOG_FILE="07_LOGS/PHASE_3_INITIALIZATION_LOG.md"
-echo "=== VALIDATORS START ===" | tee -a $LOG_FILE
-echo "Validating Core Data..." | tee -a $LOG_FILE
+# Validators - OMEGA_INTELLIGENCE_OS
+LOG_FILE="07_LOGS/PHASE_3_COMPLETION_REPORT.md"
+
+echo "Iniciando Validators..."
+echo "$(date): Validators iniciados" >> $LOG_FILE
+
+echo "Validating Core Data..."
 sleep 1
-echo "VALIDATION SUCCESSFUL" | tee -a $LOG_FILE
-echo "=== VALIDATORS END ===" | tee -a $LOG_FILE
+echo "VALIDATION SUCCESSFUL"

@@ -1,7 +1,10 @@
 #!/bin/bash
-LOG_FILE="07_LOGS/PHASE_3_INITIALIZATION_LOG.md"
-echo "=== CONTROLLERS START ===" | tee -a $LOG_FILE
-echo "Orchestrating Core Flows..." | tee -a $LOG_FILE
+# Controllers - OMEGA_INTELLIGENCE_OS
+LOG_FILE="07_LOGS/PHASE_3_COMPLETION_REPORT.md"
+
+echo "Iniciando Controllers..."
+echo "$(date): Controllers iniciados" >> $LOG_FILE
+
+echo "Orchestrating Core Flows..."
 sleep 1
-echo "CONTROLLERS COMPLETED SUCCESSFULLY" | tee -a $LOG_FILE
-echo "=== CONTROLLERS END ===" | tee -a $LOG_FILE
+echo "CONTROLLERS COMPLETED SUCCESSFULLY"

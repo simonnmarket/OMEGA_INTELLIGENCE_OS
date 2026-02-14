@@ -1,22 +1,22 @@
-"""
-Conflict Management Module - OMEGA_INTELLIGENCE_OS
-Handles technical and conceptual conflicts, implementing quarantine logic as per Doc 10.
-"""
+import sys
+import os
+
+# Adiciona o diretório pai ao path para importar audit
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from audit.audit import log_event
 
 class ConflictManager:
     def __init__(self):
-        self.quarantine_list = []
+        self.conflicts = []
 
-    def check_conflict(self, module_id, data):
-        # Implementation of conflict detection logic
-        # For now, simplistic check
-        if "ERROR" in data:
-            return self.quarantine_module(module_id, "Technical Error Detected")
-        if "VIOLATION" in data:
-            return self.quarantine_module(module_id, "Conceptual Violation Detected")
-        return {"status": "OK"}
+    def add_conflict(self, description):
+        self.conflicts.append(description)
+        log_event("CONFLICT", description)
 
-    def quarantine_module(self, module_id, reason):
-        print(f"QUARANTINE: Module {module_id} due to {reason}")
-        self.quarantine_list.append({"id": module_id, "reason": reason})
-        return {"status": "QUARANTINE", "reason": reason}
+    def list_conflicts(self):
+        return self.conflicts
+
+if __name__ == "__main__":
+    cm = ConflictManager()
+    cm.add_conflict("System check initiated")
+    print(cm.list_conflicts())
