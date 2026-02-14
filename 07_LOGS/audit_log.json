@@ -48,5 +48,35 @@
         "timestamp": "2026-02-14 18:46:55.651764",
         "event_type": "LIBRARY",
         "message": "Filtered modules with criteria: {'status': 'ready'}"
+    },
+    {
+        "timestamp": "2026-02-14 21:55:06.568880",
+        "event_type": "BRIDGE_INGEST",
+        "message": "Ingested file: QuantumScoutPro.mq5 Volume Footprint Chart.txt (Size: 19911 bytes, Hash: 6ca32ded39f84f87c2d9ae06eceb66db)"
+    },
+    {
+        "timestamp": "2026-02-14 21:55:06.570879",
+        "event_type": "RISK",
+        "message": "Risk Scan passed for QuantumScoutPro.mq5 Volume Footprint Chart.txt. No malicious patterns detected."
+    },
+    {
+        "timestamp": "2026-02-14 21:55:06.572879",
+        "event_type": "ASSESSMENT",
+        "message": "File QuantumScoutPro.mq5 Volume Footprint Chart.txt queued for deep analysis."
+    },
+    {
+        "timestamp": "2026-02-14 21:55:06.575879",
+        "event_type": "BRIDGE_INGEST",
+        "message": "Ingested file: STO DEFENSE Strategy v1.0.txt (Size: 6004 bytes, Hash: 32da9ba955105987b56bd8867eb89ba0)"
+    },
+    {
+        "timestamp": "2026-02-14 21:55:06.577879",
+        "event_type": "RISK",
+        "message": "Risk Scan passed for STO DEFENSE Strategy v1.0.txt. No malicious patterns detected."
+    },
+    {
+        "timestamp": "2026-02-14 21:55:06.579879",
+        "event_type": "ASSESSMENT",
+        "message": "File STO DEFENSE Strategy v1.0.txt queued for deep analysis."
     }
 ]
