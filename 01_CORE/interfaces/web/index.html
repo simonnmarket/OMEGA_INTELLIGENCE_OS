@@ -61,7 +61,11 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="card-label">Total Events</span>
-                        <div class="card-icon">📊</div>
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 3v18h18M7 16l4-4 4 4 6-6"/>
+                            </svg>
+                        </div>
                     </div>
                     <div class="metric-container">
                         <span class="metric-value" id="stat-events">0</span>
@@ -73,10 +77,15 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="card-label">Active Modules</span>
-                        <div class="card-icon">🧩</div>
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                                <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                            </svg>
+                        </div>
                     </div>
                     <div class="metric-container">
-                        <span class="metric-value" id="stat-modules">7</span>
+                        <span class="metric-value" id="stat-modules">5</span>
                         <span class="metric-delta delta-neutral">Stable</span>
                     </div>
                 </div>
@@ -85,11 +94,63 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="card-label">System Health</span>
-                        <div class="card-icon">❤️</div>
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            </svg>
+                        </div>
                     </div>
                     <div class="metric-container">
                         <span class="metric-value">98.9%</span>
                         <span class="metric-delta delta-positive">Optimal</span>
+                    </div>
+                </div>
+
+                <!-- Card 4: Ingested Files -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-label">Ingested Files</span>
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="metric-container">
+                        <span class="metric-value" id="stat-ingested">0</span>
+                        <span class="metric-delta delta-positive" id="ingested-status">Ready</span>
+                    </div>
+                </div>
+
+                <!-- Card 5: Risk Scans -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-label">Risk Scans</span>
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="metric-container">
+                        <span class="metric-value" id="stat-risk-scans">0</span>
+                        <span class="metric-delta delta-positive">All Clear</span>
+                    </div>
+                </div>
+
+                <!-- Card 6: Module Breakdown -->
+                <div class="card" style="grid-column: span 1;">
+                    <div class="card-header">
+                        <span class="card-label">Module Distribution</span>
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 2v10l6 6"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div id="module-breakdown" style="margin-top: 16px;">
+                        <!-- Will be populated by JS -->
                     </div>
                 </div>
             </div>

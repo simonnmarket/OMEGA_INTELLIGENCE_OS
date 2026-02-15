@@ -108,11 +108,17 @@ body {
     cursor: pointer;
     transition: all 0.2s;
     font-weight: 500;
+    user-select: none;
+    /* Prevent text selection on rapid clicks */
 }
 
 .nav-item:hover {
     background: var(--bg-hover);
     color: var(--text-primary);
+}
+
+.nav-item:active {
+    transform: scale(0.98);
 }
 
 .nav-item.active {
@@ -203,17 +209,36 @@ body {
 }
 
 .card {
-    background: var(--bg-card);
+    background: linear-gradient(135deg, rgba(28, 31, 38, 0.9), rgba(28, 31, 38, 0.7));
+    backdrop-filter: blur(20px);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-md);
     padding: 24px;
-    box-shadow: var(--shadow-card);
-    transition: transform 0.2s, border-color 0.2s;
+    box-shadow: var(--shadow-card), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+    transition: left 0.5s;
 }
 
 .card:hover {
-    transform: translateY(-2px);
-    border-color: var(--border-subtle);
+    transform: translateY(-4px);
+    border-color: var(--border-active);
+    box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(59, 130, 246, 0.2) inset;
+}
+
+.card:hover::before {
+    left: 100%;
 }
 
 .card-header {
@@ -233,17 +258,36 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 10px;
-    background: var(--bg-hover);
+    background: linear-gradient(135deg, var(--accent-primary), #60A5FA);
     display: grid;
     place-items: center;
-    color: var(--text-primary);
+    color: white;
+    font-size: 20px;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    transition: all 0.3s;
+}
+
+.card:hover .card-icon {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
 }
 
 .metric-value {
     font-size: 32px;
     font-weight: 600;
-    color: var(--text-primary);
+    background: linear-gradient(135deg, var(--text-primary), #9CA3AF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     letter-spacing: -0.03em;
+    transition: all 0.3s;
+}
+
+.card:hover .metric-value {
+    background: linear-gradient(135deg, #FFFFFF, var(--accent-primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .metric-delta {
@@ -372,4 +416,84 @@ body {
 .status-INFO {
     background: rgba(107, 114, 128, 0.1);
     color: var(--text-secondary);
+}
+
+/* Module Breakdown Styles */
+.module-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-subtle);
+    transition: all 0.2s;
+}
+
+.module-item:last-child {
+    border-bottom: none;
+}
+
+.module-item:hover {
+    padding-left: 4px;
+}
+
+.module-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.module-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    box-shadow: 0 0 8px currentColor;
+}
+
+.module-count {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--bg-hover);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+/* Counter Animation */
+@keyframes countUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.metric-value.animate {
+    animation: countUp 0.5s ease-out;
+}
+
+/* Pulse effect for new events */
+@keyframes newEventPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+    }
+}
+
+.feed-item.new-event {
+    animation: newEventPulse 1s;
 }
