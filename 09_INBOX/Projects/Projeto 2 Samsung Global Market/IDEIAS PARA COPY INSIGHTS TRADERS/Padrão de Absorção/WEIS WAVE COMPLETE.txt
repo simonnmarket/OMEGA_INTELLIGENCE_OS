@@ -1,0 +1,287 @@
+//+------------------------------------------------------------------+
+//|                                    WeisWaveComplete.mqh            |
+//+------------------------------------------------------------------+
+
+class CWeisWaveComplete {
+private:
+    struct WaveStructure {
+        vector<double> volumes;
+        vector<double> prices;
+        vector<datetime> times;
+        ENUM_WAVE_DIRECTION direction;
+        double cumulativeVolume;
+        double waveStrength;
+        bool isComplete;
+    };
+    
+    struct BehaviorChange {
+        double volumeThreshold;
+        double priceChange;
+        datetime timeOfChange;
+        ENUM_BEHAVIOR_TYPE type;
+        double significance;
+    };
+    
+    struct WaveAnalysis {
+        int waveCount;
+        double averageWaveVolume;
+        double largestWaveVolume;
+        datetime lastWaveTime;
+        bool isUptrend;
+        double trendStrength;
+    };
+
+private:
+    WaveStructure currentWave;
+    vector<WaveStructure> historicalWaves;
+    WaveAnalysis analysis;
+    double volumeThreshold;
+    
+public:
+    void Initialize(double threshold = 1000.0) {
+        volumeThreshold = threshold;
+        ResetWaveStructure();
+        InitializeAnalysis();
+    }
+    
+    bool ProcessNewTick(const MqlTick& tick) {
+        if(!IsValidTick(tick)) return false;
+        
+        UpdateCurrentWave(tick);
+        
+        if(IsWaveComplete()) {
+            CompleteCurrentWave();
+            StartNewWave(tick);
+            return true;
+        }
+        
+        return false;
+    }
+    
+    BehaviorChange AnalyzeWaveBehavior() {
+        BehaviorChange behavior;
+        
+        // Analisar mudança de comportamento
+        if(IsSignificantVolumeChange()) {
+            behavior.type = VOLUME_BEHAVIOR_CHANGE;
+            behavior.significance = CalculateSignificance();
+            behavior.timeOfChange = TimeCurrent();
+        }
+        
+        return behavior;
+    }
+    
+    double GetWaveStrength() {
+        return CalculateWaveStrength();
+    }
+    
+    bool IsTrendConfirmed() {
+        return ValidateTrendStrength();
+    }
+
+private:
+    void UpdateCurrentWave(const MqlTick& tick) {
+        currentWave.volumes.push_back(tick.volume);
+        currentWave.prices.push_back(tick.last);
+        currentWave.times.push_back(tick.time);
+        
+        UpdateWaveDirection(tick);
+        UpdateCumulativeVolume(tick);
+    }
+    
+    void UpdateWaveDirection(const MqlTick& tick) {
+        if(currentWave.volumes.size() < 2) return;
+        
+        double currentPrice = tick.last;
+        double previousPrice = currentWave.prices[currentWave.prices.size() - 2];
+        
+        if(currentPrice > previousPrice) {
+            currentWave.direction = WAVE_UP;
+        } else if(currentPrice < previousPrice) {
+            currentWave.direction = WAVE_DOWN;
+        }
+    }
+    
+    bool IsWaveComplete() {
+        if(currentWave.volumes.size() < 2) return false;
+        
+        // Verificar mudança de direção
+        if(HasDirectionChanged()) return true;
+        
+        // Verificar volume significativo
+        if(IsVolumeSignificant()) return true;
+        
+        return false;
+    }
+    
+    bool HasDirectionChanged() {
+        if(currentWave.volumes.size() < 3) return false;
+        
+        double currentPrice = currentWave.prices.back();
+        double previousPrice = currentWave.prices[currentWave.prices.size() - 2];
+        double prePreviousPrice = currentWave.prices[currentWave.prices.size() - 3];
+        
+        bool wasUp = prePreviousPrice < previousPrice;
+        bool isUp = previousPrice < currentPrice;
+        
+        return wasUp != isUp;
+    }
+    
+    bool IsVolumeSignificant() {
+        double currentVolume = currentWave.volumes.back();
+        return currentVolume > volumeThreshold;
+    }
+    
+    void CompleteCurrentWave() {
+        currentWave.isComplete = true;
+        currentWave.waveStrength = CalculateWaveStrength();
+        
+        historicalWaves.push_back(currentWave);
+        UpdateAnalysis();
+    }
+    
+    double CalculateWaveStrength() {
+        if(currentWave.volumes.empty()) return 0;
+        
+        double volumeStrength = currentWave.cumulativeVolume / analysis.averageWaveVolume;
+        double priceChange = MathAbs(currentWave.prices.back() - currentWave.prices[0]);
+        
+        return volumeStrength * priceChange;
+    }
+    
+    bool ValidateTrendStrength() {
+        if(historicalWaves.size() < 3) return false;
+        
+        int consecutiveWaves = 0;
+        ENUM_WAVE_DIRECTION lastDirection = historicalWaves.back().direction;
+        
+        for(int i = historicalWaves.size() - 1; i >= 0; i--) {
+            if(historicalWaves[i].direction == lastDirection) {
+                consecutiveWaves++;
+            } else {
+                break;
+            }
+        }
+        
+        return consecutiveWaves >= 3;
+    }
+    
+    void UpdateAnalysis() {
+        analysis.waveCount++;
+        analysis.lastWaveTime = TimeCurrent();
+        
+        // Atualizar média do volume das ondas
+        double totalVolume = 0;
+        for(uint i = 0; i < historicalWaves.size(); i++) {
+            totalVolume += historicalWaves[i].cumulativeVolume;
+        }
+        analysis.averageWaveVolume = totalVolume / historicalWaves.size();
+        
+        // Atualizar maior volume de onda
+        analysis.largestWaveVolume = 0;
+        for(uint i = 0; i < historicalWaves.size(); i++) {
+            if(historicalWaves[i].cumulativeVolume > analysis.largestWaveVolume) {
+                analysis.largestWaveVolume = historicalWaves[i].cumulativeVolume;
+            }
+        }
+        
+        // Atualizar tendência
+        if(historicalWaves.size() >= 3) {
+            analysis.isUptrend = IsUptrendConfirmed();
+            analysis.trendStrength = CalculateTrendStrength();
+        }
+    }
+    
+    bool IsUptrendConfirmed() {
+        if(historicalWaves.size() < 3) return false;
+        
+        int upWaves = 0;
+        int downWaves = 0;
+        
+        for(int i = historicalWaves.size() - 1; i >= MathMax(0, historicalWaves.size() - 3); i--) {
+            if(historicalWaves[i].direction == WAVE_UP) {
+                upWaves++;
+            } else {
+                downWaves++;
+            }
+        }
+        
+        return upWaves > downWaves;
+    }
+    
+    double CalculateTrendStrength() {
+        if(historicalWaves.size() < 3) return 0;
+        
+        double strength = 0;
+        for(int i = historicalWaves.size() - 1; i >= MathMax(0, historicalWaves.size() - 3); i--) {
+            if(historicalWaves[i].direction == (analysis.isUptrend ? WAVE_UP : WAVE_DOWN)) {
+                strength += historicalWaves[i].waveStrength;
+            }
+        }
+        
+        return strength;
+    }
+};
+class CWeisSignals {
+private:
+    struct Signal {
+        ENUM_SIGNAL_TYPE type;
+        double price;
+        datetime time;
+        double strength;
+        string description;
+    };
+    
+    vector<Signal> signals;
+    CWeisWaveComplete* waveAnalyzer;
+    
+public:
+    void Initialize(CWeisWaveComplete* analyzer) {
+        waveAnalyzer = analyzer;
+    }
+    
+    bool CheckForSignals() {
+        if(!waveAnalyzer.IsTrendConfirmed()) return false;
+        
+        Signal signal;
+        
+        if(IsEntrySignal(signal)) {
+            signals.push_back(signal);
+            NotifySignal(signal);
+            return true;
+        }
+        
+        return false;
+    }
+    
+private:
+    bool IsEntrySignal(Signal& signal) {
+        double waveStrength = waveAnalyzer.GetWaveStrength();
+        
+        if(waveStrength > WAVE_STRENGTH_THRESHOLD) {
+            signal.type = SIGNAL_ENTRY;
+            signal.price = SymbolInfoDouble(Symbol(), SYMBOL_BID);
+            signal.time = TimeCurrent();
+            signal.strength = waveStrength;
+            signal.description = "Forte sinal de entrada baseado em onda Weis";
+            return true;
+        }
+        
+        return false;
+    }
+    
+    void NotifySignal(const Signal& signal) {
+        string message = StringFormat(
+            "Sinal Weis Wave\nTipo: %s\nPreço: %f\nForça: %f\nDescrição: %s",
+            EnumToString(signal.type),
+            signal.price,
+            signal.strength,
+            signal.description
+        );
+        
+        Print(message);
+        if(signal.strength > HIGH_STRENGTH_THRESHOLD) {
+            SendNotification(message);
+        }
+    }
+};

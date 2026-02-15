@@ -1,0 +1,176 @@
+//+------------------------------------------------------------------+
+//| Volume Footprint Chart - Controle de Posições Abertas             |
+//|                                                                    |
+//| OBJETIVO: Gerenciar posições ativas com:                          |
+//| - Break Even Automático                                           |
+//| - Stops Dinâmicos                                                 |
+//| - Trailing Stop                                                   |
+//| - Monitoramento de Risco                                          |
+//+------------------------------------------------------------------+
+
+private:
+    struct PositionManager {
+        // Configurações de Gerenciamento
+        struct Config {
+            bool useBreakEven;         // Usar break even
+            int breakEvenPoints;       // Pontos para break even
+            bool useTrailingStop;      // Usar trailing stop
+            int trailingPoints;        // Pontos para trailing
+            bool usePartialClose;      // Usar fechamento parcial
+            double partialCloseLevel;  // Nível para fechamento parcial
+        } config;
+        
+        // Estado da Posição
+        struct State {
+            bool isBreakEvenActive;    // Break even ativado
+            bool isTrailingActive;     // Trailing ativo
+            bool isPartialClosed;      // Parcial executado
+            double maxFloatingProfit;  // Máximo lucro flutuante
+            double currentDrawdown;    // Drawdown atual
+        } state;
+        
+        // Métricas de Performance
+        struct Metrics {
+            int totalPositions;        // Total de posições
+            int breakEvenHits;         // Break evens atingidos
+            int trailingStopHits;      // Trailing stops atingidos
+            double avgHoldingTime;     // Tempo médio de posição
+        } metrics;
+    } m_posManager;
+    
+    void CheckBreakEven() {
+        if(!ValidateBreakEvenConditions()) return;
+        
+        double openPrice = PositionGetDouble(POSITION_PRICE_OPEN);
+        double currentPrice = GetCurrentPrice();
+        double stopLoss = PositionGetDouble(POSITION_SL);
+        
+        if(IsBreakEvenTriggered(openPrice, currentPrice)) {
+            if(ApplyBreakEven(openPrice)) {
+                ProcessBreakEvenSuccess();
+            }
+        }
+    }
+    
+    bool ValidateBreakEvenConditions() {
+        if(!m_posManager.config.useBreakEven) return false;
+        if(!PositionSelect(_Symbol)) return false;
+        if(m_posManager.state.isBreakEvenActive) return false;
+        
+        return true;
+    }
+    
+    bool IsBreakEvenTriggered(const double openPrice, const double currentPrice) {
+        ENUM_POSITION_TYPE posType = (ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE);
+        double beDistance = m_posManager.config.breakEvenPoints * _Point;
+        
+        if(posType == POSITION_TYPE_BUY) {
+            return (currentPrice - openPrice > beDistance);
+        }
+        else if(posType == POSITION_TYPE_SELL) {
+            return (openPrice - currentPrice > beDistance);
+        }
+        
+        return false;
+    }
+    
+    bool ApplyBreakEven(const double openPrice) {
+        return m_trade.PositionModify(
+            _Symbol,
+            openPrice,
+            PositionGetDouble(POSITION_TP)
+        );
+    }
+    
+    void ProcessBreakEvenSuccess() {
+        m_posManager.state.isBreakEvenActive = true;
+        m_posManager.metrics.breakEvenHits++;
+        
+        string message = StringFormat(
+            "Break Even ativado\nSímbolo: %s\nPreço: %.5f",
+            _Symbol,
+            PositionGetDouble(POSITION_PRICE_OPEN)
+        );
+        
+        LogMessage(message, LOG_INFO);
+        NotifyTeam(message);
+        
+        // Atualizar TechnologyAdvances
+        UpdatePositionMetrics();
+    }
+    
+    void UpdateStops() {
+        if(!ValidateStopUpdateConditions()) return;
+        
+        double currentPrice = GetCurrentPrice();
+        ENUM_POSITION_TYPE posType = (ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE);
+        
+        // Atualizar trailing stop
+        if(m_posManager.config.useTrailingStop) {
+            UpdateTrailingStop(currentPrice, posType);
+        }
+        
+        // Verificar fechamento parcial
+        if(m_posManager.config.usePartialClose) {
+            CheckPartialClose(currentPrice, posType);
+        }
+        
+        // Atualizar métricas
+        UpdatePositionMetrics();
+    }
+    
+    void UpdateTrailingStop(const double currentPrice, const ENUM_POSITION_TYPE posType) {
+        double openPrice = PositionGetDouble(POSITION_PRICE_OPEN);
+        double trailingDistance = m_posManager.config.trailingPoints * _Point;
+        double currentStop = PositionGetDouble(POSITION_SL);
+        
+        double newStopLoss = currentStop;
+        bool shouldUpdate = false;
+        
+        if(posType == POSITION_TYPE_BUY) {
+            double potentialStop = currentPrice - trailingDistance;
+            if(potentialStop > currentStop) {
+                newStopLoss = potentialStop;
+                shouldUpdate = true;
+            }
+        }
+        else if(posType == POSITION_TYPE_SELL) {
+            double potentialStop = currentPrice + trailingDistance;
+            if(potentialStop < currentStop || currentStop == 0) {
+                newStopLoss = potentialStop;
+                shouldUpdate = true;
+            }
+        }
+        
+        if(shouldUpdate) {
+            if(m_trade.PositionModify(_Symbol, newStopLoss, PositionGetDouble(POSITION_TP))) {
+                m_posManager.metrics.trailingStopHits++;
+                LogMessage("Trailing Stop atualizado: " + DoubleToString(newStopLoss, _Digits), LOG_INFO);
+            }
+        }
+    }
+    
+    void UpdatePositionMetrics() {
+        // Calcular métricas
+        m_posManager.state.maxFloatingProfit = MathMax(
+            m_posManager.state.maxFloatingProfit,
+            CalculateFloatingProfit()
+        );
+        
+        m_posManager.state.currentDrawdown = CalculatePositionDrawdown();
+        
+        // Atualizar TechnologyAdvances
+        PositionMetrics metrics;
+        metrics.floatingProfit = CalculateFloatingProfit();
+        metrics.drawdown = m_posManager.state.currentDrawdown;
+        metrics.holdingTime = CalculateHoldingTime();
+        
+        m_techManager.UpdatePositionMetrics(metrics);
+    }
+    
+    double GetCurrentPrice() {
+        return SymbolInfoDouble(_Symbol, 
+            PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY ? SYMBOL_BID : SYMBOL_ASK
+        );
+    }
+};

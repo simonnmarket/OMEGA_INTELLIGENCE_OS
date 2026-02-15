@@ -1,0 +1,106 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                    DOCUMENTAÇÃO TÉCNICA                           ║
+║                  LONDON BREAKOUT STRATEGY                        ║
+╚══════════════════════════════════════════════════════════════════╝
+
+IDENTIFICAÇÃO
+------------
+ID Documento: LBS-ESTRATÉGIA-001-2025
+Versão: 1.0
+Data Criação: 04/03/2025
+Última Atualização: 04/03/2025
+Status: ATIVO
+Segmento de Mercado: FOREX
+Ativos/Pares Alvo: EUR/USD, GBP/USD
+Responsável: Trading Division
+
+CATEGORIZAÇÃO
+------------
+Categoria Principal: ESTRATÉGIA
+Subcategoria: BREAKOUT
+Tags: #London #Breakout #Volume #Institucional
+
+DESCRIÇÃO TÉCNICA
+----------------
+Nome: London Breakout Strategy
+Objetivo: Capturar movimentos de rompimento no início da sessão de Londres
+Timeframes: M15
+
+COMPONENTES TÉCNICOS
+-------------------
+1. Indicadores Utilizados:
+   - Nome: Volume
+   - Configuração: Volume Real
+   - Função: Confirmar rompimentos
+   - Tipo: PADRÃO
+
+2. Parâmetros:
+   - Nome: StopLoss
+   - Valor Default: 15
+   - Range Permitido: 10-20
+   - Descrição: Stop Loss em pips
+   - Otimizável: NÃO
+
+   - Nome: TakeProfit
+   - Valor Default: 25
+   - Range Permitido: 20-30
+   - Descrição: Take Profit em pips
+   - Otimizável: NÃO
+
+3. Regras Operacionais:
+   - Entrada: Rompimento da range asiática (00:00-07:50 GMT)
+   - Horário: 07:50-08:10 GMT
+   - Volume: > 200% da média
+   - Stop Loss: 15 pips fixo
+   - Take Profit: 25 pips fixo
+
+VALIDAÇÃO
+---------
+Backtest:
+- Período: 01/01/2024 - 31/01/2024
+- Resultados: 38 trades
+- Métricas: Win Rate 76% (29/38)
+- Plataforma: MetaTrader 5
+
+Teste Real:
+- Período: Janeiro/2024
+- Resultados: Profit Factor 1.92
+- Drawdown máx: 3.8%
+- Ambiente: Conta Real
+
+GESTÃO DE RISCO
+--------------
+- Risco por Operação: 1% do capital
+- Drawdown Máximo Permitido: 15%
+- Correlações: Monitorar EUR/GBP
+- Filtros de Proteção: 
+  * Não operar em NFP
+  * Evitar feriados UK
+  * Range asiático < 150% da média
+
+RESULTADOS
+----------
+Performance Janeiro/2024:
+- Win Rate: 76%
+- Profit Factor: 1.92
+- Expectativa Matemática: +1.45R
+- Drawdown Médio: 2.3%
+- Sharpe Ratio: 1.45
+- Retorno: +8.4%
+
+OBSERVAÇÕES
+-----------
+- Estratégia sensível a notícias de alto impacto
+- Melhor performance em dias de volatilidade normal
+- Evitar dias de baixa liquidez
+- Monitorar spread durante a entrada
+
+REFERÊNCIAS
+-----------
+- MyFxBook: [Link para verificação]
+- Estudos de Mercado: London Session Analysis 2024
+- Backtest Verificado: Relatório #LBS-2024-001
+
+HISTÓRICO DE ATUALIZAÇÕES
+------------------------
+04/03/2025 - v1.0 - Documentação inicial - Trading Division

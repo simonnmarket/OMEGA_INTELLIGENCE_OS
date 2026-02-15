@@ -1,0 +1,23 @@
+// Localização: Aproximadamente linha 500
+// Problema: Validação de métricas incompleta
+// Solução: Adicionar verificações mais robustas
+
+class CQuantumMonitor {
+private:
+    bool ValidateMetrics(const CMonitoringMetrics &metrics) {
+        if(!metrics.Validate()) return false;
+        
+        // Verificações adicionais
+        if(metrics.system_health < 0 || metrics.system_health > 1) return false;
+        if(metrics.performance_score < 0 || metrics.performance_score > 1) return false;
+        if(metrics.stability_index < 0 || metrics.stability_index > 1) return false;
+        
+        // Verificar intervalos de tempo
+        datetime current_time = TimeCurrent();
+        if(current_time - metrics.last_update > MAX_UPDATE_INTERVAL) return false;
+        
+        return true;
+    }
+
+    static const int MAX_UPDATE_INTERVAL = 3600; // 1 hora
+};

@@ -1,0 +1,174 @@
+
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part5.mq5    |
+//+------------------------------------------------------------------+
+
+class CBacktestSystem {
+private:
+    struct BacktestResult {
+        int totalTrades;
+        double netProfit;
+        double winRate;
+        double profitFactor;
+        double sharpeRatio;
+        double maxDrawdown;
+        double recoveryFactor;
+        double expectedPayoff;
+        double kellyRatio;
+        double zScore;
+        double calmarRatio;
+        double omega_ratio;
+        double sortino_ratio;
+        double ulcer_index;
+        double risk_adjusted_return;
+        datetime startTime;
+        datetime endTime;
+    };
+    
+    struct OptimizationParams {
+        double minProbability;
+        double riskPercent;
+        int adxPeriod;
+        int maPeriod;
+        double stopLossMultiplier;
+        double takeProfitMultiplier;
+        double volatilityFilter;
+        int momentumPeriod;
+        double quantumThreshold;
+        double regimeThreshold;
+        int volumeMA;
+        double correlationLimit;
+    };
+    
+    struct MonteCarloSettings {
+        int iterations;
+        double confidenceLevel;
+        int bootstrapSize;
+        bool useAntithetic;
+        int walkForwardSteps;
+    };
+    
+    const MonteCarloSettings MC_SETTINGS = {
+        iterations: 10000,
+        confidenceLevel: 0.95,
+        bootstrapSize: 250,
+        useAntithetic: true,
+        walkForwardSteps: 12
+    };
+    
+    struct OptimizationResult {
+        OptimizationParams params;
+        BacktestResult performance;
+        double robustness_score;
+        double stability_score;
+        double adaptability_score;
+    };
+    
+    CQuantumTradeSystem* testSystem;
+    double historicalData[];
+    datetime timeData[];
+    
+public:
+    CBacktestSystem() {
+        testSystem = new CQuantumTradeSystem();
+    }
+    
+    ~CBacktestSystem() {
+        SafeDelete(testSystem);
+    }
+    
+    BacktestResult RunBacktest(datetime startDate, datetime endDate, const OptimizationParams& params) {
+        BacktestResult result;
+        ZeroMemory(result);
+        
+        if(!PrepareHistoricalData(startDate, endDate)) return result;
+        
+        testSystem.SetParameters(params);
+        
+        double trades[];
+        ArrayResize(trades, 0);
+        
+        double equity = 0;
+        double peak = 0;
+        double maxDD = 0;
+        double returns[];
+        
+        for(int i = 0; i < ArraySize(timeData); i++) {
+            if(!testSystem.ProcessBar(timeData[i])) continue;
+            
+            double tradeResult;
+            if(testSystem.GetLastTradeResult(tradeResult)) {
+                int size = ArraySize(trades);
+                ArrayResize(trades, size + 1);
+                trades[size] = tradeResult;
+                
+                equity += tradeResult;
+                peak = MathMax(peak, equity);
+                maxDD = MathMax(maxDD, peak - equity);
+                
+                ArrayResize(returns, size + 1);
+                returns[size] = tradeResult;
+            }
+        }
+        
+        CalculateAdvancedStatistics(trades, returns, equity, maxDD, result);
+        PerformMonteCarloAnalysis(trades, result);
+        CalculateRobustnessMetrics(trades, result);
+        
+        return result;
+    }
+    
+    OptimizationResult OptimizeParameters(datetime startDate, datetime endDate) {
+        OptimizationResult optResult;
+        
+        CGeneticOptimizer optimizer;
+        optimizer.Initialize(GetParameterRanges());
+        
+        for(int generation = 0; generation < 50; generation++) {
+            optimizer.EvolvePopulation();
+            
+            for(int i = 0; i < optimizer.GetPopulationSize(); i++) {
+                OptimizationParams currentParams = optimizer.GetIndividual(i);
+                BacktestResult result = RunBacktest(startDate, endDate, currentParams);
+                optimizer.SetFitness(i, CalculateFitnessScore(result));
+            }
+        }
+        
+        optResult.params = optimizer.GetBestIndividual();
+        optResult.performance = RunBacktest(startDate, endDate, optResult.params);
+        
+        ValidateOptimizationResult(optResult);
+        
+        return optResult;
+    }
+    
+    void GenerateDetailedReport(const BacktestResult& result, const string fileName) {
+        CReportGenerator reporter;
+        reporter.Initialize(fileName);
+        
+        reporter.AddPerformanceMetrics(result);
+        reporter.AddEquityCurve(historicalData);
+        reporter.AddDrawdownAnalysis();
+        reporter.AddMonteCarloResults();
+        reporter.AddRobustnessAnalysis();
+        
+        reporter.GenerateReport();
+    }
+
+private:
+    bool PrepareHistoricalData(datetime startDate, datetime endDate);
+    void CalculateAdvancedStatistics(const double& trades[], const double& returns[], 
+                                   double finalEquity, double maxDrawdown, BacktestResult& result);
+    void PerformMonteCarloAnalysis(const double& trades[], BacktestResult& result);
+    void CalculateRobustnessMetrics(const double& trades[], BacktestResult& result);
+    double CalculateFitnessScore(const BacktestResult& result);
+    void ValidateOptimizationResult(OptimizationResult& result);
+    
+    template<typename T>
+    void SafeDelete(T* &ptr) {
+        if(ptr != NULL) {
+            delete ptr;
+            ptr = NULL;
+        }
+    }
+};

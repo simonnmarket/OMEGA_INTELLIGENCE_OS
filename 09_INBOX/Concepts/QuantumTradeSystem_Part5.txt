@@ -1,0 +1,227 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part5.mq5    |
+//+------------------------------------------------------------------+
+
+// Sistema de Backtesting
+class CBacktestSystem {
+private:
+    struct BacktestResult {
+        int totalTrades;
+        double netProfit;
+        double winRate;
+        double profitFactor;
+        double sharpeRatio;
+        double maxDrawdown;
+        double recoveryFactor;
+        double expectedPayoff;
+        double kellyRatio;
+        double zScore;
+        datetime startTime;
+        datetime endTime;
+    };
+    
+    struct OptimizationParams {
+        double minProbability;
+        double riskPercent;
+        int adxPeriod;
+        int maPeriod;
+        double stopLossMultiplier;
+        double takeProfitMultiplier;
+        double volatilityFilter;
+        int momentumPeriod;
+    };
+    
+    // Monte Carlo simulation parameters
+    const int MONTE_CARLO_ITERATIONS = 1000;
+    const double CONFIDENCE_LEVEL = 0.95;
+
+public:
+    BacktestResult RunBacktest(
+        datetime startDate,
+        datetime endDate,
+        const OptimizationParams& params
+    ) {
+        BacktestResult result;
+        ZeroMemory(result);
+        
+        result.startTime = startDate;
+        result.endTime = endDate;
+        
+        // Configurar ambiente de backtesting
+        CQuantumTradeSystem* testSystem = new CQuantumTradeSystem();
+        testSystem.SetParameters(params);
+        
+        // Array para armazenar resultados dos trades
+        double trades[];
+        ArrayResize(trades, 0);
+        
+        // Iterar sobre o período histórico
+        for(datetime current = startDate; current <= endDate; current += PeriodSeconds()) {
+            if(!testSystem.ProcessBar(current)) continue;
+            
+            // Coletar resultados dos trades fechados
+            double tradeResult;
+            if(testSystem.GetLastTradeResult(tradeResult)) {
+                int size = ArraySize(trades);
+                ArrayResize(trades, size + 1);
+                trades[size] = tradeResult;
+            }
+        }
+        
+        // Calcular estatísticas
+        CalculateStatistics(trades, result);
+        
+        // Realizar análise Monte Carlo
+        PerformMonteCarloAnalysis(trades, result);
+        
+        delete testSystem;
+        return result;
+    }
+    
+    OptimizationParams OptimizeParameters(
+        datetime startDate,
+        datetime endTime
+    ) {
+        OptimizationParams bestParams, currentParams;
+        BacktestResult bestResult;
+        bestResult.netProfit = -DBL_MAX;
+        
+        // Configurar ranges de otimização
+        double probRange[] = {0.6, 0.65, 0.7, 0.75, 0.8, 0.85};
+        double riskRange[] = {1.0, 1.5, 2.0, 2.5, 3.0};
+        int adxRange[] = {10, 14, 18, 22};
+        int maRange[] = {10, 20, 30, 40};
+        
+        // Grid search otimização
+        for(int p = 0; p < ArraySize(probRange); p++) {
+            for(int r = 0; r < ArraySize(riskRange); r++) {
+                for(int a = 0; a < ArraySize(adxRange); a++) {
+                    for(int m = 0; m < ArraySize(maRange); m++) {
+                        currentParams.minProbability = probRange[p];
+                        currentParams.riskPercent = riskRange[r];
+                        currentParams.adxPeriod = adxRange[a];
+                        currentParams.maPeriod = maRange[m];
+                        
+                        BacktestResult result = RunBacktest(startDate, endTime, currentParams);
+                        
+                        // Avaliar resultado usando função de fitness
+                        if(EvaluateResult(result) > EvaluateResult(bestResult)) {
+                            bestResult = result;
+                            bestParams = currentParams;
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Otimização fina usando algoritmo genético
+        bestParams = RefineParameters(bestParams, startDate, endTime);
+        
+        return bestParams;
+    }
+    
+    void GenerateBacktestReport(const BacktestResult& result) {
+        string report = "\n=== Backtest Report ===\n";
+        report += "Period: " + TimeToString(result.startTime) + " - " + 
+                 TimeToString(result.endTime) + "\n";
+        report += "Total Trades: " + IntegerToString(result.totalTrades) + "\n";
+        report += "Net Profit: " + DoubleToString(result.netProfit, 2) + "\n";
+        report += "Win Rate: " + DoubleToString(result.winRate * 100, 2) + "%\n";
+        report += "Profit Factor: " + DoubleToString(result.profitFactor, 2) + "\n";
+        report += "Sharpe Ratio: " + DoubleToString(result.sharpeRatio, 2) + "\n";
+        report += "Max Drawdown: " + DoubleToString(result.maxDrawdown, 2) + "\n";
+        report += "Recovery Factor: " + DoubleToString(result.recoveryFactor, 2) + "\n";
+        report += "Expected Payoff: " + DoubleToString(result.expectedPayoff, 2) + "\n";
+        report += "Kelly Ratio: " + DoubleToString(result.kellyRatio, 2) + "\n";
+        report += "Z-Score: " + DoubleToString(result.zScore, 2) + "\n";
+        
+        Print(report);
+        
+        // Salvar relatório em arquivo
+        int fileHandle = FileOpen("Backtest_Report_" + 
+                                TimeToString(TimeCurrent()) + ".txt", 
+                                FILE_WRITE|FILE_TXT);
+        if(fileHandle != INVALID_HANDLE) {
+            FileWriteString(fileHandle, report);
+            FileClose(fileHandle);
+        }
+    }
+
+private:
+    void CalculateStatistics(const double& trades[], BacktestResult& result) {
+        if(ArraySize(trades) == 0) return;
+        
+        result.totalTrades = ArraySize(trades);
+        
+        // Calcular resultados básicos
+        int wins = 0;
+        double grossProfit = 0, grossLoss = 0;
+        double maxDrawdown = 0;
+        double peak = 0;
+        double current = 0;
+        
+        for(int i = 0; i < ArraySize(trades); i++) {
+            current += trades[i];
+            result.netProfit += trades[i];
+            
+            if(trades[i] > 0) {
+                wins++;
+                grossProfit += trades[i];
+            } else {
+                grossLoss += MathAbs(trades[i]);
+            }
+            
+            if(current > peak) peak = current;
+            double dd = peak - current;
+            if(dd > maxDrawdown) maxDrawdown = dd;
+        }
+        
+        // Calcular métricas avançadas
+        result.winRate = (double)wins / result.totalTrades;
+        result.profitFactor = (grossLoss == 0) ? 0 : grossProfit / grossLoss;
+        result.maxDrawdown = maxDrawdown;
+        result.recoveryFactor = (maxDrawdown == 0) ? 0 : result.netProfit / maxDrawdown;
+        result.expectedPayoff = result.netProfit / result.totalTrades;
+        result.sharpeRatio = CalculateSharpeRatio(trades);
+        result.kellyRatio = CalculateKellyRatio(result.winRate, result.profitFactor);
+        result.zScore = CalculateZScore(trades);
+    }
+    
+    void PerformMonteCarloAnalysis(const double& trades[], BacktestResult& result) {
+        double mcResults[];
+        ArrayResize(mcResults, MONTE_CARLO_ITERATIONS);
+        
+        // Realizar simulações
+        for(int i = 0; i < MONTE_CARLO_ITERATIONS; i++) {
+            mcResults[i] = SimulateTradeSequence(trades);
+        }
+        
+        // Calcular intervalos de confiança
+        ArraySort(mcResults);
+        int confidenceIndex = (int)((1 - CONFIDENCE_LEVEL) * MONTE_CARLO_ITERATIONS);
+        
+        result.zScore = (result.netProfit - mcResults[confidenceIndex]) / 
+                       CalculateStdDev(mcResults);
+    }
+    
+    double SimulateTradeSequence(const double& trades[]) {
+        double result = 0;
+        int size = ArraySize(trades);
+        
+        for(int i = 0; i < size; i++) {
+            int randomIndex = MathRand() % size;
+            result += trades[randomIndex];
+        }
+        
+        return result;
+    }
+    
+    OptimizationParams RefineParameters(
+        const OptimizationParams& baseParams,
+        datetime startDate,
+        datetime endDate
+    ) {
+        // Implementar otimização genética refinada
+        return baseParams;
+    }
+};

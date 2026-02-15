@@ -1,0 +1,268 @@
+//+------------------------------------------------------------------+
+//| Sistema de Controle de Coerência Quântica                         |
+//+------------------------------------------------------------------+
+
+class CQuantumCoherenceController {
+private:
+    struct CoherenceState {
+        double coherence_matrix[];
+        double phase_vectors[];
+        double stability_coefficients[];
+        datetime last_control;
+    };
+
+    struct CoherenceMetrics {
+        double coherence_level;
+        double phase_stability;
+        double quantum_fidelity;
+        double entanglement_degree;
+    };
+
+    struct ControlParameters {
+        double control_strength;
+        double feedback_gain;
+        double damping_factor;
+        int control_cycles;
+    };
+
+    CoherenceState m_state;
+    CoherenceMetrics m_metrics;
+    ControlParameters m_params;
+    
+    CQuantumLogger* m_logger;
+    CQuantumValidator* m_validator;
+    
+    // Buffers de controle
+    double m_coherence_history[];
+    double m_phase_history[];
+    
+    // Constantes
+    const int MATRIX_DIM = 8;
+    const int HISTORY_SIZE = 1000;
+    const double MIN_COHERENCE = 0.5;
+    const double MAX_PHASE_DRIFT = 0.1;
+
+public:
+    CQuantumCoherenceController(CQuantumLogger* logger, CQuantumValidator* validator)
+        : m_logger(logger), m_validator(validator) {
+        Initialize();
+    }
+
+    bool Initialize() {
+        InitializeParameters();
+        InitializeBuffers();
+        InitializeState();
+        
+        m_logger.Log("Quantum Coherence Controller Initialized", LOG_INFO, "CoherenceController");
+        return true;
+    }
+
+    bool ControlCoherence(CQuantumState* state) {
+        if(!ValidateControl(state)) return false;
+        
+        // Aplicar controle de coerência
+        bool control_success = ApplyCoherenceControl(state);
+        
+        // Atualizar métricas
+        UpdateMetrics(control_success);
+        
+        return control_success;
+    }
+
+private:
+    void InitializeParameters() {
+        m_params.control_strength = 0.1;
+        m_params.feedback_gain = 0.05;
+        m_params.damping_factor = 0.98;
+        m_params.control_cycles = 50;
+    }
+
+    void InitializeBuffers() {
+        ArrayResize(m_coherence_history, HISTORY_SIZE);
+        ArrayResize(m_phase_history, HISTORY_SIZE);
+        ArrayInitialize(m_coherence_history, 0);
+        ArrayInitialize(m_phase_history, 0);
+    }
+
+    void InitializeState() {
+        // Inicializar matriz de coerência
+        ArrayResize(m_state.coherence_matrix, MATRIX_DIM * MATRIX_DIM);
+        ArrayResize(m_state.phase_vectors, MATRIX_DIM);
+        ArrayResize(m_state.stability_coefficients, MATRIX_DIM);
+        
+        for(int i = 0; i < MATRIX_DIM; i++) {
+            m_state.phase_vectors[i] = 0;
+            m_state.stability_coefficients[i] = 1.0;
+            
+            for(int j = 0; j < MATRIX_DIM; j++) {
+                m_state.coherence_matrix[i * MATRIX_DIM + j] = (i == j) ? 1.0 : 0.0;
+            }
+        }
+        
+        m_state.last_control = 0;
+    }
+
+    bool ValidateControl(const CQuantumState* state) {
+        if(state == NULL || m_validator == NULL) return false;
+        return m_validator.ValidateQuantumState(state);
+    }
+
+    bool ApplyCoherenceControl(CQuantumState* state) {
+        double wave[];
+        state.GetWaveFunction(wave);
+        
+        // Aplicar ciclos de controle
+        for(int cycle = 0; cycle < m_params.control_cycles; cycle++) {
+            if(!ApplyControlCycle(wave)) {
+                return false;
+            }
+            
+            // Verificar convergência
+            if(CheckConvergence(wave)) {
+                UpdateStateWithControl(state, wave);
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    bool ApplyControlCycle(double &wave[]) {
+        // Calcular correções de coerência
+        double coherence_corrections[];
+        if(!CalculateCoherenceCorrections(wave, coherence_corrections)) {
+            return false;
+        }
+        
+        // Aplicar correções com feedback
+        for(int i = 0; i < MATRIX_DIM; i++) {
+            double feedback = m_params.feedback_gain * coherence_corrections[i];
+            wave[i] += feedback * m_state.stability_coefficients[i];
+            
+            // Aplicar amortecimento
+            wave[i] *= m_params.damping_factor;
+            
+            // Normalizar
+            wave[i] = MathMin(MathMax(wave[i], -1.0), 1.0);
+        }
+        
+        return true;
+    }
+
+    bool CalculateCoherenceCorrections(const double &wave[], double &corrections[]) {
+        ArrayResize(corrections, MATRIX_DIM);
+        
+        for(int i = 0; i < MATRIX_DIM; i++) {
+            corrections[i] = 0;
+            for(int j = 0; j < MATRIX_DIM; j++) {
+                corrections[i] += m_state.coherence_matrix[i * MATRIX_DIM + j] * 
+                                (wave[j] - wave[i]);
+            }
+            corrections[i] *= m_params.control_strength;
+        }
+        
+        return true;
+    }
+
+    bool CheckConvergence(const double &wave[]) {
+        double coherence = CalculateCoherenceLevel(wave);
+        return coherence >= MIN_COHERENCE;
+    }
+
+    void UpdateStateWithControl(CQuantumState* state, const double &wave[]) {
+        // Atualizar função de onda
+        state.SetWaveFunction(wave);
+        
+        // Atualizar coeficientes de estabilidade
+        for(int i = 0; i < MATRIX_DIM; i++) {
+            m_state.stability_coefficients[i] *= m_params.damping_factor;
+        }
+        
+        // Atualizar vetores de fase
+        UpdatePhaseVectors(wave);
+        
+        m_state.last_control = TimeCurrent();
+    }
+
+    void UpdatePhaseVectors(const double &wave[]) {
+        for(int i = 0; i < MATRIX_DIM; i++) {
+            double phase = MathArctan(wave[i]);
+            m_state.phase_vectors[i] = NormalizePhase(phase);
+        }
+    }
+
+    double NormalizePhase(double phase) {
+        while(phase > M_PI) phase -= 2 * M_PI;
+        while(phase < -M_PI) phase += 2 * M_PI;
+        return phase;
+    }
+
+    double CalculateCoherenceLevel(const double &wave[]) {
+        double coherence = 0;
+        for(int i = 0; i < MATRIX_DIM; i++) {
+            coherence += wave[i] * wave[i];
+        }
+        return MathSqrt(coherence / MATRIX_DIM);
+    }
+
+    void UpdateMetrics(bool success) {
+        // Atualizar métricas de coerência
+        m_metrics.coherence_level = CalculateCoherenceMetric();
+        m_metrics.phase_stability = CalculatePhaseStability();
+        m_metrics.quantum_fidelity = CalculateQuantumFidelity();
+        m_metrics.entanglement_degree = CalculateEntanglementDegree();
+        
+        LogMetrics(success);
+    }
+
+    double CalculateCoherenceMetric() {
+        double coherence = 0;
+        for(int i = 0; i < MATRIX_DIM; i++) {
+            coherence += m_state.stability_coefficients[i];
+        }
+        return coherence / MATRIX_DIM;
+    }
+
+    double CalculatePhaseStability() {
+        double stability = 0;
+        for(int i = 0; i < MATRIX_DIM - 1; i++) {
+            double phase_diff = MathAbs(
+                m_state.phase_vectors[i] - m_state.phase_vectors[i + 1]
+            );
+            stability += phase_diff < MAX_PHASE_DRIFT ? 1.0 : 0.0;
+        }
+        return stability / (MATRIX_DIM - 1);
+    }
+
+    double CalculateQuantumFidelity() {
+        return m_metrics.coherence_level * m_metrics.phase_stability;
+    }
+
+    double CalculateEntanglementDegree() {
+        double entanglement = 0;
+        for(int i = 0; i < MATRIX_DIM; i++) {
+            for(int j = 0; j < MATRIX_DIM; j++) {
+                if(i != j) {
+                    entanglement += MathAbs(
+                        m_state.coherence_matrix[i * MATRIX_DIM + j]
+                    );
+                }
+            }
+        }
+        return entanglement / (MATRIX_DIM * (MATRIX_DIM - 1));
+    }
+
+    void LogMetrics(bool success) {
+        m_logger.Log(
+            StringFormat(
+                "Coherence Control Metrics - Level: %.3f, Stability: %.3f, Fidelity: %.3f, Entanglement: %.3f",
+                m_metrics.coherence_level,
+                m_metrics.phase_stability,
+                m_metrics.quantum_fidelity,
+                m_metrics.entanglement_degree
+            ),
+            success ? LOG_INFO : LOG_WARNING,
+            "CoherenceController"
+        );
+    }
+};

@@ -1,0 +1,185 @@
+//+------------------------------------------------------------------+
+//| Sub-categoria: VWAP Analysis - Parte 2 Final                      |
+//+------------------------------------------------------------------+
+
+private:
+    // Estruturas de Sinal Atualizadas
+    struct SignalInfo {
+        ENUM_SIGNAL_TYPE type;
+        datetime time;
+        double price;
+        double stopLoss;
+        double takeProfit;
+        SignalMetrics metrics;
+    };
+    
+    struct RequiredData {
+        double vwap;
+        double price;
+        double volume;
+        double[] bands;
+        VWAPMetrics metrics;
+    };
+    
+    void PerformAdvancedAnalysis() {
+        // 1. Análise de Tendência
+        m_trendAnalyzer.AnalyzeTrend(m_data, m_metrics);
+        
+        // 2. Análise de Volume
+        m_volumeAnalyzer.AnalyzeVolume(m_data);
+        
+        // 3. Atualizar Pontos de Ancoragem
+        m_anchorPoints.UpdateAnchorPoints(m_data);
+        
+        // 4. Validar Condições de Mercado
+        if(!ValidateMarketConditions()) return;
+        
+        // 5. Gerar Sinais
+        GenerateAndValidateSignals();
+    }
+    
+    void GenerateAndValidateSignals() {
+        RequiredData reqData;
+        PrepareRequiredData(reqData);
+        
+        SignalInfo* signal = m_signalGenerator.GenerateSignal();
+        if(signal == NULL) return;
+        
+        // Validação Multi-camada
+        if(!ValidateSignalMultiLayer(signal)) {
+            delete signal;
+            return;
+        }
+        
+        // Calcular Parâmetros de Risco
+        m_riskManager.CalculateRiskParameters(*signal);
+        
+        // Otimizar Sinal
+        OptimizeSignal(signal);
+        
+        // Processar Sinal
+        ProcessValidSignal(signal);
+    }
+    
+    bool ValidateSignalMultiLayer(const SignalInfo* signal) {
+        // 1. Validação de Confiança
+        if(signal.metrics.confidence < m_config.signal.deviationThreshold)
+            return false;
+            
+        // 2. Validação de Força
+        if(signal.metrics.strength < m_config.signal.momentumThreshold)
+            return false;
+            
+        // 3. Validação de Volume
+        if(!m_volumeAnalyzer.IsVolumeValid())
+            return false;
+            
+        // 4. Validação de Tendência
+        if(!m_trendAnalyzer.IsTrendValid())
+            return false;
+            
+        // 5. Validação de Risco
+        return m_riskManager.IsRiskAcceptable();
+    }
+    
+    void OptimizeSignal(SignalInfo* signal) {
+        // 1. Otimização de Parâmetros
+        m_optimizer.OptimizeVWAP();
+        
+        // 2. Ajuste de Níveis
+        AdjustSignalLevels(signal);
+        
+        // 3. Validação Final
+        signal.metrics.reliability = CalculateReliability(signal);
+    }
+    
+    void ProcessValidSignal(SignalInfo* signal) {
+        // 1. Registrar Sinal
+        RegisterSignal(signal);
+        
+        // 2. Atualizar Visualização
+        m_visualizer.DrawVWAP(m_data, m_bands);
+        
+        // 3. Notificar Time
+        NotifyTeam(signal);
+        
+        // 4. Atualizar Métricas
+        UpdatePerformanceMetrics(signal);
+    }
+    
+    void UpdatePerformanceMetrics(const SignalInfo* signal) {
+        static datetime lastUpdate = 0;
+        static int signalCount = 0;
+        static double totalLatency = 0;
+        
+        // Calcular latência
+        datetime now = TimeCurrent();
+        double latency = now - signal.time;
+        totalLatency += latency;
+        signalCount++;
+        
+        // Atualizar métricas a cada hora
+        if(now - lastUpdate >= 3600) {
+            PerformanceMetrics metrics;
+            metrics.averageLatency = totalLatency / signalCount;
+            metrics.signalsPerHour = signalCount;
+            metrics.accuracy = CalculateAccuracy();
+            metrics.memoryUsage = GetMemoryUsage();
+            
+            // Integração com TechnologyAdvances
+            m_techManager.UpdatePerformanceMetrics(metrics);
+            
+            // Reset
+            lastUpdate = now;
+            signalCount = 0;
+            totalLatency = 0;
+        }
+    }
+    
+    double CalculateReliability(const SignalInfo* signal) {
+        double reliability = 0.0;
+        
+        // Componentes de confiabilidade
+        reliability += signal.metrics.confidence * 0.4;
+        reliability += signal.metrics.strength * 0.3;
+        reliability += m_metrics.volumeProfile * 0.3;
+        
+        // Ajustes baseados em histórico
+        if(m_backtester != NULL) {
+            TestResults* results = m_backtester.GetResults();
+            reliability *= (results.profitFactor > 1.5) ? 1.1 : 0.9;
+        }
+        
+        return MathMin(reliability, 1.0);
+    }
+    
+    void NotifyTeam(const SignalInfo* signal) {
+        if(signal.metrics.reliability >= 0.8) {
+            string message = StringFormat(
+                "High Reliability VWAP Signal\nType: %s\nReliability: %.2f\nConfidence: %.2f",
+                EnumToString(signal.type),
+                signal.metrics.reliability,
+                signal.metrics.confidence
+            );
+            
+            // Notificar apenas equipe autorizada
+            for(int i = 0; i < ArraySize(m_responsibleTeam); i++) {
+                if(m_responsibleTeam[i].IsAuthorized(VWAP_SIGNALS)) {
+                    SendNotification(m_responsibleTeam[i], message);
+                }
+            }
+        }
+    }
+    
+    void Cleanup() {
+        delete m_signalGenerator;
+        delete m_anchorPoints;
+        delete m_trendAnalyzer;
+        delete m_volumeAnalyzer;
+        delete m_riskManager;
+        delete m_visualizer;
+        delete m_optimizer;
+        delete m_backtester;
+        delete[] m_responsibleTeam;
+    }
+};

@@ -1,0 +1,162 @@
+//+------------------------------------------------------------------+
+//| Order Flow Analysis - Parte 8                                      |
+//|                                                                    |
+//| OBJETIVO: Implementar sistema de relatórios e análise com:         |
+//| - Relatórios Detalhados                                           |
+//| - Análise de Performance                                          |
+//| - Dashboard Interativo                                            |
+//| - Integração com TechnologyAdvances Reports                       |
+//+------------------------------------------------------------------+
+
+private:
+    // Estruturas de Relatórios
+    struct OrderFlowReporting {
+        // Configuração de Relatórios
+        struct ReportConfig {
+            bool enableDailyReports;     // Relatórios diários
+            bool enableWeeklyReports;    // Relatórios semanais
+            bool enableAlertReports;     // Relatórios de alertas
+            bool enablePerformanceStats; // Estatísticas de performance
+            string reportPath;           // Caminho dos relatórios
+        } config;
+        
+        // Estado dos Relatórios
+        struct ReportState {
+            datetime lastDailyReport;    // Último relatório diário
+            datetime lastWeeklyReport;   // Último relatório semanal
+            int reportCount;             // Contador de relatórios
+            bool isReporting;            // Flag de geração
+        } state;
+        
+        // Dashboard
+        struct DashboardConfig {
+            int updateInterval;          // Intervalo de atualização
+            bool showDelta;              // Mostrar delta
+            bool showFootprint;          // Mostrar footprint
+            bool showStats;              // Mostrar estatísticas
+            color schemeColors[];        // Cores do esquema
+        } dashboard;
+    } m_reporting;
+    
+    void GenerateReports() {
+        if(m_reporting.state.isReporting) return;
+        
+        m_reporting.state.isReporting = true;
+        
+        try {
+            // Gerar relatórios periódicos
+            GeneratePeriodicReports();
+            
+            // Atualizar dashboard
+            UpdateDashboard();
+            
+            // Processar alertas
+            ProcessReportAlerts();
+            
+        } catch(const int error) {
+            HandleReportingError(error);
+        }
+        
+        m_reporting.state.isReporting = false;
+    }
+    
+    void GeneratePeriodicReports() {
+        datetime current = TimeCurrent();
+        
+        // Relatório diário
+        if(m_reporting.config.enableDailyReports && 
+           NeedsDailyReport(current)) {
+            GenerateDailyReport();
+        }
+        
+        // Relatório semanal
+        if(m_reporting.config.enableWeeklyReports && 
+           NeedsWeeklyReport(current)) {
+            GenerateWeeklyReport();
+        }
+    }
+    
+    void GenerateDailyReport() {
+        // Criar relatório
+        OrderFlowReport* report = new OrderFlowReport();
+        
+        // Dados gerais
+        report.date = TimeCurrent();
+        report.symbol = _Symbol;
+        report.timeframe = PERIOD_CURRENT;
+        
+        // Métricas de Order Flow
+        report.deltaMetrics = GetDeltaMetrics();
+        report.footprintMetrics = GetFootprintMetrics();
+        report.volumeMetrics = GetVolumeMetrics();
+        
+        // Performance
+        report.performance = GetDailyPerformance();
+        
+        // Salvar relatório
+        SaveReport(report, "daily");
+        
+        // Enviar para TechnologyAdvances
+        m_techManager.ProcessDailyReport(report);
+        
+        // Notificar equipe
+        NotifyTeam(FormatDailyReport(report));
+        
+        delete report;
+    }
+    
+    void UpdateDashboard() {
+        if(!ValidateDashboardState()) return;
+        
+        // Atualizar elementos visuais
+        UpdateDashboardVisuals();
+        
+        // Atualizar métricas
+        UpdateDashboardMetrics();
+        
+        // Atualizar alertas
+        UpdateDashboardAlerts();
+        
+        // Refresh
+        ChartRedraw();
+    }
+    
+    void UpdateDashboardVisuals() {
+        string prefix = "OrderFlow_Dashboard_";
+        
+        // Delta Panel
+        if(m_reporting.dashboard.showDelta) {
+            CreateDashboardPanel(prefix + "Delta", 10, 10, 200, 150);
+            DrawDeltaMetrics(prefix + "Delta");
+        }
+        
+        // Footprint Panel
+        if(m_reporting.dashboard.showFootprint) {
+            CreateDashboardPanel(prefix + "Footprint", 220, 10, 200, 150);
+            DrawFootprintData(prefix + "Footprint");
+        }
+        
+        // Stats Panel
+        if(m_reporting.dashboard.showStats) {
+            CreateDashboardPanel(prefix + "Stats", 10, 170, 410, 150);
+            DrawStatistics(prefix + "Stats");
+        }
+    }
+    
+    void DrawStatistics(const string objName) {
+        string stats = StringFormat(
+            "Delta: %.2f\n" +
+            "Buy Volume: %.2f\n" +
+            "Sell Volume: %.2f\n" +
+            "Imbalance: %.2f%%\n" +
+            "Accuracy: %.2f%%",
+            m_data.delta.delta,
+            m_data.delta.buyVolume,
+            m_data.delta.sellVolume,
+            CalculateImbalance() * 100,
+            m_monitor.metrics.signalAccuracy * 100
+        );
+        
+        ObjectSetString(0, objName + "_Text", OBJPROP_TEXT, stats);
+    }
+};

@@ -1,0 +1,213 @@
+//+------------------------------------------------------------------+
+//| Volume Footprint Chart - Fluxo Principal do Sistema               |
+//|                                                                    |
+//| OBJETIVO: Implementar o controlador principal que coordena:        |
+//| - Validação de Mercado                                           |
+//| - Análise de Dados                                               |
+//| - Geração de Sinais                                              |
+//| - Execução de Trades                                             |
+//| - Gestão de Posições                                             |
+//+------------------------------------------------------------------+
+
+class CVolumeFootprintChart : public CQuantumState {
+private:
+    // Componentes do Sistema
+    CTradeExecutor* m_executor;
+    CRiskManager* m_riskManager;
+    CPerformanceMonitor* m_perfMonitor;
+    CExternalConnector* m_connector;
+    CTechnologyManager* m_techManager;
+    
+    // Estado do Sistema
+    struct SystemState {
+        bool isInitialized;
+        bool isMarketValid;
+        bool isAnalysisReady;
+        double confidence;
+        datetime lastUpdate;
+    } m_state;
+    
+public:
+    CVolumeFootprintChart(CTechnologyManager* techManager) 
+        : m_techManager(techManager) {
+        Initialize();
+    }
+    
+    ~CVolumeFootprintChart() {
+        Cleanup();
+    }
+    
+    void ProcessTick() {
+        try {
+            // 1. Validação inicial
+            if(!ValidateSystem()) return;
+            
+            // 2. Atualizar dados
+            UpdateSystemState();
+            
+            // 3. Análise de mercado
+            if(AnalyzeMarketConditions()) {
+                // 4. Geração de sinais
+                if(GenerateTradeSignals()) {
+                    // 5. Execução
+                    ExecuteTradeStrategy();
+                }
+            }
+            
+            // 6. Gestão contínua
+            ManageActivePositions();
+            UpdateSystemMetrics();
+            
+        } catch(const int error) {
+            HandleSystemError(error);
+        }
+    }
+
+private:
+    bool ValidateSystem() {
+        // Validar mercado
+        if(!ValidateMarketConditions()) return false;
+        
+        // Validar recursos
+        if(!ValidateSystemResources()) return false;
+        
+        // Validar limites
+        if(!ValidateOperationalLimits()) return false;
+        
+        return true;
+    }
+    
+    bool ValidateMarketConditions() {
+        if(!IsMarketOpen()) {
+            LogMessage("Mercado fechado", LOG_INFO);
+            return false;
+        }
+        
+        if(IsHighSpread()) {
+            LogMessage("Spread elevado", LOG_WARNING);
+            return false;
+        }
+        
+        if(!HasSufficientVolume()) {
+            LogMessage("Volume insuficiente", LOG_WARNING);
+            return false;
+        }
+        
+        if(!CheckDailyLimits()) {
+            LogMessage("Limites diários atingidos", LOG_WARNING);
+            return false;
+        }
+        
+        m_state.isMarketValid = true;
+        return true;
+    }
+    
+    void UpdateSystemState() {
+        // Atualizar dados de mercado
+        UpdateMarketData();
+        
+        // Atualizar indicadores
+        UpdateIndicators();
+        
+        // Atualizar análises
+        UpdateAnalysis();
+        
+        m_state.lastUpdate = TimeCurrent();
+    }
+    
+    bool AnalyzeMarketConditions() {
+        m_state.confidence = 0.0;
+        
+        // Análise multi-fator
+        if(AnalyzeTrend()) m_state.confidence += 0.25;
+        if(AnalyzeVolume()) m_state.confidence += 0.25;
+        if(AnalyzePrice()) m_state.confidence += 0.25;
+        if(m_config.useOrderFlow && AnalyzeFlow()) m_state.confidence += 0.25;
+        
+        // Validar confiança
+        m_state.isAnalysisReady = (m_state.confidence >= 0.75);
+        
+        // Integração com TechnologyAdvances
+        AnalysisMetrics metrics;
+        metrics.confidence = m_state.confidence;
+        metrics.isValid = m_state.isAnalysisReady;
+        m_techManager.UpdateAnalysisMetrics(metrics);
+        
+        return m_state.isAnalysisReady;
+    }
+    
+    bool GenerateTradeSignals() {
+        if(!m_state.isAnalysisReady) return false;
+        
+        // Gerar sinais
+        TradeSignal* signal = GenerateSignal();
+        if(signal == NULL) return false;
+        
+        // Validar sinal
+        if(!ValidateSignal(signal)) {
+            delete signal;
+            return false;
+        }
+        
+        // Processar sinal
+        ProcessTradeSignal(signal);
+        delete signal;
+        
+        return true;
+    }
+    
+    void ExecuteTradeStrategy() {
+        // Validar condições de execução
+        if(!ValidateExecutionConditions()) return;
+        
+        // Calcular parâmetros
+        if(!CalculateTradeParameters()) return;
+        
+        // Executar trade
+        if(m_setup.signal == SIGNAL_BUY) {
+            m_executor.ExecuteBuy();
+        }
+        else if(m_setup.signal == SIGNAL_SELL) {
+            m_executor.ExecuteSell();
+        }
+    }
+    
+    void ManageActivePositions() {
+        if(!PositionSelect(_Symbol)) return;
+        
+        // Gerenciar stops
+        m_riskManager.UpdateStops();
+        
+        // Verificar break even
+        m_riskManager.CheckBreakEven();
+        
+        // Atualizar métricas
+        m_perfMonitor.UpdatePositionMetrics();
+    }
+    
+    void UpdateSystemMetrics() {
+        // Atualizar performance
+        m_perfMonitor.UpdatePerformanceMetrics();
+        
+        // Atualizar conexões externas
+        m_connector.ProcessPendingData();
+        
+        // Verificar alertas
+        CheckSystemAlerts();
+    }
+    
+    void HandleSystemError(const int error) {
+        string errorMsg = StringFormat(
+            "Erro do Sistema: %d\nConfiança: %.2f\nÚltima Atualização: %s",
+            error,
+            m_state.confidence,
+            TimeToString(m_state.lastUpdate)
+        );
+        
+        LogMessage(errorMsg, LOG_ERROR);
+        NotifyTeam(errorMsg);
+        
+        // Tentar recuperação
+        RecoverFromError(error);
+    }
+};

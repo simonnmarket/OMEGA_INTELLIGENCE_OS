@@ -1,0 +1,21 @@
+// Função para registrar logs
+void Log(string message) {
+    Print(message);
+    FileOpen(logFile, FILE_WRITE | FILE_TXT);
+    FileWriteString(FileHandle(), TimeCurrent() + " - " + message + "\n");
+    FileClose(FileHandle());
+}
+
+// Função para verificar integridade do sistema
+bool ValidateSystemResources() {
+    double cpuUsage = GetCPUUsage();
+    double memoryUsage = GetMemoryUsage();
+
+    if(cpuUsage > 80 || memoryUsage > 80) {
+        Log("Erro: Recursos insuficientes no sistema. CPU: " + DoubleToString(cpuUsage, 2) +
+            ", Memória: " + DoubleToString(memoryUsage, 2));
+        return false;
+    }
+
+    return true;
+}

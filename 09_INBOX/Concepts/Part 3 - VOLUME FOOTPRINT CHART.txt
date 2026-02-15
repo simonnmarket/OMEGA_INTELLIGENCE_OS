@@ -1,0 +1,167 @@
+//+------------------------------------------------------------------+
+//| Volume Footprint Chart - Indicadores Técnicos                      |
+//|                                                                    |
+//| OBJETIVO: Implementar e gerenciar indicadores técnicos essenciais |
+//| para análise de Volume Footprint, incluindo:                      |
+//| - Médias Móveis                                                   |
+//| - RSI (Índice de Força Relativa)                                 |
+//| - ATR (Average True Range)                                        |
+//| - Volume Médio                                                    |
+//+------------------------------------------------------------------+
+
+private:
+    // Estrutura para gerenciamento de indicadores
+    struct IndicatorManager {
+        // Handles dos indicadores
+        struct Handles {
+            int ma;
+            int rsi;
+            int atr;
+            int volume;
+        } handles;
+        
+        // Buffers dos indicadores
+        struct Buffers {
+            double ma[];
+            double rsi[];
+            double atr[];
+            double volume[];
+        } buffers;
+        
+        // Configurações
+        struct Config {
+            int maPeriod;
+            int rsiPeriod;
+            int atrPeriod;
+            int volumePeriod;
+            ENUM_MA_METHOD maMethod;
+            ENUM_APPLIED_PRICE priceType;
+        } config;
+    } m_indicators;
+    
+    bool InitializeIndicators() {
+        // Configurar parâmetros padrão
+        SetupIndicatorDefaults();
+        
+        // Inicializar indicadores
+        if(!InitializeMA() || 
+           !InitializeRSI() || 
+           !InitializeATR()) {
+            LogMessage("Falha na inicialização dos indicadores", LOG_ERROR);
+            return false;
+        }
+        
+        // Configurar buffers
+        ConfigureBuffers();
+        
+        // Validar inicialização
+        return ValidateIndicators();
+    }
+    
+    void SetupIndicatorDefaults() {
+        m_indicators.config.maPeriod = 20;
+        m_indicators.config.rsiPeriod = 14;
+        m_indicators.config.atrPeriod = 14;
+        m_indicators.config.volumePeriod = 20;
+        m_indicators.config.maMethod = MODE_EMA;
+        m_indicators.config.priceType = PRICE_CLOSE;
+    }
+    
+    bool InitializeMA() {
+        m_indicators.handles.ma = iMA(_Symbol, 
+                                    PERIOD_CURRENT, 
+                                    m_indicators.config.maPeriod,
+                                    0,
+                                    m_indicators.config.maMethod,
+                                    m_indicators.config.priceType);
+                                    
+        if(m_indicators.handles.ma == INVALID_HANDLE) {
+            LogMessage("Erro: Falha ao inicializar Média Móvel", LOG_ERROR);
+            return false;
+        }
+        return true;
+    }
+    
+    bool InitializeRSI() {
+        m_indicators.handles.rsi = iRSI(_Symbol,
+                                      PERIOD_CURRENT,
+                                      m_indicators.config.rsiPeriod,
+                                      m_indicators.config.priceType);
+                                      
+        if(m_indicators.handles.rsi == INVALID_HANDLE) {
+            LogMessage("Erro: Falha ao inicializar RSI", LOG_ERROR);
+            return false;
+        }
+        return true;
+    }
+    
+    bool InitializeATR() {
+        m_indicators.handles.atr = iATR(_Symbol,
+                                      PERIOD_CURRENT,
+                                      m_indicators.config.atrPeriod);
+                                      
+        if(m_indicators.handles.atr == INVALID_HANDLE) {
+            LogMessage("Erro: Falha ao inicializar ATR", LOG_ERROR);
+            return false;
+        }
+        return true;
+    }
+    
+    void ConfigureBuffers() {
+        // Configurar arrays como séries
+        ArraySetAsSeries(m_indicators.buffers.ma, true);
+        ArraySetAsSeries(m_indicators.buffers.rsi, true);
+        ArraySetAsSeries(m_indicators.buffers.atr, true);
+        ArraySetAsSeries(m_indicators.buffers.volume, true);
+        
+        // Copiar dados iniciais
+        CopyBuffer(m_indicators.handles.ma, 0, 0, 100, m_indicators.buffers.ma);
+        CopyBuffer(m_indicators.handles.rsi, 0, 0, 100, m_indicators.buffers.rsi);
+        CopyBuffer(m_indicators.handles.atr, 0, 0, 100, m_indicators.buffers.atr);
+    }
+    
+    double CalculateVolumeMA() {
+        double sum = 0;
+        
+        // Validar período
+        if(m_indicators.config.volumePeriod <= 0) {
+            LogMessage("Erro: Período de volume inválido", LOG_ERROR);
+            return 0;
+        }
+        
+        // Calcular média
+        for(int i = 0; i < m_indicators.config.volumePeriod; i++) {
+            sum += m_indicators.buffers.volume[i];
+        }
+        
+        return sum / m_indicators.config.volumePeriod;
+    }
+    
+    bool ValidateIndicators() {
+        // Verificar handles
+        if(m_indicators.handles.ma == INVALID_HANDLE ||
+           m_indicators.handles.rsi == INVALID_HANDLE ||
+           m_indicators.handles.atr == INVALID_HANDLE) {
+            return false;
+        }
+        
+        // Verificar buffers
+        if(ArraySize(m_indicators.buffers.ma) == 0 ||
+           ArraySize(m_indicators.buffers.rsi) == 0 ||
+           ArraySize(m_indicators.buffers.atr) == 0) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    void UpdateIndicators() {
+        // Atualizar buffers
+        CopyBuffer(m_indicators.handles.ma, 0, 0, 100, m_indicators.buffers.ma);
+        CopyBuffer(m_indicators.handles.rsi, 0, 0, 100, m_indicators.buffers.rsi);
+        CopyBuffer(m_indicators.handles.atr, 0, 0, 100, m_indicators.buffers.atr);
+        
+        // Integração com TechnologyAdvances
+        UpdateTechIndicators();
+    }
+};

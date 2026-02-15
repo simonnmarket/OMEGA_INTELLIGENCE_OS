@@ -1,0 +1,32 @@
+// Localização: Classe CQuantumSystem
+// Problema: Falta de logging integrado
+// Solução: Adicionar logger ao sistema principal
+
+class CQuantumSystem {
+private:
+    CQuantumLogger* m_logger;
+
+    bool Initialize() {
+        if(m_initialized) return true;
+
+        // Inicializar logger primeiro
+        m_logger = new CQuantumLogger();
+        if(!m_logger.Initialize()) {
+            Print("Erro ao inicializar sistema de log");
+            return false;
+        }
+
+        m_logger.Log("Iniciando inicialização do sistema", LOG_INFO, "System");
+
+        // ... resto da inicialização ...
+
+        m_logger.Log("Sistema inicializado com sucesso", LOG_INFO, "System");
+        return true;
+    }
+
+    void HandleError(string component, string message, string details = "") {
+        if(m_logger != NULL) {
+            m_logger.Log(message, LOG_ERROR, component, details);
+        }
+    }
+};

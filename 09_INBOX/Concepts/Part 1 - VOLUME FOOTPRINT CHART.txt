@@ -1,0 +1,172 @@
+//+------------------------------------------------------------------+
+//| Sub-categoria: Volume Footprint Chart - Parte 1                    |
+//+------------------------------------------------------------------+
+
+#include "TechnologyAdvances.mqh"
+#include "TeamStructure.mqh"
+
+class CVolumeFootprintChart : public IVolumeSubCategory {
+private:
+    // 1. Estruturas Core
+    struct FootprintData {
+        // Dados de Mercado
+        struct Market {
+            double open;
+            double high;
+            double low;
+            double close;
+            double volume;
+            double volumeMA;
+            double volumeDelta;
+            double trend;
+            double momentum;
+            double volatility;
+            double valueAreaHigh;
+            double valueAreaLow;
+            double poc;
+            ENUM_MARKET_CONDITION condition;
+            bool isValid;
+            datetime lastUpdate;
+        } market;
+        
+        // Setup de Trade
+        struct Setup {
+            ENUM_TRADE_SIGNAL signal;
+            double entry;
+            double stopLoss;
+            double takeProfit;
+            double volume;
+            double risk;
+            double reward;
+            double confidence;
+            string reason;
+            bool isValid;
+        } setup;
+    };
+
+    // 2. Configurações
+    struct Config {
+        // Parâmetros de Trading
+        int timeframeMin;
+        double riskPercent;
+        int maxDailyTrades;
+        bool useBreakEven;
+        int breakEvenPoints;
+        
+        // Parâmetros de Volume
+        double volumeThreshold;
+        int volumePeriod;
+        int stopLoss;
+        int takeProfit;
+        
+        // Análises Avançadas
+        bool useVolumeProfile;
+        bool useOrderFlow;
+        bool useMarketProfile;
+        bool useInstitutional;
+    } m_config;
+    
+    // 3. Estado e Dados
+    FootprintData m_data;
+    CTrade* m_trade;
+    CTechnologyManager* m_techManager;
+    TeamMember* m_responsibleTeam;
+    
+    // 4. Handles e Buffers
+    struct Handles {
+        int ma;
+        int rsi;
+        int atr;
+    } m_handles;
+    
+    struct Buffers {
+        double ma[];
+        double rsi[];
+        double atr[];
+    } m_buffers;
+    
+    // 5. Métricas de Performance
+    struct Performance {
+        int dailyTrades;
+        int consecutiveLosses;
+        double currentDrawdown;
+        string logFile;
+    } m_performance;
+
+public:
+    CVolumeFootprintChart(CTechnologyManager* techManager)
+        : m_techManager(techManager) {
+        Initialize();
+    }
+    
+    ~CVolumeFootprintChart() {
+        Cleanup();
+    }
+    
+    virtual bool Initialize() override {
+        if(!ValidateComponents()) return false;
+        
+        // Inicializar componentes
+        InitializeComponents();
+        
+        // Configurar parâmetros
+        ConfigureDefaults();
+        
+        // Inicializar indicadores
+        if(!InitializeIndicators()) return false;
+        
+        return true;
+    }
+    
+    virtual void Update() override {
+        try {
+            // 1. Atualizar dados de mercado
+            UpdateMarketData();
+            
+            // 2. Análise de volume
+            AnalyzeVolume();
+            
+            // 3. Gerar sinais
+            GenerateSignals();
+            
+            // 4. Gerenciar trades
+            ManageTrades();
+            
+        } catch(const int error) {
+            HandleError(error);
+        }
+    }
+    
+    virtual string GetSubCategoryName() override {
+        return "VolumeFootprint";
+    }
+
+private:
+    void ConfigureDefaults() {
+        m_config.timeframeMin = 5;
+        m_config.riskPercent = 1.0;
+        m_config.maxDailyTrades = 3;
+        m_config.useBreakEven = true;
+        m_config.breakEvenPoints = 300;
+        m_config.volumeThreshold = 1.5;
+        m_config.volumePeriod = 20;
+        m_config.stopLoss = 400;
+        m_config.takeProfit = 800;
+        m_config.useVolumeProfile = true;
+        m_config.useOrderFlow = true;
+        m_config.useMarketProfile = true;
+        m_config.useInstitutional = true;
+    }
+    
+    bool InitializeIndicators() {
+        m_handles.ma = iMA(_Symbol, PERIOD_CURRENT, m_config.volumePeriod, 0, MODE_SMA, VOLUME_REAL);
+        m_handles.rsi = iRSI(_Symbol, PERIOD_CURRENT, 14, PRICE_CLOSE);
+        m_handles.atr = iATR(_Symbol, PERIOD_CURRENT, 14);
+        
+        return (m_handles.ma != INVALID_HANDLE && 
+                m_handles.rsi != INVALID_HANDLE && 
+                m_handles.atr != INVALID_HANDLE);
+    }
+    
+    // ... continuação na próxima parte
+};

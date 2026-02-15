@@ -1,0 +1,315 @@
+//+------------------------------------------------------------------+
+//| Sistema de Avaliação de Performance Integrada                     |
+//+------------------------------------------------------------------+
+
+class CIntegratedPerformanceEvaluator {
+private:
+    // Componentes principais
+    CTechnologyManager* m_tech_manager;
+    CTeamStructure* m_team_structure;
+    CQuantumLogger* m_logger;
+    
+    struct PerformanceState {
+        double tech_efficiency;
+        double team_effectiveness;
+        double system_reliability;
+        datetime last_evaluation;
+    };
+
+    struct TeamMetrics {
+        int active_specialists;
+        double skill_utilization;
+        double team_cohesion;
+        double productivity_index;
+    };
+
+    struct TechnologyMetrics {
+        double system_performance;
+        double innovation_rate;
+        double adaptation_level;
+        double stability_score;
+    };
+
+    PerformanceState m_state;
+    TeamMetrics m_team_metrics;
+    TechnologyMetrics m_tech_metrics;
+    
+    // Constantes
+    const double MIN_PERFORMANCE = 0.75;
+    const double MIN_RELIABILITY = 0.80;
+    const int EVALUATION_INTERVAL = 900; // 15 minutos
+
+public:
+    CIntegratedPerformanceEvaluator(
+        CTechnologyManager* tech_manager,
+        CTeamStructure* team_structure,
+        CQuantumLogger* logger
+    ) : m_tech_manager(tech_manager),
+        m_team_structure(team_structure),
+        m_logger(logger) {
+        Initialize();
+    }
+
+    bool Initialize() {
+        if(!ValidateComponents()) {
+            m_logger.Log("Failed to validate performance evaluator components", LOG_ERROR, "PerfEvaluator");
+            return false;
+        }
+
+        InitializeState();
+        return true;
+    }
+
+    bool EvaluatePerformance() {
+        // Verificar necessidade de avaliação
+        if(!NeedsEvaluation()) return true;
+
+        // Avaliar performance da equipe
+        if(!EvaluateTeamPerformance()) return false;
+
+        // Avaliar performance tecnológica
+        if(!EvaluateTechnologyPerformance()) return false;
+
+        // Integrar e atualizar métricas
+        UpdateIntegratedMetrics();
+
+        return ValidatePerformance();
+    }
+
+private:
+    bool ValidateComponents() {
+        if(m_tech_manager == NULL || 
+           m_team_structure == NULL || 
+           m_logger == NULL) {
+            return false;
+        }
+        return true;
+    }
+
+    void InitializeState() {
+        // Inicializar estado de performance
+        m_state.tech_efficiency = 0.0;
+        m_state.team_effectiveness = 0.0;
+        m_state.system_reliability = 0.0;
+        m_state.last_evaluation = TimeCurrent();
+
+        // Inicializar métricas da equipe
+        m_team_metrics.active_specialists = 0;
+        m_team_metrics.skill_utilization = 0.0;
+        m_team_metrics.team_cohesion = 0.0;
+        m_team_metrics.productivity_index = 0.0;
+
+        // Inicializar métricas tecnológicas
+        m_tech_metrics.system_performance = 0.0;
+        m_tech_metrics.innovation_rate = 0.0;
+        m_tech_metrics.adaptation_level = 0.0;
+        m_tech_metrics.stability_score = 0.0;
+    }
+
+    bool NeedsEvaluation() {
+        return (TimeCurrent() - m_state.last_evaluation >= EVALUATION_INTERVAL);
+    }
+
+    bool EvaluateTeamPerformance() {
+        TeamMember members[];
+        if(!GetTeamMembers(members)) return false;
+
+        // Avaliar métricas da equipe
+        EvaluateTeamMetrics(members);
+
+        return ValidateTeamMetrics();
+    }
+
+    void EvaluateTeamMetrics(const TeamMember &members[]) {
+        int total_members = ArraySize(members);
+        m_team_metrics.active_specialists = 0;
+        double total_skill = 0.0;
+        double total_cohesion = 0.0;
+
+        for(int i = 0; i < total_members; i++) {
+            // Contar especialistas
+            if(IsSpecialist(members[i])) {
+                m_team_metrics.active_specialists++;
+            }
+
+            // Calcular utilização de habilidades
+            total_skill += CalculateSkillUtilization(members[i]);
+
+            // Calcular coesão da equipe
+            total_cohesion += CalculateTeamCohesion(members[i]);
+        }
+
+        // Normalizar métricas
+        m_team_metrics.skill_utilization = total_skill / total_members;
+        m_team_metrics.team_cohesion = total_cohesion / total_members;
+        m_team_metrics.productivity_index = CalculateProductivityIndex();
+    }
+
+    bool IsSpecialist(const TeamMember &member) {
+        return (member.expertise == "Quantum Computing" || 
+                member.department == QUANTITATIVE_RESEARCH);
+    }
+
+    double CalculateSkillUtilization(const TeamMember &member) {
+        double utilization = 0.0;
+
+        switch(member.department) {
+            case QUANTITATIVE_RESEARCH:
+                utilization = 1.0;
+                break;
+            case ALGO_TRADING:
+                utilization = 0.85;
+                break;
+            case MARKET_ANALYSIS:
+                utilization = 0.75;
+                break;
+            default:
+                utilization = 0.6;
+        }
+
+        if(member.expertise == "Quantum Computing") {
+            utilization *= 1.2;
+        }
+
+        return MathMin(utilization, 1.0);
+    }
+
+    double CalculateTeamCohesion(const TeamMember &member) {
+        // Implementar cálculo de coesão baseado no papel do membro
+        return 0.85; // Placeholder
+    }
+
+    double CalculateProductivityIndex() {
+        return (m_team_metrics.skill_utilization * 0.6 +
+                m_team_metrics.team_cohesion * 0.4);
+    }
+
+    bool ValidateTeamMetrics() {
+        if(m_team_metrics.productivity_index < MIN_PERFORMANCE) {
+            m_logger.Log("Team productivity below threshold", LOG_WARNING, "PerfEvaluator");
+            return false;
+        }
+
+        return true;
+    }
+
+    bool EvaluateTechnologyPerformance() {
+        // Obter métricas do TechnologyManager
+        DataAnalytics analytics = m_tech_manager.GetDataAnalytics();
+        ExecutionMetrics exec_metrics = m_tech_manager.GetExecutionMetrics();
+
+        // Avaliar performance do sistema
+        m_tech_metrics.system_performance = CalculateSystemPerformance(analytics);
+        
+        // Avaliar taxa de inovação
+        m_tech_metrics.innovation_rate = CalculateInnovationRate(exec_metrics);
+        
+        // Avaliar nível de adaptação
+        m_tech_metrics.adaptation_level = CalculateAdaptationLevel();
+        
+        // Avaliar estabilidade
+        m_tech_metrics.stability_score = CalculateStabilityScore(exec_metrics);
+
+        return ValidateTechMetrics();
+    }
+
+    double CalculateSystemPerformance(const DataAnalytics &analytics) {
+        return (analytics.machine_learning_score * 0.4 +
+                analytics.ai_prediction_confidence * 0.3 +
+                analytics.pattern_recognition_strength * 0.3);
+    }
+
+    double CalculateInnovationRate(const ExecutionMetrics &exec_metrics) {
+        return (exec_metrics.execution_accuracy * 0.5 +
+                exec_metrics.cost_efficiency * 0.5);
+    }
+
+    double CalculateAdaptationLevel() {
+        return (m_tech_metrics.system_performance * 0.7 +
+                m_tech_metrics.innovation_rate * 0.3);
+    }
+
+    double CalculateStabilityScore(const ExecutionMetrics &exec_metrics) {
+        return (1.0 - exec_metrics.latency) * exec_metrics.execution_accuracy;
+    }
+
+    bool ValidateTechMetrics() {
+        if(m_tech_metrics.system_performance < MIN_PERFORMANCE) {
+            m_logger.Log("System performance below threshold", LOG_WARNING, "PerfEvaluator");
+            return false;
+        }
+
+        if(m_tech_metrics.stability_score < MIN_RELIABILITY) {
+            m_logger.Log("System stability below threshold", LOG_WARNING, "PerfEvaluator");
+            return false;
+        }
+
+        return true;
+    }
+
+    void UpdateIntegratedMetrics() {
+        // Atualizar eficiência tecnológica
+        m_state.tech_efficiency = CalculateTechEfficiency();
+
+        // Atualizar efetividade da equipe
+        m_state.team_effectiveness = CalculateTeamEffectiveness();
+
+        // Atualizar confiabilidade do sistema
+        m_state.system_reliability = CalculateSystemReliability();
+
+        // Atualizar timestamp
+        m_state.last_evaluation = TimeCurrent();
+
+        LogPerformanceMetrics();
+    }
+
+    double CalculateTechEfficiency() {
+        return (m_tech_metrics.system_performance * 0.4 +
+                m_tech_metrics.innovation_rate * 0.3 +
+                m_tech_metrics.stability_score * 0.3);
+    }
+
+    double CalculateTeamEffectiveness() {
+        return (m_team_metrics.productivity_index * 0.5 +
+                m_team_metrics.skill_utilization * 0.3 +
+                m_team_metrics.team_cohesion * 0.2);
+    }
+
+    double CalculateSystemReliability() {
+        return (m_state.tech_efficiency * 0.6 +
+                m_state.team_effectiveness * 0.4);
+    }
+
+    void LogPerformanceMetrics() {
+        m_logger.Log(
+            StringFormat(
+                "Integrated Performance Metrics:\n" +
+                "Tech Efficiency: %.2f\n" +
+                "Team Effectiveness: %.2f\n" +
+                "System Reliability: %.2f\n" +
+                "Active Specialists: %d\n" +
+                "Innovation Rate: %.2f\n" +
+                "Stability Score: %.2f",
+                m_state.tech_efficiency,
+                m_state.team_effectiveness,
+                m_state.system_reliability,
+                m_team_metrics.active_specialists,
+                m_tech_metrics.innovation_rate,
+                m_tech_metrics.stability_score
+            ),
+            LOG_INFO,
+            "PerfEvaluator"
+        );
+    }
+
+    bool ValidatePerformance() {
+        return (m_state.system_reliability >= MIN_RELIABILITY &&
+                m_state.tech_efficiency >= MIN_PERFORMANCE &&
+                m_state.team_effectiveness >= MIN_PERFORMANCE);
+    }
+
+    bool GetTeamMembers(TeamMember &members[]) {
+        // Implementar obtenção de membros da equipe
+        return true; // Placeholder
+    }
+};

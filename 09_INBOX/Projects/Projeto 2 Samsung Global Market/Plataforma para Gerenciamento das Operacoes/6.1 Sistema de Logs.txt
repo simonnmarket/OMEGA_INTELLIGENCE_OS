@@ -1,0 +1,14 @@
+# backend/utils.py
+import logging
+
+logging.basicConfig(
+    filename="samsung_global_market.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
+def log_message(message, severity):
+    if severity == "info":
+        logging.info(message)
+    elif severity == "error":
+        logging.error(message)

@@ -1,0 +1,18 @@
+-- backend/database.sql
+CREATE TABLE transactions (
+    id SERIAL PRIMARY KEY,
+    symbol VARCHAR(10),
+    timestamp TIMESTAMP,
+    action VARCHAR(10),
+    entry_price FLOAT,
+    exit_price FLOAT,
+    profit FLOAT,
+    risk DOUBLE PRECISION
+);
+
+CREATE TABLE logs (
+    id SERIAL PRIMARY KEY,
+    message TEXT,
+    severity INT,
+    timestamp TIMESTAMP
+);

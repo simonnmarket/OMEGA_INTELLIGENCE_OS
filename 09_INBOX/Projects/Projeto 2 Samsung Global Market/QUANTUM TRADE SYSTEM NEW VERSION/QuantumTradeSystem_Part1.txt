@@ -1,0 +1,369 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part1.mq5    |
+//|                                    Copyright 2024                   |
+//+------------------------------------------------------------------+
+#property copyright "Quantum Trade System v3.0"
+#property link      ""
+#property version   "3.00"
+#property strict
+
+// Bibliotecas expandidas
+#include <Trade\Trade.mqh>
+#include <Arrays\ArrayObj.mqh>
+#include <Math\Stat\Math.mqh>
+#include <Generic\HashMap.mqh>
+#include <Math\Stat\Normal.mqh>
+#include <Math\Stat\Stat.mqh>
+
+// Constantes globais atualizadas
+#define SYSTEM_VERSION    "3.0"
+#define MAX_PATTERNS      20
+#define MIN_PROBABILITY   0.70
+#define RISK_PERCENT     2.0
+#define MAX_CORRELATION   0.75
+#define MIN_VOLUME_RATIO  1.5
+#define QUANTUM_THRESHOLD 0.85
+#define MAX_DRAWDOWN     0.10
+#define VOLATILITY_LIMIT 2.5
+
+// Enums aprimorados
+enum MARKET_REGIME {
+    TRENDING_STRONG,    // ADX > 30
+    TRENDING_WEAK,      // ADX > 20
+    RANGING_NARROW,     // Baixa volatilidade
+    RANGING_WIDE,       // Média volatilidade
+    VOLATILE_BULLISH,   // Alta volatilidade + tendência de alta
+    VOLATILE_BEARISH,   // Alta volatilidade + tendência de baixa
+    QUANTUM_SHIFT,      // Mudança quântica detectada
+    REGIME_CHANGE,      // Transição de regime
+    UNDEFINED
+};
+
+// Estruturas base aprimoradas
+struct MarketState {
+    MARKET_REGIME regime;
+    double trend;
+    double volatility;
+    double momentum;
+    double volume;
+    double quantum_state;
+    double regime_probability;
+    double market_efficiency;
+    datetime lastUpdate;
+    
+    void Reset() {
+        regime = UNDEFINED;
+        trend = 0;
+        volatility = 0;
+        momentum = 0;
+        volume = 0;
+        quantum_state = 0;
+        regime_probability = 0;
+        market_efficiency = 0;
+        lastUpdate = 0;
+    }
+};
+
+struct TradingSetup {
+    double entryPrice;
+    double stopLoss;
+    double takeProfit;
+    double probability;
+    double risk;
+    double reward;
+    double quantum_edge;
+    MARKET_REGIME regime;
+    datetime expiration;
+    
+    void Clear() {
+        entryPrice = 0;
+        stopLoss = 0;
+        takeProfit = 0;
+        probability = 0;
+        risk = 0;
+        reward = 0;
+        quantum_edge = 0;
+        regime = UNDEFINED;
+        expiration = 0;
+    }
+};
+
+// Classe principal atualizada
+class CQuantumCore {
+private:
+    // Variáveis de controle expandidas
+    bool isInitialized;
+    MarketState currentState;
+    CHashMap<string, double>* marketData;
+    
+    // Cache de cálculos aprimorado
+    struct CalculationCache {
+        double value;
+        datetime lastUpdate;
+        bool isValid;
+        double confidence;
+        double error_margin;
+        
+        void Invalidate() {
+            isValid = false;
+            value = 0;
+            confidence = 0;
+            error_margin = 0;
+        }
+    };
+    
+    CHashMap<string, CalculationCache*> calculationCache;
+    
+    // Novos componentes
+    double quantum_states[];
+    double regime_transitions[];
+    double efficiency_ratio;
+
+public:
+    CQuantumCore() {
+        isInitialized = false;
+        marketData = new CHashMap<string, double>();
+        InitializeCache();
+        InitializeQuantumStates();
+    }
+    
+    ~CQuantumCore() {
+        ClearCache();
+        delete marketData;
+    }
+    
+    bool Initialize() {
+        if(!InitializeIndicators()) {
+            Print("Falha ao inicializar indicadores");
+            return false;
+        }
+        
+        if(!InitializeQuantumSystem()) {
+            Print("Falha ao inicializar sistema quântico");
+            return false;
+        }
+        
+        isInitialized = true;
+        return true;
+    }
+    
+    MarketState AnalyzeMarket() {
+        if(!isInitialized) return currentState;
+        
+        UpdateMarketState();
+        CalculateQuantumState();
+        UpdateEfficiencyRatio();
+        
+        return currentState;
+    }
+
+private:
+    bool InitializeIndicators() {
+        handleADX = iADX(Symbol(), Period(), InpADXPeriod);
+        handleMA = iMA(Symbol(), Period(), InpMAPeriod, 0, MODE_SMA, PRICE_CLOSE);
+        handleATR = iATR(Symbol(), Period(), 14);
+        handleBB = iBands(Symbol(), Period(), 20, 2, 0, PRICE_CLOSE);
+        handleRSI = iRSI(Symbol(), Period(), 14, PRICE_CLOSE);
+        
+        return ValidateIndicators();
+    }
+    
+    bool InitializeQuantumSystem() {
+        ArrayResize(quantum_states, 10);
+        ArrayResize(regime_transitions, 5);
+        efficiency_ratio = 0;
+        
+        return true;
+    }
+    
+    void UpdateMarketState() {
+        currentState.lastUpdate = TimeCurrent();
+        currentState.regime = DetermineMarketRegime();
+        currentState.trend = CalculateTrendStrength();
+        currentState.volatility = CalculateVolatility();
+        currentState.momentum = CalculateMomentum();
+        currentState.volume = CalculateVolumeProfile();
+        currentState.quantum_state = CalculateQuantumState();
+        currentState.regime_probability = CalculateRegimeProbability();
+        currentState.market_efficiency = efficiency_ratio;
+    }
+    
+    // ... (continuação no próximo post)
+    // Continuação da classe CQuantumCore...
+
+private:
+    MARKET_REGIME DetermineMarketRegime() {
+        double adx[], atr[], bb_upper[], bb_lower[];
+        ArraySetAsSeries(adx, true);
+        ArraySetAsSeries(atr, true);
+        ArraySetAsSeries(bb_upper, true);
+        ArraySetAsSeries(bb_lower, true);
+        
+        if(!FillIndicatorBuffers(adx, atr, bb_upper, bb_lower)) {
+            return UNDEFINED;
+        }
+        
+        double trend_strength = adx[0];
+        double volatility = atr[0] / atr[1];
+        double range_width = (bb_upper[0] - bb_lower[0]) / Point();
+        double quantum_indicator = CalculateQuantumIndicator();
+        
+        // Detecção avançada de regime
+        if(quantum_indicator > QUANTUM_THRESHOLD) {
+            return QUANTUM_SHIFT;
+        }
+        
+        if(IsRegimeTransition()) {
+            return REGIME_CHANGE;
+        }
+        
+        if(trend_strength > 30 && volatility < VOLATILITY_LIMIT) {
+            return TRENDING_STRONG;
+        }
+        
+        if(trend_strength > 20 && volatility < VOLATILITY_LIMIT * 0.8) {
+            return TRENDING_WEAK;
+        }
+        
+        if(volatility > VOLATILITY_LIMIT) {
+            return IsBullishMarket() ? VOLATILE_BULLISH : VOLATILE_BEARISH;
+        }
+        
+        return (range_width < 50) ? RANGING_NARROW : RANGING_WIDE;
+    }
+    
+    double CalculateTrendStrength() {
+        double ma[], adx[];
+        ArraySetAsSeries(ma, true);
+        ArraySetAsSeries(adx, true);
+        
+        if(!FillIndicatorBuffers(ma, adx)) {
+            return 0;
+        }
+        
+        double trend_score = 0;
+        
+        // Análise de tendência multi-timeframe
+        for(ENUM_TIMEFRAMES tf : {PERIOD_M5, PERIOD_M15, PERIOD_H1}) {
+            trend_score += CalculateTrendScore(tf);
+        }
+        
+        // Normalização e ajuste quântico
+        trend_score = NormalizeValue(trend_score / 3.0);
+        trend_score *= (1 + currentState.quantum_state * 0.2);
+        
+        return trend_score;
+    }
+    
+    double CalculateVolatility() {
+        double atr[], bb_width[];
+        ArraySetAsSeries(atr, true);
+        ArraySetAsSeries(bb_width, true);
+        
+        if(!FillIndicatorBuffers(atr, bb_width)) {
+            return 0;
+        }
+        
+        // Volatilidade adaptativa
+        double vol_score = 0;
+        vol_score += NormalizeATR(atr[0]);
+        vol_score += NormalizeBBWidth(bb_width[0]);
+        vol_score *= (1 + GetMarketNoise() * 0.3);
+        
+        return NormalizeValue(vol_score / 2.0);
+    }
+    
+    double CalculateMomentum() {
+        if(CalculationCache* cache = GetCachedValue("momentum")) {
+            if(cache.isValid) return cache.value;
+        }
+        
+        double rsi[], macd[], stoch[];
+        ArraySetAsSeries(rsi, true);
+        ArraySetAsSeries(macd, true);
+        ArraySetAsSeries(stoch, true);
+        
+        if(!FillIndicatorBuffers(rsi, macd, stoch)) {
+            return 0;
+        }
+        
+        // Momentum multi-indicador
+        double momentum_score = 0;
+        momentum_score += NormalizeRSI(rsi[0]);
+        momentum_score += NormalizeMACD(macd[0]);
+        momentum_score += NormalizeStochastic(stoch[0]);
+        
+        // Ajuste quântico do momentum
+        momentum_score *= (1 + currentState.quantum_state * 0.15);
+        
+        // Cache do resultado
+        UpdateCache("momentum", momentum_score);
+        
+        return NormalizeValue(momentum_score / 3.0);
+    }
+    
+    double CalculateVolumeProfile() {
+        if(CalculationCache* cache = GetCachedValue("volume")) {
+            if(cache.isValid) return cache.value;
+        }
+        
+        double volume_score = 0;
+        
+        // Análise de volume avançada
+        volume_score += AnalyzeVolumePattern();
+        volume_score += AnalyzeVolumeZones();
+        volume_score += CalculateVolumeRatio();
+        
+        // Ajuste baseado em liquidez
+        volume_score *= GetLiquidityMultiplier();
+        
+        // Cache do resultado
+        UpdateCache("volume", volume_score);
+        
+        return NormalizeValue(volume_score);
+    }
+    
+    double CalculateQuantumState() {
+        double quantum_value = 0;
+        
+        // Análise de estados quânticos
+        for(int i = 0; i < ArraySize(quantum_states); i++) {
+            quantum_value += quantum_states[i] * GetQuantumWeight(i);
+        }
+        
+        // Normalização e ajuste de probabilidade
+        quantum_value = NormalizeValue(quantum_value);
+        quantum_value *= GetQuantumConfidence();
+        
+        return quantum_value;
+    }
+    
+    double CalculateRegimeProbability() {
+        double regime_prob = 0;
+        
+        // Análise de transições de regime
+        for(int i = 0; i < ArraySize(regime_transitions); i++) {
+            regime_prob += regime_transitions[i] * GetRegimeWeight(i);
+        }
+        
+        return NormalizeValue(regime_prob);
+    }
+    
+    void UpdateEfficiencyRatio() {
+        efficiency_ratio = CalculateMarketEfficiency();
+        efficiency_ratio *= (1 + currentState.quantum_state * 0.1);
+    }
+    
+    // Métodos auxiliares
+    bool FillIndicatorBuffers(double& arr1[], double& arr2[], double& arr3[] = NULL, double& arr4[] = NULL);
+    double NormalizeValue(double value);
+    double GetMarketNoise();
+    double GetLiquidityMultiplier();
+    double GetQuantumWeight(int index);
+    double GetRegimeWeight(int index);
+    double GetQuantumConfidence();
+    double CalculateMarketEfficiency();
+    bool IsBullishMarket();
+    bool IsRegimeTransition();
+};
+

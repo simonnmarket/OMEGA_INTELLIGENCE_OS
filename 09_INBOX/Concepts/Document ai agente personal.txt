@@ -1,0 +1,59 @@
+
+https://www.icmarkets.eu/en/
+A empresa ICMarkets e o nosso Brocker, todas as operacoes sao realizadas atraves desta empresa. por este motivo e supra importante voce compreender e aprender como a plataforma funciona e informacoes cruciais que podem influenciar nosso resultado.
+Nossa account e chamada de Raw Spread Account para plataformas operacionais Meta Trader 5, nosso levare neste momento e de 1:500 sendo assim absorva todo o conhecimento para ser implementado e ajustado em nosso robo, como parametros, spreads from (pips) e maximum number of position orders per account. As informacoes de trading cost pode influenciar nossos resultados, trading hours, Spreads and Swaps, Forex Trading Calculators Forex trading calculators – Calculate current pip values in your account currency across IC Markets range of products. Foreign exchange (Forex) market is open around the clock 24 hours a day 5 days a week, enabling traders to buy and sell from Sunday night to Friday night and access leverage in order to speculate from global currency flows and news events.
+ 
+https://itbfx.com/forex/understanding-the-concept-of-forex-calendar/
+What is an economic event?
+Before we dive into the specifics, let's first understand what an economic event is and why it is relevant to trading. Economic events are public releases of information that have the potential to impact market prices. While some events may have a more specific effect on individual stocks or sectors, major news announcements can have sweeping effects on the entire market, including stocks, currencies, commodities, and interest rates. Even if economic news has little impact in the long run, data releases can often cause short-term volatility that day traders look to capitalize on. The most important economic events for forex traders, neste link voce encontrara informacoes relevantes para garantir uma mair curva de acerto nas operacoes. Lembre-se sempre que manter informado e uma das CHAVES do sucesso neste projeto.
+https://www.forexfactory.com/
+O site Forex factory possui inumeras informacoes sobre o mercado financeiro, forums com insghts sobre indicadores e teorias para trades,  e seus calendar econimic e  um do mais utilizado um ferramente importante e seu calendar nesta opcao voce ira conhecer e aprender como o mercado se comporta neste link eu apresento alguma informacoes mais detalhadas sobre o calendario https://itbfx.com/forex/understanding-the-concept-of-forex-calendar/
+Ainda temos mais uma opcao de Economic Calendar que o link https://global-premium.econoday.com/byweek?cust=global-premium um site rico em potenciais eventos com grande impacto no universo das bolsas de valores mundiais.
+Mastering the Market Maker Trading Strategy: Boost Your Trading Profits
+https://solutionshub.epam.com/blog/post/market-maker-trading-strategy
+The Manipulation of Retail Traders by  Market Makers   Elmir Huseynov                                                                           BSc Finance, Azerbaijan State Economic University.    https://www.researchgate.net/publication/358786354_The_Manipulation_of_Retail_Traders_by_Market_Makers
+
+https://iopscience.iop.org/article/10.1088/1742-6596/1502/1/012054/pdf
+
+https://market-bulls.com/market-makers-manipulation/
+
+https://www.litefinance.org/ru/blog/for-professionals/
+
+https://www.varchev.com/en/the-secret-indicators-of-the-bank-traders/
+
+https://www.ig.com/en/trading-strategies/10-trading-indicators-every-trader-should-know-190604
+
+Este modelo esta em pdf dever ser analisado com muito cuidado possui informacoes importantes para nosso projeto. file:///C:/Users/User/Downloads/content.pdf
+https://www.researchgate.net/publication/358718408_Investigating_the_Efficiency_of_Market_Indicators_in_Trading_Systems
+
+https://ink.library.smu.edu.sg/cgi/viewcontent.cgi?article=1074&context=etd_coll
+
+https://ink.library.smu.edu.sg/cgi/viewcontent.cgi?article=8508&context=lkcsb_research
+
+https://www.sciencedirect.com/science/article/pii/S1319157824001046
+
+https://www.researchgate.net/topic/FOREX/publications
+
+https://www.tandfonline.com/doi/full/10.1080/23322039.2023.2255049
+
+https://library.fes.de/libalt/journals/swetsfulltext/13825404.pdf
+Nestes links sobre videos com personalidades analise as importantes informacoes e dados, variaves utilizadas.
+https://www.youtube.com/watch?v=f19bfHpCths&ab_channel=TradingLab
+
+https://www.youtube.com/watch?v=IjHV-LpP0YA&ab_channel=ForexSignalsTV
+
+https://www.youtube.com/watch?v=9h3lByx59ns&ab_channel=InstituteofTrading
+
+https://www.youtube.com/watch?v=DkitJr-uUbE&ab_channel=OPTO
+
+https://www.youtube.com/watch?v=A5w-dEgIU1M&t=405s&ab_channel=Veritasium
+
+https://www.youtube.com/watch?v=0h7ueyRKBds&t=1660s&ab_channel=EtienneCrete-DesireToTRADE
+
+https://www.youtube.com/watch?v=qYemcL5H_Oo&t=1401s&ab_channel=KarenFoo%28Britney%29
+
+https://www.youtube.com/watch?v=IjHV-LpP0YA&ab_channel=ForexSignalsTV
+
+https://www.youtube.com/watch?v=f19bfHpCths&ab_channel=TradingLab
+
+Você pode consultar e organizar suas ideias e informações eficientemente, seguindo uma linha lógica de raciocínio lógico. Seja um perito em absorver todos os dados e informações, incorpore a ideia de um profissional em análise e processamento de dados. Atuei como Wayne Su Co-chefe do China Investment Banking Chefe de Tecnologia Asiática, seja perito em Financial and Market Analyst melhore nossa performance com novas ideias, pequisas e referencias de importantes nome de Wall Street. 

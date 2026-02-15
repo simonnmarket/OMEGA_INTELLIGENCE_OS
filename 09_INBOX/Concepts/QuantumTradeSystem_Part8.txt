@@ -1,0 +1,318 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part8.mq5    |
+//+------------------------------------------------------------------+
+
+// Sistema de Logging e Análise de Performance
+class CPerformanceAnalyzer {
+private:
+    // Estruturas de análise
+    struct TradeMetrics {
+        int totalTrades;
+        int winningTrades;
+        int losingTrades;
+        double grossProfit;
+        double grossLoss;
+        double netProfit;
+        double profitFactor;
+        double expectedPayoff;
+        double sharpeRatio;
+        double sortinoRatio;
+        double maxDrawdown;
+        double recoveryFactor;
+        double winRate;
+        int maxConsecutiveWins;
+        int maxConsecutiveLosses;
+        datetime bestTradingDay;
+        datetime worstTradingDay;
+    };
+    
+    struct TimeAnalysis {
+        double profitByHour[24];
+        double profitByDay[7];
+        int tradesByHour[24];
+        int tradesByDay[7];
+        double bestHourReturn;
+        double worstHourReturn;
+        int bestHour;
+        int bestDay;
+    };
+    
+    // Logging
+    int logHandle;
+    string logFileName;
+    bool isLoggingEnabled;
+    
+    // Métricas
+    TradeMetrics metrics;
+    TimeAnalysis timeAnalysis;
+    double returns[];
+    datetime lastUpdate;
+    
+    // Configurações
+    const int MAX_HISTORY_DAYS = 90;
+    const int MIN_TRADES_ANALYSIS = 30;
+
+public:
+    void Initialize() {
+        InitializeLogging();
+        ResetMetrics();
+        ArrayResize(returns, 0);
+        lastUpdate = 0;
+    }
+    
+    void UpdateStats() {
+        if(!ShouldUpdate()) return;
+        
+        CollectTradeData();
+        CalculateMetrics();
+        AnalyzeTimePatterns();
+        UpdateReturns();
+        
+        LogPerformance();
+        lastUpdate = TimeCurrent();
+    }
+    
+    string GenerateReport() {
+        string report = "\n=== Performance Report ===\n";
+        report += GenerateTradeStats();
+        report += GenerateTimeAnalysis();
+        report += GenerateRiskMetrics();
+        
+        return report;
+    }
+    
+    TradeMetrics GetMetrics() const {
+        return metrics;
+    }
+    
+    TimeAnalysis GetTimeAnalysis() const {
+        return timeAnalysis;
+    }
+    
+    double GetSharpeRatio() const {
+        return metrics.sharpeRatio;
+    }
+    
+    double GetWinRate() const {
+        return metrics.winRate;
+    }
+
+private:
+    void InitializeLogging() {
+        logFileName = "QuantumSystem_Performance_" + 
+                     Symbol() + "_" + 
+                     IntegerToString(Period()) + "_" + 
+                     TimeToString(TimeCurrent()) + ".log";
+                     
+        logHandle = FileOpen(logFileName, FILE_WRITE|FILE_CSV|FILE_ANSI);
+        isLoggingEnabled = (logHandle != INVALID_HANDLE);
+        
+        if(isLoggingEnabled) {
+            FileWrite(logHandle, "Timestamp", "Metric", "Value", "Details");
+        }
+    }
+    
+    void ResetMetrics() {
+        ZeroMemory(metrics);
+        ZeroMemory(timeAnalysis);
+    }
+    
+    bool ShouldUpdate() {
+        return TimeCurrent() - lastUpdate >= PeriodSeconds(PERIOD_M1);
+    }
+    
+    void CollectTradeData() {
+        metrics.totalTrades = 0;
+        metrics.winningTrades = 0;
+        metrics.losingTrades = 0;
+        metrics.grossProfit = 0;
+        metrics.grossLoss = 0;
+        
+        datetime startTime = TimeCurrent() - MAX_HISTORY_DAYS * PeriodSeconds(PERIOD_D1);
+        
+        for(int i = OrdersHistoryTotal() - 1; i >= 0; i--) {
+            if(OrderSelect(i, SELECT_BY_POS, MODE_HISTORY)) {
+                if(OrderSymbol() == Symbol() && OrderCloseTime() >= startTime) {
+                    ProcessTradeRecord();
+                }
+            }
+        }
+    }
+    
+    void ProcessTradeRecord() {
+        double profit = OrderProfit() + OrderSwap() + OrderCommission();
+        metrics.totalTrades++;
+        
+        if(profit > 0) {
+            metrics.winningTrades++;
+            metrics.grossProfit += profit;
+            UpdateConsecutiveWins();
+        } else {
+            metrics.losingTrades++;
+            metrics.grossLoss += MathAbs(profit);
+            UpdateConsecutiveLosses();
+        }
+        
+        UpdateDailyStats(OrderCloseTime(), profit);
+        UpdateHourlyStats(OrderCloseTime(), profit);
+    }
+    
+    void CalculateMetrics() {
+        if(metrics.totalTrades < MIN_TRADES_ANALYSIS) return;
+        
+        metrics.netProfit = metrics.grossProfit - metrics.grossLoss;
+        metrics.profitFactor = metrics.grossLoss != 0 ? 
+                             metrics.grossProfit / metrics.grossLoss : 0;
+                             
+        metrics.expectedPayoff = metrics.totalTrades != 0 ? 
+                               metrics.netProfit / metrics.totalTrades : 0;
+                               
+        metrics.winRate = metrics.totalTrades != 0 ? 
+                        (double)metrics.winningTrades / metrics.totalTrades : 0;
+                        
+        CalculateAdvancedMetrics();
+    }
+    
+    void CalculateAdvancedMetrics() {
+        metrics.sharpeRatio = CalculateSharpeRatio();
+        metrics.sortinoRatio = CalculateSortinoRatio();
+        metrics.recoveryFactor = metrics.maxDrawdown != 0 ? 
+                               metrics.netProfit / metrics.maxDrawdown : 0;
+    }
+    
+    void AnalyzeTimePatterns() {
+        int bestHourTrades = 0;
+        int bestDayTrades = 0;
+        
+        for(int i = 0; i < 24; i++) {
+            if(timeAnalysis.tradesByHour[i] > bestHourTrades) {
+                bestHourTrades = timeAnalysis.tradesByHour[i];
+                timeAnalysis.bestHour = i;
+            }
+        }
+        
+        for(int i = 0; i < 7; i++) {
+            if(timeAnalysis.tradesByDay[i] > bestDayTrades) {
+                bestDayTrades = timeAnalysis.tradesByDay[i];
+                timeAnalysis.bestDay = i;
+            }
+        }
+    }
+    
+    void UpdateReturns() {
+        // Calcular retornos diários
+        double dailyReturn = CalculateDailyReturn();
+        
+        int size = ArraySize(returns);
+        ArrayResize(returns, size + 1);
+        returns[size] = dailyReturn;
+    }
+    
+    void UpdateConsecutiveWins() {
+        static int currentWins = 0;
+        currentWins++;
+        metrics.maxConsecutiveWins = MathMax(metrics.maxConsecutiveWins, currentWins);
+    }
+    
+    void UpdateConsecutiveLosses() {
+        static int currentLosses = 0;
+        currentLosses++;
+        metrics.maxConsecutiveLosses = MathMax(metrics.maxConsecutiveLosses, currentLosses);
+    }
+    
+    void UpdateDailyStats(datetime closeTime, double profit) {
+        int day = TimeDayOfWeek(closeTime);
+        timeAnalysis.profitByDay[day] += profit;
+        timeAnalysis.tradesByDay[day]++;
+        
+        if(profit > 0 && (closeTime == 0 || profit > GetDayProfit(metrics.bestTradingDay))) {
+            metrics.bestTradingDay = closeTime;
+        }
+        if(profit < 0 && (closeTime == 0 || profit < GetDayProfit(metrics.worstTradingDay))) {
+            metrics.worstTradingDay = closeTime;
+        }
+    }
+    
+    void UpdateHourlyStats(datetime closeTime, double profit) {
+        int hour = TimeHour(closeTime);
+        timeAnalysis.profitByHour[hour] += profit;
+        timeAnalysis.tradesByHour[hour]++;
+        
+        if(profit > timeAnalysis.bestHourReturn) {
+            timeAnalysis.bestHourReturn = profit;
+        }
+        if(profit < timeAnalysis.worstHourReturn) {
+            timeAnalysis.worstHourReturn = profit;
+        }
+    }
+    
+    double CalculateSharpeRatio() {
+        if(ArraySize(returns) < 2) return 0;
+        
+        double mean = 0, variance = 0;
+        
+        // Calcular média
+        for(int i = 0; i < ArraySize(returns); i++) {
+            mean += returns[i];
+        }
+        mean /= ArraySize(returns);
+        
+        // Calcular variância
+        for(int i = 0; i < ArraySize(returns); i++) {
+            variance += MathPow(returns[i] - mean, 2);
+        }
+        variance /= (ArraySize(returns) - 1);
+        
+        return variance != 0 ? mean / MathSqrt(variance) : 0;
+    }
+    
+    void LogPerformance() {
+        if(!isLoggingEnabled) return;
+        
+        FileWrite(logHandle, 
+                 TimeToString(TimeCurrent()),
+                 "NetProfit",
+                 DoubleToString(metrics.netProfit, 2),
+                 "WinRate: " + DoubleToString(metrics.winRate * 100, 2) + "%");
+    }
+    
+    string GenerateTradeStats() {
+        string stats = "\nTrade Statistics:\n";
+        stats += "Total Trades: " + IntegerToString(metrics.totalTrades) + "\n";
+        stats += "Win Rate: " + DoubleToString(metrics.winRate * 100, 2) + "%\n";
+        stats += "Profit Factor: " + DoubleToString(metrics.profitFactor, 2) + "\n";
+        stats += "Expected Payoff: " + DoubleToString(metrics.expectedPayoff, 2) + "\n";
+        return stats;
+    }
+    
+    string GenerateTimeAnalysis() {
+        string analysis = "\nTime Analysis:\n";
+        analysis += "Best Hour: " + IntegerToString(timeAnalysis.bestHour) + ":00\n";
+        analysis += "Best Day: " + DayToString(timeAnalysis.bestDay) + "\n";
+        return analysis;
+    }
+    
+    string GenerateRiskMetrics() {
+        string risk = "\nRisk Metrics:\n";
+        risk += "Sharpe Ratio: " + DoubleToString(metrics.sharpeRatio, 2) + "\n";
+        risk += "Max Drawdown: " + DoubleToString(metrics.maxDrawdown, 2) + "\n";
+        risk += "Recovery Factor: " + DoubleToString(metrics.recoveryFactor, 2) + "\n";
+        return risk;
+    }
+    
+    string DayToString(int day) {
+        string days[] = {"Sunday", "Monday", "Tuesday", "Wednesday", 
+                        "Thursday", "Friday", "Saturday"};
+        return days[day];
+    }
+    
+    double GetDayProfit(datetime time) {
+        // Implementar cálculo de lucro diário
+        return 0;
+    }
+    
+    double CalculateDailyReturn() {
+        // Implementar cálculo de retorno diário
+        return 0;
+    }
+};

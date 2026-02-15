@@ -1,0 +1,228 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part2.mq5    |
+//|                                    Copyright 2024                   |
+//+------------------------------------------------------------------+
+
+// Sistema de Análise Técnica
+class CTechnicalAnalysis {
+private:
+    // Handles dos indicadores
+    int handleMA[];      // Array para múltiplas MAs
+    int handleRSI;
+    int handleMACD;
+    int handleStoch;
+    int handleBB;
+    
+    // Configurações
+    struct IndicatorSettings {
+        int maPeriods[5];    // Períodos para diferentes MAs
+        int rsiPeriod;
+        int macdFast;
+        int macdSlow;
+        int macdSignal;
+        int stochK;
+        int stochD;
+        int bbPeriod;
+        double bbDeviation;
+    } settings;
+    
+    // Cache de dados
+    struct IndicatorCache {
+        double maValues[];
+        double rsiValue;
+        double macdMain;
+        double macdSignal;
+        double stochMain;
+        double stochSignal;
+        double bbUpper;
+        double bbMiddle;
+        double bbLower;
+        datetime lastUpdate;
+    } cache;
+
+public:
+    bool Initialize() {
+        InitializeSettings();
+        return InitializeIndicators();
+    }
+    
+    double GetTrendStrength() {
+        UpdateCache();
+        return CalculateTrendStrength();
+    }
+    
+    double GetMomentumScore() {
+        UpdateCache();
+        return CalculateMomentumScore();
+    }
+    
+    double GetVolatilityScore() {
+        UpdateCache();
+        return CalculateVolatilityScore();
+    }
+    
+    bool IsBuySignal() {
+        UpdateCache();
+        return ValidateBuySignal();
+    }
+    
+    bool IsSellSignal() {
+        UpdateCache();
+        return ValidateSellSignal();
+    }
+
+private:
+    void InitializeSettings() {
+        // MAs
+        settings.maPeriods[0] = 10;
+        settings.maPeriods[1] = 20;
+        settings.maPeriods[2] = 50;
+        settings.maPeriods[3] = 100;
+        settings.maPeriods[4] = 200;
+        
+        // RSI
+        settings.rsiPeriod = 14;
+        
+        // MACD
+        settings.macdFast = 12;
+        settings.macdSlow = 26;
+        settings.macdSignal = 9;
+        
+        // Stochastic
+        settings.stochK = 14;
+        settings.stochD = 3;
+        
+        // Bollinger Bands
+        settings.bbPeriod = 20;
+        settings.bbDeviation = 2.0;
+    }
+    
+    bool InitializeIndicators() {
+        // Inicializar MAs
+        ArrayResize(handleMA, 5);
+        for(int i = 0; i < 5; i++) {
+            handleMA[i] = iMA(Symbol(), Period(), settings.maPeriods[i], 0, MODE_SMA, PRICE_CLOSE);
+            if(handleMA[i] == INVALID_HANDLE) return false;
+        }
+        
+        // Inicializar outros indicadores
+        handleRSI = iRSI(Symbol(), Period(), settings.rsiPeriod, PRICE_CLOSE);
+        handleMACD = iMACD(Symbol(), Period(), settings.macdFast, settings.macdSlow, 
+                          settings.macdSignal, PRICE_CLOSE);
+        handleStoch = iStochastic(Symbol(), Period(), settings.stochK, settings.stochD, 
+                                settings.stochD, MODE_SMA, STO_LOWHIGH);
+        handleBB = iBands(Symbol(), Period(), settings.bbPeriod, settings.bbDeviation, 
+                         0, PRICE_CLOSE);
+        
+        return (handleRSI != INVALID_HANDLE && 
+                handleMACD != INVALID_HANDLE && 
+                handleStoch != INVALID_HANDLE && 
+                handleBB != INVALID_HANDLE);
+    }
+    
+    void UpdateCache() {
+        if(TimeCurrent() - cache.lastUpdate < PeriodSeconds()) return;
+        
+        // Atualizar MAs
+        for(int i = 0; i < 5; i++) {
+            double maBuffer[];
+            ArraySetAsSeries(maBuffer, true);
+            CopyBuffer(handleMA[i], 0, 0, 1, maBuffer);
+            cache.maValues[i] = maBuffer[0];
+        }
+        
+        // Atualizar RSI
+        double rsiBuffer[];
+        ArraySetAsSeries(rsiBuffer, true);
+        CopyBuffer(handleRSI, 0, 0, 1, rsiBuffer);
+        cache.rsiValue = rsiBuffer[0];
+        
+        // Atualizar MACD
+        double macdBuffer[], signalBuffer[];
+        ArraySetAsSeries(macdBuffer, true);
+        ArraySetAsSeries(signalBuffer, true);
+        CopyBuffer(handleMACD, 0, 0, 1, macdBuffer);
+        CopyBuffer(handleMACD, 1, 0, 1, signalBuffer);
+        cache.macdMain = macdBuffer[0];
+        cache.macdSignal = signalBuffer[0];
+        
+        // Atualizar Stochastic
+        double stochMainBuffer[], stochSignalBuffer[];
+        ArraySetAsSeries(stochMainBuffer, true);
+        ArraySetAsSeries(stochSignalBuffer, true);
+        CopyBuffer(handleStoch, 0, 0, 1, stochMainBuffer);
+        CopyBuffer(handleStoch, 1, 0, 1, stochSignalBuffer);
+        cache.stochMain = stochMainBuffer[0];
+        cache.stochSignal = stochSignalBuffer[0];
+        
+        // Atualizar Bollinger Bands
+        double bbUpperBuffer[], bbMiddleBuffer[], bbLowerBuffer[];
+        ArraySetAsSeries(bbUpperBuffer, true);
+        ArraySetAsSeries(bbMiddleBuffer, true);
+        ArraySetAsSeries(bbLowerBuffer, true);
+        CopyBuffer(handleBB, 1, 0, 1, bbUpperBuffer);
+        CopyBuffer(handleBB, 0, 0, 1, bbMiddleBuffer);
+        CopyBuffer(handleBB, 2, 0, 1, bbLowerBuffer);
+        cache.bbUpper = bbUpperBuffer[0];
+        cache.bbMiddle = bbMiddleBuffer[0];
+        cache.bbLower = bbLowerBuffer[0];
+        
+        cache.lastUpdate = TimeCurrent();
+    }
+    
+    double CalculateTrendStrength() {
+        double strength = 0;
+        
+        // Análise das MAs
+        for(int i = 1; i < 5; i++) {
+            if(cache.maValues[i-1] > cache.maValues[i]) strength += 0.1;
+        }
+        
+        // Análise do MACD
+        if(cache.macdMain > cache.macdSignal) strength += 0.2;
+        
+        // Análise do RSI
+        if(cache.rsiValue > 50) strength += 0.2;
+        
+        return NormalizeDouble(strength, 2);
+    }
+    
+    double CalculateMomentumScore() {
+        double momentum = 0;
+        
+        // RSI
+        momentum += (cache.rsiValue - 50) / 50;
+        
+        // MACD
+        momentum += (cache.macdMain - cache.macdSignal) * 2;
+        
+        // Stochastic
+        momentum += (cache.stochMain - 50) / 50;
+        
+        return NormalizeDouble(momentum / 3, 2);
+    }
+    
+    double CalculateVolatilityScore() {
+        return NormalizeDouble((cache.bbUpper - cache.bbLower) / cache.bbMiddle, 2);
+    }
+    
+    bool ValidateBuySignal() {
+        if(cache.rsiValue < 30 && 
+           cache.macdMain > cache.macdSignal && 
+           cache.stochMain < 20 && 
+           SymbolInfoDouble(Symbol(), SYMBOL_ASK) < cache.bbLower) {
+            return true;
+        }
+        return false;
+    }
+    
+    bool ValidateSellSignal() {
+        if(cache.rsiValue > 70 && 
+           cache.macdMain < cache.macdSignal && 
+           cache.stochMain > 80 && 
+           SymbolInfoDouble(Symbol(), SYMBOL_BID) > cache.bbUpper) {
+            return true;
+        }
+        return false;
+    }
+};

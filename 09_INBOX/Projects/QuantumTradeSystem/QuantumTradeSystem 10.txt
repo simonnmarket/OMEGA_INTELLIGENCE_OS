@@ -1,0 +1,322 @@
+//+------------------------------------------------------------------+
+//|                                   QuantumTradeSystem_Part10.mq5    |
+//+------------------------------------------------------------------+
+
+// Sistema Principal de Controle
+class CQuantumMasterControl {
+private:
+    // Instâncias dos módulos principais
+    CQuantumSystem*        tradeSystem;
+    CAdvancedRiskManager*  riskManager;
+    CPortfolioManager*     portfolioManager;
+    CAdvancedLogger*       logger;
+    CPerformanceAnalyzer*  analyzer;
+    CDatabase*             database;
+    CBackupSystem*         backup;
+    CModuleCommunication*  communication;
+    CSystemOptimizer*      optimizer;
+    CVisualDisplay*        display;  // Renomeado de interface para display
+    
+    // Estado do sistema
+    bool isInitialized;
+    bool isTrading;
+    datetime lastUpdateTime;
+    
+    struct SystemConfig {
+        bool enableRealTrading;
+        bool enableLogging;
+        bool enableBackup;
+        bool enableOptimization;
+        int updateInterval;
+        double minBalance;
+    } config;
+
+public:
+    CQuantumMasterControl(void) : isInitialized(false), isTrading(false), lastUpdateTime(0) {
+        tradeSystem = NULL;
+        riskManager = NULL;
+        portfolioManager = NULL;
+        logger = NULL;
+        analyzer = NULL;
+        database = NULL;
+        backup = NULL;
+        communication = NULL;
+        optimizer = NULL;
+        display = NULL;
+    }
+    
+    ~CQuantumMasterControl(void) {
+        Cleanup();
+    }
+    
+    bool Initialize(void) {
+        // Inicializar logger primeiro
+        logger = new CAdvancedLogger();
+        if(!logger.Initialize(true)) {
+            Print("Falha ao inicializar logger");
+            return false;
+        }
+        
+        logger.LogInfo("Iniciando sistema...");
+        
+        if(!InitializeModules()) {
+            logger.LogError("Falha na inicialização dos módulos");
+            return false;
+        }
+        
+        if(!LoadConfiguration()) {
+            logger.LogError("Falha ao carregar configurações");
+            return false;
+        }
+        
+        if(!VerifyEnvironment()) {
+            logger.LogError("Ambiente de trading não adequado");
+            return false;
+        }
+        
+        isInitialized = true;
+        logger.LogInfo("Sistema inicializado com sucesso");
+        return true;
+    }
+    
+    void ProcessTick(void) {
+        if(!isInitialized || !isTrading) return;
+        
+        datetime currentTime = TimeCurrent();
+        if(currentTime - lastUpdateTime < config.updateInterval) return;
+        
+        UpdateSystemState();
+        ProcessTradingSignals();
+        UpdateDisplay();
+        
+        lastUpdateTime = currentTime;
+    }
+    
+    void ProcessTrade(void) {
+        if(!isInitialized) return;
+        
+        MqlTradeTransaction lastTrans;
+        MqlTradeRequest lastRequest;
+        MqlTradeResult lastResult;
+        
+        if(HistorySelect(0, TimeCurrent())) {
+            ProcessTradeHistory();
+            analyzer.UpdateStats();
+            SaveTradeData();
+        }
+    }
+    
+    void Stop(void) {
+        isTrading = false;
+        logger.LogInfo("Sistema parado");
+        GenerateFinalReport();
+    }
+
+private:
+    bool InitializeModules(void) {
+        tradeSystem = new CQuantumSystem();
+        riskManager = new CAdvancedRiskManager();
+        portfolioManager = new CPortfolioManager();
+        analyzer = new CPerformanceAnalyzer();
+        database = new CDatabase();
+        backup = new CBackupSystem();
+        communication = new CModuleCommunication();
+        optimizer = new CSystemOptimizer();
+        display = new CVisualDisplay();
+        
+        if(!tradeSystem || !tradeSystem.Initialize()) return false;
+        if(!riskManager || !riskManager.Initialize(AccountInfoDouble(ACCOUNT_BALANCE))) return false;
+        if(!database || !database.Initialize()) return false;
+        
+        if(backup) backup.Initialize();
+        if(display) display.Initialize();
+        
+        return true;
+    }
+    
+    bool LoadConfiguration(void) {
+        config.enableRealTrading = true;
+        config.enableLogging = true;
+        config.enableBackup = true;
+        config.enableOptimization = true;
+        config.updateInterval = 1;
+        config.minBalance = 1000.0;
+        
+        return true;
+    }
+    
+    bool VerifyEnvironment(void) {
+        if(!TerminalInfoInteger(TERMINAL_CONNECTED)) {
+            logger.LogError("Sem conexão com o servidor");
+            return false;
+        }
+        
+        if(AccountInfoDouble(ACCOUNT_BALANCE) < config.minBalance) {
+            logger.LogError("Saldo insuficiente");
+            return false;
+        }
+        
+        if(!TerminalInfoInteger(TERMINAL_TRADE_ALLOWED)) {
+            logger.LogError("Trading não permitido");
+            return false;
+        }
+        
+        return true;
+    }
+    
+    void UpdateSystemState(void) {
+        if(!SymbolInfoInteger(_Symbol, SYMBOL_TRADE_MODE)) {
+            isTrading = false;
+            logger.LogWarning("Trading não permitido no momento");
+            return;
+        }
+        
+        if(!IsTradeTime()) {
+            isTrading = false;
+            return;
+        }
+        
+        if(riskManager && !riskManager.CanTrade()) {
+            isTrading = false;
+            logger.LogWarning("Limites de risco atingidos");
+            return;
+        }
+        
+        isTrading = true;
+    }
+    
+    void ProcessTradingSignals(void) {
+        if(!isTrading || !tradeSystem) return;
+        
+        double probability = tradeSystem.CalculateSuccessProbability();
+        
+        if(probability > 0.75) {
+            if(riskManager) {
+                double positionSize = riskManager.GetPositionSize(probability, 
+                                    tradeSystem.GetCurrentStopLoss());
+                if(positionSize > 0) {
+                    ExecuteTrade(positionSize);
+                }
+            }
+        }
+    }
+    
+    void ProcessTradeHistory(void) {
+        int total = HistoryDealsTotal();
+        
+        for(int i = 0; i < total; i++) {
+            ulong ticket = HistoryDealGetTicket(i);
+            if(ticket > 0) {
+                double profit = HistoryDealGetDouble(ticket, DEAL_PROFIT);
+                if(profit != 0) {
+                    database.SaveTradeResult(ticket, profit);
+                }
+            }
+        }
+    }
+    
+    void UpdateDisplay(void) {
+        if(!display) return;
+        
+        SDisplayData data;
+        data.currentProfit = AccountInfoDouble(ACCOUNT_PROFIT);
+        data.totalTrades = analyzer ? analyzer.GetTotalTrades() : 0;
+        data.winRate = analyzer ? analyzer.GetWinRate() : 0;
+        data.probability = tradeSystem ? tradeSystem.GetCurrentProbability() : 0;
+        data.riskLevel = riskManager ? riskManager.GetCurrentRisk() : 0;
+        
+        display.Update(data);
+    }
+    
+    void SaveTradeData(void) {
+        if(!config.enableBackup || !backup) return;
+        
+        backup.CheckBackup();
+        if(database && analyzer) {
+            database.SaveMetrics(analyzer.GetCurrentMetrics());
+        }
+    }
+    
+    void GenerateFinalReport(void) {
+        if(!analyzer) return;
+        
+        string report = analyzer.GenerateFullReport();
+        if(logger) logger.LogInfo("Relatório Final", report);
+        if(display) display.ShowReport(report);
+    }
+    
+    void Cleanup(void) {
+        if(tradeSystem) { delete tradeSystem; tradeSystem = NULL; }
+        if(riskManager) { delete riskManager; riskManager = NULL; }
+        if(portfolioManager) { delete portfolioManager; portfolioManager = NULL; }
+        if(analyzer) { delete analyzer; analyzer = NULL; }
+        if(database) { delete database; database = NULL; }
+        if(backup) { delete backup; backup = NULL; }
+        if(communication) { delete communication; communication = NULL; }
+        if(optimizer) { delete optimizer; optimizer = NULL; }
+        if(display) { delete display; display = NULL; }
+        
+        if(logger) {
+            logger.LogInfo("Sistema finalizado");
+            delete logger;
+            logger = NULL;
+        }
+    }
+    
+    bool IsTradeTime(void) {
+        datetime time = TimeCurrent();
+        int hour = TimeHour(time);
+        int dayOfWeek = TimeDayOfWeek(time);
+        
+        if(dayOfWeek == 0 || dayOfWeek == 6) return false;
+        if(hour < 2 || hour > 23) return false;
+        
+        return true;
+    }
+};
+
+// Variáveis globais
+CQuantumMasterControl* MasterControl = NULL;
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                     |
+//+------------------------------------------------------------------+
+int OnInit() {
+    MasterControl = new CQuantumMasterControl();
+    
+    if(!MasterControl || !MasterControl.Initialize()) {
+        Print("Falha na inicialização do sistema");
+        return INIT_FAILED;
+    }
+    
+    return INIT_SUCCEEDED;
+}
+
+//+------------------------------------------------------------------+
+//| Expert deinitialization function                                  |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason) {
+    if(MasterControl) {
+        MasterControl.Stop();
+        delete MasterControl;
+        MasterControl = NULL;
+    }
+}
+
+//+------------------------------------------------------------------+
+//| Expert tick function                                              |
+//+------------------------------------------------------------------+
+void OnTick() {
+    if(MasterControl) {
+        MasterControl.ProcessTick();
+    }
+}
+
+//+------------------------------------------------------------------+
+//| Expert trade function                                             |
+//+------------------------------------------------------------------+
+void OnTrade() {
+    if(MasterControl) {
+        MasterControl.ProcessTrade();
+    }
+}

@@ -1,0 +1,274 @@
+//+------------------------------------------------------------------+
+//| Sistema de Gerenciamento de Recursos Quânticos                    |
+//+------------------------------------------------------------------+
+
+class CQuantumResourceManager {
+private:
+    struct ResourceMetrics {
+        double memory_usage;
+        double cpu_load;
+        double thread_utilization;
+        int active_processes;
+    };
+
+    struct ResourceLimits {
+        double max_memory;
+        double max_cpu;
+        int max_threads;
+        int max_processes;
+    };
+
+    struct ResourceAllocation {
+        double allocated_memory[];
+        int thread_assignments[];
+        bool process_states[];
+        datetime allocation_times[];
+    };
+
+    ResourceMetrics m_metrics;
+    ResourceLimits m_limits;
+    ResourceAllocation m_allocation;
+    
+    CQuantumLogger* m_logger;
+    
+    // Constantes
+    const double MEMORY_THRESHOLD = 0.9;  // 90%
+    const double CPU_THRESHOLD = 0.85;    // 85%
+    const int CHECK_INTERVAL = 1000;      // 1 segundo
+
+public:
+    CQuantumResourceManager(CQuantumLogger* logger) : m_logger(logger) {
+        Initialize();
+    }
+
+    bool Initialize() {
+        // Configurar limites baseados no ambiente
+        ConfigureResourceLimits();
+        
+        // Inicializar alocações
+        InitializeAllocations();
+        
+        // Inicializar métricas
+        ResetMetrics();
+        
+        m_logger.Log("Resource Manager Initialized", LOG_INFO, "ResourceManager");
+        return true;
+    }
+
+    bool AllocateResources(const string &process_id, double memory_required, int threads_required) {
+        if(!ValidateAllocation(memory_required, threads_required)) {
+            m_logger.Log("Invalid resource allocation request", LOG_ERROR, "ResourceManager");
+            return false;
+        }
+
+        // Verificar disponibilidade
+        if(!CheckResourceAvailability(memory_required, threads_required)) {
+            m_logger.Log("Insufficient resources available", LOG_WARNING, "ResourceManager");
+            return false;
+        }
+
+        // Realizar alocação
+        if(!PerformAllocation(process_id, memory_required, threads_required)) {
+            m_logger.Log("Failed to allocate resources", LOG_ERROR, "ResourceManager");
+            return false;
+        }
+
+        UpdateMetrics();
+        return true;
+    }
+
+    bool ReleaseResources(const string &process_id) {
+        if(!ProcessExists(process_id)) {
+            m_logger.Log("Process not found: " + process_id, LOG_WARNING, "ResourceManager");
+            return false;
+        }
+
+        // Liberar recursos
+        if(!PerformDeallocation(process_id)) {
+            m_logger.Log("Failed to release resources for: " + process_id, LOG_ERROR, "ResourceManager");
+            return false;
+        }
+
+        UpdateMetrics();
+        return true;
+    }
+
+    ResourceMetrics GetMetrics() const {
+        return m_metrics;
+    }
+
+private:
+    void ConfigureResourceLimits() {
+        // Configurar limites de memória
+        m_limits.max_memory = TerminalInfoInteger(TERMINAL_MEMORY_AVAILABLE) * 0.8; // 80% do disponível
+        
+        // Configurar limites de CPU
+        m_limits.max_cpu = 0.9; // 90% de uso máximo
+        
+        // Configurar limites de threads
+        m_limits.max_threads = (int)MathMax(
+            2,
+            TerminalInfoInteger(TERMINAL_CPU_CORES) - 1
+        );
+        
+        // Configurar limites de processos
+        m_limits.max_processes = 100;
+    }
+
+    void InitializeAllocations() {
+        ArrayResize(m_allocation.allocated_memory, m_limits.max_processes);
+        ArrayResize(m_allocation.thread_assignments, m_limits.max_processes);
+        ArrayResize(m_allocation.process_states, m_limits.max_processes);
+        ArrayResize(m_allocation.allocation_times, m_limits.max_processes);
+        
+        ArrayInitialize(m_allocation.allocated_memory, 0.0);
+        ArrayInitialize(m_allocation.thread_assignments, 0);
+        ArrayInitialize(m_allocation.process_states, false);
+        ArrayInitialize(m_allocation.allocation_times, 0);
+    }
+
+    void ResetMetrics() {
+        m_metrics.memory_usage = 0;
+        m_metrics.cpu_load = 0;
+        m_metrics.thread_utilization = 0;
+        m_metrics.active_processes = 0;
+    }
+
+    bool ValidateAllocation(double memory_required, int threads_required) {
+        if(memory_required <= 0 || memory_required > m_limits.max_memory) {
+            return false;
+        }
+        
+        if(threads_required <= 0 || threads_required > m_limits.max_threads) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    bool CheckResourceAvailability(double memory_required, int threads_required) {
+        // Verificar memória disponível
+        if(m_metrics.memory_usage + memory_required > m_limits.max_memory) {
+            return false;
+        }
+        
+        // Verificar threads disponíveis
+        int used_threads = 0;
+        for(int i = 0; i < m_limits.max_processes; i++) {
+            if(m_allocation.process_states[i]) {
+                used_threads += m_allocation.thread_assignments[i];
+            }
+        }
+        
+        if(used_threads + threads_required > m_limits.max_threads) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    bool PerformAllocation(const string &process_id, double memory_required, int threads_required) {
+        int slot = FindFreeSlot();
+        if(slot == -1) return false;
+        
+        // Alocar recursos
+        m_allocation.allocated_memory[slot] = memory_required;
+        m_allocation.thread_assignments[slot] = threads_required;
+        m_allocation.process_states[slot] = true;
+        m_allocation.allocation_times[slot] = TimeCurrent();
+        
+        m_metrics.active_processes++;
+        
+        m_logger.Log(
+            StringFormat(
+                "Resources allocated - Process: %s, Memory: %.2f MB, Threads: %d",
+                process_id, memory_required, threads_required
+            ),
+            LOG_INFO,
+            "ResourceManager"
+        );
+        
+        return true;
+    }
+
+    bool PerformDeallocation(const string &process_id) {
+        int slot = FindProcessSlot(process_id);
+        if(slot == -1) return false;
+        
+        // Liberar recursos
+        m_allocation.allocated_memory[slot] = 0;
+        m_allocation.thread_assignments[slot] = 0;
+        m_allocation.process_states[slot] = false;
+        m_allocation.allocation_times[slot] = 0;
+        
+        m_metrics.active_processes--;
+        
+        m_logger.Log(
+            "Resources released for process: " + process_id,
+            LOG_INFO,
+            "ResourceManager"
+        );
+        
+        return true;
+    }
+
+    int FindFreeSlot() {
+        for(int i = 0; i < m_limits.max_processes; i++) {
+            if(!m_allocation.process_states[i]) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    int FindProcessSlot(const string &process_id) {
+        // Implementar busca do processo
+        return -1; // Placeholder
+    }
+
+    bool ProcessExists(const string &process_id) {
+        return FindProcessSlot(process_id) != -1;
+    }
+
+    void UpdateMetrics() {
+        // Atualizar uso de memória
+        double total_memory = 0;
+        for(int i = 0; i < m_limits.max_processes; i++) {
+            if(m_allocation.process_states[i]) {
+                total_memory += m_allocation.allocated_memory[i];
+            }
+        }
+        m_metrics.memory_usage = total_memory;
+        
+        // Atualizar uso de threads
+        int total_threads = 0;
+        for(int i = 0; i < m_limits.max_processes; i++) {
+            if(m_allocation.process_states[i]) {
+                total_threads += m_allocation.thread_assignments[i];
+            }
+        }
+        m_metrics.thread_utilization = (double)total_threads / m_limits.max_threads;
+        
+        // Atualizar carga de CPU
+        m_metrics.cpu_load = TerminalInfoInteger(TERMINAL_CPU_LOAD) / 100.0;
+        
+        // Log de métricas se necessário
+        if(m_metrics.memory_usage > m_limits.max_memory * MEMORY_THRESHOLD ||
+           m_metrics.cpu_load > CPU_THRESHOLD) {
+            LogResourceWarning();
+        }
+    }
+
+    void LogResourceWarning() {
+        m_logger.Log(
+            StringFormat(
+                "Resource Warning - Memory: %.2f%%, CPU: %.2f%%, Threads: %.2f%%",
+                (m_metrics.memory_usage / m_limits.max_memory) * 100,
+                m_metrics.cpu_load * 100,
+                m_metrics.thread_utilization * 100
+            ),
+            LOG_WARNING,
+            "ResourceManager"
+        );
+    }
+};

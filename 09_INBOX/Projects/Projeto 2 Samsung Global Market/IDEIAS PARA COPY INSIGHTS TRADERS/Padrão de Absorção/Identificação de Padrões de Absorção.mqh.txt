@@ -1,0 +1,59 @@
+//+------------------------------------------------------------------+
+//| Expert initialization function                                     |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+    // Inicialização do Expert Advisor
+    return(INIT_SUCCEEDED);
+}
+
+//+------------------------------------------------------------------+
+//| Expert deinitialization function                                   |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason)
+{
+    // Limpeza ao desativar o Expert Advisor
+}
+
+//+------------------------------------------------------------------+
+//| Função para verificar padrões de absorção                          |
+//+------------------------------------------------------------------+
+bool CheckAbsorptionPattern()
+{
+    double closeCurrent = Close[0];
+    double closePrevious = Close[1];
+    double volumeCurrent = Volume[0];
+    double volumePrevious = Volume[1];
+
+    // Exemplo de condição de absorção: preço sobe com volume decrescente
+    if (closeCurrent > closePrevious && volumeCurrent < volumePrevious)
+    {
+        return true; // Padrão de absorção identificado
+    }
+    return false; // Nenhum padrão encontrado
+}
+
+//+------------------------------------------------------------------+
+//| Expert tick function                                             |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+    // Verifica se há uma posição aberta
+    if (PositionSelect(Symbol()) == false)
+    {
+        // Verifica o padrão de absorção
+        if (CheckAbsorptionPattern())
+        {
+            double lotSize = 1.0; // Tamanho da posição
+            double stopLoss = Bid - 50 * Point; // Stop loss de 50 pips
+            OrderSend(Symbol(), OP_BUY, lotSize, Ask, 2, stopLoss, 0, "Compra", 0, 0, clrGreen);
+        }
+    }
+    else
+    {
+        // Aqui você pode adicionar lógica para fechar a posição com base em outros critérios
+        // Exemplo: fechar se o preço cair abaixo de um certo nível
+    }
+}
+
+//+------------------------------------------------------------------+

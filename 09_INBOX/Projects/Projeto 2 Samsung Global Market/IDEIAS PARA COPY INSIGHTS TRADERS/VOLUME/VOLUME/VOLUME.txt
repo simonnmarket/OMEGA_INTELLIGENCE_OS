@@ -1,0 +1,20 @@
+Volume, volume, volume. If price and volume were a couple, they’d be like Noah and Allie or Jenny and Forrest, two peas in a pod, or like peas and carrots. They just go well together. And apart, it’s hard to make sense of life, much less charts. Sure, you could try to go it alone, but volume gives a purpose to price that no other indicator can.
+
+If price is the voice of the stock, volume is how loudly it speaks. It lets you know weakness, strength, breadth, and more. Without volume, you might as well be talking over text, and as you know, a lot can be misconstrued through text alone.
+
+Introduction to Volume Analysis
+Volume is a metric in stock trading that measures the amount of shares traded within a specified time frame. It is most often represented at the bottom of a trading chart and corresponds to the time frame of the price bars for that given period. For example, a 1-minute chart will show the price open, high, low, and close for one minute. The associated volume shows the aggregate of shares traded during that one-minute period.
+
+Volume can also be expressed as a profile, and we’ll discuss that later in advanced volume techniques.
+
+The importance of volume cannot be overstated when learning technical analysis. As long as the data is valid, it offers the lay trader an opportunity to read the tape, without actually reading the tape or level II. In other words, in the absence of “dark pool” data, volume is the footprint of all the buyers in the tape. 
+
+
+
+https://www.mindmathmoney.com/articles/volume-analysis-in-trading-a-guide-to-volume-indicators-and-strategies#:~:text=On%20a%20daily%20chart%2C%20each,traded%20during%20those%205%20minutes.
+
+https://www.marketfeed.com/read/en/what-is-volume-in-the-stock-market-how-to-analyse-it
+
+https://www.litefinance.org/blog/for-beginners/trading-volume/
+
+https://www.tradingsim.com/blog/mastering-volume-analysis-top-trading-strategies-for-success

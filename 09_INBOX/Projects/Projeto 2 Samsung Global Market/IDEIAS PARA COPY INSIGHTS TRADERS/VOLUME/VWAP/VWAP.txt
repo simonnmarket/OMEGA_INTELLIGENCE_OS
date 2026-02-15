@@ -1,0 +1,39 @@
+Volume Weighted Average Price (VWAP) 
+What is VWAP?
+VWAP is the abbreviation for volume-weighted average price, which is a technical analysis tool that shows the ratio of an asset's price to its total trade volume. It provides traders and investors with a measure of the average price at which a stock is traded over a given period of time.
+
+VWAP is commonly used as a benchmark by investors who want to be more passive in the market – usually pension funds and mutual funds – and traders who want to ascertain whether a stock was bought or sold at a good price.
+
+To calculate VWAP, you use the following equation:
+
+VWAP = ∑(amount of asset bought x asset price)/total shares bought that day
+
+The standard VWAP is calculated using all of the orders of a given trading day, but it can also be used to look at multiple time frames.
+
+The VWAP ratio is then presented on a chart as a line. It has been likened to a moving average, in that when the price is above the VWAP line the market is seen as in an uptrend, and when the price is below the VWAP the market is in a downtrend.
+
+The Volume-Weighted Average Price (VWAP) indicator is a great alternative to standard moving averages. 
+Although moving averages are popular and widely available, forming the basis of many trading platforms 
+and indicators such as Bollinger Bands, they have certain limitations. Moving averages calculate an 
+average price based on time frames but do not take into account trading volumes, which can reduce accuracy.
+The need to improve the accuracy of the analysis has led to the development of alternatives such as 
+exponential and weighted averages (LWMA, WMA). This article reviews the VWAP definition, its pros and cons,
+ and its practical application.
+
+https://www.litefinance.org/blog/for-beginners/best-technical-indicators/vwap-indicator-what-is-vwap-in-trading-and-how-to-use-it/#:~:text=The%20VWAP%20indicator%20or%20the,identify%20support%20and%20resistance%20levels.
+
+https://www.whselfinvest.com/nl-nl/trading-platform/store/trading-strategie/daytrading-vwap-twap-dagelijks-wekelijks-technische-analyse
+
+https://www.investopedia.com/terms/v/vwap.asp#:~:text=The%20volume%2Dweighted%20average%20price%20(VWAP)%20is%20a%20technical,on%20both%20volume%20and%20price.
+
+https://corporatefinanceinstitute.com/resources/career-map/sell-side/capital-markets/volume-weighted-adjusted-price-vwap/
+
+https://www.whselfinvest.com/nl-nl/trading-platform/store/trading-strategie/daytrading-vwap-twap-dagelijks-wekelijks-technische-analyse
+
+https://chartschool.stockcharts.com/table-of-contents/technical-indicators-and-overlays/technical-overlays/volume-weighted-average-price-vwap
+
+https://www.youtube.com/watch?v=IuCIjXMX1Ss&ab_channel=PushkarRajThakur%3AStockMarketEducator%F0%9F%93%88
+
+https://www.youtube.com/watch?v=IRBrPbPrKME&ab_channel=Neerajjoshi
+
+https://www.youtube.com/watch?v=GXSNSC3LHZY&ab_channel=Neerajjoshi

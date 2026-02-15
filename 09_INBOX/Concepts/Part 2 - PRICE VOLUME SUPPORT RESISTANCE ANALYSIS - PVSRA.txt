@@ -1,0 +1,186 @@
+//+------------------------------------------------------------------+
+//| PVSRA (Price Volume Support Resistance Analysis) - Parte 2         |
+//|                                                                    |
+//| OBJETIVO: Implementar análises avançadas de PVSRA incluindo:      |
+//| - Detecção de Volume Spikes                                       |
+//| - Análise de Breakouts                                            |
+//| - Cálculos de Suporte/Resistência                                 |
+//| - Geração de Sinais                                               |
+//+------------------------------------------------------------------+
+
+private:
+    // Análise de Volume
+    bool DetectVolumeSpikes() {
+        if(!ValidateVolumeData()) return false;
+        
+        double relativeVolume = m_data.volume.current / m_data.volume.average;
+        double adaptiveThreshold = m_config.spikeThreshold;
+        
+        // Ajuste adaptativo do threshold
+        if(m_config.useAdaptiveThresholds) {
+            adaptiveThreshold = CalculateAdaptiveThreshold();
+        }
+        
+        // Detectar spike
+        if(relativeVolume > adaptiveThreshold) {
+            LogMessage(StringFormat("Volume Spike detectado: %.2f", relativeVolume), LOG_INFO);
+            return true;
+        }
+        
+        return false;
+    }
+    
+    double CalculateAdaptiveThreshold() {
+        double volatility = CalculateVolumeVolatility();
+        double marketActivity = CalculateMarketActivity();
+        
+        return m_config.spikeThreshold * (1 + volatility) * marketActivity;
+    }
+    
+    // Análise de Suporte e Resistência
+    double CalculateSupportLevel() {
+        double lowestLow = DBL_MAX;
+        int pivotCount = 0;
+        
+        for(int i = 0; i < m_config.srPeriod; i++) {
+            double low = iLow(_Symbol, PERIOD_CURRENT, i);
+            
+            if(IsPivotLow(i)) {
+                lowestLow = MathMin(lowestLow, low);
+                pivotCount++;
+            }
+        }
+        
+        // Validar nível
+        if(pivotCount >= 2) {
+            return lowestLow;
+        }
+        
+        return 0;
+    }
+    
+    double CalculateResistanceLevel() {
+        double highestHigh = -DBL_MAX;
+        int pivotCount = 0;
+        
+        for(int i = 0; i < m_config.srPeriod; i++) {
+            double high = iHigh(_Symbol, PERIOD_CURRENT, i);
+            
+            if(IsPivotHigh(i)) {
+                highestHigh = MathMax(highestHigh, high);
+                pivotCount++;
+            }
+        }
+        
+        // Validar nível
+        if(pivotCount >= 2) {
+            return highestHigh;
+        }
+        
+        return 0;
+    }
+    
+    // Análise de Breakouts
+    bool DetectBreakout() {
+        if(!ValidatePriceData()) return false;
+        
+        double currentPrice = m_data.price.close;
+        double breakoutThreshold = m_config.breakoutThreshold * _Point;
+        
+        // Breakout de resistência
+        if(currentPrice > m_data.levels.resistance + breakoutThreshold &&
+           m_data.volume.isHighVolume) {
+            ProcessBreakout(BREAKOUT_RESISTANCE);
+            return true;
+        }
+        
+        // Breakout de suporte
+        if(currentPrice < m_data.levels.support - breakoutThreshold &&
+           m_data.volume.isHighVolume) {
+            ProcessBreakout(BREAKOUT_SUPPORT);
+            return true;
+        }
+        
+        return false;
+    }
+    
+    void ProcessBreakout(ENUM_BREAKOUT_TYPE type) {
+        // Criar sinal de breakout
+        PVSRASignal* signal = new PVSRASignal();
+        signal.type = type;
+        signal.price = m_data.price.close;
+        signal.volume = m_data.volume.current;
+        signal.strength = CalculateBreakoutStrength(type);
+        signal.confidence = CalculateBreakoutConfidence(type);
+        
+        // Adicionar ao array de sinais
+        m_signals.Add(signal);
+        
+        // Notificar
+        NotifyBreakout(signal);
+        
+        // Integração com TechnologyAdvances
+        UpdateBreakoutMetrics(signal);
+    }
+    
+    // Geração de Sinais
+    void GenerateSignals() {
+        if(!ValidateAnalysisData()) return;
+        
+        // Análise de condições
+        bool isVolumeValid = m_data.volume.isHighVolume || m_data.volume.spike > 0;
+        bool isPriceValid = ValidatePriceAction();
+        bool areLevelsValid = ValidateSRLevels();
+        
+        if(isVolumeValid && isPriceValid && areLevelsValid) {
+            ENUM_TRADE_SIGNAL signal = DeterminePVSRASignal();
+            
+            if(signal != SIGNAL_NONE) {
+                CreateTradeSignal(signal);
+            }
+        }
+    }
+    
+    ENUM_TRADE_SIGNAL DeterminePVSRASignal() {
+        // Sinal de compra
+        if(IsBuySignal()) {
+            return SIGNAL_BUY;
+        }
+        
+        // Sinal de venda
+        if(IsSellSignal()) {
+            return SIGNAL_SELL;
+        }
+        
+        return SIGNAL_NONE;
+    }
+    
+    void CreateTradeSignal(ENUM_TRADE_SIGNAL signalType) {
+        TradeSignal* signal = new TradeSignal();
+        
+        signal.type = signalType;
+        signal.entry = m_data.price.close;
+        signal.stopLoss = CalculateStopLoss(signalType);
+        signal.takeProfit = CalculateTakeProfit(signalType);
+        signal.volume = CalculatePositionSize(signal.stopLoss);
+        signal.confidence = CalculateSignalConfidence();
+        
+        // Validar e processar sinal
+        if(ValidateTradeSignal(signal)) {
+            ProcessTradeSignal(signal);
+        }
+        
+        delete signal;
+    }
+    
+    // Integrações
+    void UpdateBreakoutMetrics(const PVSRASignal* signal) {
+        BreakoutMetrics metrics;
+        metrics.type = signal.type;
+        metrics.strength = signal.strength;
+        metrics.confidence = signal.confidence;
+        metrics.volume = signal.volume;
+        
+        m_techManager.UpdateBreakoutMetrics(metrics);
+    }
+};

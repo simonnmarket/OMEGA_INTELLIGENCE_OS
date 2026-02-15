@@ -1,0 +1,201 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part6.mq5    |
+//+------------------------------------------------------------------+
+
+// Interface Visual e Monitoramento
+class CVisualInterface {
+private:
+    // Constantes para interface
+    const string PANEL_NAME = "QuantumPanel_";
+    const int CHART_DISTANCE = 20;
+    const int BUTTON_WIDTH = 120;
+    const int BUTTON_HEIGHT = 25;
+    const color BG_COLOR = clrWhite;
+    const color TEXT_COLOR = clrBlack;
+    const color PROFIT_COLOR = clrGreen;
+    const color LOSS_COLOR = clrRed;
+    
+    // Elementos da interface
+    struct UIElements {
+        string mainPanel;
+        string profitLabel;
+        string tradesLabel;
+        string signalLabel;
+        string probabilityLabel;
+        string riskLabel;
+    } ui;
+    
+    // Dados de monitoramento
+    struct MonitorData {
+        double currentProfit;
+        int totalTrades;
+        double winRate;
+        double probability;
+        double riskLevel;
+        string currentSignal;
+    } monitor;
+
+public:
+    void Initialize() {
+        CreateMainPanel();
+        CreateLabels();
+        SetupAlerts();
+    }
+    
+    void Update(const MonitorData& data) {
+        monitor = data;
+        UpdateDisplay();
+        CheckAlerts();
+    }
+    
+    void Cleanup() {
+        ObjectsDeleteAll(0, PANEL_NAME);
+    }
+    
+    void ShowNotification(const string& message) {
+        SendNotification(message);
+        Print("Notification: ", message);
+    }
+
+private:
+    void CreateMainPanel() {
+        ui.mainPanel = PANEL_NAME + "Main";
+        
+        ObjectCreate(0, ui.mainPanel, OBJ_RECTANGLE_LABEL, 0, 0, 0);
+        ObjectSetInteger(0, ui.mainPanel, OBJPROP_XDISTANCE, CHART_DISTANCE);
+        ObjectSetInteger(0, ui.mainPanel, OBJPROP_YDISTANCE, CHART_DISTANCE);
+        ObjectSetInteger(0, ui.mainPanel, OBJPROP_XSIZE, BUTTON_WIDTH * 2);
+        ObjectSetInteger(0, ui.mainPanel, OBJPROP_YSIZE, BUTTON_HEIGHT * 6);
+        ObjectSetInteger(0, ui.mainPanel, OBJPROP_BGCOLOR, BG_COLOR);
+        ObjectSetInteger(0, ui.mainPanel, OBJPROP_BORDER_TYPE, BORDER_FLAT);
+        ObjectSetInteger(0, ui.mainPanel, OBJPROP_CORNER, CORNER_LEFT_UPPER);
+    }
+    
+    void CreateLabels() {
+        // Profit Label
+        CreateLabel(ui.profitLabel = PANEL_NAME + "Profit", "Profit: 0.00", 1);
+        
+        // Trades Label
+        CreateLabel(ui.tradesLabel = PANEL_NAME + "Trades", "Trades: 0", 2);
+        
+        // Signal Label
+        CreateLabel(ui.signalLabel = PANEL_NAME + "Signal", "Signal: None", 3);
+        
+        // Probability Label
+        CreateLabel(ui.probabilityLabel = PANEL_NAME + "Prob", "Prob: 0%", 4);
+        
+        // Risk Label
+        CreateLabel(ui.riskLabel = PANEL_NAME + "Risk", "Risk: Low", 5);
+    }
+    
+    void CreateLabel(string name, string text, int position) {
+        ObjectCreate(0, name, OBJ_LABEL, 0, 0, 0);
+        ObjectSetInteger(0, name, OBJPROP_XDISTANCE, CHART_DISTANCE + 10);
+        ObjectSetInteger(0, name, OBJPROP_YDISTANCE, CHART_DISTANCE + BUTTON_HEIGHT * position);
+        ObjectSetString(0, name, OBJPROP_TEXT, text);
+        ObjectSetInteger(0, name, OBJPROP_COLOR, TEXT_COLOR);
+        ObjectSetInteger(0, name, OBJPROP_FONTSIZE, 10);
+    }
+    
+    void UpdateDisplay() {
+        // Atualizar labels com dados do monitor
+        ObjectSetString(0, ui.profitLabel, OBJPROP_TEXT, 
+                       "Profit: " + DoubleToString(monitor.currentProfit, 2));
+        ObjectSetInteger(0, ui.profitLabel, OBJPROP_COLOR, 
+                        monitor.currentProfit >= 0 ? PROFIT_COLOR : LOSS_COLOR);
+        
+        ObjectSetString(0, ui.tradesLabel, OBJPROP_TEXT,
+                       "Trades: " + IntegerToString(monitor.totalTrades) +
+                       " (WR: " + DoubleToString(monitor.winRate * 100, 1) + "%)");
+        
+        ObjectSetString(0, ui.signalLabel, OBJPROP_TEXT,
+                       "Signal: " + monitor.currentSignal);
+        
+        ObjectSetString(0, ui.probabilityLabel, OBJPROP_TEXT,
+                       "Prob: " + DoubleToString(monitor.probability * 100, 1) + "%");
+        
+        ObjectSetString(0, ui.riskLabel, OBJPROP_TEXT,
+                       "Risk: " + GetRiskText(monitor.riskLevel));
+        
+        ChartRedraw();
+    }
+    
+    string GetRiskText(double riskLevel) {
+        if(riskLevel < 0.3) return "Low";
+        if(riskLevel < 0.7) return "Medium";
+        return "High";
+    }
+    
+    void SetupAlerts() {
+        // Configurar alertas por email
+        if(!SendMail("Quantum System Started", 
+                    "Trading system has been initialized on " + Symbol())) {
+            Print("Failed to send initial email notification");
+        }
+    }
+    
+    void CheckAlerts() {
+        // Verificar condições para alertas
+        if(monitor.probability > 0.8) {
+            ShowNotification("High probability setup detected: " + 
+                           DoubleToString(monitor.probability * 100, 1) + "%");
+        }
+        
+        if(monitor.riskLevel > 0.7) {
+            ShowNotification("High risk level detected: " + 
+                           DoubleToString(monitor.riskLevel * 100, 1) + "%");
+        }
+        
+        if(monitor.currentProfit < -AccountInfoDouble(ACCOUNT_BALANCE) * 0.05) {
+            ShowNotification("Daily loss limit warning!");
+        }
+    }
+};
+
+// Sistema de Integração com APIs Externas
+class CExternalAPI {
+private:
+    string apiKey;
+    string apiEndpoint;
+    
+public:
+    bool Initialize(const string& key, const string& endpoint) {
+        apiKey = key;
+        apiEndpoint = endpoint;
+        return TestConnection();
+    }
+    
+    bool SendData(const string& data) {
+        string headers = "Content-Type: application/json\r\nAuthorization: Bearer " + apiKey;
+        char post[], result[];
+        StringToCharArray(data, post);
+        
+        int res = WebRequest("POST", apiEndpoint, headers, 5000, post, result);
+        
+        if(res == -1) {
+            Print("Error in WebRequest. Error code  =",GetLastError());
+            return false;
+        }
+        
+        return true;
+    }
+    
+    string GetExternalData() {
+        char result[];
+        string headers = "Authorization: Bearer " + apiKey;
+        
+        int res = WebRequest("GET", apiEndpoint, headers, 5000, NULL, result);
+        
+        if(res == -1) {
+            Print("Error in WebRequest. Error code  =",GetLastError());
+            return "";
+        }
+        
+        return CharArrayToString(result);
+    }
+    
+private:
+    bool TestConnection() {
+        return SendData("{\"test\":true}");
+    }
+};

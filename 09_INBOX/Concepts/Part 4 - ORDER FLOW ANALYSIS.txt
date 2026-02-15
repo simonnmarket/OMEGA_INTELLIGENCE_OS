@@ -1,0 +1,179 @@
+//+------------------------------------------------------------------+
+//| Order Flow Analysis - Parte 4                                      |
+//|                                                                    |
+//| OBJETIVO: Implementar visualização e integração avançada com:      |
+//| - Visualização de Order Flow                                      |
+//| - Integração com TechnologyAdvances                               |
+//| - Integração com TeamStructure                                    |
+//| - Sistema de Alertas                                              |
+//+------------------------------------------------------------------+
+
+private:
+    // Estruturas de Visualização
+    struct OrderFlowVisualizer {
+        // Configurações Visuais
+        struct VisualConfig {
+            color buyColor;           // Cor de compra
+            color sellColor;          // Cor de venda
+            color neutralColor;       // Cor neutra
+            color alertColor;         // Cor de alerta
+            int fontSize;            // Tamanho da fonte
+            bool showFootprint;       // Mostrar footprint
+            bool showDelta;          // Mostrar delta
+            bool showTape;           // Mostrar tape
+        } config;
+        
+        // Estado Visual
+        struct VisualState {
+            string objectPrefix;      // Prefixo dos objetos
+            int objectCount;         // Contador de objetos
+            bool isVisible;          // Visibilidade
+            datetime lastUpdate;     // Última atualização
+        } state;
+    } m_visualizer;
+    
+    // Integração com TechnologyAdvances
+    void InitializeTechIntegration() {
+        if(!m_techManager) {
+            Print("Erro: TechnologyAdvances não inicializado");
+            return;
+        }
+        
+        // Registrar callbacks
+        m_techManager.RegisterCallback(CALLBACK_ORDERFLOW_UPDATE, 
+            GetPointer(this), "OnOrderFlowUpdate");
+            
+        // Configurar métricas
+        ConfigureOrderFlowMetrics();
+        
+        // Inicializar visualização
+        InitializeVisualization();
+    }
+    
+    void ConfigureOrderFlowMetrics() {
+        // Configurar métricas de Order Flow
+        OrderFlowMetrics metrics;
+        metrics.enableDeltaTracking = true;
+        metrics.enableFootprintAnalysis = true;
+        metrics.enableTapeReading = true;
+        metrics.updateInterval = m_config.deltaUpdateInterval;
+        
+        // Registrar com TechnologyAdvances
+        m_techManager.ConfigureOrderFlowMetrics(metrics);
+    }
+    
+    // Integração com TeamStructure
+    void InitializeTeamIntegration() {
+        if(!m_teamManager) {
+            Print("Erro: TeamStructure não inicializado");
+            return;
+        }
+        
+        // Configurar equipe responsável
+        ConfigureResponsibleTeam();
+        
+        // Configurar notificações
+        ConfigureTeamNotifications();
+    }
+    
+    void ConfigureResponsibleTeam() {
+        // Adicionar especialistas
+        AddTeamMember("OrderFlow_Analyst", ROLE_ANALYST);
+        AddTeamMember("Risk_Manager", ROLE_RISK);
+        AddTeamMember("Tech_Support", ROLE_TECH);
+        
+        // Configurar permissões
+        SetTeamPermissions();
+    }
+    
+    void UpdateVisualization() {
+        if(!m_visualizer.state.isVisible) return;
+        
+        // Limpar objetos antigos
+        ClearOldObjects();
+        
+        // Atualizar elementos visuais
+        if(m_visualizer.config.showFootprint) {
+            DrawFootprint();
+        }
+        
+        if(m_visualizer.config.showDelta) {
+            DrawDelta();
+        }
+        
+        if(m_visualizer.config.showTape) {
+            DrawTape();
+        }
+        
+        // Atualizar alertas visuais
+        UpdateAlerts();
+    }
+    
+    void DrawFootprint() {
+        for(int i = 0; i < m_config.maxFootprintLevels; i++) {
+            string objName = m_visualizer.state.objectPrefix + "FP_" + 
+                           IntegerToString(m_visualizer.state.objectCount++);
+                           
+            // Criar célula do footprint
+            CreateFootprintCell(objName, i);
+            
+            // Definir cores baseado no imbalance
+            SetFootprintColors(objName, i);
+        }
+    }
+    
+    void DrawDelta() {
+        string objName = m_visualizer.state.objectPrefix + "Delta_" + 
+                        IntegerToString(m_visualizer.state.objectCount++);
+                        
+        // Criar barra de delta
+        CreateDeltaBar(objName);
+        
+        // Adicionar label de delta
+        string deltaText = StringFormat("Δ: %.2f", m_data.delta.cumDelta);
+        CreateDeltaLabel(objName + "_Label", deltaText);
+    }
+    
+    void ProcessAlerts() {
+        // Alertas de Delta
+        if(IsDeltaAlert()) {
+            CreateDeltaAlert();
+        }
+        
+        // Alertas de Footprint
+        if(IsFootprintAlert()) {
+            CreateFootprintAlert();
+        }
+        
+        // Alertas de Tape
+        if(IsTapeAlert()) {
+            CreateTapeAlert();
+        }
+    }
+    
+    void CreateDeltaAlert() {
+        Alert* alert = new Alert();
+        alert.type = ALERT_DELTA;
+        alert.message = FormatDeltaAlert();
+        alert.priority = PRIORITY_HIGH;
+        alert.timestamp = TimeCurrent();
+        
+        // Enviar para TechnologyAdvances
+        m_techManager.ProcessAlert(alert);
+        
+        // Notificar equipe
+        NotifyTeam(alert.message);
+        
+        delete alert;
+    }
+    
+    string FormatDeltaAlert() {
+        return StringFormat(
+            "Delta Alert\nSymbol: %s\nDelta: %.2f\nStrength: %.2f\nTime: %s",
+            _Symbol,
+            m_data.delta.delta,
+            m_data.delta.strength,
+            TimeToString(TimeCurrent())
+        );
+    }
+};

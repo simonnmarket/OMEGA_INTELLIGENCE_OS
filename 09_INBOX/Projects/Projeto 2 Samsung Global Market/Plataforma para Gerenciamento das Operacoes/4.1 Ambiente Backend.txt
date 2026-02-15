@@ -1,0 +1,30 @@
+# main.py
+from fastapi import FastAPI
+from backend.agents.traderbot import TraderBot
+from backend.agents.analystagent import AnalystAgent
+from backend.agents.riskguardian import RiskGuardian
+
+app = FastAPI()
+
+trader_bot = TraderBot()
+analyst_agent = AnalystAgent()
+risk_guardian = RiskGuardian()
+
+@app.get("/api/market-data")
+def market_data(symbol: str = "EURUSD", timeframe: int = mt5.TIMEFRAME_H1, count: int = 100):
+    """Endpoint para coletar dados do mercado."""
+    data = trader_bot.fetch_data(symbol, timeframe, count)
+    return {"market_data": data.to_dict(orient="records")}
+
+@app.post("/api/log-trade")
+def log_trade(trade_details: dict):
+    """Endpoint para registrar operações."""
+    trader_bot.log_trade(trade_details)
+    return {"status": "success"}
+
+@app.get("/api/performance")
+def performance_report(trades: list):
+    """Endpoint para gerar relatórios de desempenho."""
+    win_rate = analyst_agent.calculate_win_rate(trades)
+    sharpe_ratio = analyst_agent.calculate_sharpe_ratio([trade['profit'] for trade in trades])
+    return {"win_rate": win_rate, "sharpe_ratio": sharpe_ratio}

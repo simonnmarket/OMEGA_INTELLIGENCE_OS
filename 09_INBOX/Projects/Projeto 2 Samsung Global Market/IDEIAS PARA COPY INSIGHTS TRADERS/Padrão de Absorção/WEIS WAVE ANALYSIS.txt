@@ -1,0 +1,131 @@
+//+------------------------------------------------------------------+
+//|                                    WeisWaveAnalysis.mqh            |
+//+------------------------------------------------------------------+
+
+class CWeisWaveAnalysis {
+private:
+    struct WaveData {
+        double volume;
+        double price;
+        datetime time;
+        ENUM_WAVE_TYPE type;  // UP_WAVE, DOWN_WAVE
+        bool isInstitutional;
+        double deltaForce;
+    };
+    
+    struct VolumePattern {
+        double accumulationVolume;
+        double distributionVolume;
+        double hiddenVolume;    // Volume fracionado
+        double institutionalThreshold;
+        vector<double> waveSizes;
+    };
+    
+    struct LowLatencyDetection {
+        double microVolume;     // Volumes fracionados em microssegundos
+        int frequency;          // Frequência das operações
+        double averageSize;     // Tamanho médio das operações
+        bool isAlgorithmic;     // Identificador de operações algorítmicas
+    };
+
+public:
+    bool AnalyzeInstitutionalFlow() {
+        LowLatencyDetection latency;
+        latency.microVolume = CalculateMicroVolume();
+        latency.frequency = GetOperationFrequency();
+        
+        if(IsInstitutionalPattern(latency)) {
+            UpdateVolumeProfile();
+            return true;
+        }
+        return false;
+    }
+    
+    bool DetectHiddenAccumulation() {
+        VolumePattern pattern;
+        pattern.hiddenVolume = GetFractionatedVolume();
+        
+        if(pattern.hiddenVolume > pattern.institutionalThreshold) {
+            if(IsAccumulationPattern()) {
+                Alert("Possível acumulação institucional detectada");
+                return true;
+            }
+        }
+        return false;
+    }
+
+private:
+    double CalculateMicroVolume() {
+        // Análise de volumes em microssegundos
+        double volume = 0;
+        // Implementação do cálculo
+        return volume;
+    }
+    
+    int GetOperationFrequency() {
+        // Análise da frequência de operações
+        return 0;
+    }
+    
+    bool IsInstitutionalPattern(const LowLatencyDetection& latency) {
+        if(latency.microVolume > threshold && 
+           latency.frequency > minFrequency) {
+            return true;
+        }
+        return false;
+    }
+    
+    double GetFractionatedVolume() {
+        // Detectar volumes fracionados
+        return 0;
+    }
+    
+    bool IsAccumulationPattern() {
+        // Identificar padrões de acumulação
+        return false;
+    }
+};
+class CInstitutionalAlerts {
+private:
+    struct Alert {
+        string message;
+        double volumeSize;
+        datetime time;
+        ENUM_ALERT_TYPE type;
+        double confidence;
+    };
+    
+    vector<Alert> alerts;
+    
+public:
+    void CheckInstitutionalActivity() {
+        if(DetectLargeHiddenOrders()) {
+            Alert alert;
+            alert.message = "Possível atividade institucional detectada";
+            alert.volumeSize = GetCurrentVolume();
+            alert.time = TimeCurrent();
+            alert.type = INSTITUTIONAL_ACTIVITY;
+            alert.confidence = CalculateConfidence();
+            
+            ProcessAlert(alert);
+        }
+    }
+    
+private:
+    bool DetectLargeHiddenOrders() {
+        // Implementar detecção de ordens ocultas
+        return false;
+    }
+    
+    double CalculateConfidence() {
+        // Calcular nível de confiança do alerta
+        return 0;
+    }
+    
+    void ProcessAlert(const Alert& alert) {
+        if(alert.confidence > 0.8) {
+            NotifyUser(alert);
+            LogActivity(alert);
+        }
+    }
+};

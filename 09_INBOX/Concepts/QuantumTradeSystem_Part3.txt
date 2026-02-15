@@ -1,0 +1,166 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part3.mq5    |
+//|                                    Copyright 2024                   |
+//+------------------------------------------------------------------+
+
+// Sistema de Machine Learning e Otimização
+class CMLOptimization {
+private:
+    // Estruturas de dados para ML
+    struct DataPoint {
+        double features[15];  // Features expandidas
+        double outcome;       // Resultado (1 = sucesso, 0 = falha)
+        datetime timestamp;   // Timestamp para análise temporal
+    };
+    
+    struct ModelParameters {
+        double weights[15];   // Pesos do modelo
+        double bias;          // Viés do modelo
+        double learningRate;  // Taxa de aprendizado
+        int epochs;          // Épocas de treinamento
+        double accuracy;      // Precisão do modelo
+        datetime lastUpdate;  // Última atualização
+    };
+    
+    // Dados e parâmetros
+    DataPoint historyData[];
+    ModelParameters currentModel;
+    int maxHistoryPoints;
+    double validationSplit;
+    
+    // Cache e otimização
+    CHashMap<string, double> featureCache;
+    bool isTraining;
+
+public:
+    void Initialize() {
+        maxHistoryPoints = 1000;
+        validationSplit = 0.2;
+        isTraining = false;
+        
+        ArrayResize(historyData, 0);
+        InitializeModel();
+        ClearCache();
+    }
+    
+    double PredictProbability(const double& features[]) {
+        if(ArraySize(features) != 15) return 0;
+        
+        double prediction = currentModel.bias;
+        for(int i = 0; i < 15; i++) {
+            prediction += features[i] * currentModel.weights[i];
+        }
+        
+        return Sigmoid(prediction);
+    }
+    
+    void AddDataPoint(const double& features[], double outcome) {
+        if(ArraySize(historyData) >= maxHistoryPoints) {
+            RemoveOldestDataPoint();
+        }
+        
+        int size = ArraySize(historyData);
+        ArrayResize(historyData, size + 1);
+        
+        for(int i = 0; i < 15 && i < ArraySize(features); i++) {
+            historyData[size].features[i] = features[i];
+        }
+        historyData[size].outcome = outcome;
+        historyData[size].timestamp = TimeCurrent();
+    }
+    
+    bool UpdateModel() {
+        if(ArraySize(historyData) < 100) return false;
+        if(isTraining) return false;
+        
+        isTraining = true;
+        
+        // Dividir dados em treino e validação
+        int trainSize = (int)(ArraySize(historyData) * (1 - validationSplit));
+        
+        // Treinar modelo
+        for(int epoch = 0; epoch < currentModel.epochs; epoch++) {
+            double epochLoss = 0;
+            
+            for(int i = 0; i < trainSize; i++) {
+                double prediction = PredictProbability(historyData[i].features);
+                double error = historyData[i].outcome - prediction;
+                
+                // Atualizar pesos
+                for(int j = 0; j < 15; j++) {
+                    currentModel.weights[j] += currentModel.learningRate * 
+                                             error * 
+                                             historyData[i].features[j];
+                }
+                
+                currentModel.bias += currentModel.learningRate * error;
+                epochLoss += MathAbs(error);
+            }
+            
+            // Early stopping
+            if(epochLoss/trainSize < 0.01) break;
+        }
+        
+        // Calcular precisão na validação
+        currentModel.accuracy = CalculateValidationAccuracy(trainSize);
+        currentModel.lastUpdate = TimeCurrent();
+        
+        isTraining = false;
+        return true;
+    }
+    
+    double GetModelAccuracy() const {
+        return currentModel.accuracy;
+    }
+    
+    datetime GetLastUpdateTime() const {
+        return currentModel.lastUpdate;
+    }
+
+private:
+    void InitializeModel() {
+        ArrayInitialize(currentModel.weights, 0);
+        currentModel.bias = 0;
+        currentModel.learningRate = 0.01;
+        currentModel.epochs = 1000;
+        currentModel.accuracy = 0;
+        currentModel.lastUpdate = 0;
+    }
+    
+    void RemoveOldestDataPoint() {
+        if(ArraySize(historyData) > 0) {
+            for(int i = 0; i < ArraySize(historyData) - 1; i++) {
+                historyData[i] = historyData[i + 1];
+            }
+            ArrayResize(historyData, ArraySize(historyData) - 1);
+        }
+    }
+    
+    double Sigmoid(double x) {
+        return 1.0 / (1.0 + MathExp(-x));
+    }
+    
+    void ClearCache() {
+        featureCache.Clear();
+    }
+    
+    double CalculateValidationAccuracy(int trainSize) {
+        int correct = 0;
+        int total = ArraySize(historyData) - trainSize;
+        
+        for(int i = trainSize; i < ArraySize(historyData); i++) {
+            double prediction = PredictProbability(historyData[i].features);
+            if((prediction >= 0.5 && historyData[i].outcome == 1) ||
+               (prediction < 0.5 && historyData[i].outcome == 0)) {
+                correct++;
+            }
+        }
+        
+        return total > 0 ? (double)correct/total : 0;
+    }
+    
+    double CrossEntropy(double predicted, double actual) {
+        return -(actual * MathLog(predicted) + 
+                (1 - actual) * MathLog(1 - predicted));
+    }
+};

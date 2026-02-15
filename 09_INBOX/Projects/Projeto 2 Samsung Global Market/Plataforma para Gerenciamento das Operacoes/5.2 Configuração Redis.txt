@@ -1,0 +1,5 @@
+# Instalação do Redis
+sudo apt install redis-server
+
+# Verificar status
+redis-cli ping

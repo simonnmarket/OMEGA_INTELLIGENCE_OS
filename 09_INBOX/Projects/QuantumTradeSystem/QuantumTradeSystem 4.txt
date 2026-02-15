@@ -1,0 +1,245 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part4.mq5    |
+//+------------------------------------------------------------------+
+
+// Sistema Principal de Trading
+class CQuantumTradeSystem {
+private:
+    CTechnicalAnalysis* techAnalysis;
+    CMLOptimization* mlSystem;
+    CRiskManagement* riskManager;
+    CTradeReporting* reporter;
+    
+    // Parâmetros do sistema
+    input double InpMinProbability = 0.75;    // Probabilidade mínima para trade
+    input double InpRiskPercent = 2.0;        // Risco por trade (%)
+    input int    InpMaxDailyTrades = 2;       // Máximo de trades por dia
+    
+    // Estado do sistema
+    bool isInitialized;
+    datetime lastUpdateTime;
+    
+public:
+    CQuantumTradeSystem() {
+        isInitialized = false;
+        lastUpdateTime = 0;
+        
+        techAnalysis = new CTechnicalAnalysis();
+        mlSystem = new CMLOptimization();
+        riskManager = new CRiskManagement();
+        reporter = new CTradeReporting();
+    }
+    
+    ~CQuantumTradeSystem() {
+        delete techAnalysis;
+        delete mlSystem;
+        delete riskManager;
+        delete reporter;
+    }
+    
+    bool Initialize() {
+        if(!techAnalysis.Initialize()) return false;
+        mlSystem.Initialize();
+        riskManager.Initialize(InpRiskPercent);
+        reporter.Initialize();
+        
+        isInitialized = true;
+        return true;
+    }
+    
+    void OnTick() {
+        if(!isInitialized) return;
+        if(!riskManager.CanTrade()) return;
+        
+        // Atualizar análise a cada minuto
+        if(TimeCurrent() - lastUpdateTime < 60) return;
+        
+        // Coletar features do mercado
+        double features[];
+        if(!CollectMarketFeatures(features)) return;
+        
+        // Obter probabilidade do ML
+        double probability = mlSystem.PredictProbability(features);
+        
+        // Verificar setup técnico
+        double techScore = techAnalysis.GetSetupScore();
+        
+        // Combinar probabilidades
+        double finalProbability = (probability * 0.6 + techScore * 0.4);
+        
+        if(finalProbability > InpMinProbability) {
+            ExecuteTradeSetup(finalProbability);
+        }
+        
+        lastUpdateTime = TimeCurrent();
+    }
+    
+    void OnTrade() {
+        // Atualizar estatísticas após cada trade
+        UpdateTradeStats();
+    }
+    
+    void OnDeinit() {
+        reporter.GenerateReport();
+        reporter.Close();
+    }
+
+private:
+    bool CollectMarketFeatures(double& features[]) {
+        ArrayResize(features, 10);
+        
+        // Tendência
+        TrendData trend = techAnalysis.AnalyzeTrend();
+        features[0] = trend.strength;
+        features[1] = trend.isUp ? 1 : -1;
+        
+        // Volatilidade
+        VolatilityData vol = techAnalysis.AnalyzeVolatility();
+        features[2] = vol.current;
+        features[3] = vol.average;
+        
+        // Momentum
+        features[4] = GetRSIMomentum();
+        features[5] = GetMACDMomentum();
+        
+        // Padrões de preço
+        features[6] = GetPricePattern();
+        
+        // Volume
+        features[7] = GetVolumeProfile();
+        
+        // Correlações
+        features[8] = GetMarketCorrelation();
+        
+        // Tempo
+        features[9] = GetTimeFeature();
+        
+        return true;
+    }
+    
+    void ExecuteTradeSetup(double probability) {
+        double lotSize = CalculatePositionSize(probability);
+        double stopLoss = CalculateStopLoss();
+        double takeProfit = CalculateTakeProfit();
+        
+        int ticket = 0;
+        if(ShouldBuy()) {
+            ticket = OrderSend(Symbol(), OP_BUY, lotSize, Ask, 3, stopLoss, takeProfit);
+        }
+        else if(ShouldSell()) {
+            ticket = OrderSend(Symbol(), OP_SELL, lotSize, Bid, 3, stopLoss, takeProfit);
+        }
+        
+        if(ticket > 0) {
+            reporter.LogTrade(OrderOpenPrice(), 0, 0, true);
+        }
+    }
+    
+    double CalculatePositionSize(double probability) {
+        double risk = AccountBalance() * (InpRiskPercent/100) * probability;
+        double tickValue = MarketInfo(Symbol(), MODE_TICKVALUE);
+        double stopDistance = CalculateStopDistance();
+        
+        return NormalizeDouble(risk/(stopDistance*tickValue), 2);
+    }
+    
+    void UpdateTradeStats() {
+        for(int i = OrdersHistoryTotal() - 1; i >= 0; i--) {
+            if(OrderSelect(i, SELECT_BY_POS, MODE_HISTORY)) {
+                if(OrderSymbol() == Symbol()) {
+                    double profit = OrderProfit();
+                    bool isWin = (profit > 0);
+                    
+                    // Atualizar ML
+                    double features[];
+                    if(CollectMarketFeatures(features)) {
+                        mlSystem.AddDataPoint(features, isWin ? 1 : 0);
+                    }
+                    
+                    // Atualizar estatísticas
+                    reporter.LogTrade(OrderOpenPrice(), OrderClosePrice(), 
+                                    profit, isWin);
+                }
+            }
+        }
+        
+        // Treinar modelo ML periodicamente
+        if(TimeCurrent() - mlSystem.GetLastUpdateTime() > 3600) {
+            mlSystem.UpdateModel();
+        }
+    }
+    
+    // Funções auxiliares para features
+    double GetRSIMomentum() {
+        // Implementar cálculo do RSI
+        return 0;
+    }
+    
+    double GetMACDMomentum() {
+        // Implementar cálculo do MACD
+        return 0;
+    }
+    
+    double GetPricePattern() {
+        // Implementar reconhecimento de padrões
+        return 0;
+    }
+    
+    double GetVolumeProfile() {
+        // Implementar análise de volume
+        return 0;
+    }
+    
+    double GetMarketCorrelation() {
+        // Implementar correlações
+        return 0;
+    }
+    
+    double GetTimeFeature() {
+        // Implementar feature baseada em tempo
+        return 0;
+    }
+};
+
+// Variáveis globais
+CQuantumTradeSystem* TradeSystem = NULL;
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                     |
+//+------------------------------------------------------------------+
+int OnInit() {
+    TradeSystem = new CQuantumTradeSystem();
+    if(!TradeSystem.Initialize()) {
+        Print("Erro ao inicializar o sistema");
+        return INIT_FAILED;
+    }
+    return INIT_SUCCEEDED;
+}
+
+//+------------------------------------------------------------------+
+//| Expert deinitialization function                                  |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason) {
+    if(TradeSystem != NULL) {
+        TradeSystem.OnDeinit();
+        delete TradeSystem;
+    }
+}
+
+//+------------------------------------------------------------------+
+//| Expert tick function                                              |
+//+------------------------------------------------------------------+
+void OnTick() {
+    if(TradeSystem != NULL) {
+        TradeSystem.OnTick();
+    }
+}
+
+//+------------------------------------------------------------------+
+//| Expert trade function                                             |
+//+------------------------------------------------------------------+
+void OnTrade() {
+    if(TradeSystem != NULL) {
+        TradeSystem.OnTrade();
+    }
+}

@@ -1,0 +1,170 @@
+//+------------------------------------------------------------------+
+//| Template Padrão para Categorias de Insights e Indicadores         |
+//+------------------------------------------------------------------+
+
+// Interface base para todas as categorias
+interface IInsightCategory {
+public:
+    virtual bool Initialize() = 0;
+    virtual bool Update() = 0;
+    virtual bool Validate() = 0;
+    virtual string GetCategoryName() = 0;
+    virtual double GetInsightScore() = 0;
+    virtual bool GetSignals(InsightSignal &signals[]) = 0;
+};
+
+// Estrutura padrão para sinais de insights
+struct InsightSignal {
+    string categoryName;      // Nome da categoria
+    string signalName;       // Nome do sinal
+    double strength;         // Força do sinal (0-1)
+    double confidence;       // Confiança (0-1)
+    datetime timestamp;      // Momento da geração
+    string description;      // Descrição detalhada
+    bool isValid;           // Validação do sinal
+    
+    // Metadados para integração
+    int priority;           // Prioridade do sinal
+    double impact;          // Impacto esperado
+    string[] correlations;  // Correlações com outras categorias
+};
+
+// Classe base para todas as categorias
+class CBaseCategoryAnalyzer : public IInsightCategory {
+protected:
+    string          m_categoryName;
+    InsightSignal   m_signals[];
+    
+    struct CategoryMetrics {
+        double accuracy;
+        double reliability;
+        double adaptability;
+        datetime lastUpdate;
+    } m_metrics;
+    
+    struct CategoryState {
+        bool isInitialized;
+        bool isActive;
+        bool needsUpdate;
+        int signalCount;
+    } m_state;
+
+public:
+    // Construtor padrão
+    CBaseCategoryAnalyzer(string categoryName) {
+        m_categoryName = categoryName;
+        InitializeBase();
+    }
+    
+    // Métodos da interface
+    virtual bool Initialize() {
+        if(m_state.isInitialized) return true;
+        
+        if(!ValidateCategory()) {
+            LogError("Falha na validação da categoria: " + m_categoryName);
+            return false;
+        }
+        
+        m_state.isInitialized = true;
+        m_state.isActive = true;
+        return true;
+    }
+    
+    virtual string GetCategoryName() { return m_categoryName; }
+    
+    virtual double GetInsightScore() {
+        return CalculateCategoryScore();
+    }
+    
+    virtual bool GetSignals(InsightSignal &signals[]) {
+        if(!ValidateSignals()) return false;
+        
+        ArrayResize(signals, ArraySize(m_signals));
+        ArrayCopy(signals, m_signals);
+        return true;
+    }
+
+protected:
+    // Métodos auxiliares base
+    virtual void InitializeBase() {
+        m_state.isInitialized = false;
+        m_state.isActive = false;
+        m_state.needsUpdate = true;
+        m_state.signalCount = 0;
+        
+        m_metrics.accuracy = 0;
+        m_metrics.reliability = 0;
+        m_metrics.adaptability = 0;
+        m_metrics.lastUpdate = 0;
+    }
+    
+    virtual bool ValidateCategory() {
+        return !m_categoryName.empty();
+    }
+    
+    virtual bool ValidateSignals() {
+        return m_state.isInitialized && m_state.isActive;
+    }
+    
+    virtual double CalculateCategoryScore() {
+        return (m_metrics.accuracy + 
+                m_metrics.reliability + 
+                m_metrics.adaptability) / 3.0;
+    }
+    
+    void LogError(string message) {
+        Print("Erro [" + m_categoryName + "]: " + message);
+    }
+};
+
+// Gerenciador central de categorias
+class CCategoryManager {
+private:
+    CHashMap<string, IInsightCategory*> m_categories;
+    
+public:
+    bool RegisterCategory(IInsightCategory* category) {
+        if(category == NULL) return false;
+        
+        string categoryName = category.GetCategoryName();
+        if(categoryName.empty()) return false;
+        
+        if(!category.Initialize()) {
+            Print("Falha ao inicializar categoria: " + categoryName);
+            return false;
+        }
+        
+        m_categories.Add(categoryName, category);
+        return true;
+    }
+    
+    IInsightCategory* GetCategory(string categoryName) {
+        IInsightCategory* category = NULL;
+        m_categories.TryGetValue(categoryName, category);
+        return category;
+    }
+    
+    bool UpdateAllCategories() {
+        for(int i = 0; i < m_categories.Count(); i++) {
+            IInsightCategory* category = m_categories.Values(i);
+            if(category != NULL) {
+                category.Update();
+            }
+        }
+        return true;
+    }
+    
+    void GetAllSignals(InsightSignal &signals[]) {
+        for(int i = 0; i < m_categories.Count(); i++) {
+            IInsightCategory* category = m_categories.Values(i);
+            if(category != NULL) {
+                InsightSignal categorySignals[];
+                if(category.GetSignals(categorySignals)) {
+                    int currentSize = ArraySize(signals);
+                    ArrayResize(signals, currentSize + ArraySize(categorySignals));
+                    ArrayCopy(signals, categorySignals, currentSize);
+                }
+            }
+        }
+    }
+};

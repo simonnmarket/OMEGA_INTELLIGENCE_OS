@@ -1,0 +1,38 @@
+// Classe principal do sistema
+class CQuantumScout {
+public:
+    void ProcessTick() {
+        if(!ValidateMarket()) return;
+
+        UpdateMarketData();
+
+        if(AnalyzeMarket()) {
+            if(GenerateSignals()) {
+                ExecuteTrades();
+            }
+        }
+
+        ManagePositions();
+        UpdateMetrics();
+    }
+
+private:
+    bool ValidateMarket() {
+        if(!IsMarketOpen()) return false;
+        if(IsHighSpread()) return false;
+        if(!HasSufficientVolume()) return false;
+        if(!CheckDailyLimits()) return false;
+
+        return true;
+    }
+
+    bool AnalyzeMarket() {
+        analysis.confidence = 0;
+        analysis.confidence += AnalyzeTrend() ? 0.25 : 0;
+        analysis.confidence += AnalyzeVolume() ? 0.25 : 0;
+        analysis.confidence += AnalyzePrice() ? 0.25 : 0;
+        analysis.confidence += UseOrderFlow && AnalyzeFlow() ? 0.25 : 0;
+
+        return analysis.confidence >= 0.75;
+    }
+};

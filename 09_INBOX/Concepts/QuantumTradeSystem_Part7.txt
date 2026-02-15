@@ -1,0 +1,263 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part7.mq5    |
+//+------------------------------------------------------------------+
+
+// Sistema de Gestão de Risco Avançado
+class CRiskManagement {
+private:
+    // Estruturas de risco
+    struct RiskMetrics {
+        double valueAtRisk;      // VaR
+        double expectedShortfall; // CVaR
+        double kellyFraction;
+        double optimalF;
+        double riskOfRuin;
+        double maxDrawdown;
+        double currentDrawdown;
+        double stressTestResult;
+    };
+    
+    struct RiskLimits {
+        double maxPositionSize;
+        double maxDailyLoss;
+        double maxDrawdown;
+        double maxLeverage;
+        double maxCorrelation;
+        double minLiquidity;
+        int maxOpenPositions;
+        int maxDailyTrades;
+    };
+    
+    struct PositionInfo {
+        double size;
+        double risk;
+        double margin;
+        double exposure;
+        double correlation;
+        datetime openTime;
+    };
+    
+    // Membros privados
+    RiskMetrics metrics;
+    RiskLimits limits;
+    PositionInfo positions[];
+    double accountBalance;
+    double currentEquity;
+    bool isHighRiskMode;
+    
+    // Configurações
+    const int RISK_WINDOW = 20;
+    const double CONFIDENCE_LEVEL = 0.95;
+    const double MAX_RISK_MULTIPLIER = 2.0;
+
+public:
+    void Initialize(double balance) {
+        accountBalance = balance;
+        currentEquity = balance;
+        isHighRiskMode = false;
+        
+        SetDefaultLimits();
+        InitializeMetrics();
+    }
+    
+    bool ValidateNewPosition(double size, double risk) {
+        if(!CheckPositionLimits(size)) return false;
+        if(!CheckRiskLimits(risk)) return false;
+        if(!CheckCorrelationLimits()) return false;
+        if(!CheckLiquidityLimits()) return false;
+        
+        return true;
+    }
+    
+    double GetOptimalPositionSize(double probability, double stopLoss) {
+        if(stopLoss <= 0) return 0;
+        
+        double riskAmount = CalculateRiskAmount();
+        double positionSize = NormalizeDouble(riskAmount / stopLoss, 2);
+        
+        // Ajustar baseado na probabilidade
+        positionSize *= AdjustForProbability(probability);
+        
+        // Aplicar limites
+        return MathMin(positionSize, limits.maxPositionSize);
+    }
+    
+    void UpdateMetrics(const double& returns[]) {
+        metrics.valueAtRisk = CalculateVaR(returns, CONFIDENCE_LEVEL);
+        metrics.expectedShortfall = CalculateExpectedShortfall(returns, CONFIDENCE_LEVEL);
+        metrics.kellyFraction = CalculateKellyFraction(returns);
+        metrics.optimalF = CalculateOptimalF(returns);
+        metrics.riskOfRuin = CalculateRiskOfRuin(returns);
+        
+        UpdateDrawdown();
+        PerformStressTest();
+    }
+    
+    bool IsHighRisk() const {
+        return isHighRiskMode;
+    }
+    
+    RiskMetrics GetMetrics() const {
+        return metrics;
+    }
+
+private:
+    void SetDefaultLimits() {
+        limits.maxPositionSize = accountBalance * 0.02;  // 2% max position
+        limits.maxDailyLoss = accountBalance * 0.05;     // 5% max daily loss
+        limits.maxDrawdown = accountBalance * 0.20;      // 20% max drawdown
+        limits.maxLeverage = 20;                         // 20:1 max leverage
+        limits.maxCorrelation = 0.75;                    // 75% max correlation
+        limits.minLiquidity = 100000;                    // Min liquidity
+        limits.maxOpenPositions = 5;                     // Max 5 positions
+        limits.maxDailyTrades = 10;                      // Max 10 trades/day
+    }
+    
+    void InitializeMetrics() {
+        ZeroMemory(metrics);
+        ArrayResize(positions, 0);
+    }
+    
+    bool CheckPositionLimits(double size) {
+        if(ArraySize(positions) >= limits.maxOpenPositions) return false;
+        if(size > limits.maxPositionSize) return false;
+        
+        double totalExposure = CalculateTotalExposure();
+        if(totalExposure + size > accountBalance * limits.maxLeverage) return false;
+        
+        return true;
+    }
+    
+    bool CheckRiskLimits(double risk) {
+        if(risk > CalculateMaxRisk()) return false;
+        if(metrics.currentDrawdown > limits.maxDrawdown) return false;
+        
+        double dailyLoss = CalculateDailyLoss();
+        if(dailyLoss + risk > limits.maxDailyLoss) return false;
+        
+        return true;
+    }
+    
+    bool CheckCorrelationLimits() {
+        double maxCorr = CalculateMaxCorrelation();
+        return maxCorr <= limits.maxCorrelation;
+    }
+    
+    bool CheckLiquidityLimits() {
+        double volumeAvg = CalculateAverageVolume();
+        return volumeAvg >= limits.minLiquidity;
+    }
+    
+    double CalculateRiskAmount() {
+        double riskMultiplier = 1.0;
+        
+        // Ajustar baseado nas métricas
+        if(metrics.valueAtRisk < accountBalance * 0.01) riskMultiplier *= 1.2;
+        if(metrics.currentDrawdown < limits.maxDrawdown * 0.5) riskMultiplier *= 1.1;
+        if(metrics.kellyFraction > 0.5) riskMultiplier *= 1.15;
+        
+        // Limitar multiplicador
+        riskMultiplier = MathMin(riskMultiplier, MAX_RISK_MULTIPLIER);
+        
+        return accountBalance * 0.01 * riskMultiplier; // Base 1% risk
+    }
+    
+    double AdjustForProbability(double probability) {
+        if(probability < 0.5) return 0;
+        if(probability < 0.6) return 0.5;
+        if(probability < 0.7) return 0.75;
+        if(probability < 0.8) return 1.0;
+        if(probability < 0.9) return 1.25;
+        return 1.5;
+    }
+    
+    double CalculateVaR(const double& returns[], double confidence) {
+        if(ArraySize(returns) < 2) return 0;
+        
+        double sortedReturns[];
+        ArrayCopy(sortedReturns, returns);
+        ArraySort(sortedReturns);
+        
+        int index = (int)((1 - confidence) * ArraySize(sortedReturns));
+        return index < ArraySize(sortedReturns) ? sortedReturns[index] : 0;
+    }
+    
+    double CalculateExpectedShortfall(const double& returns[], double confidence) {
+        double var = CalculateVaR(returns, confidence);
+        double sum = 0;
+        int count = 0;
+        
+        for(int i = 0; i < ArraySize(returns); i++) {
+            if(returns[i] < var) {
+                sum += returns[i];
+                count++;
+            }
+        }
+        
+        return count > 0 ? sum/count : 0;
+    }
+    
+    double CalculateKellyFraction(const double& returns[]) {
+        double winRate = 0;
+        double avgWin = 0;
+        double avgLoss = 0;
+        int wins = 0, losses = 0;
+        
+        for(int i = 0; i < ArraySize(returns); i++) {
+            if(returns[i] > 0) {
+                avgWin += returns[i];
+                wins++;
+            } else if(returns[i] < 0) {
+                avgLoss += MathAbs(returns[i]);
+                losses++;
+            }
+        }
+        
+        if(wins > 0) avgWin /= wins;
+        if(losses > 0) avgLoss /= losses;
+        winRate = wins > 0 ? (double)wins/ArraySize(returns) : 0;
+        
+        return winRate - (1 - winRate)/(avgWin/avgLoss);
+    }
+    
+    void UpdateDrawdown() {
+        static double peakEquity = accountBalance;
+        
+        currentEquity = AccountInfoDouble(ACCOUNT_EQUITY);
+        if(currentEquity > peakEquity) peakEquity = currentEquity;
+        
+        metrics.currentDrawdown = (peakEquity - currentEquity) / peakEquity;
+        metrics.maxDrawdown = MathMax(metrics.maxDrawdown, metrics.currentDrawdown);
+    }
+    
+    void PerformStressTest() {
+        // Implementar teste de estresse do portfólio
+        metrics.stressTestResult = 0;
+    }
+    
+    double CalculateTotalExposure() {
+        double total = 0;
+        for(int i = 0; i < ArraySize(positions); i++) {
+            total += positions[i].exposure;
+        }
+        return total;
+    }
+    
+    double CalculateMaxRisk() {
+        return accountBalance * 0.02 * (isHighRiskMode ? 2 : 1);
+    }
+    
+    double CalculateDailyLoss() {
+        return accountBalance - currentEquity;
+    }
+    
+    double CalculateMaxCorrelation() {
+        // Implementar cálculo de correlação máxima
+        return 0;
+    }
+    
+    double CalculateAverageVolume() {
+        // Implementar cálculo de volume médio
+        return 0;
+    }
+};

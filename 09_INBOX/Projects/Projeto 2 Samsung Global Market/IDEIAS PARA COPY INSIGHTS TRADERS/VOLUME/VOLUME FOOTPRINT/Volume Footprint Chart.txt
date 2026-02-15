@@ -1,0 +1,97 @@
+Volume Footprint Chart
+
+Footprint is a format of the exchange chart that accurately displays information about executed trades, including time, price, volume of buys and sells. This article aims to help traders gain a competitive advantage using footprint charts. Beginners will be able to quickly progress along the learning curve, while more experienced traders will find new ideas to enhance their strategies.
+
+WHAT IS A FOOTPRINT CHART IN TRADING? In simple terms, a footprint chart is the most modern type of financial chart used for market analysis, which provides detailed information about trading volumes and price levels over a specific time interval.  Another name for footprint charts in trading is cluster charts. In this case, each element (cell) on such a chart is called a cluster. Unlike classic charts, which can only show OHLC prices (open, high, low, close) and vertical volume, footprint charts enable you to ‘look inside the candle’ – they provide insight into the aggressive actions of market participants in buying and selling at each price level.
+
+Access to accurate and real time market generated information is crucial for making trading decisions. Professional traders know that being able to catch a directional change early increases your risk-to-reward ratio.This improves your trading edge due to information asymmetry. But how do professionals analyze these charts in real time to catch these early signs of market change? They analyze order flow footprint charts to get a clear understanding of supply and demand within each candle as it happens.
+
+
+Fewshot 1## https://gocharting.com/blog/footprint-charts-complete-trading-guide/
+
+
+Fewshot 2## https://www.mql5.com/en/signals/mt4/page1
+
+
+Fewshot 3## https://www.youtube.com/watch?v=t77Cjnx5dJU&ab_channel=ToddWatkins
+
+
+Fewshot 4## https://www.youtube.com/watch?v=RdMPYEjvPvI&ab_channel=Wysetrade
+
+
+Fewshot 5## https://www.whselfinvest.com/nl-lu/trading-platform/bibliotheek/gratis-e-boek-pdf/cfd-forex-futures-indicatoren-uit-de-technische-analyse?whref=nl-google-TA&gad_source=2&gclid=CjwKCAiAzvC9BhADEiwAEhtlN_-n7u0Vbb-Gwn1pBwSOQJKrlHs8olAv08CAHtEnWiRDR4Mqed6L1hoCERQQAvD_BwE
+
+
+Fewshot 6## https://www.youtube.com/shorts/LvWmNnVLWm4
+
+
+Fewshot 7## https://www.youtube.com/shorts/iCy5V2AFGZ8
+
+
+Fewshot 8## https://www.youtube.com/@UmarAshraf28/shorts
+
+
+Fewshot 9## https://www.youtube.com/watch?v=ZCv93eiSvm4&list=PLXmsdXAkBS4qZi2Lp2a-jrM-o71v4Ic6j&ab_channel=AxiaFutures
+
+
+Fewshot 10## https://www.youtube.com/watch?v=CkAPhWcieFI&ab_channel=JumpstartTrading
+
+
+Fewshot 11## https://www.youtube.com/watch?v=6Ac38LzXj3A&t=1729s&ab_channel=FractalFlow-ProTradingStrategies
+
+
+Fewshot 12## https://www.youtube.com/shorts/RnDr3JBH-2o
+
+
+Fewshot 13## https://www.youtube.com/shorts/RnDr3JBH-2o
+
+
+Fewshot 14## https://www.youtube.com/shorts/IjslSJr97M4
+
+
+Fewshot 15## https://www.youtube.com/watch?v=_WVvalufOGw
+
+
+Fewshot 16## https://www.youtube.com/watch?v=hjBEgehyHsI
+
+
+Fewshot 17## https://www.youtube.com/watch?v=J6VRMhDnVrM&t=10s
+
+
+Fewshot 18## https://www.youtube.com/watch?v=Ovz-b5nGzJw&t=10s
+
+
+Fewshot 19## https://www.youtube.com/watch?v=QpX-X8YX8nA&ab_channel=Orderflows
+
+
+Fewshot 20## https://atas.net/volume-analysis/basics-of-volume-analysis/how-to-read-footprint/
+
+
+Fewshot 21## https://fxnewsgroup.com/forex-news/platforms/tradingview-introduces-volume-footprint-chart-type/
+
+
+Fewshot 22## https://www.youtube.com/watch?v=0WggFVVsmkM&ab_channel=TradingView
+
+ 
+Fewshot 23## https://www.youtube.com/@PriceActionVolumeTrader
+
+
+Fewshot 24## https://www.youtube.com/watch?v=oePeTQ3q9jM&ab_channel=PriceActionVolumeTrader
+
+
+Fewshot 25## https://www.youtube.com/watch?v=oePeTQ3q9jM&ab_channel=PriceActionVolumeTrader
+
+
+Fewshot 26## https://www.youtube.com/watch?v=zDKtFTM8Wbs&ab_channel=PriceActionVolumeTrader
+
+
+Fewshot 27## https://www.youtube.com/watch?v=LcbThuj0za0&ab_channel=PriceActionVolumeTrader
+
+
+Fewshot 28## https://www.youtube.com/watch?v=0x1qcf8Tl-w&ab_channel=PriceActionVolumeTrader
+
+
+Fewshot 29## https://www.youtube.com/watch?v=BkdZJRNc528&ab_channel=PriceActionVolumeTrader
+
+
+Fewshot 30## https://www.youtube.com/watch?v=uoyWv38wV_w&ab_channel=PriceActionVolumeTrader

@@ -1,0 +1,255 @@
+//+------------------------------------------------------------------+
+//| Sistema de Calibração Quântica Adaptativa                         |
+//+------------------------------------------------------------------+
+
+class CQuantumCalibrator {
+private:
+    struct CalibrationState {
+        double baseline_coherence;
+        double baseline_entanglement;
+        double calibration_factor;
+        datetime last_calibration;
+        int calibration_count;
+        bool is_calibrated;
+    };
+
+    struct CalibrationMetrics {
+        double accuracy;
+        double stability;
+        double drift;
+        double confidence;
+    };
+
+    struct AdaptiveParameters {
+        double learning_rate;
+        double momentum;
+        double decay_rate;
+        int window_size;
+    };
+
+    CalibrationState m_state;
+    CalibrationMetrics m_metrics;
+    AdaptiveParameters m_params;
+    
+    CQuantumLogger* m_logger;
+    CQuantumValidator* m_validator;
+    
+    // Buffers circulares para histórico
+    double m_coherence_history[];
+    double m_entanglement_history[];
+    int m_history_pos;
+    
+    // Configurações
+    const int MAX_HISTORY = 1000;
+    const double MIN_CONFIDENCE = 0.85;
+    const int CALIBRATION_INTERVAL = 3600; // 1 hora
+
+public:
+    CQuantumCalibrator(CQuantumLogger* logger, CQuantumValidator* validator)
+        : m_logger(logger), m_validator(validator) {
+        Initialize();
+    }
+
+    bool Initialize() {
+        // Inicializar estado
+        m_state.baseline_coherence = 1.0;
+        m_state.baseline_entanglement = 0.0;
+        m_state.calibration_factor = 1.0;
+        m_state.last_calibration = 0;
+        m_state.calibration_count = 0;
+        m_state.is_calibrated = false;
+
+        // Inicializar parâmetros adaptativos
+        m_params.learning_rate = 0.01;
+        m_params.momentum = 0.9;
+        m_params.decay_rate = 0.995;
+        m_params.window_size = 100;
+
+        // Inicializar buffers
+        ArrayResize(m_coherence_history, MAX_HISTORY);
+        ArrayResize(m_entanglement_history, MAX_HISTORY);
+        ArrayInitialize(m_coherence_history, 0);
+        ArrayInitialize(m_entanglement_history, 0);
+        m_history_pos = 0;
+
+        m_logger.Log("Quantum Calibrator Initialized", LOG_INFO, "Calibrator");
+        return true;
+    }
+
+    bool CalibrateState(CQuantumState* state) {
+        if(!ValidateCalibration(state)) return false;
+        
+        // Verificar necessidade de calibração
+        if(!NeedsCalibration()) return true;
+        
+        // Realizar calibração adaptativa
+        bool calibration_success = PerformCalibration(state);
+        
+        // Atualizar métricas e estado
+        UpdateCalibrationState(calibration_success);
+        
+        return calibration_success;
+    }
+
+private:
+    bool ValidateCalibration(const CQuantumState* state) {
+        if(state == NULL || m_validator == NULL) return false;
+        return m_validator.ValidateQuantumState(state);
+    }
+
+    bool NeedsCalibration() {
+        datetime current_time = TimeCurrent();
+        
+        // Verificar intervalo de calibração
+        if(current_time - m_state.last_calibration < CALIBRATION_INTERVAL) {
+            return false;
+        }
+        
+        // Verificar confiança atual
+        if(m_metrics.confidence < MIN_CONFIDENCE) {
+            return true;
+        }
+        
+        return !m_state.is_calibrated;
+    }
+
+    bool PerformCalibration(CQuantumState* state) {
+        // Salvar valores atuais
+        UpdateHistory(state);
+        
+        // Calcular novos parâmetros
+        double new_coherence = CalculateAdaptiveCoherence();
+        double new_entanglement = CalculateAdaptiveEntanglement();
+        
+        // Aplicar calibração
+        bool success = ApplyCalibration(state, new_coherence, new_entanglement);
+        
+        if(success) {
+            UpdateMetrics(state);
+        }
+        
+        return success;
+    }
+
+    void UpdateHistory(const CQuantumState* state) {
+        m_coherence_history[m_history_pos] = state.GetCoherence();
+        m_entanglement_history[m_history_pos] = state.GetEntanglement();
+        
+        m_history_pos = (m_history_pos + 1) % MAX_HISTORY;
+    }
+
+    double CalculateAdaptiveCoherence() {
+        double coherence_sum = 0;
+        double weight_sum = 0;
+        
+        for(int i = 0; i < m_params.window_size; i++) {
+            int pos = (m_history_pos - i + MAX_HISTORY) % MAX_HISTORY;
+            double weight = MathPow(m_params.decay_rate, i);
+            
+            coherence_sum += m_coherence_history[pos] * weight;
+            weight_sum += weight;
+        }
+        
+        return coherence_sum / weight_sum;
+    }
+
+    double CalculateAdaptiveEntanglement() {
+        double entanglement_sum = 0;
+        double weight_sum = 0;
+        
+        for(int i = 0; i < m_params.window_size; i++) {
+            int pos = (m_history_pos - i + MAX_HISTORY) % MAX_HISTORY;
+            double weight = MathPow(m_params.decay_rate, i);
+            
+            entanglement_sum += m_entanglement_history[pos] * weight;
+            weight_sum += weight;
+        }
+        
+        return entanglement_sum / weight_sum;
+    }
+
+    bool ApplyCalibration(CQuantumState* state, double coherence, double entanglement) {
+        // Aplicar calibração com momentum
+        double new_coherence = coherence * m_state.calibration_factor +
+                             m_state.baseline_coherence * m_params.momentum;
+        
+        double new_entanglement = entanglement * m_state.calibration_factor +
+                                 m_state.baseline_entanglement * m_params.momentum;
+        
+        // Aplicar novos valores
+        state.SetCoherence(new_coherence);
+        state.SetEntanglement(new_entanglement);
+        
+        return true;
+    }
+
+    void UpdateMetrics(const CQuantumState* state) {
+        // Calcular precisão
+        m_metrics.accuracy = 1.0 - MathAbs(
+            state.GetCoherence() - m_state.baseline_coherence
+        );
+        
+        // Calcular estabilidade
+        m_metrics.stability = CalculateStability();
+        
+        // Calcular drift
+        m_metrics.drift = CalculateDrift();
+        
+        // Atualizar confiança
+        m_metrics.confidence = (
+            m_metrics.accuracy +
+            m_metrics.stability +
+            (1.0 - m_metrics.drift)
+        ) / 3.0;
+    }
+
+    double CalculateStability() {
+        double variance = 0;
+        double mean = CalculateAdaptiveCoherence();
+        
+        for(int i = 0; i < m_params.window_size; i++) {
+            int pos = (m_history_pos - i + MAX_HISTORY) % MAX_HISTORY;
+            variance += MathPow(m_coherence_history[pos] - mean, 2);
+        }
+        
+        return 1.0 - MathSqrt(variance / m_params.window_size);
+    }
+
+    double CalculateDrift() {
+        double early_mean = 0;
+        double late_mean = 0;
+        int half_window = m_params.window_size / 2;
+        
+        for(int i = 0; i < half_window; i++) {
+            int early_pos = (m_history_pos - i - half_window + MAX_HISTORY) % MAX_HISTORY;
+            int late_pos = (m_history_pos - i + MAX_HISTORY) % MAX_HISTORY;
+            
+            early_mean += m_coherence_history[early_pos];
+            late_mean += m_coherence_history[late_pos];
+        }
+        
+        early_mean /= half_window;
+        late_mean /= half_window;
+        
+        return MathAbs(late_mean - early_mean);
+    }
+
+    void UpdateCalibrationState(bool success) {
+        m_state.is_calibrated = success;
+        m_state.last_calibration = TimeCurrent();
+        m_state.calibration_count++;
+        
+        if(success) {
+            m_state.calibration_factor *= m_params.decay_rate;
+            m_params.learning_rate *= m_params.decay_rate;
+        }
+        
+        m_logger.Log(
+            StringFormat("Calibration Status: %s, Confidence: %.2f", 
+                        success ? "Success" : "Failed",
+                        m_metrics.confidence),
+            success ? LOG_INFO : LOG_WARNING,
+            "Calibrator"
+        );
+    }
+};

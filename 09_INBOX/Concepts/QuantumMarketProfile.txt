@@ -1,0 +1,165 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumMarketProfile.mqh        |
+//+------------------------------------------------------------------+
+
+class CQuantumMarketProfile {
+private:
+    struct ProfileMetrics {
+        datetime timeStart;
+        datetime timeEnd;
+        double valueArea[2];     // High and Low of 70% volume
+        double poc;              // Point of Control
+        double[] volumeNodes;
+        int[] timeNodes;
+        bool isBalanced;
+        double deviation;
+    };
+    
+    struct TPOStructure {
+        int letterCount;
+        string[] letters;
+        double[] pricePoints;
+        int[] frequency;
+        double initialBalance;
+        double valueAreaHigh;
+        double valueAreaLow;
+    };
+    
+    ProfileMetrics profile;
+    TPOStructure tpo;
+    
+public:
+    bool Initialize(const datetime start, const datetime end) {
+        profile.timeStart = start;
+        profile.timeEnd = end;
+        return InitializeProfile();
+    }
+    
+    void CalculateProfile() {
+        CalculateValueArea();
+        IdentifyPOC();
+        AnalyzeDistribution();
+        DetermineBalance();
+        MapTPOStructure();
+    }
+    
+    double GetPOC() {
+        return profile.poc;
+    }
+    
+    bool IsBalanced() {
+        return profile.isBalanced;
+    }
+
+private:
+    void CalculateValueArea() {
+        double totalVolume = 0;
+        double volumeThreshold = 0;
+        
+        // Calcular 70% do volume total
+        for(int i = 0; i < ArraySize(profile.volumeNodes); i++) {
+            totalVolume += profile.volumeNodes[i];
+        }
+        
+        volumeThreshold = totalVolume * 0.7;
+        
+        // Identificar Value Area
+        IdentifyValueAreaBoundaries(volumeThreshold);
+    }
+    
+    void IdentifyPOC() {
+        int maxVolumeIndex = 0;
+        double maxVolume = profile.volumeNodes[0];
+        
+        for(int i = 1; i < ArraySize(profile.volumeNodes); i++) {
+            if(profile.volumeNodes[i] > maxVolume) {
+                maxVolume = profile.volumeNodes[i];
+                maxVolumeIndex = i;
+            }
+        }
+        
+        profile.poc = profile.volumeNodes[maxVolumeIndex];
+    }
+    
+    void MapTPOStructure() {
+        for(int i = 0; i < profile.timeNodes.Length(); i++) {
+            string letter = GetTPOLetter(i);
+            double price = profile.pricePoints[i];
+            
+            tpo.letters.Add(letter);
+            tpo.pricePoints.Add(price);
+            tpo.frequency.Add(1);
+        }
+    }
+};
+
+class CMarketProfileAnalyzer {
+private:
+    struct ProfilePatterns {
+        bool isSinglePrint;
+        bool isBalancedProfile;
+        bool isInitialBalanceBreak;
+        bool isPoorHigh;
+        bool isPoorLow;
+        bool isExtendedPOC;
+    };
+    
+    ProfilePatterns patterns;
+    
+public:
+    void AnalyzeProfile(const CQuantumMarketProfile& profile) {
+        IdentifyPatterns(profile);
+        AnalyzeStructure();
+        DetermineImbalances();
+        PredictLikelyScenarios();
+    }
+    
+    bool IsTradablePattern() {
+        return ValidatePatterns();
+    }
+
+private:
+    void IdentifyPatterns(const CQuantumMarketProfile& profile) {
+        patterns.isSinglePrint = CheckForSinglePrints();
+        patterns.isBalancedProfile = profile.IsBalanced();
+        patterns.isInitialBalanceBreak = CheckInitialBalanceBreak();
+        patterns.isPoorHigh = CheckPoorHigh();
+        patterns.isPoorLow = CheckPoorLow();
+        patterns.isExtendedPOC = CheckExtendedPOC();
+    }
+};
+
+class CMarketProfileTrader {
+private:
+    struct TradeSetup {
+        bool isLong;
+        double entry;
+        double stop;
+        double target;
+        datetime expiry;
+        double risk;
+        double reward;
+    };
+    
+    TradeSetup setup;
+    
+public:
+    bool PrepareTradeSetup(const CQuantumMarketProfile& profile, 
+                          const CMarketProfileAnalyzer& analyzer) {
+        if(!analyzer.IsTradablePattern())
+            return false;
+            
+        CalculateEntryPoints(profile);
+        DetermineStopLevels(profile);
+        SetTargetLevels(profile);
+        
+        return ValidateSetup();
+    }
+    
+    bool ExecuteTrade() {
+        if(!ValidateMarketConditions())
+            return false;
+            
+        return OpenPosition();
+    }
+};

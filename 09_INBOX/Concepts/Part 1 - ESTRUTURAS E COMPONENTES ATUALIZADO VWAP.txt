@@ -1,0 +1,133 @@
+//+------------------------------------------------------------------+
+//| Sub-categoria: VWAP Analysis - Implementação Atualizada            |
+//+------------------------------------------------------------------+
+
+#include "TechnologyAdvances.mqh"
+#include "TeamStructure.mqh"
+
+class CVwapAnalysis : public IVolumeSubCategory {
+private:
+    // 1. Estruturas Core Atualizadas
+    struct VWAPData {
+        double vwap;
+        double cumulativeVolume;
+        double cumulativeTPV;
+        datetime startTime;
+        datetime currentTime;
+        bool isNewSession;
+    };
+    
+    struct VWAPBands {
+        double upperBand1;
+        double upperBand2;
+        double lowerBand1;
+        double lowerBand2;
+        double standardDev;
+        int bandPeriod;
+    };
+    
+    struct VWAPMetrics {
+        double priceDeviation;
+        double volumeProfile;
+        double momentum;
+        double strength;
+        bool isAboveVWAP;
+        bool isTrending;
+    };
+    
+    // 2. Componentes Avançados
+    CVWAPSignalGenerator* m_signalGenerator;
+    CVWAPAnchorPoints* m_anchorPoints;
+    CVWAPTrendAnalyzer* m_trendAnalyzer;
+    CVWAPVolumeAnalyzer* m_volumeAnalyzer;
+    CVWAPRiskManager* m_riskManager;
+    CVWAPVisualizer* m_visualizer;
+    CVWAPOptimizer* m_optimizer;
+    CVWAPBacktester* m_backtester;
+    
+    // 3. Estado e Dados
+    VWAPData m_data;
+    VWAPBands m_bands;
+    VWAPMetrics m_metrics;
+    
+    // 4. Configurações Avançadas
+    struct Config {
+        struct Signal {
+            double deviationThreshold;
+            double momentumThreshold;
+            double volumeThreshold;
+            int confirmationPeriod;
+        } signal;
+        
+        struct Risk {
+            double maxRisk;
+            double riskReward;
+            double stopMultiplier;
+            double targetMultiplier;
+        } risk;
+        
+        struct Visual {
+            color vwapColor;
+            color bandColor1;
+            color bandColor2;
+            int thickness;
+            ENUM_LINE_STYLE style;
+        } visual;
+        
+        struct Optimization {
+            int level;
+            double minAccuracy;
+            double minEfficiency;
+            bool enableAutoOptimization;
+        } optimization;
+    } m_config;
+    
+public:
+    CVwapAnalysis(CTechnologyManager* techManager)
+        : m_techManager(techManager) {
+        Initialize();
+    }
+    
+    ~CVwapAnalysis() {
+        Cleanup();
+    }
+    
+    virtual bool Initialize() override {
+        if(!ValidateComponents()) return false;
+        
+        // Inicializar componentes avançados
+        InitializeComponents();
+        
+        // Configurar parâmetros
+        ConfigureDefaults();
+        
+        // Inicializar dados
+        ResetVWAPData();
+        
+        return true;
+    }
+    
+    virtual void Update() override {
+        try {
+            // 1. Verificar nova sessão
+            if(IsNewSession()) ResetVWAPData();
+            
+            // 2. Cálculos principais
+            CalculateVWAP();
+            UpdateBands();
+            CalculateMetrics();
+            
+            // 3. Análises avançadas
+            PerformAdvancedAnalysis();
+            
+            // 4. Gerar e validar sinais
+            GenerateSignals();
+            
+            // 5. Visualização e otimização
+            UpdateVisuals();
+            OptimizeIfNeeded();
+            
+        } catch(const int error) {
+            HandleError(error);
+        }
+    }

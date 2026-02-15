@@ -1,0 +1,1317 @@
+//+------------------------------------------------------------------+
+
+
+
+//|                                                   RiskManager.mqh   |
+
+
+
+//+------------------------------------------------------------------+
+
+
+
+
+
+
+
+// Enums para gestão de risco
+
+
+
+enum ENUM_RISK_LEVEL {
+
+
+
+    RISK_LOW,
+
+
+
+    RISK_MEDIUM,
+
+
+
+    RISK_HIGH
+
+
+
+};
+
+
+
+
+
+
+
+enum ENUM_MARKET_CONDITION {
+
+
+
+    MARKET_NORMAL,
+
+
+
+    MARKET_VOLATILE,
+
+
+
+    MARKET_EXTREME
+
+
+
+};
+
+
+
+
+
+
+
+// Classe principal de gestão de risco
+
+
+
+class CRiskManager {
+
+
+
+private:
+
+
+
+    // Parâmetros de risco
+
+
+
+    struct RiskParameters {
+
+
+
+        double maxRiskPerTrade;         // Risco máximo por operação (%)
+
+
+
+        double dailyDrawdownLimit;      // Limite de drawdown diário (%)
+
+
+
+        double weeklyDrawdownLimit;     // Limite de drawdown semanal (%)
+
+
+
+        double totalRiskExposure;       // Exposição total atual (%)
+
+
+
+        double correlationLimit;        // Limite de correlação entre ativos
+
+
+
+        int maxOpenPositions;          // Número máximo de posições abertas
+
+
+
+        
+
+
+
+        void Initialize(double riskPerTrade = 0.02, double drawdownDaily = 0.05) {
+
+
+
+            maxRiskPerTrade = riskPerTrade;
+
+
+
+            dailyDrawdownLimit = drawdownDaily;
+
+
+
+            weeklyDrawdownLimit = drawdownDaily * 3;
+
+
+
+            totalRiskExposure = 0.0;
+
+
+
+            correlationLimit = 0.7;
+
+
+
+            maxOpenPositions = 10;
+
+
+
+        }
+
+
+
+    } m_params;
+
+
+
+    
+
+
+
+    // Monitor de mercado
+
+
+
+    struct MarketMonitor {
+
+
+
+        ENUM_MARKET_CONDITION current_condition;
+
+
+
+        double volatility_factor;
+
+
+
+        bool news_impact;
+
+
+
+        
+
+
+
+        void UpdateMarketCondition() {
+
+
+
+            volatility_factor = CalculateVolatility();
+
+
+
+            news_impact = CheckEconomicCalendar();
+
+
+
+            
+
+
+
+            if(volatility_factor > 2.0 || news_impact)
+
+
+
+                current_condition = MARKET_EXTREME;
+
+
+
+            else if(volatility_factor > 1.5)
+
+
+
+                current_condition = MARKET_VOLATILE;
+
+
+
+            else
+
+
+
+                current_condition = MARKET_NORMAL;
+
+
+
+        }
+
+
+
+        
+
+
+
+        double CalculateVolatility() {
+
+
+
+            int period = 20;  // Período para cálculo
+
+
+
+            double prices[];  // Array para preços
+
+
+
+            ArraySetAsSeries(prices, true);
+
+
+
+            
+
+
+
+            // Copiar preços de fechamento
+
+
+
+            if(CopyClose(_Symbol, PERIOD_CURRENT, 0, period + 1, prices) <= 0)
+
+
+
+                return 1.0;
+
+
+
+                
+
+
+
+            // Calcular retornos logarítmicos
+
+
+
+            double returns[];
+
+
+
+            ArrayResize(returns, period);
+
+
+
+            
+
+
+
+            for(int i = 0; i < period; i++) {
+
+
+
+                returns[i] = MathLog(prices[i] / prices[i+1]);
+
+
+
+            }
+
+
+
+            
+
+
+
+            // Calcular desvio padrão dos retornos
+
+
+
+            double mean = 0;
+
+
+
+            for(int i = 0; i < period; i++) {
+
+
+
+                mean += returns[i];
+
+
+
+            }
+
+
+
+            mean /= period;
+
+
+
+            
+
+
+
+            double variance = 0;
+
+
+
+            for(int i = 0; i < period; i++) {
+
+
+
+                variance += MathPow(returns[i] - mean, 2);
+
+
+
+            }
+
+
+
+            variance /= (period - 1);
+
+
+
+            
+
+
+
+            // Anualizar volatilidade
+
+
+
+            double annualized_vol = MathSqrt(variance) * MathSqrt(252);
+
+
+
+            
+
+
+
+            return annualized_vol;
+
+
+
+        }
+
+
+
+        
+
+
+
+        bool CheckEconomicCalendar() {
+
+
+
+            MqlCalendarValue values[];  // Array para eventos
+
+
+
+            datetime start = TimeCurrent();
+
+
+
+            datetime end = start + PeriodSeconds(PERIOD_H1);  // Próxima hora
+
+
+
+            
+
+
+
+            // Buscar eventos do calendário
+
+
+
+            if(CalendarValueHistory(values, start, end)) {
+
+
+
+                for(int i = 0; i < ArraySize(values); i++) {
+
+
+
+                    // Verificar impacto do evento
+
+
+
+                    ENUM_CALENDAR_EVENT_IMPACT impact = 
+
+
+
+                        (ENUM_CALENDAR_EVENT_IMPACT)values[i].impact_type;
+
+
+
+                        
+
+
+
+                    // Retornar true se encontrar evento de alto impacto
+
+
+
+                    if(impact == CALENDAR_IMPACT_HIGH) {
+
+
+
+                        return true;
+
+
+
+                    }
+
+
+
+                }
+
+
+
+            }
+
+
+
+            
+
+
+
+            return false;
+
+
+
+        }
+
+
+
+    } m_market;
+
+
+
+    
+
+
+
+    // Sistema de Análise de Candlesticks
+
+    struct CandlestickAnalyzer {
+
+        enum ENUM_CANDLESTICK_PATTERN {
+
+            PATTERN_DOJI,
+
+            PATTERN_HAMMER,
+
+            PATTERN_SHOOTING_STAR,
+
+            PATTERN_ENGULFING_BULL,
+
+            PATTERN_ENGULFING_BEAR,
+
+            PATTERN_MORNING_STAR,
+
+            PATTERN_EVENING_STAR,
+
+            PATTERN_THREE_WHITE_SOLDIERS,
+
+            PATTERN_THREE_BLACK_CROWS
+
+        };
+
+        
+
+        bool IdentifyPattern(ENUM_CANDLESTICK_PATTERN pattern, int shift = 0) {
+
+            switch(pattern) {
+
+                case PATTERN_DOJI:
+
+                    return IsDoji(shift);
+
+                case PATTERN_HAMMER:
+
+                    return IsHammer(shift);
+
+                case PATTERN_SHOOTING_STAR:
+
+                    return IsShootingStar(shift);
+
+                case PATTERN_ENGULFING_BULL:
+
+                    return IsBullishEngulfing(shift);
+
+                case PATTERN_ENGULFING_BEAR:
+
+                    return IsBearishEngulfing(shift);
+
+                case PATTERN_MORNING_STAR:
+
+                    return IsMorningStar(shift);
+
+                case PATTERN_EVENING_STAR:
+
+                    return IsEveningStar(shift);
+
+                case PATTERN_THREE_WHITE_SOLDIERS:
+
+                    return IsThreeWhiteSoldiers(shift);
+
+                case PATTERN_THREE_BLACK_CROWS:
+
+                    return IsThreeBlackCrows(shift);
+
+            }
+
+            return false;
+
+        }
+
+        
+
+    private:
+
+        bool IsDoji(int shift) {
+
+            double open = iOpen(_Symbol, PERIOD_CURRENT, shift);
+
+            double close = iClose(_Symbol, PERIOD_CURRENT, shift);
+
+            double high = iHigh(_Symbol, PERIOD_CURRENT, shift);
+
+            double low = iLow(_Symbol, PERIOD_CURRENT, shift);
+
+            
+
+            double body = MathAbs(open - close);
+
+            double totalRange = high - low;
+
+            
+
+            return (body <= totalRange * 0.1);  // Corpo é 10% ou menos do range total
+
+        }
+
+        
+
+        bool IsHammer(int shift) {
+
+            double open = iOpen(_Symbol, PERIOD_CURRENT, shift);
+
+            double close = iClose(_Symbol, PERIOD_CURRENT, shift);
+
+            double high = iHigh(_Symbol, PERIOD_CURRENT, shift);
+
+            double low = iLow(_Symbol, PERIOD_CURRENT, shift);
+
+            
+
+            double body = MathAbs(open - close);
+
+            double lowerShadow = MathMin(open, close) - low;
+
+            double upperShadow = high - MathMax(open, close);
+
+            
+
+            return (lowerShadow > body * 2 && upperShadow < body * 0.1);
+
+        }
+
+        
+
+        bool IsShootingStar(int shift) {
+
+            double open = iOpen(_Symbol, PERIOD_CURRENT, shift);
+
+            double close = iClose(_Symbol, PERIOD_CURRENT, shift);
+
+            double high = iHigh(_Symbol, PERIOD_CURRENT, shift);
+
+            double low = iLow(_Symbol, PERIOD_CURRENT, shift);
+
+            
+
+            double body = MathAbs(open - close);
+
+            double lowerShadow = MathMin(open, close) - low;
+
+            double upperShadow = high - MathMax(open, close);
+
+            
+
+            return (upperShadow > body * 2 && lowerShadow < body * 0.1);
+
+        }
+
+        
+
+        bool IsBullishEngulfing(int shift) {
+
+            double open1 = iOpen(_Symbol, PERIOD_CURRENT, shift + 1);
+
+            double close1 = iClose(_Symbol, PERIOD_CURRENT, shift + 1);
+
+            double open2 = iOpen(_Symbol, PERIOD_CURRENT, shift);
+
+            double close2 = iClose(_Symbol, PERIOD_CURRENT, shift);
+
+            
+
+            return (close1 < open1 &&  // Primeira vela bearish
+
+                   close2 > open2 &&   // Segunda vela bullish
+
+                   open2 < close1 &&   // Segunda vela engloba
+
+                   close2 > open1);    // a primeira
+
+        }
+
+        
+
+        bool IsBearishEngulfing(int shift) {
+
+            double open1 = iOpen(_Symbol, PERIOD_CURRENT, shift + 1);
+
+            double close1 = iClose(_Symbol, PERIOD_CURRENT, shift + 1);
+
+            double open2 = iOpen(_Symbol, PERIOD_CURRENT, shift);
+
+            double close2 = iClose(_Symbol, PERIOD_CURRENT, shift);
+
+            
+
+            return (close1 > open1 &&  // Primeira vela bullish
+
+                   close2 < open2 &&   // Segunda vela bearish
+
+                   open2 > close1 &&   // Segunda vela engloba
+
+                   close2 < open1);    // a primeira
+
+        }
+
+        
+
+        bool IsMorningStar(int shift) {
+
+            // Verificar padrão de 3 velas
+
+            return (IsBearishCandle(shift + 2) &&    // Primeira vela bearish
+
+                   IsSmallBody(shift + 1) &&         // Segunda vela pequena
+
+                   IsBullishCandle(shift));          // Terceira vela bullish
+
+        }
+
+        
+
+        bool IsEveningStar(int shift) {
+
+            // Verificar padrão de 3 velas
+
+            return (IsBullishCandle(shift + 2) &&    // Primeira vela bullish
+
+                   IsSmallBody(shift + 1) &&         // Segunda vela pequena
+
+                   IsBearishCandle(shift));          // Terceira vela bearish
+
+        }
+
+        
+
+        bool IsThreeWhiteSoldiers(int shift) {
+
+            // Verificar 3 velas bullish consecutivas
+
+            return (IsBullishCandle(shift + 2) &&
+
+                   IsBullishCandle(shift + 1) &&
+
+                   IsBullishCandle(shift));
+
+        }
+
+        
+
+        bool IsThreeBlackCrows(int shift) {
+
+            // Verificar 3 velas bearish consecutivas
+
+            return (IsBearishCandle(shift + 2) &&
+
+                   IsBearishCandle(shift + 1) &&
+
+                   IsBearishCandle(shift));
+
+        }
+
+        
+
+        // Funções auxiliares
+
+        bool IsBullishCandle(int shift) {
+
+            return iClose(_Symbol, PERIOD_CURRENT, shift) > iOpen(_Symbol, PERIOD_CURRENT, shift);
+
+        }
+
+        
+
+        bool IsBearishCandle(int shift) {
+
+            return iClose(_Symbol, PERIOD_CURRENT, shift) < iOpen(_Symbol, PERIOD_CURRENT, shift);
+
+        }
+
+        
+
+        bool IsSmallBody(int shift) {
+
+            double open = iOpen(_Symbol, PERIOD_CURRENT, shift);
+
+            double close = iClose(_Symbol, PERIOD_CURRENT, shift);
+
+            double high = iHigh(_Symbol, PERIOD_CURRENT, shift);
+
+            double low = iLow(_Symbol, PERIOD_CURRENT, shift);
+
+            
+
+            double body = MathAbs(open - close);
+
+            double totalRange = high - low;
+
+            
+
+            return (body <= totalRange * 0.3);  // Corpo é 30% ou menos do range total
+
+        }
+
+    } m_candlestick;
+
+
+
+    
+
+
+
+    // Sistema de logging
+
+
+
+    struct RiskLogger {
+
+
+
+        void LogRiskEvent(string event_type, string details) {
+
+
+
+            string timestamp = TimeToString(TimeCurrent(), TIME_DATE|TIME_SECONDS);
+
+
+
+            string log_entry = StringFormat("%s - %s: %s", timestamp, event_type, details);
+
+
+
+            
+
+
+
+            int handle = FileOpen("RiskLog.txt", FILE_WRITE|FILE_READ|FILE_TXT);
+
+
+
+            if(handle != INVALID_HANDLE) {
+
+
+
+                FileSeek(handle, 0, SEEK_END);
+
+
+
+                FileWriteString(handle, log_entry + "\n");
+
+
+
+                FileClose(handle);
+
+
+
+            }
+
+
+
+        }
+
+
+
+    } m_logger;
+
+
+
+
+
+
+
+public:
+
+
+
+    // Inicialização
+
+
+
+    void Initialize(double riskPerTrade = 0.02, double drawdownLimit = 0.05) {
+
+
+
+        m_params.Initialize(riskPerTrade, drawdownLimit);
+
+
+
+        m_logger.LogRiskEvent("Initialization", "Risk Manager Started");
+
+
+
+    }
+
+
+
+    
+
+
+
+    // Cálculo de tamanho da posição
+
+
+
+    double CalculatePositionSize(double stopLoss, string symbol, ENUM_RISK_LEVEL riskLevel = RISK_MEDIUM) {
+
+
+
+        if(stopLoss <= 0) return 0.0;
+
+
+
+        
+
+
+
+        // Atualizar condição de mercado
+
+
+
+        m_market.UpdateMarketCondition();
+
+
+
+        
+
+
+
+        // Ajustar risco baseado nas condições
+
+
+
+        double adjustedRisk = m_params.maxRiskPerTrade;
+
+
+
+        switch(m_market.current_condition) {
+
+
+
+            case MARKET_VOLATILE:
+
+
+
+                adjustedRisk *= 0.5;
+
+
+
+                break;
+
+
+
+            case MARKET_EXTREME:
+
+
+
+                adjustedRisk *= 0.25;
+
+
+
+                break;
+
+
+
+        }
+
+
+
+        
+
+
+
+        // Calcular tamanho da posição
+
+
+
+        double accountEquity = AccountInfoDouble(ACCOUNT_EQUITY);
+
+
+
+        double riskAmount = accountEquity * adjustedRisk;
+
+
+
+        double pointValue = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_VALUE);
+
+
+
+        double lotSize = NormalizeDouble(riskAmount / (stopLoss * pointValue), 2);
+
+
+
+        
+
+
+
+        m_logger.LogRiskEvent("Position Size", 
+
+
+
+            StringFormat("Symbol: %s, Size: %.2f, Risk: %.2f%%", 
+
+
+
+                        symbol, lotSize, adjustedRisk * 100));
+
+
+
+        
+
+
+
+        return lotSize;
+
+
+
+    }
+
+
+
+    
+
+
+
+    // Verificação de limites de risco
+
+
+
+    bool CheckRiskLimits(string agent_name, double proposed_risk) {
+
+
+
+        // Verificar drawdown diário
+
+
+
+        double currentDrawdown = CalculateCurrentDrawdown();
+
+
+
+        if(currentDrawdown + proposed_risk > m_params.dailyDrawdownLimit) {
+
+
+
+            m_logger.LogRiskEvent("Risk Limit Exceeded", 
+
+
+
+                StringFormat("Agent: %s, Drawdown: %.2f%%, Limit: %.2f%%",
+
+
+
+                           agent_name, currentDrawdown * 100, 
+
+
+
+                           m_params.dailyDrawdownLimit * 100));
+
+
+
+            return false;
+
+
+
+        }
+
+
+
+        
+
+
+
+        // Verificar exposição total
+
+
+
+        if(m_params.totalRiskExposure + proposed_risk > m_params.maxRiskPerTrade * m_params.maxOpenPositions) {
+
+
+
+            m_logger.LogRiskEvent("Exposure Limit", 
+
+
+
+                StringFormat("Agent: %s, Total Exposure Would Exceed Limit",
+
+
+
+                           agent_name));
+
+
+
+            return false;
+
+
+
+        }
+
+
+
+        
+
+
+
+        return true;
+
+
+
+    }
+
+
+
+    
+
+
+
+    // Verificação de correlação
+
+
+
+    bool CheckCorrelation(string symbol1, string symbol2) {
+
+
+
+        double correlation = CalculateCorrelation(symbol1, symbol2);
+
+
+
+        return correlation < m_params.correlationLimit;
+
+
+
+    }
+
+
+
+    
+
+
+
+private:
+
+
+
+    double CalculateCurrentDrawdown() {
+
+
+
+        double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+
+
+
+        double balance = AccountInfoDouble(ACCOUNT_BALANCE);
+
+
+
+        return (balance - equity) / balance;
+
+
+
+    }
+
+
+
+    
+
+
+
+    double CalculateCorrelation(string symbol1, string symbol2) {
+
+
+
+        int period = 20;  // Período para correlação
+
+
+
+        double prices1[], prices2[];
+
+
+
+        
+
+
+
+        ArraySetAsSeries(prices1, true);
+
+
+
+        ArraySetAsSeries(prices2, true);
+
+
+
+        
+
+
+
+        // Copiar preços de fechamento
+
+
+
+        if(CopyClose(symbol1, PERIOD_CURRENT, 0, period, prices1) <= 0)
+
+
+
+            return 0.0;
+
+
+
+            
+
+
+
+        if(CopyClose(symbol2, PERIOD_CURRENT, 0, period, prices2) <= 0)
+
+
+
+            return 0.0;
+
+
+
+            
+
+
+
+        // Calcular médias
+
+
+
+        double mean1 = 0, mean2 = 0;
+
+
+
+        for(int i = 0; i < period; i++) {
+
+
+
+            mean1 += prices1[i];
+
+
+
+            mean2 += prices2[i];
+
+
+
+        }
+
+
+
+        mean1 /= period;
+
+
+
+        mean2 /= period;
+
+
+
+        
+
+
+
+        // Calcular covariância e variâncias
+
+
+
+        double covariance = 0;
+
+
+
+        double variance1 = 0, variance2 = 0;
+
+
+
+        
+
+
+
+        for(int i = 0; i < period; i++) {
+
+
+
+            double diff1 = prices1[i] - mean1;
+
+
+
+            double diff2 = prices2[i] - mean2;
+
+
+
+            
+
+
+
+            covariance += diff1 * diff2;
+
+
+
+            variance1 += diff1 * diff1;
+
+
+
+            variance2 += diff2 * diff2;
+
+
+
+        }
+
+
+
+        
+
+
+
+        covariance /= period;
+
+
+
+        variance1 /= period;
+
+
+
+        variance2 /= period;
+
+
+
+        
+
+
+
+        // Calcular correlação
+
+
+
+        if(variance1 > 0 && variance2 > 0) {
+
+
+
+            return covariance / (MathSqrt(variance1) * MathSqrt(variance2));
+
+
+
+        }
+
+
+
+        
+
+
+
+        return 0.0;
+
+
+
+    }
+
+
+
+};
+
+

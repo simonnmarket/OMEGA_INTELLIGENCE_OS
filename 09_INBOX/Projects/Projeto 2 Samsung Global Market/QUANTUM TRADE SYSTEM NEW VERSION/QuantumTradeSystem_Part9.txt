@@ -1,0 +1,364 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part9.mq5    |
+//+------------------------------------------------------------------+
+
+class CDataManager {
+private:
+    struct DatabaseConfig {
+        string dbName;
+        string host;
+        int port;
+        string user;
+        string password;
+        bool useSSL;
+        int connectionTimeout;
+        int queryTimeout;
+        bool enableCompression;
+        string encryptionKey;
+    };
+    
+    struct CommunicationConfig {
+        bool enableEmail;
+        bool enablePush;
+        bool enableWebhook;
+        bool enableTelegram;
+        bool enableDiscord;
+        string webhookUrl;
+        string telegramToken;
+        string discordWebhook;
+        int retryAttempts;
+        int timeoutMs;
+        bool useEncryption;
+    };
+    
+    struct TradeRecord {
+        long ticket;
+        datetime openTime;
+        datetime closeTime;
+        double openPrice;
+        double closePrice;
+        double lots;
+        double profit;
+        double commission;
+        double swap;
+        string comment;
+        string symbol;
+        int type;
+        double slippage;
+        double realizedVolatility;
+        string marketCondition;
+        double executionSpeed;
+    };
+    
+    struct SignalRecord {
+        datetime time;
+        string type;
+        double probability;
+        double entryPrice;
+        double stopLoss;
+        double takeProfit;
+        bool executed;
+        double confidence;
+        string analysis;
+        double marketImpact;
+        string regime;
+        double quantumState;
+    };
+    
+    DatabaseConfig dbConfig;
+    CommunicationConfig commConfig;
+    int dbHandle;
+    bool isConnected;
+    string lastError;
+    
+    CHashMap<long, TradeRecord*> tradeCache;
+    CQueue<SignalRecord*> signalQueue;
+    CCircularBuffer<TradeRecord*>* historicalData;
+    
+    const int MAX_CACHE_SIZE = 1000;
+    const int MAX_QUEUE_SIZE = 100;
+    const int MAX_RETRY_ATTEMPTS = 3;
+    const int HISTORICAL_BUFFER_SIZE = 10000;
+    
+    CEncryption* encryption;
+    CCompression* compression;
+    CConnectionPool* connectionPool;
+    CQueryBuilder* queryBuilder;
+    CDataValidator* validator;
+
+public:
+    CDataManager() {
+        encryption = new CEncryption();
+        compression = new CCompression();
+        connectionPool = new CConnectionPool();
+        queryBuilder = new CQueryBuilder();
+        validator = new CDataValidator();
+        historicalData = new CCircularBuffer<TradeRecord*>(HISTORICAL_BUFFER_SIZE);
+    }
+    
+    ~CDataManager() {
+        SafeDelete(encryption);
+        SafeDelete(compression);
+        SafeDelete(connectionPool);
+        SafeDelete(queryBuilder);
+        SafeDelete(validator);
+        SafeDelete(historicalData);
+        Cleanup();
+    }
+    
+    bool Initialize() {
+        if(!LoadConfiguration()) return false;
+        if(!InitializeComponents()) return false;
+        if(!ConnectToDatabase()) return false;
+        if(!CreateDatabaseStructure()) return false;
+        
+        return true;
+    }
+    
+    bool SaveTrade(const MqlTradeTransaction& trans) {
+        if(!ValidateTransaction(trans)) return false;
+        
+        TradeRecord* record = CreateTradeRecord(trans);
+        if(record == NULL) return false;
+        
+        if(ProcessAndSaveTrade(record)) {
+            UpdateMetrics(record);
+            return true;
+        }
+        
+        SafeDelete(record);
+        return false;
+    }
+    
+    bool SaveSignal(const SignalRecord& signal) {
+        if(!ValidateSignal(signal)) return false;
+        
+        SignalRecord* record = CreateSignalRecord(signal);
+        if(record == NULL) return false;
+        
+        if(ProcessAndSaveSignal(record)) {
+            UpdateSignalMetrics(record);
+            return true;
+        }
+        
+        SafeDelete(record);
+        return false;
+    }
+    
+    TradeRecord* GetTrade(long ticket) {
+        TradeRecord* record = GetFromCache(ticket);
+        if(record != NULL) return record;
+        
+        record = LoadFromDatabase(ticket);
+        if(record != NULL) {
+            UpdateCache(record);
+        }
+        
+        return record;
+    }
+
+private:
+    bool InitializeComponents() {
+        if(!encryption.Initialize(dbConfig.encryptionKey)) return false;
+        if(!compression.Initialize()) return false;
+        if(!connectionPool.Initialize(dbConfig)) return false;
+        if(!queryBuilder.Initialize()) return false;
+        if(!validator.Initialize()) return false;
+        
+        return true;
+    }
+    
+    bool ProcessAndSaveTrade(TradeRecord* record) {
+        if(!validator.ValidateTradeRecord(record)) return false;
+        
+        string query = queryBuilder.BuildTradeInsert(record);
+        if(query.empty()) return false;
+        
+        bool success = ExecuteQueryWithRetry(query);
+        if(success) {
+            UpdateCache(record);
+            NotifyTradeExecution(record);
+            historicalData.Add(record);
+        }
+        
+        return success;
+    }
+    
+    bool ProcessAndSaveSignal(SignalRecord* record) {
+        if(!validator.ValidateSignalRecord(record)) return false;
+        
+        string query = queryBuilder.BuildSignalInsert(record);
+        if(query.empty()) return false;
+        
+        bool success = ExecuteQueryWithRetry(query);
+        if(success) {
+            AddToSignalQueue(record);
+            NotifySignalGeneration(record);
+        }
+        
+        return success;
+    }
+    bool ExecuteQueryWithRetry(const string& query) {
+        for(int attempt = 0; attempt < MAX_RETRY_ATTEMPTS; attempt++) {
+            DatabaseConnection* connection = connectionPool.GetConnection();
+            if(connection == NULL) continue;
+            
+            if(ExecuteQuery(connection, query)) {
+                connectionPool.ReleaseConnection(connection);
+                return true;
+            }
+            
+            connectionPool.ReleaseConnection(connection);
+            Sleep(ExponentialBackoff(attempt));
+        }
+        
+        LogError("Query execution failed after " + IntegerToString(MAX_RETRY_ATTEMPTS) + " attempts");
+        return false;
+    }
+    
+    void UpdateCache(TradeRecord* record) {
+        if(tradeCache.Count() >= MAX_CACHE_SIZE) {
+            RemoveOldestCacheEntries(MAX_CACHE_SIZE / 4);
+        }
+        
+        TradeRecord* existingRecord = NULL;
+        if(tradeCache.TryGetValue(record.ticket, existingRecord)) {
+            SafeDelete(existingRecord);
+        }
+        
+        tradeCache.Set(record.ticket, record);
+    }
+    
+    void NotifyTradeExecution(const TradeRecord* record) {
+        if(!commConfig.enableNotifications) return;
+        
+        string message = FormatTradeMessage(record);
+        
+        if(commConfig.enableEmail) {
+            SendEncryptedEmail("Trade Execution", message);
+        }
+        
+        if(commConfig.enableTelegram) {
+            SendTelegramMessage(message);
+        }
+        
+        if(commConfig.enableDiscord) {
+            SendDiscordWebhook(FormatDiscordMessage(record));
+        }
+        
+        if(commConfig.enableWebhook) {
+            SendWebhookNotification(SerializeTradeRecord(record));
+        }
+    }
+    
+    void NotifySignalGeneration(const SignalRecord* record) {
+        if(!commConfig.enableNotifications) return;
+        
+        string message = FormatSignalMessage(record);
+        
+        if(record.probability >= 0.8) {
+            SendHighPriorityNotification(message);
+        } else {
+            SendStandardNotification(message);
+        }
+    }
+    
+    string SerializeTradeRecord(const TradeRecord* record) {
+        CJSONBuilder json;
+        
+        json.StartObject()
+            .Add("ticket", record.ticket)
+            .Add("openTime", TimeToString(record.openTime))
+            .Add("closeTime", TimeToString(record.closeTime))
+            .Add("openPrice", record.openPrice)
+            .Add("closePrice", record.closePrice)
+            .Add("lots", record.lots)
+            .Add("profit", record.profit)
+            .Add("commission", record.commission)
+            .Add("swap", record.swap)
+            .Add("slippage", record.slippage)
+            .Add("realizedVolatility", record.realizedVolatility)
+            .Add("marketCondition", record.marketCondition)
+            .Add("executionSpeed", record.executionSpeed)
+            .EndObject();
+            
+        return json.ToString();
+    }
+    
+    void RemoveOldestCacheEntries(int count) {
+        long[] tickets = tradeCache.Keys();
+        ArraySort(tickets);
+        
+        for(int i = 0; i < count && i < ArraySize(tickets); i++) {
+            TradeRecord* record = NULL;
+            if(tradeCache.TryGetValue(tickets[i], record)) {
+                SafeDelete(record);
+                tradeCache.Remove(tickets[i]);
+            }
+        }
+    }
+    
+    int ExponentialBackoff(int attempt) {
+        return (int)MathPow(2, attempt) * 100;
+    }
+    
+    void LogError(const string& error) {
+        lastError = TimeToString(TimeCurrent()) + ": " + error;
+        Print("DataManager Error: ", lastError);
+        
+        string logEntry = SerializeErrorLog(error);
+        SaveErrorLog(logEntry);
+    }
+    
+    string SerializeErrorLog(const string& error) {
+        CJSONBuilder json;
+        
+        json.StartObject()
+            .Add("timestamp", TimeToString(TimeCurrent()))
+            .Add("error", error)
+            .Add("symbol", Symbol())
+            .Add("timeframe", EnumToString(Period()))
+            .EndObject();
+            
+        return json.ToString();
+    }
+    
+    void SaveErrorLog(const string& logEntry) {
+        string query = queryBuilder.BuildErrorLogInsert(logEntry);
+        ExecuteQueryWithRetry(query);
+    }
+    
+    void SendHighPriorityNotification(const string& message) {
+        if(commConfig.enableEmail) {
+            SendEncryptedEmail("HIGH PRIORITY SIGNAL", message);
+        }
+        
+        if(commConfig.enableTelegram) {
+            SendTelegramMessage("🚨 " + message);
+        }
+        
+        if(commConfig.enableDiscord) {
+            SendDiscordWebhook(FormatHighPriorityMessage(message));
+        }
+    }
+    
+    string FormatHighPriorityMessage(const string& message) {
+        return "```diff\n+ HIGH PRIORITY SIGNAL\n" + message + "\n```";
+    }
+    
+    template<typename T>
+    void SafeDelete(T* &ptr) {
+        if(ptr != NULL) {
+            delete ptr;
+            ptr = NULL;
+        }
+    }
+    
+    bool ValidateTransaction(const MqlTradeTransaction& trans) {
+        return validator.ValidateTransaction(trans);
+    }
+    
+    bool ValidateSignal(const SignalRecord& signal) {
+        return validator.ValidateSignal(signal);
+    }
+};

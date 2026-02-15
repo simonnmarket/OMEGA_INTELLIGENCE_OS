@@ -1,0 +1,196 @@
+//+------------------------------------------------------------------+
+//| Volume Footprint Chart - Sistema de Execução de Operações         |
+//|                                                                    |
+//| OBJETIVO: Implementar sistema robusto de execução de trades com:   |
+//| - Validação de Ordens                                             |
+//| - Gestão de Execução                                              |
+//| - Controle de Erros                                               |
+//| - Registro de Operações                                           |
+//+------------------------------------------------------------------+
+
+private:
+    struct TradeExecutor {
+        // Configurações de Execução
+        struct Config {
+            int maxRetries;            // Tentativas máximas
+            int retryDelay;            // Delay entre tentativas (ms)
+            double slippage;           // Slippage máximo permitido
+            bool useAsyncExecution;    // Execução assíncrona
+            bool useSmartRouting;      // Roteamento inteligente
+        } config;
+        
+        // Métricas de Execução
+        struct Metrics {
+            int successfulTrades;      // Trades bem sucedidos
+            int failedTrades;          // Falhas de execução
+            double avgExecutionTime;   // Tempo médio de execução
+            double slippageTotal;      // Slippage total
+            datetime lastExecution;     // Última execução
+        } metrics;
+        
+        // Estado da Execução
+        struct State {
+            bool isExecuting;          // Em execução
+            int retryCount;            // Contagem de tentativas
+            string lastError;          // Último erro
+            bool isValid;              // Estado válido
+        } state;
+    } m_executor;
+    
+    void ExecuteBuy() {
+        // Validar condições pré-execução
+        if(!ValidatePreExecution()) return;
+        
+        // Inicializar estado
+        InitializeExecutionState();
+        
+        // Tentar execução
+        while(m_executor.state.retryCount < m_executor.config.maxRetries) {
+            if(ExecuteBuyOrder()) {
+                ProcessSuccessfulExecution("Buy");
+                return;
+            }
+            
+            HandleExecutionError();
+            Sleep(m_executor.config.retryDelay);
+            m_executor.state.retryCount++;
+        }
+        
+        // Falha após todas as tentativas
+        HandleExecutionFailure();
+    }
+    
+    void ExecuteSell() {
+        // Validar condições pré-execução
+        if(!ValidatePreExecution()) return;
+        
+        // Inicializar estado
+        InitializeExecutionState();
+        
+        // Tentar execução
+        while(m_executor.state.retryCount < m_executor.config.maxRetries) {
+            if(ExecuteSellOrder()) {
+                ProcessSuccessfulExecution("Sell");
+                return;
+            }
+            
+            HandleExecutionError();
+            Sleep(m_executor.config.retryDelay);
+            m_executor.state.retryCount++;
+        }
+        
+        // Falha após todas as tentativas
+        HandleExecutionFailure();
+    }
+    
+    bool ExecuteBuyOrder() {
+        uint startTime = GetTickCount();
+        
+        bool result = m_trade.Buy(
+            m_setup.volume,
+            _Symbol,
+            m_setup.entry,
+            m_setup.stopLoss,
+            m_setup.takeProfit,
+            "VFC - Buy"
+        );
+        
+        // Registrar tempo de execução
+        m_executor.metrics.avgExecutionTime = 
+            (GetTickCount() - startTime + m_executor.metrics.avgExecutionTime) / 2;
+        
+        return result;
+    }
+    
+    bool ExecuteSellOrder() {
+        uint startTime = GetTickCount();
+        
+        bool result = m_trade.Sell(
+            m_setup.volume,
+            _Symbol,
+            m_setup.entry,
+            m_setup.stopLoss,
+            m_setup.takeProfit,
+            "VFC - Sell"
+        );
+        
+        // Registrar tempo de execução
+        m_executor.metrics.avgExecutionTime = 
+            (GetTickCount() - startTime + m_executor.metrics.avgExecutionTime) / 2;
+        
+        return result;
+    }
+    
+    bool ValidatePreExecution() {
+        // Verificar estado do mercado
+        if(!m_rtData.isValid) {
+            LogMessage("Dados de mercado inválidos", LOG_ERROR);
+            return false;
+        }
+        
+        // Verificar risco
+        if(!ValidateRiskParameters()) {
+            LogMessage("Parâmetros de risco inválidos", LOG_ERROR);
+            return false;
+        }
+        
+        // Verificar setup
+        if(!m_setup.isValid) {
+            LogMessage("Setup inválido", LOG_ERROR);
+            return false;
+        }
+        
+        return true;
+    }
+    
+    void ProcessSuccessfulExecution(const string direction) {
+        m_executor.metrics.successfulTrades++;
+        m_executor.metrics.lastExecution = TimeCurrent();
+        
+        // Registrar trade
+        RegisterTrade(direction);
+        
+        // Notificar sucesso
+        string message = StringFormat(
+            "Execução bem sucedida\nDireção: %s\nPreço: %.5f\nVolume: %.2f",
+            direction,
+            m_setup.entry,
+            m_setup.volume
+        );
+        
+        LogMessage(message, LOG_INFO);
+        NotifyTeam(message);
+        
+        // Atualizar TechnologyAdvances
+        UpdateExecutionMetrics();
+    }
+    
+    void HandleExecutionError() {
+        int error = GetLastError();
+        m_executor.state.lastError = ErrorDescription(error);
+        m_executor.metrics.failedTrades++;
+        
+        LogMessage("Erro na execução: " + m_executor.state.lastError, LOG_ERROR);
+    }
+    
+    void HandleExecutionFailure() {
+        string message = StringFormat(
+            "Falha na execução após %d tentativas\nÚltimo erro: %s",
+            m_executor.config.maxRetries,
+            m_executor.state.lastError
+        );
+        
+        LogMessage(message, LOG_ERROR);
+        NotifyTeam(message);
+    }
+    
+    void UpdateExecutionMetrics() {
+        ExecutionMetrics metrics;
+        metrics.successRate = (double)m_executor.metrics.successfulTrades / 
+                            (m_executor.metrics.successfulTrades + m_executor.metrics.failedTrades);
+        metrics.avgExecutionTime = m_executor.metrics.avgExecutionTime;
+        metrics.slippageAvg = m_executor.metrics.slippageTotal / m_executor.metrics.successfulTrades;
+        
+        m_techManager.UpdateExecutionMetrics(metrics);
+    }
+};

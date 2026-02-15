@@ -1,0 +1,163 @@
+// Localização: Novo componente de segurança
+// Problema: Necessidade de validação mais robusta
+// Solução: Implementar sistema de proteção quântica
+
+class CQuantumValidator {
+private:
+    struct ValidationRule {
+        string name;
+        double min_value;
+        double max_value;
+        double threshold;
+        bool is_critical;
+    };
+
+    struct ValidationResult {
+        bool is_valid;
+        string error_message;
+        double confidence;
+        datetime timestamp;
+    };
+
+    CArrayObj m_rules;
+    CHashMap<string, ValidationResult*> m_results;
+    
+    // Configurações
+    const double CRITICAL_THRESHOLD = 0.95;
+    const int MAX_VALIDATION_HISTORY = 1000;
+
+public:
+    void AddRule(const string &name, double min, double max, 
+                double threshold, bool is_critical = false) {
+        ValidationRule* rule = new ValidationRule();
+        rule.name = name;
+        rule.min_value = min;
+        rule.max_value = max;
+        rule.threshold = threshold;
+        rule.is_critical = is_critical;
+        
+        m_rules.Add(rule);
+    }
+
+    bool ValidateQuantumState(const CQuantumState* state) {
+        if(state == NULL) return false;
+        
+        bool all_valid = true;
+        ValidationResult* result = new ValidationResult();
+        result.timestamp = TimeCurrent();
+        
+        // Validar coerência
+        if(!ValidateValue("Coherence", state.GetCoherence(), result)) {
+            all_valid = false;
+        }
+        
+        // Validar emaranhamento
+        if(!ValidateValue("Entanglement", state.GetEntanglement(), result)) {
+            all_valid = false;
+        }
+        
+        // Validar função de onda
+        if(!ValidateWaveFunction(state, result)) {
+            all_valid = false;
+        }
+        
+        UpdateValidationHistory(result);
+        return all_valid;
+    }
+
+private:
+    bool ValidateValue(const string &name, double value, ValidationResult* result) {
+        for(int i = 0; i < m_rules.Total(); i++) {
+            ValidationRule* rule = m_rules.At(i);
+            if(rule == NULL || rule.name != name) continue;
+            
+            if(value < rule.min_value || value > rule.max_value) {
+                result.is_valid = false;
+                result.error_message = StringFormat(
+                    "Valor inválido para %s: %.6f (min: %.6f, max: %.6f)",
+                    name, value, rule.min_value, rule.max_value
+                );
+                result.confidence = 0;
+                
+                if(rule.is_critical) {
+                    ThrowCriticalError(result.error_message);
+                }
+                
+                return false;
+            }
+            
+            if(MathAbs(value - rule.threshold) > CRITICAL_THRESHOLD) {
+                result.confidence = 1.0 - MathAbs(value - rule.threshold);
+            }
+        }
+        
+        return true;
+    }
+
+    bool ValidateWaveFunction(const CQuantumState* state, ValidationResult* result) {
+        double wave[];
+        state.GetWaveFunction(wave);
+        
+        double sum = 0;
+        for(int i = 0; i < ArraySize(wave); i++) {
+            if(MathAbs(wave[i]) > 1.0) {
+                result.is_valid = false;
+                result.error_message = "Função de onda inválida: valores fora do intervalo [-1,1]";
+                return false;
+            }
+            sum += MathPow(wave[i], 2);
+        }
+        
+        // Verificar normalização
+        if(MathAbs(sum - 1.0) > 0.0001) {
+            result.is_valid = false;
+            result.error_message = "Função de onda não normalizada";
+            return false;
+        }
+        
+        return true;
+    }
+
+    void UpdateValidationHistory(ValidationResult* result) {
+        string key = TimeToString(result.timestamp);
+        
+        // Limpar histórico antigo se necessário
+        if(m_results.Count() >= MAX_VALIDATION_HISTORY) {
+            ClearOldestValidation();
+        }
+        
+        m_results.Add(key, result);
+    }
+
+    void ClearOldestValidation() {
+        datetime oldest_time = TimeCurrent();
+        string oldest_key = "";
+        
+        string keys[];
+        m_results.CopyTo(keys, NULL);
+        
+        for(int i = 0; i < ArraySize(keys); i++) {
+            ValidationResult* result = NULL;
+            if(m_results.TryGetValue(keys[i], result)) {
+                if(result.timestamp < oldest_time) {
+                    oldest_time = result.timestamp;
+                    oldest_key = keys[i];
+                }
+            }
+        }
+        
+        if(oldest_key != "") {
+            ValidationResult* result = NULL;
+            if(m_results.TryGetValue(oldest_key, result)) {
+                delete result;
+                m_results.Remove(oldest_key);
+            }
+        }
+    }
+
+    void ThrowCriticalError(const string &message) {
+        // Implementar tratamento de erro crítico
+        Print("ERRO CRÍTICO: ", message);
+        // Possível parada do sistema ou notificação
+    }
+};

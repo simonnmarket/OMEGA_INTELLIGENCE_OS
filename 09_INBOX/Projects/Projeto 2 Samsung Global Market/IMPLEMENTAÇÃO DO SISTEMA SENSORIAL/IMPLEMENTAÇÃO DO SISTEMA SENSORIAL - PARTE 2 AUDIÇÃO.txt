@@ -1,0 +1,190 @@
+IMPLEMENTAÇÃO DO SISTEMA SENSORIAL - PARTE 2 AUDIÇÃO
+
+//+------------------------------------------------------------------+
+//|                                    QuantumHearingSystem.mqh        |
+//+------------------------------------------------------------------+
+
+class CMarketHearingSystem : public CScoreSystem {
+private:
+    struct AudioMetrics {
+        double marketNoiseLevel;
+        double signalClarity;
+        double frequencyAnalysis;
+        double volumeIntensity;
+        double priceResonance;
+        double marketHarmony;
+        double volatilityAmplitude;
+        double trendResonance;
+    };
+    
+    struct AudioParameters {
+        int signalSmoothingPeriod;
+        double noiseThreshold;
+        int frequencyWindow;
+        double minimumAmplitude;
+        int harmonicPeriod;
+        double resonanceThreshold;
+        int volatilityWindow;
+        double filterStrength;
+    };
+    
+    struct MarketSound {
+        datetime time;
+        double frequency;
+        double amplitude;
+        double phase;
+        double harmonics[];
+        double noise;
+        string pattern;
+        bool isHarmonic;
+    };
+    
+    AudioMetrics metrics;
+    AudioParameters params;
+    CArrayObj* soundHistory;
+    CSignalProcessor* signalProcessor;
+    CFrequencyAnalyzer* freqAnalyzer;
+    CHarmonicDetector* harmonicDetector;
+    
+public:
+    CMarketHearingSystem() {
+        soundHistory = new CArrayObj();
+        signalProcessor = new CSignalProcessor();
+        freqAnalyzer = new CFrequencyAnalyzer();
+        harmonicDetector = new CHarmonicDetector();
+        InitializeParameters();
+    }
+    
+    ~CMarketHearingSystem() {
+        SafeDelete(soundHistory);
+        SafeDelete(signalProcessor);
+        SafeDelete(freqAnalyzer);
+        SafeDelete(harmonicDetector);
+    }
+    
+    bool Initialize() {
+        if(!InitializeComponents()) return false;
+        if(!CalibrateHearing()) return false;
+        if(!ValidateAudioParameters()) return false;
+        
+        return true;
+    }
+    
+    void ProcessMarketSounds() {
+        AnalyzeMarketNoise();
+        DetectSignals();
+        AnalyzeFrequencies();
+        MeasureVolume();
+        UpdateAudioMetrics();
+    }
+    
+    AudioMetrics GetMetrics() const {
+        return metrics;
+    }
+
+private:
+    void InitializeParameters() {
+        params.signalSmoothingPeriod = 14;
+        params.noiseThreshold = 0.2;
+        params.frequencyWindow = 50;
+        params.minimumAmplitude = 0.001;
+        params.harmonicPeriod = 20;
+        params.resonanceThreshold = 0.7;
+        params.volatilityWindow = 30;
+        params.filterStrength = 0.5;
+    }
+    
+    bool InitializeComponents() {
+        if(!signalProcessor.Initialize(params.signalSmoothingPeriod)) return false;
+        if(!freqAnalyzer.Initialize(params.frequencyWindow)) return false;
+        if(!harmonicDetector.Initialize(params.harmonicPeriod)) return false;
+        
+        return true;
+    }
+    
+    void AnalyzeMarketNoise() {
+        MarketData currentData;
+        if(GetCurrentMarketData(currentData)) {
+            metrics.marketNoiseLevel = CalculateNoiseLevel(currentData);
+            FilterMarketNoise(currentData);
+        }
+    }
+    
+    void DetectSignals() {
+        SignalData signals;
+        if(signalProcessor.ProcessCurrentData(signals)) {
+            metrics.signalClarity = AnalyzeSignalClarity(signals);
+            metrics.priceResonance = CalculatePriceResonance(signals);
+        }
+    }
+    
+    void AnalyzeFrequencies() {
+        FrequencyData freqData;
+        if(freqAnalyzer.AnalyzeCurrentFrequencies(freqData)) {
+            metrics.frequencyAnalysis = ProcessFrequencyData(freqData);
+            metrics.marketHarmony = DetectHarmonicPatterns(freqData);
+        }
+    }
+    
+    void MeasureVolume() {
+        VolumeData volData;
+        if(GetVolumeData(volData)) {
+            metrics.volumeIntensity = CalculateVolumeIntensity(volData);
+            metrics.volatilityAmplitude = MeasureVolatilitySound(volData);
+        }
+    }
+    
+    double CalculateNoiseLevel(const MarketData& data) {
+        double shortTermNoise = CalculateShortTermNoise(data);
+        double longTermNoise = CalculateLongTermNoise(data);
+        double randomNoise = CalculateRandomNoise(data);
+        
+        return NormalizeNoiseLevel(shortTermNoise, longTermNoise, randomNoise);
+    }
+    
+    double AnalyzeSignalClarity(const SignalData& signals) {
+        double signalStrength = CalculateSignalStrength(signals);
+        double signalPersistence = CalculateSignalPersistence(signals);
+        double signalConsistency = CalculateSignalConsistency(signals);
+        
+        return NormalizeSignalClarity(signalStrength, signalPersistence, signalConsistency);
+    }
+    
+    double ProcessFrequencyData(const FrequencyData& freqData) {
+        double dominantFreq = IdentifyDominantFrequency(freqData);
+        double harmonicContent = CalculateHarmonicContent(freqData);
+        double frequencyStability = MeasureFrequencyStability(freqData);
+        
+        return NormalizeFrequencyAnalysis(dominantFreq, harmonicContent, frequencyStability);
+    }
+    
+    void UpdateAudioMetrics() {
+        metrics.trendResonance = CalculateTrendResonance();
+        
+        ValidateMetrics();
+        NormalizeMetrics();
+        StoreMetricsHistory();
+    }
+    
+    bool CalibrateHearing() {
+        return (CalibrateNoiseFilters() &&
+                CalibrateFrequencyDetection() &&
+                CalibrateHarmonicRecognition());
+    }
+    
+    template<typename T>
+    void SafeDelete(T* &ptr) {
+        if(ptr != NULL) {
+            delete ptr;
+            ptr = NULL;
+        }
+    }
+};
+
+
+Esta é a implementação do sistema de "audição" do Adan, que permite:
+    • Detectar "sons" do mercado
+    • Filtrar ruídos
+    • Analisar frequências4. Identificar padrões harmônicos
+    • Medir intensidade de volume
+    • Detectar ressonâncias de preço 

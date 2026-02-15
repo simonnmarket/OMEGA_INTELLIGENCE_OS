@@ -1,0 +1,14 @@
+# backend/agents/traderbot.py
+from backend.api import MT5Connector
+
+class TraderBot:
+    def __init__(self):
+        self.mt5 = MT5Connector()
+
+    def fetch_data(self, symbol, timeframe, count):
+        """Coleta dados do mercado."""
+        return self.mt5.get_market_data(symbol, timeframe, count)
+
+    def log_trade(self, trade_details):
+        """Registra detalhes da operação no banco de dados."""
+        print(f"Operação registrada: {trade_details}")

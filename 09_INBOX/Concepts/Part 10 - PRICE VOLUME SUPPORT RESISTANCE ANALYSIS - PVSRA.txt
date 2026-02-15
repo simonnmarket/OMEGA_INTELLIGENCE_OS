@@ -1,0 +1,227 @@
+//+------------------------------------------------------------------+
+//| PVSRA (Price Volume Support Resistance Analysis) - Parte 10        |
+//|                                                                    |
+//| OBJETIVO: Implementar fluxo principal e controle do sistema com:   |
+//| - Ciclo Principal                                                 |
+//| - Gestão de Estado                                                |
+//| - Controle de Erros                                              |
+//| - Integração Final                                                |
+//+------------------------------------------------------------------+
+
+class CPVSRASystem : public CQuantumState {
+private:
+    // Estado Global do Sistema
+    struct SystemState {
+        bool isInitialized;          // Sistema inicializado
+        bool isRunning;              // Sistema em execução
+        bool isPaused;               // Sistema pausado
+        bool isError;                // Estado de erro
+        datetime lastUpdate;         // Última atualização
+        int errorCount;             // Contador de erros
+    } m_state;
+    
+    // Componentes do Sistema
+    CPVSRAAnalysis* m_analysis;           // Análise PVSRA
+    CPVSRARiskManager* m_riskManager;      // Gestão de Risco
+    CPVSRAOptimizer* m_optimizer;          // Otimização
+    CPVSRAReporting* m_reporting;          // Relatórios
+    
+public:
+    CPVSRASystem(CTechnologyManager* techManager) {
+        Initialize(techManager);
+    }
+    
+    ~CPVSRASystem() {
+        Cleanup();
+    }
+    
+    void OnTick() {
+        if(!ValidateSystemState()) return;
+        
+        try {
+            // 1. Atualizar estado
+            UpdateSystemState();
+            
+            // 2. Processar dados
+            ProcessMarketData();
+            
+            // 3. Executar análise
+            ExecuteAnalysis();
+            
+            // 4. Gerenciar posições
+            ManagePositions();
+            
+            // 5. Atualizar relatórios
+            UpdateReports();
+            
+        } catch(const int error) {
+            HandleSystemError(error);
+        }
+    }
+
+private:
+    void Initialize(CTechnologyManager* techManager) {
+        // Inicializar componentes
+        m_analysis = new CPVSRAAnalysis(techManager);
+        m_riskManager = new CPVSRARiskManager(techManager);
+        m_optimizer = new CPVSRAOptimizer(techManager);
+        m_reporting = new CPVSRAReporting(techManager);
+        
+        // Configurar estado inicial
+        m_state.isInitialized = false;
+        m_state.isRunning = false;
+        m_state.isPaused = false;
+        m_state.isError = false;
+        m_state.errorCount = 0;
+        
+        // Inicializar sistema
+        if(InitializeSystem()) {
+            m_state.isInitialized = true;
+            m_state.isRunning = true;
+            LogMessage("Sistema PVSRA inicializado com sucesso", LOG_INFO);
+        }
+    }
+    
+    bool InitializeSystem() {
+        // Validar componentes
+        if(!ValidateComponents()) return false;
+        
+        // Carregar configurações
+        if(!LoadConfigurations()) return false;
+        
+        // Inicializar análise
+        if(!m_analysis.Initialize()) return false;
+        
+        // Inicializar gestão de risco
+        if(!m_riskManager.Initialize()) return false;
+        
+        // Configurar otimização
+        if(!m_optimizer.Initialize()) return false;
+        
+        // Configurar relatórios
+        if(!m_reporting.Initialize()) return false;
+        
+        return true;
+    }
+    
+    bool ValidateSystemState() {
+        if(!m_state.isInitialized) {
+            LogMessage("Sistema não inicializado", LOG_ERROR);
+            return false;
+        }
+        
+        if(m_state.isPaused) {
+            return false;
+        }
+        
+        if(m_state.isError && m_state.errorCount > MAX_ERROR_COUNT) {
+            EmergencyShutdown();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    void UpdateSystemState() {
+        // Atualizar timestamp
+        m_state.lastUpdate = TimeCurrent();
+        
+        // Verificar conexão
+        if(!TerminalInfoInteger(TERMINAL_CONNECTED)) {
+            PauseSystem("Conexão perdida");
+            return;
+        }
+        
+        // Verificar recursos
+        if(!ValidateSystemResources()) {
+            PauseSystem("Recursos insuficientes");
+            return;
+        }
+        
+        // Atualizar componentes
+        UpdateComponents();
+    }
+    
+    void ProcessMarketData() {
+        // Atualizar dados de mercado
+        m_analysis.UpdateMarketData();
+        
+        // Processar padrões PVSRA
+        m_analysis.ProcessPVSRAPatterns();
+        
+        // Atualizar análise ML
+        if(m_config.useML) {
+            m_analysis.UpdateMLAnalysis();
+        }
+    }
+    
+    void ExecuteAnalysis() {
+        // Executar análise PVSRA
+        if(m_analysis.ExecuteAnalysis()) {
+            // Processar sinais
+            ProcessSignals();
+            
+            // Atualizar métricas
+            UpdateMetrics();
+        }
+    }
+    
+    void ManagePositions() {
+        if(!PositionSelect(_Symbol)) return;
+        
+        // Atualizar gestão de risco
+        m_riskManager.UpdateRiskManagement();
+        
+        // Verificar condições de saída
+        CheckExitConditions();
+        
+        // Atualizar stops
+        UpdateStopLevels();
+    }
+    
+    void UpdateReports() {
+        // Gerar relatórios
+        m_reporting.GenerateReports();
+        
+        // Atualizar dashboard
+        m_reporting.UpdateDashboard();
+        
+        // Processar alertas
+        ProcessAlerts();
+    }
+    
+    void HandleSystemError(const int error) {
+        m_state.isError = true;
+        m_state.errorCount++;
+        
+        string errorMsg = StringFormat(
+            "Erro do Sistema PVSRA: %d\nContagem: %d\nÚltima Atualização: %s",
+            error,
+            m_state.errorCount,
+            TimeToString(m_state.lastUpdate)
+        );
+        
+        LogMessage(errorMsg, LOG_ERROR);
+        NotifyTeam(errorMsg);
+        
+        if(m_state.errorCount > MAX_ERROR_COUNT) {
+            EmergencyShutdown();
+        }
+    }
+    
+    void EmergencyShutdown() {
+        LogMessage("Iniciando desligamento de emergência", LOG_ERROR);
+        
+        // Fechar posições
+        CloseAllPositions();
+        
+        // Salvar estado
+        SaveSystemState();
+        
+        // Notificar equipe
+        NotifyEmergencyShutdown();
+        
+        // Parar sistema
+        m_state.isRunning = false;
+    }
+};

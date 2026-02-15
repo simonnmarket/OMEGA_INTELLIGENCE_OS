@@ -1,0 +1,165 @@
+//+------------------------------------------------------------------+
+//| Order Flow Analysis - Parte 5                                      |
+//|                                                                    |
+//| OBJETIVO: Implementar análise estatística e machine learning com:  |
+//| - Análise Estatística                                             |
+//| - Previsão de Movimentos                                          |
+//| - Otimização de Parâmetros                                        |
+//| - Integração com TechnologyAdvances ML                            |
+//+------------------------------------------------------------------+
+
+private:
+    // Estruturas de Análise Estatística
+    struct OrderFlowStats {
+        // Análise Estatística
+        struct Statistics {
+            double deltaMean;         // Média do delta
+            double deltaStdDev;       // Desvio padrão do delta
+            double volumeProfile[];   // Perfil estatístico
+            double correlation;       // Correlação preço/volume
+            double significance;      // Significância estatística
+        } stats;
+        
+        // Machine Learning
+        struct MLAnalysis {
+            double prediction;        // Previsão de movimento
+            double probability;       // Probabilidade
+            double confidence;        // Confiança
+            double features[];        // Features para ML
+            bool isValid;            // Validação
+        } ml;
+    } m_stats;
+    
+    void UpdateStatistics() {
+        // Validar dados
+        if(!ValidateStatisticalData()) return;
+        
+        // Atualizar estatísticas
+        CalculateStatistics();
+        
+        // Atualizar ML
+        if(m_config.useML) {
+            UpdateMLAnalysis();
+        }
+        
+        // Integrar com TechnologyAdvances
+        UpdateTechStatistics();
+    }
+    
+    void CalculateStatistics() {
+        // Calcular estatísticas do delta
+        m_stats.stats.deltaMean = CalculateDeltaMean();
+        m_stats.stats.deltaStdDev = CalculateDeltaStdDev();
+        
+        // Atualizar perfil estatístico
+        UpdateStatisticalProfile();
+        
+        // Calcular correlações
+        m_stats.stats.correlation = CalculateCorrelation();
+        
+        // Testar significância
+        m_stats.stats.significance = TestSignificance();
+    }
+    
+    void UpdateMLAnalysis() {
+        // Preparar features
+        PrepareMLFeatures();
+        
+        // Obter previsão do TechnologyAdvances
+        MLPrediction prediction;
+        prediction.features = m_stats.ml.features;
+        prediction.timestamp = TimeCurrent();
+        
+        // Processar previsão
+        if(m_techManager.GetMLPrediction(prediction)) {
+            ProcessMLPrediction(prediction);
+        }
+    }
+    
+    void PrepareMLFeatures() {
+        ArrayResize(m_stats.ml.features, 10);
+        
+        // Features de Delta
+        m_stats.ml.features[0] = m_data.delta.delta;
+        m_stats.ml.features[1] = m_data.delta.cumDelta;
+        
+        // Features de Volume
+        m_stats.ml.features[2] = m_data.delta.buyVolume;
+        m_stats.ml.features[3] = m_data.delta.sellVolume;
+        
+        // Features de Footprint
+        m_stats.ml.features[4] = CalculateImbalanceFeature();
+        m_stats.ml.features[5] = CalculateAbsorptionFeature();
+        
+        // Features Estatísticas
+        m_stats.ml.features[6] = m_stats.stats.deltaStdDev;
+        m_stats.ml.features[7] = m_stats.stats.correlation;
+        
+        // Features de Mercado
+        m_stats.ml.features[8] = CalculateMarketFeature();
+        m_stats.ml.features[9] = CalculateVolatilityFeature();
+    }
+    
+    void ProcessMLPrediction(const MLPrediction &prediction) {
+        // Atualizar estado ML
+        m_stats.ml.prediction = prediction.value;
+        m_stats.ml.probability = prediction.probability;
+        m_stats.ml.confidence = prediction.confidence;
+        m_stats.ml.isValid = true;
+        
+        // Criar sinal se confiança alta
+        if(m_stats.ml.confidence > 0.85) {
+            CreateMLSignal();
+        }
+        
+        // Atualizar TechnologyAdvances
+        UpdateMLMetrics();
+    }
+    
+    void CreateMLSignal() {
+        InsightSignal signal;
+        signal.type = SIGNAL_ML_PREDICTION;
+        signal.direction = m_stats.ml.prediction > 0 ? SIGNAL_BUY : SIGNAL_SELL;
+        signal.strength = m_stats.ml.probability;
+        signal.confidence = m_stats.ml.confidence;
+        signal.timestamp = TimeCurrent();
+        signal.description = FormatMLSignal();
+        
+        // Adicionar sinal
+        AddSignal(signal);
+        
+        // Notificar via TechnologyAdvances
+        m_techManager.ProcessMLSignal(signal);
+        
+        // Notificar equipe responsável
+        NotifyTeam(FormatMLNotification(signal));
+    }
+    
+    void UpdateTechStatistics() {
+        // Criar pacote de estatísticas
+        OrderFlowStatistics stats;
+        stats.deltaStats.mean = m_stats.stats.deltaMean;
+        stats.deltaStats.stdDev = m_stats.stats.deltaStdDev;
+        stats.correlation = m_stats.stats.correlation;
+        stats.significance = m_stats.stats.significance;
+        
+        // ML metrics
+        if(m_stats.ml.isValid) {
+            stats.mlMetrics.prediction = m_stats.ml.prediction;
+            stats.mlMetrics.probability = m_stats.ml.probability;
+            stats.mlMetrics.confidence = m_stats.ml.confidence;
+        }
+        
+        // Enviar para TechnologyAdvances
+        m_techManager.UpdateOrderFlowStats(stats);
+    }
+    
+    string FormatMLSignal() {
+        return StringFormat(
+            "ML Signal\nDirection: %s\nProbability: %.2f%%\nConfidence: %.2f%%",
+            m_stats.ml.prediction > 0 ? "BUY" : "SELL",
+            m_stats.ml.probability * 100,
+            m_stats.ml.confidence * 100
+        );
+    }
+};

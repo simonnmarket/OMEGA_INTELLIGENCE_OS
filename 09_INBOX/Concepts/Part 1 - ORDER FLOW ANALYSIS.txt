@@ -1,0 +1,69 @@
+//+------------------------------------------------------------------+
+//| Order Flow Analysis - Parte 1                                      |
+//|                                                                    |
+//| OBJETIVO: Implementar análise de Order Flow com:                   |
+//| - Análise de Delta Volume                                         |
+//| - Footprint Chart                                                 |
+//| - Tape Reading                                                    |
+//| - Identificação de Absorção                                       |
+//+------------------------------------------------------------------+
+
+class COrderFlowAnalysis : public CBaseCategoryAnalyzer {
+private:
+    // Estruturas Core
+    struct OrderFlowData {
+        // Delta Volume
+        struct DeltaVolume {
+            double buyVolume;
+            double sellVolume;
+            double delta;
+            double cumDelta;
+            bool isAbsorption;
+            double strength;
+        } delta;
+        
+        // Footprint
+        struct FootprintData {
+            double buyPrice[];
+            double sellPrice[];
+            double buyVol[];
+            double sellVol[];
+            double imbalance[];
+            datetime times[];
+        } footprint;
+        
+        // Tape Reading
+        struct TapeData {
+            double lastPrice;
+            double lastVolume;
+            ENUM_TRADE_SIDE lastSide;
+            bool isLargeOrder;
+            datetime timestamp;
+        } tape;
+        
+        // Estado
+        bool isValid;
+        datetime lastUpdate;
+    } m_data;
+    
+    // Configurações
+    struct Config {
+        int deltaUpdateInterval;
+        double largeOrderThreshold;
+        bool useRealTimeAnalysis;
+        bool enableDetailedFootprint;
+        int maxFootprintLevels;
+    } m_config;
+
+public:
+    COrderFlowAnalysis(CTechnologyManager* techManager) 
+        : CBaseCategoryAnalyzer("OrderFlow") {
+        Initialize(techManager);
+    }
+    
+    ~COrderFlowAnalysis() {
+        Cleanup();
+    }
+    
+    // ... continuação na próxima parte
+};

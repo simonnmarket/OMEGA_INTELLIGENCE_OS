@@ -1,0 +1,158 @@
+//+------------------------------------------------------------------+
+//| Volume Footprint Chart - Sistema de Gerenciamento de Risco        |
+//|                                                                    |
+//| OBJETIVO: Implementar sistema avançado de gerenciamento de risco  |
+//| com ajuste dinâmico de:                                           |
+//| - Tamanho de Posição                                             |
+//| - Exposição ao Risco                                             |
+//| - Stop Loss Dinâmico                                             |
+//| - Controle de Drawdown                                           |
+//+------------------------------------------------------------------+
+
+private:
+    struct RiskManager {
+        // Configurações de Risco
+        struct Config {
+            double maxRiskPercent;      // Risco máximo por operação
+            double maxExposurePercent;  // Exposição máxima total
+            double maxDrawdownPercent;  // Drawdown máximo permitido
+            double minStopDistance;     // Distância mínima do stop
+            int maxDailyTrades;         // Máximo de trades diários
+            bool useAdaptivePosition;   // Usar tamanho adaptativo
+        } config;
+        
+        // Métricas de Risco
+        struct Metrics {
+            double currentExposure;     // Exposição atual
+            double currentDrawdown;     // Drawdown atual
+            double dailyPnL;           // Lucro/Prejuízo diário
+            int dailyTrades;           // Trades realizados hoje
+            bool isRiskExceeded;       // Risco excedido
+            datetime lastUpdate;        // Última atualização
+        } metrics;
+        
+        // Controle de Posição
+        struct Position {
+            double size;               // Tamanho da posição
+            double entryPrice;         // Preço de entrada
+            double stopLoss;           // Stop Loss
+            double takeProfit;         // Take Profit
+            double riskRewardRatio;    // Ratio Risco/Retorno
+            bool isValid;              // Posição válida
+        } position;
+    } m_risk;
+    
+    double CalculatePositionSize(double stopDistance) {
+        // Validar parâmetros
+        if(stopDistance <= 0) {
+            LogMessage("Stop distance inválida", LOG_ERROR);
+            return 0;
+        }
+        
+        // Obter saldo da conta
+        double accountBalance = AccountInfoDouble(ACCOUNT_BALANCE);
+        
+        // Calcular valor em risco
+        double riskAmount = accountBalance * (m_risk.config.maxRiskPercent / 100);
+        
+        // Calcular tamanho da posição
+        double tickValue = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+        double lotSize = NormalizeDouble(riskAmount / (stopDistance * tickValue), 2);
+        
+        // Ajustar aos limites do símbolo
+        double minVolume = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
+        double maxVolume = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX);
+        
+        // Aplicar ajuste adaptativo se necessário
+        if(m_risk.config.useAdaptivePosition) {
+            lotSize = AdjustPositionSize(lotSize);
+        }
+        
+        return MathMin(maxVolume, MathMax(minVolume, lotSize));
+    }
+    
+    double AdjustPositionSize(double baseSize) {
+        // Ajustar baseado na volatilidade
+        double volatilityFactor = CalculateVolatilityFactor();
+        baseSize *= volatilityFactor;
+        
+        // Ajustar baseado no drawdown
+        double drawdownFactor = CalculateDrawdownFactor();
+        baseSize *= drawdownFactor;
+        
+        // Ajustar baseado na correlação
+        double correlationFactor = CalculateCorrelationFactor();
+        baseSize *= correlationFactor;
+        
+        return baseSize;
+    }
+    
+    double CalculateExposure() {
+        if(!PositionSelect(_Symbol)) return 0;
+        
+        double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+        if(equity <= 0) return 0;
+        
+        double positionValue = PositionGetDouble(POSITION_VOLUME) *
+                             PositionGetDouble(POSITION_PRICE_OPEN) *
+                             SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+                             
+        double exposure = (positionValue / equity) * 100;
+        
+        // Atualizar métricas
+        m_risk.metrics.currentExposure = exposure;
+        m_risk.metrics.lastUpdate = TimeCurrent();
+        
+        // Integração com TechnologyAdvances
+        UpdateRiskMetrics();
+        
+        return exposure;
+    }
+    
+    void UpdateRiskMetrics() {
+        // Calcular drawdown
+        double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+        double balance = AccountInfoDouble(ACCOUNT_BALANCE);
+        m_risk.metrics.currentDrawdown = (balance - equity) / balance * 100;
+        
+        // Verificar limites
+        if(m_risk.metrics.currentDrawdown > m_risk.config.maxDrawdownPercent ||
+           m_risk.metrics.currentExposure > m_risk.config.maxExposurePercent) {
+            m_risk.metrics.isRiskExceeded = true;
+            NotifyRiskExceeded();
+        }
+        
+        // Enviar métricas para TechnologyAdvances
+        RiskMetrics metrics;
+        metrics.exposure = m_risk.metrics.currentExposure;
+        metrics.drawdown = m_risk.metrics.currentDrawdown;
+        metrics.dailyPnL = m_risk.metrics.dailyPnL;
+        
+        m_techManager.UpdateRiskMetrics(metrics);
+    }
+    
+    void NotifyRiskExceeded() {
+        string message = StringFormat(
+            "Alerta de Risco!\nDrawdown: %.2f%%\nExposição: %.2f%%",
+            m_risk.metrics.currentDrawdown,
+            m_risk.metrics.currentExposure
+        );
+        
+        LogMessage(message, LOG_WARNING);
+        NotifyTeam(message);
+    }
+    
+    bool ValidateRiskParameters() {
+        if(m_risk.metrics.dailyTrades >= m_risk.config.maxDailyTrades) {
+            LogMessage("Limite diário de trades atingido", LOG_WARNING);
+            return false;
+        }
+        
+        if(m_risk.metrics.isRiskExceeded) {
+            LogMessage("Limites de risco excedidos", LOG_WARNING);
+            return false;
+        }
+        
+        return true;
+    }
+};

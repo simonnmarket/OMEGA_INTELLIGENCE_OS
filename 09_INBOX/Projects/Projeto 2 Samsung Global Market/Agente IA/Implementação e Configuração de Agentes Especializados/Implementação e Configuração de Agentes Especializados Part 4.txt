@@ -1,0 +1,178 @@
+IMPLEMENTAÇÃO DE PADRÕES E PRÁTICAS - SAMSUNG GLOBAL MARKET
+Estruturação Modular e Orientada a Objetos
+1. ESTRUTURA MODULAR BASE
+//+------------------------------------------------------------------+
+//| SamsungGlobalMarket.mq5                                           |
+//+------------------------------------------------------------------+
+
+class MarketAnalyzer {
+    private:
+        // Handlers dos indicadores
+        int rsiHandle;
+        int maHandle;
+        int bbandsHandle;
+        
+    public:
+        // Métodos de análise de mercado
+        bool AnalyzeMarketConditions() {
+            if(!VerifyTradingHours()) return false;
+            if(!CheckEconomicCalendar()) return false;
+            return AnalyzeTechnicalIndicators();
+        }
+        
+        // Verificação de padrões de candlestick
+        bool IsHammerPattern() {
+            return (IsGreenHammer() || IsRedHammer());
+        }
+};
+
+2. GESTÃO DE CALENDÁRIO ECONÔMICO
+class EconomicCalendar : public CalendarBase {
+    private:
+        struct Event {
+            datetime time;
+            string currency;
+            string impact;
+            string description;
+        };
+        
+        Event events[];
+        
+    public:
+        bool Initialize() override {
+            return LoadEvents();
+        }
+        
+        bool CheckHighImpactEvents() {
+            datetime current = TimeCurrent();
+            for(int i=0; i<ArraySize(events); i++) {
+                if(IsHighImpact(events[i]) && IsNearEvent(current, events[i].time))
+                    return true;
+            }
+            return false;
+        }
+};
+
+3. GERENCIAMENTO DE ORDENS
+class OrderManager {
+    private:
+        // Parâmetros customizáveis
+        input double LotSize = 0.01;
+        input double StopLoss = 50;
+        input double TakeProfit = 100;
+        
+    public:
+        bool OpenPosition(ENUM_ORDER_TYPE type) {
+            MqlTradeRequest request = {};
+            request.action = TRADE_ACTION_DEAL;
+            request.symbol = _Symbol;
+            request.volume = LotSize;
+            request.type = type;
+            request.price = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+            
+            // Configurar SL e TP
+            if(type == ORDER_TYPE_BUY) {
+                request.sl = request.price - StopLoss * _Point;
+                request.tp = request.price + TakeProfit * _Point;
+            }
+            
+            return ExecuteOrder(request);
+        }
+};
+
+
+
+
+
+
+
+4. VISUALIZAÇÃO GRÁFICA
+class ChartVisualizer {
+    private:
+        long chartId;
+        
+    public:
+        void MarkSignal(datetime time, double price, bool isBuy) {
+            string objName = "Signal_" + IntegerToString(time);
+            
+            ObjectCreate(chartId, objName, OBJ_ARROW,
+                        0, time, price);
+                        
+            ObjectSetInteger(chartId, objName, OBJPROP_ARROWCODE,
+                           isBuy ? 233 : 234);
+            ObjectSetInteger(chartId, objName, OBJPROP_COLOR,
+                           isBuy ? clrGreen : clrRed);
+        }
+        
+        void ShowLevels(double entry, double sl, double tp) {
+            // Desenhar linhas horizontais para Entry, SL e TP
+        }
+};
+
+5. OTIMIZAÇÃO DE PERFORMANCE
+class PerformanceOptimizer {
+    private:
+        int prev_calculated;
+        
+    public:
+        void OptimizeCalculations(const int rates_total) {
+            if(prev_calculated == 0) {
+                // Cálculo inicial completo
+                CalculateAll(rates_total);
+            } else {
+                // Calcular apenas novos dados
+                CalculateNew(prev_calculated, rates_total);
+            }
+            prev_calculated = rates_total;
+        }
+        
+        double[] CacheResults(const double& source[]) {
+            static double cache[];
+            ArrayCopy(cache, source);
+            return cache;
+        }
+};
+6. IMPLEMENTAÇÃO PRINCIPAL
+
+class SamsungGlobalMarket : public Expert {
+    private:
+        MarketAnalyzer* analyzer;
+        EconomicCalendar* calendar;
+        OrderManager* orderManager;
+        ChartVisualizer* visualizer;
+        PerformanceOptimizer* optimizer;
+        
+    public:
+        int OnInit() override {
+            analyzer = new MarketAnalyzer();
+            calendar = new EconomicCalendar();
+            orderManager = new OrderManager();
+            visualizer = new ChartVisualizer();
+            optimizer = new PerformanceOptimizer();
+            
+            return INIT_SUCCEEDED;
+        }
+        
+        void OnTick() override {
+            if(!analyzer.AnalyzeMarketConditions()) return;
+            if(calendar.CheckHighImpactEvents()) return;
+            
+            // Processar sinais e executar ordens
+            ProcessSignals();
+        }
+};
+
+
+7. PRÓXIMOS PASSOS
+    • Implementação
+    • Desenvolver cada classe detalhadamente
+    • Implementar todos os métodos
+    • Adicionar tratamento de erros
+    • Testes
+    • Validar cada módulo separadamente
+    • Testar integração entre módulos
+    • Realizar testes de performance
+    • Otimização
+    • Ajustar parâmetros
+    • Melhorar eficiência do código
+    • Implementar cache de dados---Este documento estabelece a estrutura modular e orientada a objetos do projeto. Aguardo feedback para iniciar a implementação ou realizar ajustes necessários. 

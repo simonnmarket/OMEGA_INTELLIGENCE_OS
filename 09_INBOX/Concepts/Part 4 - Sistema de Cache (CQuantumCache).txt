@@ -1,0 +1,36 @@
+// Localização: Aproximadamente linha 400
+// Problema: Gerenciamento de memória no cache
+// Solução: Melhorar sistema de limpeza e validação
+
+class CQuantumCache {
+private:
+    void CleanupCache() {
+        datetime current_time = TimeCurrent();
+        string keys[];
+        m_cache.CopyTo(keys, NULL);
+        
+        for(int i = ArraySize(keys) - 1; i >= 0; i--) {
+            CCacheEntry* entry = NULL;
+            if(m_cache.TryGetValue(keys[i], entry)) {
+                if(!IsValidEntry(entry, current_time)) {
+                    SafeDeleteEntry(keys[i]);
+                }
+            }
+        }
+    }
+
+    bool IsValidEntry(const CCacheEntry* entry, datetime current_time) {
+        if(entry == NULL) return false;
+        if(current_time - entry.last_update > CACHE_LIFETIME) return false;
+        return entry.Validate();
+    }
+
+    void SafeDeleteEntry(const string &key) {
+        CCacheEntry* entry = NULL;
+        if(m_cache.TryGetValue(key, entry)) {
+            delete entry;
+            m_cache.Remove(key);
+            m_metrics.total_entries--;
+        }
+    }
+};

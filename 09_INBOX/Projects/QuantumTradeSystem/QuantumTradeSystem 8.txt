@@ -1,0 +1,273 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part8.mq5    |
+//+------------------------------------------------------------------+
+
+// Sistema de Logging Avançado
+class CAdvancedLogger {
+private:
+    enum LOG_LEVEL {
+        ERROR = 1,
+        WARNING = 2,
+        INFO = 3,
+        DEBUG = 4
+    };
+    
+    struct LogEntry {
+        datetime timestamp;
+        LOG_LEVEL level;
+        string message;
+        string details;
+    };
+    
+    string logFileName;
+    int fileHandle;
+    bool isDebugMode;
+    LogEntry logBuffer[];
+    
+public:
+    void Initialize(bool debugMode = false) {
+        isDebugMode = debugMode;
+        logFileName = "QuantumSystem_" + Symbol() + "_" + 
+                     IntegerToString(Period()) + "_" + 
+                     TimeToString(TimeCurrent()) + ".log";
+                     
+        fileHandle = FileOpen(logFileName, FILE_WRITE|FILE_CSV|FILE_ANSI);
+        
+        if(fileHandle != INVALID_HANDLE) {
+            FileWrite(fileHandle, "Timestamp", "Level", "Message", "Details");
+        }
+    }
+    
+    void LogError(string message, string details = "") {
+        Log(ERROR, message, details);
+    }
+    
+    void LogWarning(string message, string details = "") {
+        Log(WARNING, message, details);
+    }
+    
+    void LogInfo(string message, string details = "") {
+        Log(INFO, message, details);
+    }
+    
+    void LogDebug(string message, string details = "") {
+        if(isDebugMode) Log(DEBUG, message, details);
+    }
+    
+    void Close() {
+        if(fileHandle != INVALID_HANDLE) {
+            FileClose(fileHandle);
+        }
+        GenerateLogSummary();
+    }
+
+private:
+    void Log(LOG_LEVEL level, string message, string details) {
+        LogEntry entry;
+        entry.timestamp = TimeCurrent();
+        entry.level = level;
+        entry.message = message;
+        entry.details = details;
+        
+        // Adicionar ao buffer
+        int size = ArraySize(logBuffer);
+        ArrayResize(logBuffer, size + 1);
+        logBuffer[size] = entry;
+        
+        // Escrever no arquivo
+        if(fileHandle != INVALID_HANDLE) {
+            FileWrite(fileHandle, 
+                     TimeToString(entry.timestamp), 
+                     EnumToString(level), 
+                     message, 
+                     details);
+        }
+        
+        // Print no console
+        Print(TimeToString(entry.timestamp), " [", EnumToString(level), "] ", 
+              message, (details != "" ? " - " + details : ""));
+    }
+    
+    void GenerateLogSummary() {
+        int errors = 0, warnings = 0, infos = 0, debugs = 0;
+        
+        for(int i = 0; i < ArraySize(logBuffer); i++) {
+            switch(logBuffer[i].level) {
+                case ERROR: errors++; break;
+                case WARNING: warnings++; break;
+                case INFO: infos++; break;
+                case DEBUG: debugs++; break;
+            }
+        }
+        
+        string summary = "\n=== Log Summary ===\n";
+        summary += "Total Entries: " + IntegerToString(ArraySize(logBuffer)) + "\n";
+        summary += "Errors: " + IntegerToString(errors) + "\n";
+        summary += "Warnings: " + IntegerToString(warnings) + "\n";
+        summary += "Info: " + IntegerToString(infos) + "\n";
+        summary += "Debug: " + IntegerToString(debugs) + "\n";
+        
+        Print(summary);
+    }
+};
+
+// Sistema de Análise de Performance
+class CPerformanceAnalyzer {
+private:
+    struct TradeMetrics {
+        int totalTrades;
+        int winningTrades;
+        int losingTrades;
+        double grossProfit;
+        double grossLoss;
+        double largestWin;
+        double largestLoss;
+        double averageWin;
+        double averageLoss;
+        double profitFactor;
+        double expectancy;
+        double winRate;
+        datetime longestWinStreak;
+        datetime longestLoseStreak;
+    };
+    
+    struct TimeAnalysis {
+        int tradesPerHour[24];
+        int tradesPerDay[7];
+        double profitPerHour[24];
+        double profitPerDay[7];
+    };
+    
+public:
+    void AnalyzePerformance() {
+        TradeMetrics metrics = CalculateTradeMetrics();
+        TimeAnalysis timeAnalysis = AnalyzeTimingPatterns();
+        
+        GeneratePerformanceReport(metrics, timeAnalysis);
+        ExportToDatabase(metrics, timeAnalysis);
+    }
+    
+private:
+    TradeMetrics CalculateTradeMetrics() {
+        TradeMetrics metrics;
+        ZeroMemory(metrics);
+        
+        for(int i = OrdersHistoryTotal() - 1; i >= 0; i--) {
+            if(OrderSelect(i, SELECT_BY_POS, MODE_HISTORY)) {
+                if(OrderSymbol() == Symbol()) {
+                    metrics.totalTrades++;
+                    
+                    double profit = OrderProfit() + OrderSwap() + OrderCommission();
+                    
+                    if(profit > 0) {
+                        metrics.winningTrades++;
+                        metrics.grossProfit += profit;
+                        metrics.largestWin = MathMax(metrics.largestWin, profit);
+                    } else {
+                        metrics.losingTrades++;
+                        metrics.grossLoss += MathAbs(profit);
+                        metrics.largestLoss = MathMax(metrics.largestLoss, MathAbs(profit));
+                    }
+                }
+            }
+        }
+        
+        // Calcular métricas derivadas
+        if(metrics.winningTrades > 0) 
+            metrics.averageWin = metrics.grossProfit / metrics.winningTrades;
+            
+        if(metrics.losingTrades > 0) 
+            metrics.averageLoss = metrics.grossLoss / metrics.losingTrades;
+            
+        if(metrics.grossLoss > 0) 
+            metrics.profitFactor = metrics.grossProfit / metrics.grossLoss;
+            
+        metrics.winRate = (double)metrics.winningTrades / metrics.totalTrades;
+        metrics.expectancy = (metrics.winRate * metrics.averageWin) - 
+                           ((1 - metrics.winRate) * metrics.averageLoss);
+        
+        return metrics;
+    }
+    
+    TimeAnalysis AnalyzeTimingPatterns() {
+        TimeAnalysis analysis;
+        ZeroMemory(analysis);
+        
+        for(int i = OrdersHistoryTotal() - 1; i >= 0; i--) {
+            if(OrderSelect(i, SELECT_BY_POS, MODE_HISTORY)) {
+                if(OrderSymbol() == Symbol()) {
+                    datetime openTime = OrderOpenTime();
+                    int hour = TimeHour(openTime);
+                    int day = TimeDayOfWeek(openTime);
+                    double profit = OrderProfit() + OrderSwap() + OrderCommission();
+                    
+                    analysis.tradesPerHour[hour]++;
+                    analysis.tradesPerDay[day]++;
+                    analysis.profitPerHour[hour] += profit;
+                    analysis.profitPerDay[day] += profit;
+                }
+            }
+        }
+        
+        return analysis;
+    }
+    
+    void GeneratePerformanceReport(const TradeMetrics& metrics, 
+                                 const TimeAnalysis& timeAnalysis) {
+        string report = "\n=== Performance Report ===\n";
+        
+        // Métricas gerais
+        report += "Total Trades: " + IntegerToString(metrics.totalTrades) + "\n";
+        report += "Win Rate: " + DoubleToString(metrics.winRate * 100, 2) + "%\n";
+        report += "Profit Factor: " + DoubleToString(metrics.profitFactor, 2) + "\n";
+        report += "Expectancy: " + DoubleToString(metrics.expectancy, 2) + "\n";
+        
+        // Análise por hora
+        report += "\nBest Trading Hours:\n";
+        int bestHour = GetBestHour(timeAnalysis);
+        report += "Hour " + IntegerToString(bestHour) + ": " + 
+                 DoubleToString(timeAnalysis.profitPerHour[bestHour], 2) + "\n";
+        
+        // Análise por dia
+        report += "\nBest Trading Days:\n";
+        int bestDay = GetBestDay(timeAnalysis);
+        report += DayToString(bestDay) + ": " + 
+                 DoubleToString(timeAnalysis.profitPerDay[bestDay], 2) + "\n";
+        
+        Print(report);
+    }
+    
+    int GetBestHour(const TimeAnalysis& analysis) {
+        int bestHour = 0;
+        double bestProfit = analysis.profitPerHour[0];
+        
+        for(int i = 1; i < 24; i++) {
+            if(analysis.profitPerHour[i] > bestProfit) {
+                bestProfit = analysis.profitPerHour[i];
+                bestHour = i;
+            }
+        }
+        
+        return bestHour;
+    }
+    
+    int GetBestDay(const TimeAnalysis& analysis) {
+        int bestDay = 0;
+        double bestProfit = analysis.profitPerDay[0];
+        
+        for(int i = 1; i < 7; i++) {
+            if(analysis.profitPerDay[i] > bestProfit) {
+                bestProfit = analysis.profitPerDay[i];
+                bestDay = i;
+            }
+        }
+        
+        return bestDay;
+    }
+    
+    string DayToString(int day) {
+        string days[] = {"Sunday", "Monday", "Tuesday", "Wednesday", 
+                        "Thursday", "Friday", "Saturday"};
+        return days[day];
+    }
+};

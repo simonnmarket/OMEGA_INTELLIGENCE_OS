@@ -1,0 +1,153 @@
+//+------------------------------------------------------------------+
+//| Gap Analysis Category Implementation                               |
+//+------------------------------------------------------------------+
+
+// 1. Estruturas específicas de Gap
+struct GapMetrics {
+    ENUM_GAP_TYPE type;
+    double size;
+    double priceBeforeGap;
+    double priceAfterGap;
+    double volumeRatio;
+    bool isFilled;
+    datetime gapTime;
+    bool isValid;
+    double probability;
+    double riskRatio;
+};
+
+struct GapContext {
+    bool isUptrend;
+    double trendStrength;
+    double volatility;
+    double volumeProfile;
+    VSAMetrics vsa;
+};
+
+// 2. Implementação da Categoria Gap
+class CGapAnalysisCategory : public CBaseCategoryAnalyzer {
+private:
+    GapMetrics m_currentGap;
+    GapContext m_context;
+    CQuantumGapVaccine* m_vaccine;
+    CQuantumGapTradeManager* m_tradeManager;
+    CQuantumGapIndicator* m_indicator;
+    
+public:
+    CGapAnalysisCategory() : CBaseCategoryAnalyzer("GapAnalysis") {
+        m_vaccine = new CQuantumGapVaccine();
+        m_tradeManager = new CQuantumGapTradeManager();
+        m_indicator = new CQuantumGapIndicator();
+    }
+    
+    ~CGapAnalysisCategory() {
+        delete m_vaccine;
+        delete m_tradeManager;
+        delete m_indicator;
+    }
+    
+    virtual bool Initialize() override {
+        if(!CBaseCategoryAnalyzer::Initialize()) return false;
+        
+        // Inicialização específica de Gap
+        if(!m_vaccine.Initialize()) return false;
+        if(!m_indicator.Initialize()) return false;
+        
+        return InitializeGapAnalysis();
+    }
+    
+    virtual bool Update() override {
+        if(!ValidateState()) return false;
+        
+        // Atualizar análise de Gap
+        if(!AnalyzeGaps()) return false;
+        if(!GenerateGapSignals()) return false;
+        if(!UpdateIndicators()) return false;
+        
+        return true;
+    }
+    
+    virtual bool Validate() override {
+        return ValidateGapConditions() && ValidateSignals();
+    }
+
+private:
+    bool InitializeGapAnalysis() {
+        // Inicialização de buffers e parâmetros
+        return true;
+    }
+    
+    bool AnalyzeGaps() {
+        // Detectar e analisar gaps
+        if(!m_vaccine.AnalyzeGap()) return false;
+        
+        m_currentGap = *m_vaccine.GetGapAnalysis();
+        UpdateGapContext();
+        
+        return true;
+    }
+    
+    void UpdateGapContext() {
+        m_context.isUptrend = IdentifyTrend();
+        m_context.trendStrength = CalculateTrendStrength();
+        m_context.volatility = CalculateVolatility();
+        m_context.volumeProfile = AnalyzeVolumeProfile();
+        UpdateVSAMetrics();
+    }
+    
+    void GenerateGapSignals() {
+        InsightSignal signal;
+        
+        // Sinal de Gap de Breakaway
+        if(IsBreakawayGap()) {
+            signal.categoryName = "GapAnalysis";
+            signal.signalName = "BreakawayGap";
+            signal.strength = CalculateGapStrength();
+            signal.confidence = m_currentGap.probability;
+            signal.timestamp = TimeCurrent();
+            signal.description = "Breakaway Gap Detected";
+            signal.isValid = true;
+            
+            AddSignal(signal);
+        }
+        
+        // Sinal de Gap de Exaustão
+        if(IsExhaustionGap()) {
+            signal.categoryName = "GapAnalysis";
+            signal.signalName = "ExhaustionGap";
+            signal.strength = CalculateGapStrength();
+            signal.confidence = m_currentGap.probability;
+            signal.timestamp = TimeCurrent();
+            signal.description = "Exhaustion Gap Detected";
+            signal.isValid = true;
+            
+            AddSignal(signal);
+        }
+    }
+    
+    bool UpdateIndicators() {
+        m_indicator.UpdateIndicator(&m_currentGap);
+        return true;
+    }
+    
+    double CalculateGapStrength() {
+        return (m_currentGap.probability * 0.4 +
+                m_currentGap.volumeRatio * 0.3 +
+                m_context.trendStrength * 0.3);
+    }
+    
+    bool ValidateGapConditions() {
+        if(m_currentGap.size < MIN_GAP_SIZE) return false;
+        if(m_currentGap.probability < MIN_PROBABILITY) return false;
+        if(m_currentGap.volumeRatio < MIN_VOLUME_RATIO) return false;
+        
+        return true;
+    }
+    
+    void AddSignal(const InsightSignal &signal) {
+        int size = ArraySize(m_signals);
+        ArrayResize(m_signals, size + 1);
+        m_signals[size] = signal;
+        m_state.signalCount++;
+    }
+};

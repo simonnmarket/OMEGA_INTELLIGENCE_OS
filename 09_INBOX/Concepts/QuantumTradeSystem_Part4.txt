@@ -1,0 +1,213 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part4.mq5    |
+//+------------------------------------------------------------------+
+
+// Sistema Principal de Trading
+class CQuantumTradeSystem {
+private:
+    CTechnicalAnalysis* techAnalysis;
+    CMLOptimization*    mlSystem;
+    CRiskManagement*    riskManager;
+    CTradeReporting*    reporter;
+    
+    // Parâmetros do sistema
+    input double InpMinProbability = 0.75;    // Probabilidade mínima para trade
+    input double InpRiskPercent = 2.0;        // Risco por trade (%)
+    input int    InpMaxDailyTrades = 2;       // Máximo de trades por dia
+    
+    // Estado do sistema
+    bool isInitialized;
+    datetime lastUpdateTime;
+    int dailyTrades;
+    double dailyProfit;
+    
+    struct TradeStats {
+        int totalTrades;
+        int winningTrades;
+        double grossProfit;
+        double grossLoss;
+        double largestWin;
+        double largestLoss;
+        int consecutiveWins;
+        int consecutiveLosses;
+    } stats;
+
+public:
+    CQuantumTradeSystem() {
+        isInitialized = false;
+        lastUpdateTime = 0;
+        dailyTrades = 0;
+        dailyProfit = 0;
+        
+        techAnalysis = new CTechnicalAnalysis();
+        mlSystem = new CMLOptimization();
+        riskManager = new CRiskManagement();
+        reporter = new CTradeReporting();
+        
+        ZeroMemory(stats);
+    }
+    
+    ~CQuantumTradeSystem() {
+        delete techAnalysis;
+        delete mlSystem;
+        delete riskManager;
+        delete reporter;
+    }
+    
+    bool Initialize() {
+        if(!techAnalysis.Initialize()) return false;
+        if(!mlSystem.Initialize()) return false;
+        if(!riskManager.Initialize(InpRiskPercent)) return false;
+        if(!reporter.Initialize()) return false;
+        
+        ResetDailyStats();
+        isInitialized = true;
+        return true;
+    }
+    
+    void OnTick() {
+        if(!isInitialized) return;
+        if(!CanTrade()) return;
+        
+        // Atualizar a cada minuto
+        if(TimeCurrent() - lastUpdateTime < 60) return;
+        
+        // Coletar features do mercado
+        double features[];
+        if(!CollectMarketFeatures(features)) return;
+        
+        // Obter probabilidade do ML
+        double probability = mlSystem.PredictProbability(features);
+        
+        // Verificar setup técnico
+        double techScore = techAnalysis.GetSetupScore();
+        
+        // Combinar sinais
+        double finalProbability = CombineSignals(probability, techScore);
+        
+        if(finalProbability > InpMinProbability) {
+            ExecuteTradeSetup(finalProbability);
+        }
+        
+        lastUpdateTime = TimeCurrent();
+    }
+    
+    void OnTrade() {
+        UpdateTradeStats();
+        reporter.UpdateReport(stats);
+    }
+    
+    void OnDeinit() {
+        reporter.GenerateFinalReport();
+    }
+
+private:
+    bool CanTrade() {
+        if(dailyTrades >= InpMaxDailyTrades) return false;
+        if(!riskManager.CheckRiskLevels()) return false;
+        if(!IsTradeTime()) return false;
+        return true;
+    }
+    
+    bool CollectMarketFeatures(double& features[]) {
+        ArrayResize(features, 15);
+        
+        // Tendência
+        features[0] = techAnalysis.GetTrendStrength();
+        features[1] = techAnalysis.GetTrendDirection();
+        
+        // Momentum
+        features[2] = techAnalysis.GetMomentumScore();
+        features[3] = techAnalysis.GetRSIValue();
+        features[4] = techAnalysis.GetMACDSignal();
+        
+        // Volatilidade
+        features[5] = techAnalysis.GetVolatilityScore();
+        features[6] = techAnalysis.GetATRValue();
+        
+        // Suporte/Resistência
+        features[7] = techAnalysis.GetSRLevelDistance();
+        features[8] = techAnalysis.GetBBPosition();
+        
+        // Volume
+        features[9] = techAnalysis.GetVolumeRatio();
+        features[10] = techAnalysis.GetOBVTrend();
+        
+        // Padrões de preço
+        features[11] = techAnalysis.GetPricePatternScore();
+        features[12] = techAnalysis.GetCandlePatternScore();
+        
+        // Market Timing
+        features[13] = GetTimeFeature();
+        features[14] = GetMarketSessionScore();
+        
+        return true;
+    }
+    
+    double CombineSignals(double mlProb, double techScore) {
+        // Média ponderada dos sinais
+        return (mlProb * 0.6 + techScore * 0.4);
+    }
+    
+    void ExecuteTradeSetup(double probability) {
+        double lotSize = CalculatePositionSize(probability);
+        double stopLoss = CalculateStopLoss();
+        double takeProfit = CalculateTakeProfit();
+        
+        if(lotSize <= 0 || stopLoss <= 0 || takeProfit <= 0) return;
+        
+        int ticket = 0;
+        if(techAnalysis.IsBuySignal()) {
+            ticket = OrderSend(Symbol(), OP_BUY, lotSize, Ask, 3, stopLoss, takeProfit);
+        }
+        else if(techAnalysis.IsSellSignal()) {
+            ticket = OrderSend(Symbol(), OP_SELL, lotSize, Bid, 3, stopLoss, takeProfit);
+        }
+        
+        if(ticket > 0) {
+            dailyTrades++;
+            reporter.LogTrade(ticket, lotSize, stopLoss, takeProfit, probability);
+        }
+    }
+    
+    double CalculatePositionSize(double probability) {
+        return riskManager.GetOptimalLotSize(probability);
+    }
+    
+    void UpdateTradeStats() {
+        for(int i = OrdersHistoryTotal() - 1; i >= 0; i--) {
+            if(OrderSelect(i, SELECT_BY_POS, MODE_HISTORY)) {
+                if(OrderSymbol() == Symbol()) {
+                    double profit = OrderProfit();
+                    stats.totalTrades++;
+                    
+                    if(profit > 0) {
+                        stats.winningTrades++;
+                        stats.grossProfit += profit;
+                        stats.largestWin = MathMax(stats.largestWin, profit);
+                    } else {
+                        stats.grossLoss += MathAbs(profit);
+                        stats.largestLoss = MathMax(stats.largestLoss, MathAbs(profit));
+                    }
+                }
+            }
+        }
+    }
+    
+    void ResetDailyStats() {
+        dailyTrades = 0;
+        dailyProfit = 0;
+    }
+    
+    bool IsTradeTime() {
+        datetime time = TimeCurrent();
+        int hour = TimeHour(time);
+        int dayOfWeek = TimeDayOfWeek(time);
+        
+        // Evitar trading em horários de baixa liquidez
+        if(hour < 2 || hour > 23) return false;
+        if(dayOfWeek == 0 || dayOfWeek == 6) return false;
+        
+        return true;
+    }
+};

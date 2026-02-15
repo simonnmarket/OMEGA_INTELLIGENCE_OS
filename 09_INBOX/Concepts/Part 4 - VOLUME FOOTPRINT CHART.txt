@@ -1,0 +1,184 @@
+//+------------------------------------------------------------------+
+//| Volume Footprint Chart - Atualização de Dados de Mercado          |
+//|                                                                    |
+//| OBJETIVO: Gerenciar e atualizar dados de mercado em tempo real,   |
+//| incluindo:                                                        |
+//| - Preços OHLC                                                     |
+//| - Volumes e Delta                                                 |
+//| - Indicadores Técnicos                                            |
+//| - Market Profile e Order Flow                                     |
+//+------------------------------------------------------------------+
+
+private:
+    // Estrutura para dados de mercado em tempo real
+    struct RealTimeData {
+        // Dados de preço
+        struct Price {
+            double open;
+            double high;
+            double low;
+            double close;
+            double last;
+            double bid;
+            double ask;
+        } price;
+        
+        // Dados de volume
+        struct Volume {
+            double current;
+            double ma;
+            double delta;
+            double buyVolume;
+            double sellVolume;
+            double imbalance;
+        } volume;
+        
+        // Análise técnica
+        struct Technical {
+            double trend;
+            double momentum;
+            double volatility;
+            double strength;
+        } tech;
+        
+        // Market Profile
+        struct Profile {
+            double valueAreaHigh;
+            double valueAreaLow;
+            double poc;
+            bool isBalanced;
+        } profile;
+        
+        datetime lastUpdate;
+        bool isValid;
+    } m_rtData;
+    
+    void UpdateMarketData() {
+        // Validar condições de mercado
+        if(!ValidateMarketConditions()) {
+            LogMessage("Mercado fechado ou condições inválidas", LOG_WARNING);
+            return;
+        }
+        
+        try {
+            // 1. Atualizar preços
+            UpdatePriceData();
+            
+            // 2. Atualizar indicadores
+            UpdateIndicatorData();
+            
+            // 3. Atualizar volume
+            UpdateVolumeData();
+            
+            // 4. Atualizar análises avançadas
+            UpdateAdvancedAnalysis();
+            
+            // 5. Validar e finalizar
+            FinalizeUpdate();
+            
+        } catch(const int error) {
+            HandleUpdateError(error);
+        }
+    }
+    
+    bool ValidateMarketConditions() {
+        // Verificar horário de mercado
+        if(!IsMarketOpen()) return false;
+        
+        // Verificar conectividade
+        if(!TerminalInfoInteger(TERMINAL_CONNECTED)) {
+            LogMessage("Terminal desconectado", LOG_ERROR);
+            return false;
+        }
+        
+        // Verificar dados disponíveis
+        if(!BarsInRange()) return false;
+        
+        return true;
+    }
+    
+    void UpdatePriceData() {
+        m_rtData.price.open = iOpen(_Symbol, PERIOD_CURRENT, 0);
+        m_rtData.price.high = iHigh(_Symbol, PERIOD_CURRENT, 0);
+        m_rtData.price.low = iLow(_Symbol, PERIOD_CURRENT, 0);
+        m_rtData.price.close = iClose(_Symbol, PERIOD_CURRENT, 0);
+        m_rtData.price.last = SymbolInfoDouble(_Symbol, SYMBOL_LAST);
+        m_rtData.price.bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+        m_rtData.price.ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+    }
+    
+    void UpdateIndicatorData() {
+        // Atualizar buffers dos indicadores
+        CopyBuffer(m_indicators.handles.ma, 0, 0, 3, m_indicators.buffers.ma);
+        CopyBuffer(m_indicators.handles.rsi, 0, 0, 3, m_indicators.buffers.rsi);
+        CopyBuffer(m_indicators.handles.atr, 0, 0, 3, m_indicators.buffers.atr);
+        
+        // Calcular métricas técnicas
+        m_rtData.tech.trend = CalculateTrend();
+        m_rtData.tech.momentum = CalculateMomentum();
+        m_rtData.tech.volatility = m_indicators.buffers.atr[0];
+        m_rtData.tech.strength = CalculateMarketStrength();
+    }
+    
+    void UpdateVolumeData() {
+        // Volume básico
+        m_rtData.volume.current = iVolume(_Symbol, PERIOD_CURRENT, 0);
+        m_rtData.volume.ma = CalculateVolumeMA();
+        
+        // Volume avançado
+        if(m_config.useOrderFlow) {
+            m_rtData.volume.buyVolume = CalculateBuyVolume();
+            m_rtData.volume.sellVolume = CalculateSellVolume();
+            m_rtData.volume.delta = m_rtData.volume.buyVolume - m_rtData.volume.sellVolume;
+            m_rtData.volume.imbalance = CalculateVolumeImbalance();
+        }
+    }
+    
+    void UpdateAdvancedAnalysis() {
+        // Market Profile
+        if(m_config.useMarketProfile) {
+            UpdateMarketProfile();
+        }
+        
+        // Order Flow
+        if(m_config.useOrderFlow) {
+            UpdateOrderFlow();
+        }
+        
+        // Integração com TechnologyAdvances
+        m_techManager.UpdateMarketData(m_rtData);
+    }
+    
+    void FinalizeUpdate() {
+        m_rtData.lastUpdate = TimeCurrent();
+        m_rtData.isValid = true;
+        
+        // Notificar atualizações significativas
+        if(DetectSignificantChanges()) {
+            NotifyTeam("Mudanças significativas detectadas no mercado");
+        }
+    }
+    
+    bool IsMarketOpen() {
+        datetime time = TimeCurrent();
+        MqlDateTime dt;
+        TimeToStruct(time, dt);
+        
+        // Verificar dia da semana
+        if(dt.day_of_week == 0 || dt.day_of_week == 6) return false;
+        
+        // Verificar horário (9:00 - 18:00)
+        if(dt.hour < 9 || dt.hour >= 18) return false;
+        
+        return true;
+    }
+    
+    void HandleUpdateError(const int error) {
+        string errorMsg = StringFormat("Erro na atualização: %d", error);
+        LogMessage(errorMsg, LOG_ERROR);
+        m_rtData.isValid = false;
+        
+        // Notificar equipe técnica
+        NotifyTechnicalTeam(errorMsg);
+    }
+};

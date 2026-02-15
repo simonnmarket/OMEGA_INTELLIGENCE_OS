@@ -1,0 +1,15 @@
+// Exemplo de nova categoria
+class CNewCategoryAnalyzer : public CBaseCategoryAnalyzer {
+public:
+    CNewCategoryAnalyzer() : CBaseCategoryAnalyzer("NewCategory") {}
+    
+    virtual bool Update() override {
+        // Implementação específica
+        return true;
+    }
+    
+    virtual bool Validate() override {
+        // Validação específica
+        return true;
+    }
+};

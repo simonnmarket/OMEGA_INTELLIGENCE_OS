@@ -1,0 +1,19 @@
+Volume analysis is a crucial aspect of technical analysis that traders often overlook and misunderstand. In this article, we aim to clarify various misconceptions about volume in the stock market and provide a comprehensive overview of its use. We will discuss what volume is, its purpose, and how it can be used for trend confirmation. Additionally, we will explore the volume profile indicator, a powerful tool for understanding the behaviour of institutional traders. 
+
+
+
+
+Why are Volume Bars Red & Green?
+The colour of the volume bar depends on the colour of the candlestick. If the candlestick is red, then the corresponding volume bar will also be red.
+
+A common misconception among beginners is that red volume bars indicate more sellers. A red volume bar only indicates that sellers are more active than buyers and as a result the price gets pushed down, making the candle red or bearish.
+
+
+Essa estratégia pode mudar seus resultados na Bolsa.
+https://www.youtube.com/watch?v=O2DoF6Lf4Ws&ab_channel=RaioXPreditivo
+
+Leitura de VOLUME: descubra como lucrar no Mini Índice!
+https://www.youtube.com/watch?v=XyU7OAdE8Po&t=307s&ab_channel=RaioXPreditivo
+
+Leitura correta para candles com grande VOLUME!
+https://www.youtube.com/watch?v=N7NG7ZIvGs8&ab_channel=RaioXPreditivo

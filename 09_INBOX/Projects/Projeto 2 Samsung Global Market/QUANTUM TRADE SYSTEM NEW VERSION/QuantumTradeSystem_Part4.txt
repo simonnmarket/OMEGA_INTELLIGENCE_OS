@@ -1,0 +1,416 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part4.mq5    |
+//+------------------------------------------------------------------+
+
+// Sistema Principal de Trading Avançado
+class CQuantumTradeSystem {
+private:
+    // Componentes principais
+    CTechnicalAnalysis* techAnalysis;
+    CMLOptimization*    mlSystem;
+    CRiskManagement*    riskManager;
+    CTradeReporting*    reporter;
+    
+    // Novos componentes
+    CQuantumAnalysis*   quantumAnalysis;
+    CMarketRegime*      regimeAnalysis;
+    CAdaptiveFilter*    adaptiveFilter;
+    CPortfolioOptimizer* portfolioOptimizer;
+    
+    // Parâmetros avançados do sistema
+    struct SystemParameters {
+        double minProbability;    // Probabilidade mínima para trade
+        double riskPercent;       // Risco por trade
+        int maxDailyTrades;      // Máximo de trades por dia
+        double minRewardRatio;    // Razão risco/retorno mínima
+        double maxCorrelation;    // Correlação máxima permitida
+        double adaptiveThreshold; // Limite para adaptação
+        
+        void Initialize(double prob = 0.75, double risk = 2.0, int maxTrades = 2) {
+            minProbability = prob;
+            riskPercent = risk;
+            maxDailyTrades = maxTrades;
+            minRewardRatio = 2.0;
+            maxCorrelation = 0.7;
+            adaptiveThreshold = 0.65;
+        }
+    } params;
+    
+    // Estado do sistema expandido
+    struct SystemState {
+        bool isInitialized;
+        datetime lastUpdateTime;
+        int dailyTrades;
+        double dailyProfit;
+        double currentDrawdown;
+        double peakBalance;
+        ENUM_MARKET_CONDITION marketCondition;
+        double systemConfidence;
+        
+        void Reset() {
+            isInitialized = false;
+            lastUpdateTime = 0;
+            dailyTrades = 0;
+            dailyProfit = 0;
+            currentDrawdown = 0;
+            peakBalance = 0;
+            marketCondition = MARKET_NORMAL;
+            systemConfidence = 0;
+        }
+    } state;
+    
+    // Estatísticas avançadas
+    struct TradeStats {
+        // Métricas básicas
+        int totalTrades;
+        int winningTrades;
+        double grossProfit;
+        double grossLoss;
+        double largestWin;
+        double largestLoss;
+        int consecutiveWins;
+        int consecutiveLosses;
+        
+        // Métricas avançadas
+        double sharpeRatio;
+        double sortinoRatio;
+        double profitFactor;
+        double recoveryFactor;
+        double expectancy;
+        double averageWin;
+        double averageLoss;
+        double winRate;
+        
+        void Calculate() {
+            if(totalTrades > 0) {
+                winRate = (double)winningTrades / totalTrades;
+                profitFactor = (grossLoss != 0) ? grossProfit / MathAbs(grossLoss) : 0;
+                averageWin = (winningTrades > 0) ? grossProfit / winningTrades : 0;
+                averageLoss = (totalTrades - winningTrades > 0) ? grossLoss / (totalTrades - winningTrades) : 0;
+                expectancy = (winRate * averageWin) - ((1 - winRate) * MathAbs(averageLoss));
+            }
+        }
+        
+        void Reset() {
+            totalTrades = 0;
+            winningTrades = 0;
+            grossProfit = 0;
+            grossLoss = 0;
+            largestWin = 0;
+            largestLoss = 0;
+            consecutiveWins = 0;
+            consecutiveLosses = 0;
+            sharpeRatio = 0;
+            sortinoRatio = 0;
+            profitFactor = 0;
+            recoveryFactor = 0;
+            expectancy = 0;
+            averageWin = 0;
+            averageLoss = 0;
+            winRate = 0;
+        }
+    } stats;
+
+public:
+    public:
+    CQuantumTradeSystem() {
+        state.Reset();
+        stats.Reset();
+        
+        // Inicialização dos componentes principais
+        techAnalysis = new CTechnicalAnalysis();
+        mlSystem = new CMLOptimization();
+        riskManager = new CRiskManagement();
+        reporter = new CTradeReporting();
+        
+        // Inicialização dos novos componentes
+        quantumAnalysis = new CQuantumAnalysis();
+        regimeAnalysis = new CMarketRegime();
+        adaptiveFilter = new CAdaptiveFilter();
+        portfolioOptimizer = new CPortfolioOptimizer();
+        
+        params.Initialize();
+    }
+    
+    ~CQuantumTradeSystem() {
+        // Liberação de memória
+        SafeDelete(techAnalysis);
+        SafeDelete(mlSystem);
+        SafeDelete(riskManager);
+        SafeDelete(reporter);
+        SafeDelete(quantumAnalysis);
+        SafeDelete(regimeAnalysis);
+        SafeDelete(adaptiveFilter);
+        SafeDelete(portfolioOptimizer);
+    }
+    
+    bool Initialize() {
+        if(!InitializeComponents()) return false;
+        if(!ValidateSystem()) return false;
+        
+        state.isInitialized = true;
+        state.peakBalance = AccountInfoDouble(ACCOUNT_BALANCE);
+        
+        return true;
+    }
+    
+    void OnTick() {
+        if(!ValidateTrading()) return;
+        
+        // Atualização do estado do sistema
+        UpdateSystemState();
+        
+        // Análise de mercado
+        if(ShouldAnalyzeMarket()) {
+            PerformMarketAnalysis();
+        }
+        
+        // Gerenciamento de posições existentes
+        ManageOpenPositions();
+        
+        // Análise de novas oportunidades
+        if(CanOpenNewPositions()) {
+            AnalyzeNewOpportunities();
+        }
+        
+        // Atualização de relatórios
+        UpdateReporting();
+    }
+    
+    void OnTrade() {
+        UpdateTradeStats();
+        UpdateDrawdown();
+        reporter.UpdateReport(stats);
+    }
+    
+    void OnDeinit(const int reason) {
+        reporter.GenerateFinalReport();
+        SaveSystemState();
+    }
+
+private:
+    bool InitializeComponents() {
+        if(!techAnalysis.Initialize()) {
+            Print("Falha ao inicializar análise técnica");
+            return false;
+        }
+        
+        if(!mlSystem.Initialize()) {
+            Print("Falha ao inicializar sistema ML");
+            return false;
+        }
+        
+        if(!riskManager.Initialize(params.riskPercent)) {
+            Print("Falha ao inicializar gerenciamento de risco");
+            return false;
+        }
+        
+        if(!InitializeAdvancedComponents()) {
+            Print("Falha ao inicializar componentes avançados");
+            return false;
+        }
+        
+        return true;
+    }
+    
+    bool InitializeAdvancedComponents() {
+        if(!quantumAnalysis.Initialize()) return false;
+        if(!regimeAnalysis.Initialize()) return false;
+        if(!adaptiveFilter.Initialize()) return false;
+        if(!portfolioOptimizer.Initialize()) return false;
+        
+        return true;
+    }
+    
+    void UpdateSystemState() {
+        // Atualização do estado do mercado
+        state.marketCondition = regimeAnalysis.GetMarketCondition();
+        
+        // Atualização da confiança do sistema
+        state.systemConfidence = CalculateSystemConfidence();
+        
+        // Atualização de drawdown
+        UpdateDrawdown();
+        
+        // Verificação de condições críticas
+        CheckCriticalConditions();
+    }
+    
+    bool ValidateTrading() {
+        if(!state.isInitialized) return false;
+        if(!IsTradeAllowed()) return false;
+        if(state.dailyTrades >= params.maxDailyTrades) return false;
+        if(!riskManager.CheckRiskLevels()) return false;
+        if(state.systemConfidence < params.adaptiveThreshold) return false;
+        
+        return true;
+    }
+    
+    void PerformMarketAnalysis() {
+        // Análise técnica
+        double techScore = techAnalysis.GetSetupScore();
+        
+        // Análise ML
+        double mlProbability = mlSystem.GetPrediction();
+        
+        // Análise quântica
+        double quantumScore = quantumAnalysis.AnalyzeMarket();
+        
+        // Análise de regime
+        double regimeScore = regimeAnalysis.GetRegimeScore();
+        
+        // Combinação de sinais
+        double finalScore = CombineAnalysisScores(techScore, mlProbability, 
+                                                quantumScore, regimeScore);
+                                                
+        // Atualização do filtro adaptativo
+        adaptiveFilter.UpdateFilter(finalScore);
+    }
+        void AnalyzeNewOpportunities() {
+        // Coleta de features do mercado
+        double features[];
+        if(!CollectMarketFeatures(features)) return;
+        
+        // Análise de probabilidade
+        double probability = mlSystem.PredictProbability(features);
+        double quantumEdge = quantumAnalysis.GetQuantumEdge();
+        double regimeAlignment = regimeAnalysis.GetRegimeAlignment();
+        
+        // Combinação de sinais
+        double finalProbability = CombineSignals(probability, quantumEdge, regimeAlignment);
+        
+        if(finalProbability > params.minProbability) {
+            ExecuteTradeSetup(finalProbability);
+        }
+    }
+    
+    void ExecuteTradeSetup(double probability) {
+        // Cálculo de posição otimizada
+        double lotSize = CalculateOptimalPosition(probability);
+        
+        // Cálculo de níveis
+        double entryPrice = CalculateOptimalEntry();
+        double stopLoss = CalculateOptimalStopLoss();
+        double takeProfit = CalculateOptimalTakeProfit();
+        
+        if(!ValidateTradeParameters(lotSize, stopLoss, takeProfit)) return;
+        
+        // Execução da ordem
+        int ticket = ExecuteOrder(lotSize, entryPrice, stopLoss, takeProfit);
+        
+        if(ticket > 0) {
+            state.dailyTrades++;
+            reporter.LogTrade(ticket, lotSize, stopLoss, takeProfit, probability);
+            UpdatePortfolio();
+        }
+    }
+    
+    void ManageOpenPositions() {
+        for(int i = PositionsTotal() - 1; i >= 0; i--) {
+            if(PositionSelectByTicket(PositionGetTicket(i))) {
+                if(PositionGetString(POSITION_SYMBOL) == Symbol()) {
+                    ManagePosition();
+                }
+            }
+        }
+    }
+    
+    void ManagePosition() {
+        // Análise de condição atual
+        double currentProb = mlSystem.GetCurrentProbability();
+        double quantumState = quantumAnalysis.GetCurrentState();
+        
+        // Ajuste dinâmico de stop
+        UpdateTrailingStop();
+        
+        // Verificação de saída
+        if(ShouldClosePosition(currentProb, quantumState)) {
+            CloseCurrentPosition();
+        }
+    }
+    
+    double CalculateOptimalPosition(double probability) {
+        // Base position size
+        double baseSize = riskManager.GetOptimalLotSize(probability);
+        
+        // Adjustments
+        double regimeAdjustment = regimeAnalysis.GetPositionAdjustment();
+        double quantumAdjustment = quantumAnalysis.GetSizeAdjustment();
+        double portfolioAdjustment = portfolioOptimizer.GetSizeAdjustment();
+        
+        return OptimizePositionSize(baseSize, regimeAdjustment, 
+                                  quantumAdjustment, portfolioAdjustment);
+    }
+    
+    void UpdateTrailingStop() {
+        double currentStop = PositionGetDouble(POSITION_SL);
+        double newStop = CalculateTrailingStop();
+        
+        if(IsStopLossImprovement(currentStop, newStop)) {
+            ModifyPosition(newStop);
+        }
+    }
+    
+    double CalculateSystemConfidence() {
+        double technicalConfidence = techAnalysis.GetSystemConfidence();
+        double mlConfidence = mlSystem.GetModelConfidence();
+        double quantumConfidence = quantumAnalysis.GetSystemConfidence();
+        double regimeConfidence = regimeAnalysis.GetConfidenceScore();
+        
+        return CombineConfidenceScores(technicalConfidence, mlConfidence,
+                                     quantumConfidence, regimeConfidence);
+    }
+    
+    void UpdateDrawdown() {
+        double currentBalance = AccountInfoDouble(ACCOUNT_BALANCE);
+        state.peakBalance = MathMax(state.peakBalance, currentBalance);
+        state.currentDrawdown = (state.peakBalance - currentBalance) / state.peakBalance * 100;
+    }
+    
+    void CheckCriticalConditions() {
+        if(state.currentDrawdown > riskManager.GetMaxDrawdown()) {
+            HandleCriticalDrawdown();
+        }
+        
+        if(state.systemConfidence < params.adaptiveThreshold) {
+            HandleLowConfidence();
+        }
+    }
+    
+    void UpdatePortfolio() {
+        portfolioOptimizer.UpdatePortfolio();
+        riskManager.UpdateExposure();
+    }
+    
+    // Métodos auxiliares
+    bool ValidateTradeParameters(double lotSize, double sl, double tp) {
+        if(lotSize <= 0 || sl <= 0 || tp <= 0) return false;
+        
+        double riskRatio = MathAbs(tp - SymbolInfoDouble(Symbol(), SYMBOL_ASK)) /
+                          MathAbs(sl - SymbolInfoDouble(Symbol(), SYMBOL_ASK));
+                          
+        return riskRatio >= params.minRewardRatio;
+    }
+    
+    double CombineSignals(double prob, double quantum, double regime) {
+        return 0.4 * prob + 0.3 * quantum + 0.3 * regime;
+    }
+    
+    double CombineConfidenceScores(double tech, double ml, double quantum, double regime) {
+        return 0.25 * tech + 0.25 * ml + 0.25 * quantum + 0.25 * regime;
+    }
+    
+    void SaveSystemState() {
+        // Implementação do salvamento do estado do sistema
+        reporter.SaveSystemState(state, stats);
+    }
+    
+    template<typename T>
+    void SafeDelete(T* &ptr) {
+        if(ptr != NULL) {
+            delete ptr;
+            ptr = NULL;
+        }
+    }
+};
+    

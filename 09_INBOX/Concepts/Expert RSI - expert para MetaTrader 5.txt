@@ -1,0 +1,260 @@
+//+------------------------------------------------------------------+
+//|                                                 rsi-project1.mq5 |
+//|                                                           Lisboa |
+//|                                             https://www.mql5.com |
+//+------------------------------------------------------------------+
+
+/**
+*
+*/
+
+
+#property copyright "Lisboa"
+#property link      "https://www.mql5.com"
+#property version   "1.00"
+
+
+#include <Trade\Trade.mqh>
+CTrade trade;
+
+
+input int sl = 400;
+input int tp = 3000;
+input double lot = 0.2;
+
+input int startHour = 10; //the hour to start operations
+input int startMinutes = 0; // minutes to start operations
+input int endHour = 16; // end hour to cancel and close the opened orders
+input int endMinutes = 0; // end minutes to cancel and close the opened orders
+
+input int ema = 200; // not used yet
+input int rsiPeriod = 14; // the entry RSI value
+input int targetValue = 50; // first out position
+input int targetEndValue = 70; // end position
+input ENUM_TIMEFRAMES baseTimeframe = PERIOD_M15;
+
+double starndardLot = SymbolInfoDouble(_Symbol,SYMBOL_VOLUME_MIN);
+
+int      lotdigits   = (int) - MathLog(SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP));
+
+double lotStep  = SymbolInfoDouble(_Symbol,SYMBOL_VOLUME_STEP);  
+
+
+
+
+
+MqlRates rates[], day[];
+
+
+int consecutiveGain = 0;
+double rsiArray[], emaArray[];
+int RSIDefinition, EMADefinition;
+
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                   |
+//+------------------------------------------------------------------+
+int OnInit()
+  {
+  
+  TesterDeposit(5000);
+   RSIDefinition = iRSI(_Symbol, baseTimeframe, rsiPeriod, PRICE_CLOSE);
+   EMADefinition = iMA(_Symbol, baseTimeframe, ema, 0,MODE_EMA, PRICE_CLOSE);
+
+   ArraySetAsSeries(rsiArray, true);
+   ArraySetAsSeries(emaArray, true);
+   ArraySetAsSeries(rates, true);
+  
+    double lots      = 1.47;
+    double lotstep   = SymbolInfoDouble(_Symbol,SYMBOL_VOLUME_STEP);
+    int lotdigits    = (int) - MathLog10(lotstep);
+    double lotsdiff  = MathMod(lot, lotstep);
+    
+    
+    
+    
+
+    Print ("Lots : ", DoubleToString(lotstep*lot, 2));
+    Print ("Symbol info lotstep : ", lotstep);
+
+    Print ("Math Mod ", lotsdiff);
+    Print ("Lots (mathmod) : ", lots - lotsdiff);
+
+    Print ("Math Log - lotdigits : ", lotdigits);
+    Print ("Lots (mathlog) : ", DoubleToString(lots, lotdigits));
+
+  
+
+   return(INIT_SUCCEEDED);
+  }
+
+
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+void OnTick()
+  {
+  
+  double   normalizedLots  = NormalizeDouble(lot, lotdigits);
+  
+
+   MqlDateTime dt;
+   TimeCurrent(dt);
+
+   if(!newCandle(rates))
+     {
+      return;
+     }
+
+   if(StringToInteger(dt.hour) >=  endHour && StringToInteger(dt.min) > endMinutes)
+     {
+      Comment("END of market");
+      closeOrders();
+      cancelOrders();
+      return;
+     }
+
+   if(StringToInteger(dt.hour) < startHour && StringToInteger(dt.min) > startMinutes)
+     {
+      return;
+     }
+
+   CopyRates(Symbol(), Period(), 0, 10, rates);
+   CopyBuffer(RSIDefinition,0,0,3,rsiArray);
+   CopyBuffer(EMADefinition,0,0,3,emaArray);
+
+   if(PositionsTotal() == 0 && OrdersTotal() == 0)
+     {
+
+      ObjectCreate(0, rates[1].time,OBJ_ARROW_BUY, 0, rates[1].time, rates[1].low);
+      ObjectSetInteger(0,rates[1].time,OBJPROP_COLOR,clrYellow);
+      ObjectSetInteger(0,rates[1].time,OBJPROP_WIDTH,20);
+      ObjectSetInteger(0,rates[1].time,OBJPROP_LEVELWIDTH,20);
+      if(trade.Buy(normalizedLots, Symbol(), 0, 0, 0, "Compra"))
+        {
+         addTakeStop(sl, tp);
+        }
+     }
+
+   if(rsiArray[0] > targetValue)
+     {
+      if(PositionsTotal() == normalizedLots && OrdersTotal() == normalizedLots)
+        {
+         if(trade.Sell(normalizedLots/2, Symbol(), 0,0,0, "Venda"))
+           {
+            Print("Saiu");
+           }
+        }
+     }
+
+
+   if(rsiArray[0] > targetEndValue)
+     {
+
+      if(PositionsTotal() == normalizedLots/2 && OrdersTotal() == normalizedLots/2)
+        {
+         if(trade.Sell(normalizedLots/2, Symbol(), 0,0,0, "Venda"))
+           {
+            Print("Saiu totalmente");
+           }
+        }
+     }
+
+  }
+
+
+
+
+
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+void closeOrders()
+  {
+   for(int i=0; i< PositionsTotal(); i++)
+     {
+      trade.PositionClose(PositionGetSymbol(i));
+     }
+  }
+
+
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+void cancelOrders()
+  {
+   for(int i=0; i<OrdersTotal(); i++)
+     {
+      ulong orderTicket = OrderGetTicket(i);
+
+      trade.OrderDelete(orderTicket);
+     }
+  }
+
+
+
+
+//+------------------------------------------------------------------+
+//|     Change the SL and TP                                         |
+//+------------------------------------------------------------------+
+void addTakeStop(double p_sl, double p_tp)
+  {
+
+   for(int i = PositionsTotal() -1; i>=0; i--)
+     {
+      string symbol = PositionGetSymbol(i);
+
+
+      if(symbol == Symbol())
+        {
+
+         ulong ticket = PositionGetInteger(POSITION_TICKET);
+         double entryPrice = PositionGetDouble(POSITION_PRICE_OPEN);
+
+         double newSL;
+         double newTP;
+
+
+         if(PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
+           {
+
+            newSL = NormalizeDouble(entryPrice - (p_sl *_Point), _Digits);
+            newTP =  NormalizeDouble(entryPrice + (p_tp *_Point), _Digits);
+
+            trade.PositionModify(ticket, newSL, newTP);
+
+           }
+         else
+            if(PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL)
+              {
+
+               newSL = NormalizeDouble(entryPrice + (p_sl *_Point), _Digits);
+               newTP =  NormalizeDouble(entryPrice - (p_tp *_Point), _Digits);
+               trade.PositionModify(ticket, newSL, newTP);
+              }
+        }
+     }
+
+  }
+
+//+------------------------------------------------------------------+
+//|   Check new candle formation                                     |
+//+------------------------------------------------------------------+
+bool newCandle(MqlRates& rates[])
+  {
+
+   static datetime currentCandle;
+   datetime newCandleD;
+  
+   if(ArraySize(rates)){
+      newCandleD = rates[0].time;
+   }
+  
+   if(currentCandle != newCandleD)
+     {
+      currentCandle = newCandleD;
+      return true;
+     }
+   return false;
+  }
+//+------------------------------------------------------------------+

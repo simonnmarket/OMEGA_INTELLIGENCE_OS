@@ -1,0 +1,331 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part7.mq5    |
+//+------------------------------------------------------------------+
+
+class CRiskManagement {
+private:
+    struct RiskMetrics {
+        double valueAtRisk;
+        double expectedShortfall;
+        double kellyFraction;
+        double optimalF;
+        double riskOfRuin;
+        double maxDrawdown;
+        double currentDrawdown;
+        double stressTestResult;
+        double sharpeRatio;
+        double sortinoRatio;
+        double calmarRatio;
+        double treynorRatio;
+        double informationRatio;
+        double omegaRatio;
+        double tailRisk;
+    };
+    
+    struct RiskLimits {
+        double maxPositionSize;
+        double maxDailyLoss;
+        double maxDrawdown;
+        double maxLeverage;
+        double maxCorrelation;
+        double minLiquidity;
+        int maxOpenPositions;
+        int maxDailyTrades;
+        double maxSectorExposure;
+        double maxInstrumentRisk;
+        double minMarginLevel;
+        double maxVolatility;
+    };
+    
+    struct PositionInfo {
+        double size;
+        double risk;
+        double margin;
+        double exposure;
+        double correlation;
+        double volatility;
+        double valueAtRisk;
+        double expectedReturn;
+        double sharpeRatio;
+        string instrument;
+        string sector;
+        datetime openTime;
+        ENUM_POSITION_TYPE type;
+    };
+    
+    struct StressTestScenario {
+        double marketCrash;
+        double liquidityCrisis;
+        double volatilitySpike;
+        double correlationBreakdown;
+        double systematicRisk;
+        double idiosyncraticRisk;
+    };
+    
+    // Membros privados
+    RiskMetrics metrics;
+    RiskLimits limits;
+    PositionInfo positions[];
+    StressTestScenario stressScenarios;
+    
+    double accountBalance;
+    double currentEquity;
+    bool isHighRiskMode;
+    
+    // Configurações avançadas
+    const int RISK_WINDOW = 20;
+    const double CONFIDENCE_LEVEL = 0.95;
+    const double MAX_RISK_MULTIPLIER = 2.0;
+    const int MONTE_CARLO_SIMS = 10000;
+    const int VAR_LOOKBACK = 252;
+    
+    // Novos componentes
+    CVolatilityAnalyzer* volatilityAnalyzer;
+    CCorrelationMatrix* correlationMatrix;
+    CLiquidityManager* liquidityManager;
+    CPortfolioOptimizer* portfolioOptimizer;
+
+public:
+    CRiskManagement() {
+        volatilityAnalyzer = new CVolatilityAnalyzer();
+        correlationMatrix = new CCorrelationMatrix();
+        liquidityManager = new CLiquidityManager();
+        portfolioOptimizer = new CPortfolioOptimizer();
+    }
+    
+    ~CRiskManagement() {
+        SafeDelete(volatilityAnalyzer);
+        SafeDelete(correlationMatrix);
+        SafeDelete(liquidityManager);
+        SafeDelete(portfolioOptimizer);
+    }
+    
+    bool Initialize(double balance) {
+        if(!InitializeComponents()) return false;
+        
+        accountBalance = balance;
+        currentEquity = balance;
+        isHighRiskMode = false;
+        
+        SetDefaultLimits();
+        InitializeMetrics();
+        SetupStressScenarios();
+        
+        return true;
+    }
+    
+    double GetOptimalPositionSize(double probability, double stopLoss, string instrument) {
+        if(!ValidateParameters(probability, stopLoss)) return 0;
+        
+        double baseSize = CalculateBasePositionSize(stopLoss);
+        double adjustedSize = AdjustPositionSize(baseSize, probability, instrument);
+        double finalSize = ValidateAndOptimizeSize(adjustedSize, instrument);
+        
+        return NormalizeDouble(finalSize, 2);
+    }
+    
+    void UpdateRiskMetrics(const double& returns[]) {
+        UpdateBasicMetrics(returns);
+        UpdateAdvancedMetrics(returns);
+        UpdatePortfolioMetrics();
+        PerformStressTests();
+        OptimizePortfolio();
+    }
+    
+    bool ValidateNewPosition(const PositionInfo& position) {
+        if(!CheckBasicLimits(position)) return false;
+        if(!CheckAdvancedLimits(position)) return false;
+        if(!CheckPortfolioConstraints(position)) return false;
+        
+        return true;
+    }
+
+private:
+    bool InitializeComponents() {
+        if(!volatilityAnalyzer.Initialize()) return false;
+        if(!correlationMatrix.Initialize()) return false;
+        if(!liquidityManager.Initialize()) return false;
+        if(!portfolioOptimizer.Initialize()) return false;
+        
+        return true;
+    }
+    
+    void UpdateBasicMetrics(const double& returns[]) {
+        metrics.valueAtRisk = CalculateVaR(returns, CONFIDENCE_LEVEL);
+        metrics.expectedShortfall = CalculateExpectedShortfall(returns, CONFIDENCE_LEVEL);
+        metrics.kellyFraction = CalculateKellyFraction(returns);
+        metrics.optimalF = CalculateOptimalF(returns);
+        UpdateDrawdown();
+    }
+    
+    void UpdateAdvancedMetrics(const double& returns[]) {
+        metrics.sharpeRatio = CalculateSharpeRatio(returns);
+        metrics.sortinoRatio = CalculateSortinoRatio(returns);
+        metrics.calmarRatio = CalculateCalmarRatio(returns);
+        metrics.treynorRatio = CalculateTreynorRatio(returns);
+        metrics.informationRatio = CalculateInformationRatio(returns);
+        metrics.omegaRatio = CalculateOmegaRatio(returns);
+        metrics.tailRisk = CalculateTailRisk(returns);
+    }
+    
+    void UpdatePortfolioMetrics() {
+        correlationMatrix.Update(positions);
+        volatilityAnalyzer.Update(positions);
+        liquidityManager.Update(positions);
+    }
+    
+    void PerformStressTests() {
+        PerformMonteCarloSimulation();
+        PerformScenarioAnalysis();
+        PerformSensitivityAnalysis();
+        UpdateStressMetrics();
+    }
+    
+        // Continuação da classe CRiskManagement...
+
+    void OptimizePortfolio() {
+        PortfolioOptimizationParams params;
+        params.targetReturn = CalculateTargetReturn();
+        params.riskTolerance = CalculateRiskTolerance();
+        params.constraints = GetCurrentConstraints();
+        
+        portfolioOptimizer.Optimize(positions, params);
+    }
+    
+    double CalculateVaR(const double& returns[], double confidence) {
+        if(ArraySize(returns) < VAR_LOOKBACK) return 0;
+        
+        double sortedReturns[];
+        ArrayCopy(sortedReturns, returns);
+        ArraySort(sortedReturns);
+        
+        int index = (int)((1 - confidence) * ArraySize(sortedReturns));
+        
+        // Ajuste para volatilidade condicional
+        double currentVol = volatilityAnalyzer.GetCurrentVolatility();
+        double historicalVol = volatilityAnalyzer.GetHistoricalVolatility();
+        double volAdjustment = currentVol / historicalVol;
+        
+        return sortedReturns[index] * volAdjustment;
+    }
+    
+    void PerformMonteCarloSimulation() {
+        double simResults[];
+        ArrayResize(simResults, MONTE_CARLO_SIMS);
+        
+        for(int i = 0; i < MONTE_CARLO_SIMS; i++) {
+            simResults[i] = SimulatePortfolioReturn();
+        }
+        
+        UpdateMetricsFromSimulation(simResults);
+    }
+    
+    double SimulatePortfolioReturn() {
+        double totalReturn = 0;
+        
+        for(int i = 0; i < ArraySize(positions); i++) {
+            double randomReturn = GenerateRandomReturn(positions[i]);
+            totalReturn += randomReturn * positions[i].size;
+        }
+        
+        return totalReturn;
+    }
+    
+    double GenerateRandomReturn(const PositionInfo& position) {
+        double mean = position.expectedReturn;
+        double vol = position.volatility;
+        
+        // Box-Muller transform para geração de números aleatórios normais
+        double u1 = MathRand() / 32768.0;
+        double u2 = MathRand() / 32768.0;
+        
+        double z = MathSqrt(-2 * MathLog(u1)) * MathCos(2 * M_PI * u2);
+        
+        return mean + vol * z;
+    }
+    
+    void PerformScenarioAnalysis() {
+        // Cenário de Crise de Mercado
+        AnalyzeMarketCrashScenario();
+        
+        // Cenário de Crise de Liquidez
+        AnalyzeLiquidityCrisisScenario();
+        
+        // Cenário de Spike de Volatilidade
+        AnalyzeVolatilitySpikeScenario();
+        
+        // Cenário de Quebra de Correlação
+        AnalyzeCorrelationBreakdownScenario();
+    }
+    
+    void PerformSensitivityAnalysis() {
+        // Delta
+        CalculatePortfolioDelta();
+        
+        // Gamma
+        CalculatePortfolioGamma();
+        
+        // Vega
+        CalculatePortfolioVega();
+        
+        // Theta
+        CalculatePortfolioTheta();
+        
+        // Rho
+        CalculatePortfolioRho();
+    }
+    
+    bool CheckPortfolioConstraints(const PositionInfo& newPosition) {
+        // Verificar exposição por setor
+        if(!CheckSectorExposure(newPosition)) return false;
+        
+        // Verificar concentração por instrumento
+        if(!CheckInstrumentConcentration(newPosition)) return false;
+        
+        // Verificar restrições de correlação
+        if(!CheckCorrelationConstraints(newPosition)) return false;
+        
+        // Verificar restrições de liquidez
+        if(!CheckLiquidityConstraints(newPosition)) return false;
+        
+        return true;
+    }
+    
+    double CalculatePortfolioRisk() {
+        double totalRisk = 0;
+        
+        // Risco individual das posições
+        for(int i = 0; i < ArraySize(positions); i++) {
+            totalRisk += positions[i].valueAtRisk;
+        }
+        
+        // Ajuste para correlações
+        totalRisk *= correlationMatrix.GetDiversificationFactor();
+        
+        // Ajuste para liquidez
+        totalRisk *= liquidityManager.GetLiquidityFactor();
+        
+        return totalRisk;
+    }
+    
+    void UpdateStressMetrics() {
+        metrics.stressTestResult = MathMax(
+            stressScenarios.marketCrash,
+            MathMax(
+                stressScenarios.liquidityCrisis,
+                MathMax(
+                    stressScenarios.volatilitySpike,
+                    stressScenarios.correlationBreakdown
+                )
+            )
+        );
+    }
+    
+    template<typename T>
+    void SafeDelete(T* &ptr) {
+        if(ptr != NULL) {
+            delete ptr;
+            ptr = NULL;
+        }
+    }
+};

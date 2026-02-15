@@ -1,0 +1,23 @@
+Volume Price Trend Indicator - VPT
+
+Have you ever wondered if there’s a way to see how strongly buyers and sellers feel about a stock’s price? 
+The Volume Price Trend Indicator (VPT) aims to do just that! It combines price changes with trading volume 
+to give you a clearer picture of the forces driving the market.
+Think of it like this: volume is like the fuel behind a price move. 
+The VPT helps you see if a trend is running on fumes or if it’s got plenty of momentum left.
+In this article, we explain the function of the VPT and how traders employ it to identify key
+ times when a trend could be losing strength or building up. If you are just starting with 
+technical analysis or already experienced, learning about the VPT can significantly enhance your trading tools. 
+
+Understanding the Volume Price Trend Indicator (VPT)
+The volume price trend indicator is used to determine the balance between a security's demand and supply. The percentage change in the share price trend shows the relative supply or demand of a particular security, while volume indicates the force behind the trend.
+
+
+https://thetradinganalyst.com/volume-price-trend-indicator/
+
+https://profitmart.in/knowledge-center/candlestick-patterns/what-is-a-volume-price-trend-indicator/#:~:text=Understanding%20the%20Volume%20Price%20Trend,the%20force%20behind%20the%20trend.
+
+https://corporatefinanceinstitute.com/resources/career-map/sell-side/capital-markets/volume-price-trend-indicator-vpt/
+
+https://www.investopedia.com/terms/v/vptindicator.asp
+

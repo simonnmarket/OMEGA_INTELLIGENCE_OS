@@ -1,0 +1,189 @@
+//+------------------------------------------------------------------+
+//| Volume Footprint Chart - Sistema de Conexão Externa                |
+//|                                                                    |
+//| OBJETIVO: Implementar conexões com sistemas externos incluindo:    |
+//| - API Backend                                                     |
+//| - Sistema de Logs                                                 |
+//| - Integração com TechnologyAdvances                               |
+//| - Comunicação com TeamStructure                                   |
+//+------------------------------------------------------------------+
+
+private:
+    struct ExternalConnector {
+        // Configurações de Conexão
+        struct Config {
+            string apiUrl;            // URL da API
+            string apiKey;            // Chave de API
+            int timeout;             // Timeout de conexão
+            bool useSSL;             // Usar conexão segura
+            bool enableRetry;        // Habilitar retry
+            int maxRetries;          // Máximo de tentativas
+        } config;
+        
+        // Métricas de Conexão
+        struct Metrics {
+            int successfulRequests;   // Requisições bem sucedidas
+            int failedRequests;       // Falhas de conexão
+            double avgResponseTime;   // Tempo médio de resposta
+            datetime lastConnection;  // Última conexão
+        } metrics;
+        
+        // Cache de Dados
+        struct DataCache {
+            CArrayObj* pendingData;   // Dados pendentes
+            int maxCacheSize;         // Tamanho máximo do cache
+            bool isProcessing;        // Flag de processamento
+        } cache;
+    } m_connector;
+    
+    void SendDataToBackend(const string &data) {
+        if(!ValidateConnection()) return;
+        
+        // Preparar request
+        string url = m_connector.config.apiUrl + "/api/log-trade";
+        string headers = PrepareHeaders();
+        string payload = PreparePayload(data);
+        
+        // Tentar envio
+        int retryCount = 0;
+        bool success = false;
+        
+        while(retryCount < m_connector.config.maxRetries && !success) {
+            uint startTime = GetTickCount();
+            
+            char result[];
+            string result_headers;
+            
+            int res = WebRequest(
+                "POST",                // Método
+                url,                   // URL
+                headers,               // Headers
+                m_connector.config.timeout, // Timeout
+                payload,               // Dados
+                result,                // Buffer de resultado
+                result_headers         // Headers de resposta
+            );
+            
+            // Processar resultado
+            if(res == 200) {
+                success = true;
+                ProcessSuccessfulRequest(GetTickCount() - startTime);
+            }
+            else {
+                HandleRequestError(res);
+                if(m_connector.config.enableRetry) {
+                    retryCount++;
+                    Sleep(1000 * retryCount); // Backoff exponencial
+                }
+            }
+        }
+        
+        // Cache dados se falhar
+        if(!success) {
+            CacheFailedRequest(data);
+        }
+    }
+    
+    void RegisterTrade() {
+        // Criar objeto de trade
+        TradeInfo* trade = new TradeInfo();
+        trade.id = m_perfMonitor.metrics.totalTrades;
+        trade.signal = m_setup.signal;
+        trade.volume = m_setup.volume;
+        trade.entry = m_setup.entry;
+        trade.stopLoss = m_setup.stopLoss;
+        trade.takeProfit = m_setup.takeProfit;
+        trade.result = IsLastTradeWin() ? "Win" : "Loss";
+        trade.timestamp = TimeCurrent();
+        
+        // Preparar mensagem de log
+        string logMessage = FormatTradeMessage(trade);
+        
+        // Log local
+        LogMessage(logMessage, LOG_INFO);
+        
+        // Enviar para backend
+        SendDataToBackend(JsonifyTrade(trade));
+        
+        // Atualizar TechnologyAdvances
+        UpdateTradeMetrics(trade);
+        
+        // Notificar equipe
+        NotifyTradeTeam(trade);
+        
+        delete trade;
+    }
+    
+    string FormatTradeMessage(const TradeInfo* trade) {
+        return StringFormat(
+            "Trade %d: %s\nVolume: %.2f\nEntry: %.5f\nSL: %.5f\nTP: %.5f\nResult: %s",
+            trade.id,
+            EnumToString(trade.signal),
+            trade.volume,
+            trade.entry,
+            trade.stopLoss,
+            trade.takeProfit,
+            trade.result
+        );
+    }
+    
+    string JsonifyTrade(const TradeInfo* trade) {
+        return StringFormat(
+            "{\"id\":%d,\"signal\":\"%s\",\"volume\":%.2f,\"entry\":%.5f,\"sl\":%.5f,\"tp\":%.5f,\"result\":\"%s\",\"timestamp\":%d}",
+            trade.id,
+            EnumToString(trade.signal),
+            trade.volume,
+            trade.entry,
+            trade.stopLoss,
+            trade.takeProfit,
+            trade.result,
+            trade.timestamp
+        );
+    }
+    
+    void ProcessSuccessfulRequest(const uint responseTime) {
+        m_connector.metrics.successfulRequests++;
+        m_connector.metrics.avgResponseTime = 
+            (m_connector.metrics.avgResponseTime + responseTime) / 2;
+        m_connector.metrics.lastConnection = TimeCurrent();
+        
+        // Processar cache pendente se houver
+        ProcessPendingCache();
+    }
+    
+    void HandleRequestError(const int errorCode) {
+        string errorMsg = StringFormat(
+            "Erro na conexão externa: %d\nURL: %s",
+            errorCode,
+            m_connector.config.apiUrl
+        );
+        
+        LogMessage(errorMsg, LOG_ERROR);
+        m_connector.metrics.failedRequests++;
+    }
+    
+    void CacheFailedRequest(const string &data) {
+        if(m_connector.cache.pendingData.Total() < m_connector.cache.maxCacheSize) {
+            m_connector.cache.pendingData.Add(new string(data));
+        }
+        else {
+            LogMessage("Cache de dados cheio - dados perdidos", LOG_WARNING);
+        }
+    }
+    
+    void ProcessPendingCache() {
+        if(m_connector.cache.isProcessing) return;
+        
+        m_connector.cache.isProcessing = true;
+        
+        while(m_connector.cache.pendingData.Total() > 0) {
+            string* data = m_connector.cache.pendingData.At(0);
+            if(data != NULL) {
+                SendDataToBackend(*data);
+                m_connector.cache.pendingData.Delete(0);
+            }
+        }
+        
+        m_connector.cache.isProcessing = false;
+    }
+};

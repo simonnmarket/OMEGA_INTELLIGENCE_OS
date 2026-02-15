@@ -1,0 +1,19 @@
+PVSRA (Price, Volume, S&R Analysis)
+
+PVSRA (Price/Volume/S&R Analysis) analyzes price bars when volume is high to see if bars are higher or lower than before and the general price trend, analyzes volume spikes, and analyzes price and volume relative to support and resistance levels to determine market direction and optimal entry points.
+
+
+PVSRA is part of SONICR SYSTEM.   There now are two kinds of trades in the Sonic R. System: Classic This is an ema (Dragon) based method of trading that uses Price Action, Wave Analysis, S&R and a bit of Volume to validate a setup for a single entry trade. Scout This is a pure Price, Volume and S&R based method of trading that uses a unique analysis of Price Action, Volume and S&R (called PVSRA) to determine two things: if the market is bull or bear, and accordingly at what optimal price areas to make entries to build a trade of multiple positions, much as the market itself is doing.
+
+
+
+https://www.studocu.vn/vn/document/royal-melbourne-institute-of-technology-vietnam/financial-market/pvsra-051013/71601589
+
+https://www.forexfactory.com/thread/540706-pvsra-price-volume-sr-analysis?page=365
+
+https://kr.tradingview.com/script/wtrMhkLC-PVSRA-Volume/
+
+https://www.scribd.com/document/207749288/PVSRA
+
+https://www.tradingview.com/script/ZLNejMV6-Pvsra-Candles-Boxes-and-Volume/
+

@@ -1,0 +1,438 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part3.mq5    |
+//+------------------------------------------------------------------+
+
+// Sistema de Machine Learning e Otimização Avançado
+class CMLOptimization {
+private:
+    // Estruturas de dados expandidas para ML
+    struct DataPoint {
+        double features[30];     // Features expandidas
+        double outcome;          // Resultado (1 = sucesso, 0 = falha)
+        double confidence;       // Confiança da previsão
+        double market_impact;    // Impacto no mercado
+        datetime timestamp;      // Timestamp para análise temporal
+        ENUM_TIMEFRAMES timeframe; // Timeframe da análise
+    };
+    
+    struct ModelParameters {
+        double weights[30];      // Pesos expandidos do modelo
+        double bias;            // Viés do modelo
+        double learningRate;    // Taxa de aprendizado adaptativa
+        int epochs;            // Épocas de treinamento
+        double accuracy;        // Precisão do modelo
+        double validation_score; // Score de validação
+        double test_score;      // Score de teste
+        datetime lastUpdate;    // Última atualização
+        
+        void Reset() {
+            ArrayInitialize(weights, 0);
+            bias = 0;
+            learningRate = 0.01;
+            epochs = 1000;
+            accuracy = 0;
+            validation_score = 0;
+            test_score = 0;
+            lastUpdate = 0;
+        }
+    };
+    
+    // Componentes avançados
+    struct ModelMetrics {
+        double precision;
+        double recall;
+        double f1_score;
+        double roc_auc;
+        double sharpe_ratio;
+        double sortino_ratio;
+        double max_drawdown;
+        
+        void Calculate(const double& predictions[], const double& actuals[]) {
+            CalculateClassificationMetrics(predictions, actuals);
+            CalculateFinancialMetrics(predictions, actuals);
+        }
+    };
+    
+    // Dados e parâmetros expandidos
+    DataPoint historyData[];
+    ModelParameters currentModel;
+    ModelMetrics metrics;
+    int maxHistoryPoints;
+    double validationSplit;
+    double testSplit;
+    
+    // Sistema de cache otimizado
+    CHashMap<string, double> featureCache;
+    bool isTraining;
+    
+    // Novos componentes
+    double[] ensemble_predictions;
+    double[] feature_importance;
+    double[] cross_validation_scores;
+
+public:
+    void Initialize() {
+        maxHistoryPoints = 5000;  // Expandido
+        validationSplit = 0.2;
+        testSplit = 0.1;
+        isTraining = false;
+        
+        ArrayResize(historyData, 0);
+        InitializeModel();
+        InitializeEnsemble();
+        ClearCache();
+    }
+    
+    double PredictProbability(const double& features[]) {
+        if(ArraySize(features) != 30) return 0;
+        
+        // Ensemble prediction
+        double ensemble_pred = 0;
+        
+        // Base model prediction
+        double base_pred = currentModel.bias;
+        for(int i = 0; i < 30; i++) {
+            base_pred += features[i] * currentModel.weights[i];
+        }
+        base_pred = Sigmoid(base_pred);
+        
+        // Ensemble combination
+        ensemble_pred = CombineEnsemblePredictions(base_pred, features);
+        
+        // Confidence adjustment
+        double confidence = CalculatePredictionConfidence(features);
+        
+        return AdjustPrediction(ensemble_pred, confidence);
+    }
+    
+    void AddDataPoint(const double& features[], double outcome) {
+        if(ArraySize(historyData) >= maxHistoryPoints) {
+            RemoveOldestDataPoint();
+        }
+        
+        int size = ArraySize(historyData);
+        ArrayResize(historyData, size + 1);
+        
+        // Copy features with validation
+        for(int i = 0; i < 30 && i < ArraySize(features); i++) {
+            historyData[size].features[i] = features[i];
+        }
+        
+        historyData[size].outcome = outcome;
+        historyData[size].timestamp = TimeCurrent();
+        historyData[size].confidence = CalculateDataPointConfidence(features);
+        historyData[size].market_impact = CalculateMarketImpact(features);
+        historyData[size].timeframe = Period();
+    }
+
+    // ... (Continua na próxima parte)
+    bool UpdateModel() {
+        if(ArraySize(historyData) < 500) return false;  // Mínimo de dados necessários
+        if(isTraining) return false;
+        
+        isTraining = true;
+        
+        // Divisão de dados atualizada
+        int totalSize = ArraySize(historyData);
+        int trainSize = (int)(totalSize * (1 - validationSplit - testSplit));
+        int validSize = (int)(totalSize * validationSplit);
+        int testSize = totalSize - trainSize - validSize;
+        
+        // Preparação dos dados
+        PrepareDataForTraining(trainSize, validSize, testSize);
+        
+        // Treinamento com validação cruzada
+        double best_val_score = 0;
+        ModelParameters best_model;
+        best_model.Reset();
+        
+        for(int fold = 0; fold < 5; fold++) {  // 5-fold cross validation
+            ModelParameters fold_model;
+            fold_model.Reset();
+            
+            // Treinar modelo
+            TrainModelFold(fold_model, fold, trainSize);
+            
+            // Validação
+            double val_score = ValidateModelFold(fold_model, trainSize, validSize);
+            
+            if(val_score > best_val_score) {
+                best_val_score = val_score;
+                best_model = fold_model;
+            }
+            
+            cross_validation_scores[fold] = val_score;
+        }
+        
+        // Atualizar modelo atual com o melhor modelo
+        currentModel = best_model;
+        
+        // Teste final
+        currentModel.test_score = TestModel(trainSize + validSize, testSize);
+        
+        // Calcular métricas finais
+        CalculateModelMetrics();
+        
+        // Atualizar feature importance
+        UpdateFeatureImportance();
+        
+        currentModel.lastUpdate = TimeCurrent();
+        isTraining = false;
+        
+        return true;
+    }
+    
+private:
+    void InitializeModel() {
+        currentModel.Reset();
+        ArrayResize(ensemble_predictions, 5);
+        ArrayResize(feature_importance, 30);
+        ArrayResize(cross_validation_scores, 5);
+    }
+    
+    void InitializeEnsemble() {
+        // Inicializar diferentes modelos do ensemble
+        InitializeBaseModel();
+        InitializeBoostingModel();
+        InitializeBaggingModel();
+    }
+    
+    void PrepareDataForTraining(int trainSize, int validSize, int testSize) {
+        // Normalização dos dados
+        NormalizeFeatures();
+        
+        // Balanceamento de classes
+        BalanceTrainingData();
+        
+        // Augmentação de dados
+        AugmentTrainingData();
+    }
+    
+    void TrainModelFold(ModelParameters &model, int fold, int trainSize) {
+        double learning_rate = model.learningRate;
+        
+        for(int epoch = 0; epoch < model.epochs; epoch++) {
+            double epochLoss = 0;
+            
+            // Mini-batch training
+            for(int batch = 0; batch < trainSize; batch += 32) {
+                double batchLoss = TrainMiniBatch(model, batch, MathMin(batch + 32, trainSize));
+                epochLoss += batchLoss;
+            }
+            
+            // Early stopping check
+            if(CheckEarlyStopping(epochLoss/trainSize)) break;
+            
+            // Adaptive learning rate
+            learning_rate = UpdateLearningRate(learning_rate, epoch);
+        }
+    }
+    
+    double TrainMiniBatch(ModelParameters &model, int start, int end) {
+        double batchLoss = 0;
+        
+        for(int i = start; i < end; i++) {
+            // Forward pass
+            double prediction = PredictSingle(model, historyData[i].features);
+            double error = historyData[i].outcome - prediction;
+            
+            // Backward pass with momentum
+            UpdateModelWeights(model, historyData[i].features, error);
+            
+            batchLoss += CalculateLoss(prediction, historyData[i].outcome);
+        }
+        
+        return batchLoss / (end - start);
+    }
+    
+    void UpdateModelWeights(ModelParameters &model, const double& features[], double error) {
+        static double momentum[] = {0};
+        static double velocity[] = {0};
+        
+        if(ArraySize(momentum) != 30) ArrayResize(momentum, 30);
+        if(ArraySize(velocity) != 30) ArrayResize(velocity, 30);
+        
+        double beta1 = 0.9;  // Momentum parameter
+        double beta2 = 0.999;  // RMSprop parameter
+        
+        for(int i = 0; i < 30; i++) {
+            // Adam optimization
+            momentum[i] = beta1 * momentum[i] + (1 - beta1) * error * features[i];
+            velocity[i] = beta2 * velocity[i] + (1 - beta2) * error * features[i] * error * features[i];
+            
+            // Update weights
+            model.weights[i] += model.learningRate * momentum[i] / (MathSqrt(velocity[i]) + 1e-8);
+        }
+        
+        // Update bias
+        model.bias += model.learningRate * error;
+    }
+    
+    double ValidateModelFold(ModelParameters &model, int trainSize, int validSize) {
+        double validationLoss = 0;
+        int validCount = 0;
+        
+        for(int i = trainSize; i < trainSize + validSize; i++) {
+            double prediction = PredictSingle(model, historyData[i].features);
+            validationLoss += CalculateLoss(prediction, historyData[i].outcome);
+            validCount++;
+        }
+        
+        return validCount > 0 ? 1.0 - (validationLoss / validCount) : 0;
+    }
+    
+        double TestModel(int startIdx, int testSize) {
+        double testLoss = 0;
+        double predictions[], actuals[];
+        ArrayResize(predictions, testSize);
+        ArrayResize(actuals, testSize);
+        
+        for(int i = 0; i < testSize; i++) {
+            predictions[i] = PredictSingle(currentModel, historyData[startIdx + i].features);
+            actuals[i] = historyData[startIdx + i].outcome;
+            testLoss += CalculateLoss(predictions[i], actuals[i]);
+        }
+        
+        // Calcular métricas avançadas
+        metrics.Calculate(predictions, actuals);
+        
+        return testSize > 0 ? 1.0 - (testLoss / testSize) : 0;
+    }
+    
+    void CalculateModelMetrics() {
+        // Métricas de classificação
+        metrics.precision = CalculatePrecision();
+        metrics.recall = CalculateRecall();
+        metrics.f1_score = 2 * (metrics.precision * metrics.recall) / 
+                          (metrics.precision + metrics.recall);
+        metrics.roc_auc = CalculateROCAUC();
+        
+        // Métricas financeiras
+        metrics.sharpe_ratio = CalculateSharpeRatio();
+        metrics.sortino_ratio = CalculateSortinoRatio();
+        metrics.max_drawdown = CalculateMaxDrawdown();
+    }
+    
+    void UpdateFeatureImportance() {
+        for(int i = 0; i < 30; i++) {
+            feature_importance[i] = CalculateFeatureImportance(i);
+        }
+        
+        // Normalizar importâncias
+        NormalizeArray(feature_importance);
+    }
+    
+    double CalculateFeatureImportance(int featureIndex) {
+        double baseScore = currentModel.test_score;
+        double permutedScore = CalculatePermutationScore(featureIndex);
+        return MathAbs(baseScore - permutedScore);
+    }
+    
+    double CalculatePermutationScore(int featureIndex) {
+        // Permutation importance calculation
+        double originalValues[];
+        ArrayResize(originalValues, ArraySize(historyData));
+        
+        // Salvar valores originais
+        for(int i = 0; i < ArraySize(historyData); i++) {
+            originalValues[i] = historyData[i].features[featureIndex];
+        }
+        
+        // Embaralhar valores
+        ShuffleArray(originalValues);
+        
+        // Recalcular score com valores permutados
+        double permutedScore = 0;
+        for(int i = 0; i < ArraySize(historyData); i++) {
+            double tempFeatures[];
+            ArrayCopy(tempFeatures, historyData[i].features);
+            tempFeatures[featureIndex] = originalValues[i];
+            
+            double prediction = PredictSingle(currentModel, tempFeatures);
+            permutedScore += CalculateLoss(prediction, historyData[i].outcome);
+        }
+        
+        return 1.0 - (permutedScore / ArraySize(historyData));
+    }
+    
+    double CombineEnsemblePredictions(double basePred, const double& features[]) {
+        double ensemble_weight = 0.6;  // Peso do modelo base
+        double combined_pred = ensemble_weight * basePred;
+        
+        // Adicionar previsões dos modelos auxiliares
+        combined_pred += (1 - ensemble_weight) * GetBoostingPrediction(features) * 0.5;
+        combined_pred += (1 - ensemble_weight) * GetBaggingPrediction(features) * 0.5;
+        
+        return combined_pred;
+    }
+    
+    double CalculatePredictionConfidence(const double& features[]) {
+        // Calcular variância das previsões do ensemble
+        double predictions[];
+        ArrayResize(predictions, 5);
+        
+        predictions[0] = PredictSingle(currentModel, features);
+        predictions[1] = GetBoostingPrediction(features);
+        predictions[2] = GetBaggingPrediction(features);
+        predictions[3] = GetRandomForestPrediction(features);
+        predictions[4] = GetNeuralNetPrediction(features);
+        
+        return 1.0 - CalculateStandardDeviation(predictions);
+    }
+    
+    double AdjustPrediction(double prediction, double confidence) {
+        // Ajustar previsão com base na confiança
+        double adjustment = (confidence - 0.5) * 0.2;  // Max ±10% adjustment
+        return MathMax(0, MathMin(1, prediction + adjustment));
+    }
+    
+    // Métodos auxiliares
+    double Sigmoid(double x) {
+        return 1.0 / (1.0 + MathExp(-x));
+    }
+    
+    double CalculateLoss(double predicted, double actual) {
+        return -(actual * MathLog(predicted) + (1 - actual) * MathLog(1 - predicted));
+    }
+    
+    void NormalizeArray(double &arr[]) {
+        double sum = 0;
+        for(int i = 0; i < ArraySize(arr); i++) {
+            sum += arr[i];
+        }
+        if(sum > 0) {
+            for(int i = 0; i < ArraySize(arr); i++) {
+                arr[i] /= sum;
+            }
+        }
+    }
+    
+    void ShuffleArray(double &arr[]) {
+        for(int i = ArraySize(arr) - 1; i > 0; i--) {
+            int j = (int)MathFloor(MathRand() / 32768.0 * (i + 1));
+            double temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+    }
+    
+    double CalculateStandardDeviation(const double& arr[]) {
+        double mean = 0, variance = 0;
+        int size = ArraySize(arr);
+        
+        // Calcular média
+        for(int i = 0; i < size; i++) {
+            mean += arr[i];
+        }
+        mean /= size;
+        
+        // Calcular variância
+        for(int i = 0; i < size; i++) {
+            variance += MathPow(arr[i] - mean, 2);
+        }
+        variance /= size;
+        
+        return MathSqrt(variance);
+    }
+};
+

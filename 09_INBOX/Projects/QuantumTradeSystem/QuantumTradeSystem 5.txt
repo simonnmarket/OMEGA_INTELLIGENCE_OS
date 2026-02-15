@@ -1,0 +1,198 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part5.mq5    |
+//+------------------------------------------------------------------+
+
+// Sistema de Backtesting
+class CBacktestSystem {
+private:
+    struct BacktestResult {
+        int totalTrades;
+        double netProfit;
+        double winRate;
+        double profitFactor;
+        double sharpeRatio;
+        double maxDrawdown;
+        double recoveryFactor;
+        double expectedPayoff;
+        datetime startTime;
+        datetime endTime;
+    };
+    
+    struct OptimizationParams {
+        double minProbability;
+        double riskPercent;
+        int adxPeriod;
+        int maPeriod;
+        double stopLossMultiplier;
+        double takeProfitMultiplier;
+    };
+    
+public:
+    BacktestResult RunBacktest(
+        datetime startDate,
+        datetime endDate,
+        const OptimizationParams& params
+    ) {
+        BacktestResult result;
+        ZeroMemory(result);
+        
+        result.startTime = startDate;
+        result.endTime = endDate;
+        
+        // Configurar ambiente de backtesting
+        CQuantumTradeSystem* testSystem = new CQuantumTradeSystem();
+        testSystem.SetParameters(params);
+        
+        // Array para armazenar resultados dos trades
+        double trades[];
+        ArrayResize(trades, 0);
+        
+        // Iterar sobre o período histórico
+        for(datetime current = startDate; current <= endDate; current += PeriodSeconds()) {
+            if(!testSystem.ProcessBar(current)) continue;
+            
+            // Coletar resultados dos trades fechados
+            double tradeResult;
+            if(testSystem.GetLastTradeResult(tradeResult)) {
+                int size = ArraySize(trades);
+                ArrayResize(trades, size + 1);
+                trades[size] = tradeResult;
+            }
+        }
+        
+        // Calcular estatísticas
+        CalculateStatistics(trades, result);
+        
+        delete testSystem;
+        return result;
+    }
+    
+    OptimizationParams OptimizeParameters(
+        datetime startDate,
+        datetime endDate
+    ) {
+        OptimizationParams bestParams, currentParams;
+        BacktestResult bestResult;
+        bestResult.netProfit = -DBL_MAX;
+        
+        // Definir ranges de otimização
+        double probRange[] = {0.6, 0.65, 0.7, 0.75, 0.8, 0.85};
+        double riskRange[] = {1.0, 1.5, 2.0, 2.5, 3.0};
+        int adxRange[] = {10, 14, 18, 22};
+        int maRange[] = {10, 20, 30, 40};
+        
+        // Grid search otimização
+        for(int p = 0; p < ArraySize(probRange); p++) {
+            for(int r = 0; r < ArraySize(riskRange); r++) {
+                for(int a = 0; a < ArraySize(adxRange); a++) {
+                    for(int m = 0; m < ArraySize(maRange); m++) {
+                        currentParams.minProbability = probRange[p];
+                        currentParams.riskPercent = riskRange[r];
+                        currentParams.adxPeriod = adxRange[a];
+                        currentParams.maPeriod = maRange[m];
+                        
+                        BacktestResult result = RunBacktest(startDate, endDate, currentParams);
+                        
+                        // Avaliar resultado usando função de fitness
+                        if(EvaluateResult(result) > EvaluateResult(bestResult)) {
+                            bestResult = result;
+                            bestParams = currentParams;
+                        }
+                    }
+                }
+            }
+        }
+        
+        return bestParams;
+    }
+    
+    void GenerateBacktestReport(const BacktestResult& result) {
+        string report = "\n=== Backtest Report ===\n";
+        report += "Period: " + TimeToString(result.startTime) + " - " + 
+                 TimeToString(result.endTime) + "\n";
+        report += "Total Trades: " + IntegerToString(result.totalTrades) + "\n";
+        report += "Net Profit: " + DoubleToString(result.netProfit, 2) + "\n";
+        report += "Win Rate: " + DoubleToString(result.winRate * 100, 2) + "%\n";
+        report += "Profit Factor: " + DoubleToString(result.profitFactor, 2) + "\n";
+        report += "Sharpe Ratio: " + DoubleToString(result.sharpeRatio, 2) + "\n";
+        report += "Max Drawdown: " + DoubleToString(result.maxDrawdown, 2) + "\n";
+        report += "Recovery Factor: " + DoubleToString(result.recoveryFactor, 2) + "\n";
+        report += "Expected Payoff: " + DoubleToString(result.expectedPayoff, 2) + "\n";
+        
+        Print(report);
+        
+        // Salvar relatório em arquivo
+        int fileHandle = FileOpen("Backtest_Report_" + 
+                                TimeToString(TimeCurrent()) + ".txt", 
+                                FILE_WRITE|FILE_TXT);
+        if(fileHandle != INVALID_HANDLE) {
+            FileWriteString(fileHandle, report);
+            FileClose(fileHandle);
+        }
+    }
+
+private:
+    void CalculateStatistics(const double& trades[], BacktestResult& result) {
+        if(ArraySize(trades) == 0) return;
+        
+        result.totalTrades = ArraySize(trades);
+        
+        // Calcular resultados básicos
+        int wins = 0;
+        double grossProfit = 0, grossLoss = 0;
+        double maxDrawdown = 0;
+        double peak = 0;
+        double current = 0;
+        
+        for(int i = 0; i < ArraySize(trades); i++) {
+            current += trades[i];
+            result.netProfit += trades[i];
+            
+            if(trades[i] > 0) {
+                wins++;
+                grossProfit += trades[i];
+            } else {
+                grossLoss += MathAbs(trades[i]);
+            }
+            
+            if(current > peak) peak = current;
+            double dd = peak - current;
+            if(dd > maxDrawdown) maxDrawdown = dd;
+        }
+        
+        // Calcular métricas
+        result.winRate = (double)wins / result.totalTrades;
+        result.profitFactor = (grossLoss == 0) ? 0 : grossProfit / grossLoss;
+        result.maxDrawdown = maxDrawdown;
+        result.recoveryFactor = (maxDrawdown == 0) ? 0 : result.netProfit / maxDrawdown;
+        result.expectedPayoff = result.netProfit / result.totalTrades;
+        result.sharpeRatio = CalculateSharpeRatio(trades);
+    }
+    
+    double CalculateSharpeRatio(const double& trades[]) {
+        if(ArraySize(trades) < 2) return 0;
+        
+        double mean = 0, variance = 0;
+        
+        // Calcular média
+        for(int i = 0; i < ArraySize(trades); i++) {
+            mean += trades[i];
+        }
+        mean /= ArraySize(trades);
+        
+        // Calcular variância
+        for(int i = 0; i < ArraySize(trades); i++) {
+            variance += MathPow(trades[i] - mean, 2);
+        }
+        variance /= (ArraySize(trades) - 1);
+        
+        // Anualizar Sharpe Ratio
+        return (mean * 252) / MathSqrt(variance * 252);
+    }
+    
+    double EvaluateResult(const BacktestResult& result) {
+        // Função de fitness personalizada
+        return result.netProfit * result.winRate * result.profitFactor / 
+               (1 + result.maxDrawdown);
+    }
+};

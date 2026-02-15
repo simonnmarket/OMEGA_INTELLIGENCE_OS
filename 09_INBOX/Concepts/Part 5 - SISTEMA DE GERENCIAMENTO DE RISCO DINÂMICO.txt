@@ -1,0 +1,18 @@
+// Cálculo dinâmico de posição
+double CalculatePositionSize(double accountBalance, double riskPercent, double stopDistance) {
+    double riskAmount = accountBalance * (riskPercent / 100);
+    double lotSize = NormalizeDouble(riskAmount / (stopDistance * SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE)), 2);
+    return MathMin(SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX), MathMax(SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN), lotSize));
+}
+
+// Cálculo de exposição
+double CalculateExposure() {
+    if(!PositionSelect(_Symbol)) return 0;
+
+    double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+    double positionValue = PositionGetDouble(POSITION_VOLUME) *
+                           PositionGetDouble(POSITION_PRICE_OPEN) *
+                           SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+
+    return (positionValue / equity) * 100;
+}

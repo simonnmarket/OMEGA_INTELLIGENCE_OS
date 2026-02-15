@@ -1,0 +1,33 @@
+// Execução de compra
+void ExecuteBuy() {
+    if(!trade.Buy(
+        setup.volume,
+        _Symbol,
+        setup.entry,
+        setup.stopLoss,
+        setup.takeProfit,
+        "Quantum Scout Pro - Buy"
+    )) {
+        Log("Erro na execução da compra: " + ErrorDescription(GetLastError()));
+        return;
+    }
+
+    RegisterTrade();
+}
+
+// Execução de venda
+void ExecuteSell() {
+    if(!trade.Sell(
+        setup.volume,
+        _Symbol,
+        setup.entry,
+        setup.stopLoss,
+        setup.takeProfit,
+        "Quantum Scout Pro - Sell"
+    )) {
+        Log("Erro na execução da venda: " + ErrorDescription(GetLastError()));
+        return;
+    }
+
+    RegisterTrade();
+}

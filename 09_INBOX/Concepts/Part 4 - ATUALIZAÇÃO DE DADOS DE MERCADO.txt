@@ -1,0 +1,47 @@
+// Atualização dos dados de mercado
+void UpdateMarketData() {
+    if(!IsMarketOpen()) {
+        Log("Erro: Mercado fechado.");
+        return;
+    }
+
+    marketData.open = iOpen(_Symbol, PERIOD_CURRENT, 0);
+    marketData.high = iHigh(_Symbol, PERIOD_CURRENT, 0);
+    marketData.low = iLow(_Symbol, PERIOD_CURRENT, 0);
+    marketData.close = iClose(_Symbol, PERIOD_CURRENT, 0);
+
+    CopyBuffer(maHandle, 0, 0, 3, maBuffer);
+    CopyBuffer(rsiHandle, 0, 0, 3, rsiBuffer);
+    CopyBuffer(atrHandle, 0, 0, 3, atrBuffer);
+
+    marketData.volume = iVolume(_Symbol, PERIOD_CURRENT, 0);
+    marketData.volumeMA = CalculateVolumeMA();
+    marketData.volumeDelta = CalculateVolumeDelta();
+
+    marketData.trend = CalculateTrend();
+    marketData.momentum = CalculateMomentum();
+    marketData.volatility = atrBuffer[0];
+
+    if(UseMarketProfile) {
+        UpdateMarketProfile();
+    }
+
+    if(UseOrderFlow) {
+        UpdateOrderFlow();
+    }
+
+    marketData.lastUpdate = TimeCurrent();
+    marketData.isValid = true;
+}
+
+// Verificação de horário de mercado
+bool IsMarketOpen() {
+    datetime time = TimeCurrent();
+    MqlDateTime dt;
+    TimeToStruct(time, dt);
+
+    if(dt.day_of_week == 0 || dt.day_of_week == 6) return false;
+    if(dt.hour < 9 || dt.hour >= 18) return false;
+
+    return true;
+}

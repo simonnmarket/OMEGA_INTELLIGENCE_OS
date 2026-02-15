@@ -1,0 +1,155 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part7.mq5    |
+//+------------------------------------------------------------------+
+
+// Sistema de Gestão de Risco Avançado
+class CAdvancedRiskManager {
+private:
+    struct RiskMetrics {
+        double valueAtRisk;      // VaR
+        double expectedShortfall; // CVaR
+        double kellyFraction;
+        double optimalF;
+        double riskOfRuin;
+    };
+    
+    struct PortfolioStats {
+        double correlation;
+        double beta;
+        double alpha;
+        double sharpeRatio;
+        double sortinoRatio;
+    };
+    
+    double maxDrawdownLimit;
+    double dailyLossLimit;
+    double positionSizeLimit;
+    
+public:
+    bool Initialize(double accountSize) {
+        maxDrawdownLimit = accountSize * 0.15;  // 15% max drawdown
+        dailyLossLimit = accountSize * 0.03;    // 3% daily loss limit
+        positionSizeLimit = accountSize * 0.05; // 5% max position size
+        return true;
+    }
+    
+    RiskMetrics CalculateRiskMetrics(const double& returns[]) {
+        RiskMetrics metrics = {0};
+        
+        if(ArraySize(returns) >= 2) {
+            metrics.valueAtRisk = CalculateVaR(returns, 0.95);
+            metrics.expectedShortfall = CalculateExpectedShortfall(returns, 0.95);
+            metrics.kellyFraction = CalculateKellyFraction(returns);
+            metrics.optimalF = CalculateOptimalF(returns);
+            metrics.riskOfRuin = CalculateRiskOfRuin(returns);
+        }
+        
+        return metrics;
+    }
+    
+    double GetPositionSize(double probability, double stopLoss) {
+        double accountSize = AccountInfoDouble(ACCOUNT_BALANCE);
+        double riskAmount = MathMin(accountSize * 0.02, dailyLossLimit);
+        riskAmount *= probability;
+        
+        double positionSize = NormalizeDouble(riskAmount / stopLoss, 2);
+        return MathMin(positionSize, positionSizeLimit);
+    }
+    
+    bool CanTrade() const {
+        if(AccountInfoDouble(ACCOUNT_EQUITY) < AccountInfoDouble(ACCOUNT_BALANCE) * (1 - maxDrawdownLimit))
+            return false;
+            
+        if(GetDailyLoss() > dailyLossLimit)
+            return false;
+            
+        return true;
+    }
+    
+    double GetCurrentRisk() const {
+        return GetDailyLoss() / dailyLossLimit;
+    }
+
+private:
+    double CalculateVaR(const double& returns[], double confidence) {
+        double sortedReturns[];
+        ArrayCopy(sortedReturns, returns);
+        ArraySort(sortedReturns);
+        
+        int index = (int)((1 - confidence) * ArraySize(sortedReturns));
+        return index < ArraySize(sortedReturns) ? sortedReturns[index] : 0;
+    }
+    
+    double CalculateExpectedShortfall(const double& returns[], double confidence) {
+        double var = CalculateVaR(returns, confidence);
+        double sum = 0;
+        int count = 0;
+        
+        for(int i = 0; i < ArraySize(returns); i++) {
+            if(returns[i] < var) {
+                sum += returns[i];
+                count++;
+            }
+        }
+        
+        return count > 0 ? sum/count : 0;
+    }
+    
+    double CalculateKellyFraction(const double& returns[]) {
+        double winRate = 0;
+        double avgWin = 0;
+        double avgLoss = 0;
+        int wins = 0, losses = 0;
+        
+        for(int i = 0; i < ArraySize(returns); i++) {
+            if(returns[i] > 0) {
+                avgWin += returns[i];
+                wins++;
+            } else if(returns[i] < 0) {
+                avgLoss += MathAbs(returns[i]);
+                losses++;
+            }
+        }
+        
+        if(wins > 0) avgWin /= wins;
+        if(losses > 0) avgLoss /= losses;
+        winRate = wins > 0 ? (double)wins / ArraySize(returns) : 0;
+        
+        return avgWin > 0 ? (winRate * avgWin - (1 - winRate) * avgLoss) / avgWin : 0;
+    }
+    
+    double CalculateOptimalF(const double& returns[]) {
+        return 0.5 * CalculateKellyFraction(returns);
+    }
+    
+    double CalculateRiskOfRuin(const double& returns[]) {
+        double kelly = CalculateKellyFraction(returns);
+        double stdDev = CalculateStdDev(returns);
+        
+        return stdDev > 0 ? MathExp(-2 * kelly / (stdDev * stdDev)) : 1.0;
+    }
+    
+    double CalculateStdDev(const double& data[]) {
+        if(ArraySize(data) < 2) return 0;
+        
+        double mean = 0;
+        for(int i = 0; i < ArraySize(data); i++) {
+            mean += data[i];
+        }
+        mean /= ArraySize(data);
+        
+        double variance = 0;
+        for(int i = 0; i < ArraySize(data); i++) {
+            variance += MathPow(data[i] - mean, 2);
+        }
+        variance /= (ArraySize(data) - 1);
+        
+        return MathSqrt(variance);
+    }
+    
+    double GetDailyLoss() {
+        double currentEquity = AccountInfoDouble(ACCOUNT_EQUITY);
+        double dailyOpen = AccountInfoDouble(ACCOUNT_BALANCE);
+        return MathMax(0, dailyOpen - currentEquity);
+    }
+};

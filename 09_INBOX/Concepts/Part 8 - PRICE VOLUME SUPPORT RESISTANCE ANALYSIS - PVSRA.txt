@@ -1,0 +1,183 @@
+//+------------------------------------------------------------------+
+//| PVSRA (Price Volume Support Resistance Analysis) - Parte 8         |
+//|                                                                    |
+//| OBJETIVO: Implementar sistema de otimização e backtesting com:     |
+//| - Otimização de Parâmetros                                        |
+//| - Backtesting Avançado                                            |
+//| - Análise de Resultados                                           |
+//| - Ajuste Automático                                               |
+//+------------------------------------------------------------------+
+
+private:
+    // Estruturas de Otimização
+    struct PVSRAOptimizer {
+        // Parâmetros de Otimização
+        struct OptimizationParams {
+            double volumeThresholds[];   // Thresholds de volume
+            double srLevels[];           // Níveis de S/R
+            double riskFactors[];        // Fatores de risco
+            double mlConfidence[];       // Níveis de confiança ML
+        } params;
+        
+        // Resultados
+        struct OptimizationResults {
+            double bestVolumeThreshold;  // Melhor threshold
+            double bestSRLevel;          // Melhor nível S/R
+            double bestRiskFactor;       // Melhor fator de risco
+            double bestMLConfidence;     // Melhor confiança ML
+            double maxProfitFactor;      // Melhor profit factor
+            double maxSharpeRatio;       // Melhor Sharpe ratio
+        } results;
+        
+        // Métricas
+        struct OptimizationMetrics {
+            int totalTests;              // Total de testes
+            int successfulTests;         // Testes bem sucedidos
+            double avgPerformance;       // Performance média
+            datetime startTime;          // Início da otimização
+            datetime endTime;            // Fim da otimização
+        } metrics;
+    } m_optimizer;
+    
+    void OptimizePVSRAParameters() {
+        // Inicializar otimização
+        InitializeOptimization();
+        
+        // Executar testes
+        RunOptimizationTests();
+        
+        // Analisar resultados
+        AnalyzeOptimizationResults();
+        
+        // Aplicar melhores parâmetros
+        ApplyOptimalParameters();
+    }
+    
+    void InitializeOptimization() {
+        // Configurar ranges de parâmetros
+        ConfigureOptimizationRanges();
+        
+        // Preparar ambiente de teste
+        PrepareTestEnvironment();
+        
+        // Inicializar métricas
+        m_optimizer.metrics.totalTests = 0;
+        m_optimizer.metrics.successfulTests = 0;
+        m_optimizer.metrics.startTime = TimeCurrent();
+        
+        LogPVSRAEvent("Iniciando otimização de parâmetros", LOG_LEVEL_INFO);
+    }
+    
+    void ConfigureOptimizationRanges() {
+        // Volume thresholds
+        ArrayResize(m_optimizer.params.volumeThresholds, 5);
+        m_optimizer.params.volumeThresholds[0] = 1.2;
+        m_optimizer.params.volumeThresholds[1] = 1.5;
+        m_optimizer.params.volumeThresholds[2] = 1.8;
+        m_optimizer.params.volumeThresholds[3] = 2.0;
+        m_optimizer.params.volumeThresholds[4] = 2.5;
+        
+        // S/R levels
+        ArrayResize(m_optimizer.params.srLevels, 5);
+        m_optimizer.params.srLevels[0] = 10;
+        m_optimizer.params.srLevels[1] = 20;
+        m_optimizer.params.srLevels[2] = 30;
+        m_optimizer.params.srLevels[3] = 40;
+        m_optimizer.params.srLevels[4] = 50;
+        
+        // Risk factors
+        ArrayResize(m_optimizer.params.riskFactors, 5);
+        m_optimizer.params.riskFactors[0] = 0.5;
+        m_optimizer.params.riskFactors[1] = 1.0;
+        m_optimizer.params.riskFactors[2] = 1.5;
+        m_optimizer.params.riskFactors[3] = 2.0;
+        m_optimizer.params.riskFactors[4] = 2.5;
+    }
+    
+    void RunOptimizationTests() {
+        for(int v = 0; v < ArraySize(m_optimizer.params.volumeThresholds); v++) {
+            for(int s = 0; s < ArraySize(m_optimizer.params.srLevels); s++) {
+                for(int r = 0; r < ArraySize(m_optimizer.params.riskFactors); r++) {
+                    // Configurar parâmetros
+                    SetTestParameters(v, s, r);
+                    
+                    // Executar backtest
+                    BacktestResult result = RunBacktest();
+                    
+                    // Avaliar resultado
+                    EvaluateTestResult(result);
+                    
+                    m_optimizer.metrics.totalTests++;
+                }
+            }
+        }
+    }
+    
+    void SetTestParameters(const int v, const int s, const int r) {
+        m_config.spikeThreshold = m_optimizer.params.volumeThresholds[v];
+        m_config.srPeriod = (int)m_optimizer.params.srLevels[s];
+        m_risk.params.maxRiskPerTrade = m_optimizer.params.riskFactors[r];
+    }
+    
+    BacktestResult RunBacktest() {
+        BacktestResult result;
+        
+        // Configurar período de teste
+        datetime startTime = D'2024.01.01 00:00';
+        datetime endTime = TimeCurrent();
+        
+        // Executar simulação
+        result = m_techManager.RunBacktest(_Symbol, startTime, endTime);
+        
+        // Calcular métricas
+        result.profitFactor = CalculateProfitFactor(result);
+        result.sharpeRatio = CalculateSharpeRatio(result);
+        result.maxDrawdown = CalculateMaxDrawdown(result);
+        
+        return result;
+    }
+    
+    void EvaluateTestResult(const BacktestResult &result) {
+        // Verificar se é melhor resultado
+        if(result.profitFactor > m_optimizer.results.maxProfitFactor) {
+            UpdateBestParameters(result);
+            m_optimizer.metrics.successfulTests++;
+        }
+        
+        // Atualizar média de performance
+        m_optimizer.metrics.avgPerformance = 
+            (m_optimizer.metrics.avgPerformance * (m_optimizer.metrics.totalTests) + 
+             result.profitFactor) / (m_optimizer.metrics.totalTests + 1);
+    }
+    
+    void ApplyOptimalParameters() {
+        // Aplicar melhores parâmetros encontrados
+        m_config.spikeThreshold = m_optimizer.results.bestVolumeThreshold;
+        m_config.srPeriod = (int)m_optimizer.results.bestSRLevel;
+        m_risk.params.maxRiskPerTrade = m_optimizer.results.bestRiskFactor;
+        
+        // Registrar resultados
+        LogOptimizationResults();
+        
+        // Notificar equipe
+        NotifyOptimizationComplete();
+    }
+    
+    void LogOptimizationResults() {
+        string results = StringFormat(
+            "Otimização PVSRA concluída:\n" +
+            "Melhor Volume Threshold: %.2f\n" +
+            "Melhor Nível S/R: %.0f\n" +
+            "Melhor Fator de Risco: %.2f\n" +
+            "Profit Factor: %.2f\n" +
+            "Sharpe Ratio: %.2f",
+            m_optimizer.results.bestVolumeThreshold,
+            m_optimizer.results.bestSRLevel,
+            m_optimizer.results.bestRiskFactor,
+            m_optimizer.results.maxProfitFactor,
+            m_optimizer.results.maxSharpeRatio
+        );
+        
+        LogPVSRAEvent(results, LOG_LEVEL_INFO);
+    }
+};

@@ -1,0 +1,240 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part6.mq5    |
+//+------------------------------------------------------------------+
+
+// Interface Visual e Monitoramento
+class CVisualInterface {
+private:
+    // Constantes para interface
+    const string PANEL_NAME = "QuantumPanel_";
+    const int CHART_DISTANCE = 20;
+    const int BUTTON_WIDTH = 150;
+    const int BUTTON_HEIGHT = 30;
+    const color BG_COLOR = C'25,25,25';
+    const color TEXT_COLOR = clrWhite;
+    const color PROFIT_COLOR = clrLime;
+    const color LOSS_COLOR = clrRed;
+    const color WARNING_COLOR = clrOrange;
+    
+    // Elementos da interface
+    struct UIElements {
+        string mainPanel;
+        string profitLabel;
+        string tradesLabel;
+        string signalLabel;
+        string probabilityLabel;
+        string riskLabel;
+        string statusLabel;
+        string[] buttons;
+    } ui;
+    
+    // Dados de monitoramento
+    struct MonitorData {
+        double currentProfit;
+        int totalTrades;
+        double winRate;
+        double probability;
+        double riskLevel;
+        string currentSignal;
+        string systemStatus;
+        datetime lastUpdate;
+    } monitor;
+    
+    // Alertas e notificações
+    struct AlertSettings {
+        bool enableEmail;
+        bool enablePush;
+        bool enableSound;
+        double profitThreshold;
+        double lossThreshold;
+        double riskThreshold;
+    } alerts;
+
+public:
+    void Initialize() {
+        InitializeAlertSettings();
+        CreateMainPanel();
+        CreateLabels();
+        CreateButtons();
+        SetupAlerts();
+    }
+    
+    void Update(const MonitorData& data) {
+        monitor = data;
+        UpdateDisplay();
+        CheckAlerts();
+    }
+    
+    void ProcessClick(string clickedObject) {
+        if(StringFind(clickedObject, PANEL_NAME) >= 0) {
+            HandleButtonClick(clickedObject);
+        }
+    }
+    
+    void Cleanup() {
+        ObjectsDeleteAll(0, PANEL_NAME);
+    }
+    
+    void ShowNotification(const string& message, int importance = 0) {
+        color messageColor = importance == 0 ? TEXT_COLOR : 
+                           importance == 1 ? WARNING_COLOR : LOSS_COLOR;
+                           
+        if(alerts.enablePush) SendNotification(message);
+        if(alerts.enableEmail) SendMail("Quantum System Alert", message);
+        if(alerts.enableSound) PlaySound("alert.wav");
+        
+        UpdateStatusLabel(message, messageColor);
+    }
+
+private:
+    void InitializeAlertSettings() {
+        alerts.enableEmail = true;
+        alerts.enablePush = true;
+        alerts.enableSound = true;
+        alerts.profitThreshold = 500;
+        alerts.lossThreshold = -300;
+        alerts.riskThreshold = 0.7;
+    }
+    
+    void CreateMainPanel() {
+        ui.mainPanel = PANEL_NAME + "Main";
+        
+        ObjectCreate(0, ui.mainPanel, OBJ_RECTANGLE_LABEL, 0, 0, 0);
+        ObjectSetInteger(0, ui.mainPanel, OBJPROP_XDISTANCE, CHART_DISTANCE);
+        ObjectSetInteger(0, ui.mainPanel, OBJPROP_YDISTANCE, CHART_DISTANCE);
+        ObjectSetInteger(0, ui.mainPanel, OBJPROP_XSIZE, BUTTON_WIDTH + 40);
+        ObjectSetInteger(0, ui.mainPanel, OBJPROP_YSIZE, BUTTON_HEIGHT * 8);
+        ObjectSetInteger(0, ui.mainPanel, OBJPROP_BGCOLOR, BG_COLOR);
+        ObjectSetInteger(0, ui.mainPanel, OBJPROP_BORDER_TYPE, BORDER_FLAT);
+        ObjectSetInteger(0, ui.mainPanel, OBJPROP_CORNER, CORNER_LEFT_UPPER);
+    }
+    
+    void CreateLabels() {
+        // Profit Label
+        CreateLabel(ui.profitLabel = PANEL_NAME + "Profit", "Profit: 0.00", 1);
+        
+        // Trades Label
+        CreateLabel(ui.tradesLabel = PANEL_NAME + "Trades", "Trades: 0", 2);
+        
+        // Signal Label
+        CreateLabel(ui.signalLabel = PANEL_NAME + "Signal", "Signal: None", 3);
+        
+        // Probability Label
+        CreateLabel(ui.probabilityLabel = PANEL_NAME + "Prob", "Prob: 0%", 4);
+        
+        // Risk Label
+        CreateLabel(ui.riskLabel = PANEL_NAME + "Risk", "Risk: Low", 5);
+        
+        // Status Label
+        CreateLabel(ui.statusLabel = PANEL_NAME + "Status", "Status: Ready", 6);
+    }
+    
+    void CreateButtons() {
+        string buttonNames[] = {"Start", "Stop", "Settings", "Report"};
+        ArrayResize(ui.buttons, ArraySize(buttonNames));
+        
+        for(int i = 0; i < ArraySize(buttonNames); i++) {
+            ui.buttons[i] = PANEL_NAME + "Btn" + buttonNames[i];
+            CreateButton(ui.buttons[i], buttonNames[i], 7 + i);
+        }
+    }
+    
+    void CreateLabel(string name, string text, int position) {
+        ObjectCreate(0, name, OBJ_LABEL, 0, 0, 0);
+        ObjectSetInteger(0, name, OBJPROP_XDISTANCE, CHART_DISTANCE + 10);
+        ObjectSetInteger(0, name, OBJPROP_YDISTANCE, CHART_DISTANCE + BUTTON_HEIGHT * position);
+        ObjectSetString(0, name, OBJPROP_TEXT, text);
+        ObjectSetInteger(0, name, OBJPROP_COLOR, TEXT_COLOR);
+        ObjectSetInteger(0, name, OBJPROP_FONTSIZE, 10);
+    }
+    
+    void CreateButton(string name, string text, int position) {
+        ObjectCreate(0, name, OBJ_BUTTON, 0, 0, 0);
+        ObjectSetInteger(0, name, OBJPROP_XDISTANCE, CHART_DISTANCE + 10);
+        ObjectSetInteger(0, name, OBJPROP_YDISTANCE, CHART_DISTANCE + BUTTON_HEIGHT * position);
+        ObjectSetInteger(0, name, OBJPROP_XSIZE, BUTTON_WIDTH);
+        ObjectSetInteger(0, name, OBJPROP_YSIZE, BUTTON_HEIGHT - 5);
+        ObjectSetString(0, name, OBJPROP_TEXT, text);
+        ObjectSetInteger(0, name, OBJPROP_COLOR, TEXT_COLOR);
+        ObjectSetInteger(0, name, OBJPROP_BGCOLOR, BG_COLOR);
+        ObjectSetInteger(0, name, OBJPROP_BORDER_COLOR, TEXT_COLOR);
+    }
+    
+    void UpdateDisplay() {
+        // Atualizar labels com dados do monitor
+        ObjectSetString(0, ui.profitLabel, OBJPROP_TEXT, 
+                       "Profit: " + DoubleToString(monitor.currentProfit, 2));
+        ObjectSetInteger(0, ui.profitLabel, OBJPROP_COLOR, 
+                        monitor.currentProfit >= 0 ? PROFIT_COLOR : LOSS_COLOR);
+        
+        ObjectSetString(0, ui.tradesLabel, OBJPROP_TEXT,
+                       "Trades: " + IntegerToString(monitor.totalTrades) +
+                       " (WR: " + DoubleToString(monitor.winRate * 100, 1) + "%)");
+        
+        ObjectSetString(0, ui.signalLabel, OBJPROP_TEXT,
+                       "Signal: " + monitor.currentSignal);
+        
+        ObjectSetString(0, ui.probabilityLabel, OBJPROP_TEXT,
+                       "Prob: " + DoubleToString(monitor.probability * 100, 1) + "%");
+        
+        ObjectSetString(0, ui.riskLabel, OBJPROP_TEXT,
+                       "Risk: " + GetRiskText(monitor.riskLevel));
+        
+        ObjectSetString(0, ui.statusLabel, OBJPROP_TEXT,
+                       "Status: " + monitor.systemStatus);
+        
+        ChartRedraw();
+    }
+    
+    string GetRiskText(double riskLevel) {
+        if(riskLevel < 0.3) return "Low";
+        if(riskLevel < 0.7) return "Medium";
+        return "High";
+    }
+    
+    void UpdateStatusLabel(string message, color messageColor) {
+        ObjectSetString(0, ui.statusLabel, OBJPROP_TEXT, "Status: " + message);
+        ObjectSetInteger(0, ui.statusLabel, OBJPROP_COLOR, messageColor);
+    }
+    
+    void HandleButtonClick(string clickedObject) {
+        // Implementar ações dos botões
+        if(clickedObject == ui.buttons[0]) {  // Start
+            ShowNotification("System Starting...");
+        }
+        else if(clickedObject == ui.buttons[1]) {  // Stop
+            ShowNotification("System Stopping...", 1);
+        }
+        else if(clickedObject == ui.buttons[2]) {  // Settings
+            ShowSettingsDialog();
+        }
+        else if(clickedObject == ui.buttons[3]) {  // Report
+            GenerateReport();
+        }
+    }
+    
+    void ShowSettingsDialog() {
+        // Implementar diálogo de configurações
+    }
+    
+    void GenerateReport() {
+        // Implementar geração de relatório
+    }
+    
+    void CheckAlerts() {
+        if(monitor.currentProfit >= alerts.profitThreshold) {
+            ShowNotification("Profit target reached: " + 
+                           DoubleToString(monitor.currentProfit, 2));
+        }
+        
+        if(monitor.currentProfit <= alerts.lossThreshold) {
+            ShowNotification("Loss limit warning: " + 
+                           DoubleToString(monitor.currentProfit, 2), 2);
+        }
+        
+        if(monitor.riskLevel >= alerts.riskThreshold) {
+            ShowNotification("High risk level detected: " + 
+                           DoubleToString(monitor.riskLevel * 100, 1) + "%", 1);
+        }
+    }
+};

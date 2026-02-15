@@ -1,0 +1,77 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part3.mq5    |
+//+------------------------------------------------------------------+
+
+// Classe para Machine Learning e Otimização
+class CMLOptimization {
+private:
+    struct DataPoint {
+        double features[10];  // Características do mercado
+        double outcome;       // Resultado (1 = sucesso, 0 = falha)
+    };
+    
+    struct ModelParameters {
+        double weights[10];
+        double bias;
+        datetime lastUpdate;
+        double accuracy;
+    };
+    
+    DataPoint historyData[];
+    ModelParameters currentModel;
+    int maxHistoryPoints;
+    
+public:
+    void Initialize() {
+        maxHistoryPoints = 1000;
+        ArrayResize(historyData, 0);
+        ResetModel();
+    }
+    
+    double PredictProbability(const double& features[]) {
+        double sum = currentModel.bias;
+        for(int i = 0; i < 10 && i < ArraySize(features); i++) {
+            sum += features[i] * currentModel.weights[i];
+        }
+        return Sigmoid(sum);
+    }
+    
+    void AddDataPoint(const double& features[], double outcome) {
+        if(ArraySize(historyData) >= maxHistoryPoints) {
+            RemoveOldestDataPoint();
+        }
+        
+        int size = ArraySize(historyData);
+        ArrayResize(historyData, size + 1);
+        
+        for(int i = 0; i < 10 && i < ArraySize(features); i++) {
+            historyData[size].features[i] = features[i];
+        }
+        historyData[size].outcome = outcome;
+    }
+    
+    datetime GetLastUpdateTime() const {
+        return currentModel.lastUpdate;
+    }
+    
+private:
+    void ResetModel() {
+        ArrayInitialize(currentModel.weights, 0);
+        currentModel.bias = 0;
+        currentModel.lastUpdate = 0;
+        currentModel.accuracy = 0;
+    }
+    
+    void RemoveOldestDataPoint() {
+        if(ArraySize(historyData) > 0) {
+            for(int i = 0; i < ArraySize(historyData) - 1; i++) {
+                historyData[i] = historyData[i + 1];
+            }
+            ArrayResize(historyData, ArraySize(historyData) - 1);
+        }
+    }
+    
+    double Sigmoid(double x) {
+        return 1.0 / (1.0 + MathExp(-x));
+    }
+};

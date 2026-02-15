@@ -1,0 +1,174 @@
+//+------------------------------------------------------------------+
+//| Order Flow Analysis - Parte 3                                      |
+//|                                                                    |
+//| OBJETIVO: Implementar Tape Reading e Análise de Liquidez com:      |
+//| - Análise de Tape                                                 |
+//| - Detecção de Ordens Grandes                                      |
+//| - Análise de Liquidez                                             |
+//| - Integração com Market Profile                                   |
+//+------------------------------------------------------------------+
+
+private:
+    // Estruturas de Tape Reading
+    struct TapeAnalyzer {
+        // Análise de Tape
+        struct TapeAnalysis {
+            double lastPrice;         // Último preço
+            double lastSize;          // Último volume
+            double avgSize;           // Volume médio
+            bool isLargeOrder;        // Ordem grande
+            ENUM_ORDER_TYPE side;     // Lado da ordem
+            datetime timestamp;       // Timestamp
+        } tape;
+        
+        // Análise de Liquidez
+        struct LiquidityAnalysis {
+            double buyLiquidity;      // Liquidez compradora
+            double sellLiquidity;     // Liquidez vendedora
+            double netLiquidity;      // Liquidez líquida
+            bool isLiquidityVoid;     // Vazio de liquidez
+            double voidLevel;         // Nível do vazio
+        } liquidity;
+        
+        // Cache de Dados
+        struct DataCache {
+            double prices[];          // Cache de preços
+            double volumes[];         // Cache de volumes
+            ENUM_ORDER_TYPE sides[];  // Cache de lados
+            int cacheSize;           // Tamanho do cache
+            bool isValid;            // Cache válido
+        } cache;
+    } m_tapeAnalyzer;
+    
+    void AnalyzeTapeReading() {
+        if(!ValidateTapeData()) return;
+        
+        // Atualizar tape
+        UpdateTapeData();
+        
+        // Analisar ordens grandes
+        if(IsLargeOrder()) {
+            ProcessLargeOrder();
+        }
+        
+        // Analisar liquidez
+        AnalyzeLiquidity();
+        
+        // Integrar com Market Profile
+        UpdateMarketProfileData();
+    }
+    
+    void UpdateTapeData() {
+        MqlTick lastTick;
+        if(SymbolInfoTick(_Symbol, lastTick)) {
+            // Atualizar dados do tape
+            m_tapeAnalyzer.tape.lastPrice = lastTick.last;
+            m_tapeAnalyzer.tape.lastSize = lastTick.volume;
+            m_tapeAnalyzer.tape.side = DetermineTradeSide(lastTick);
+            m_tapeAnalyzer.tape.timestamp = lastTick.time;
+            
+            // Atualizar média móvel de volume
+            UpdateAverageVolume(lastTick.volume);
+            
+            // Atualizar cache
+            UpdateTapeCache(lastTick);
+        }
+    }
+    
+    bool IsLargeOrder() {
+        return m_tapeAnalyzer.tape.lastSize > 
+               m_tapeAnalyzer.tape.avgSize * m_config.largeOrderThreshold;
+    }
+    
+    void ProcessLargeOrder() {
+        // Marcar ordem como grande
+        m_tapeAnalyzer.tape.isLargeOrder = true;
+        
+        // Criar sinal
+        if(ValidateLargeOrder()) {
+            CreateLargeOrderSignal();
+        }
+        
+        // Atualizar métricas
+        UpdateLargeOrderMetrics();
+    }
+    
+    void AnalyzeLiquidity() {
+        // Calcular liquidez por lado
+        m_tapeAnalyzer.liquidity.buyLiquidity = CalculateBuyLiquidity();
+        m_tapeAnalyzer.liquidity.sellLiquidity = CalculateSellLiquidity();
+        
+        // Calcular liquidez líquida
+        m_tapeAnalyzer.liquidity.netLiquidity = 
+            m_tapeAnalyzer.liquidity.buyLiquidity - 
+            m_tapeAnalyzer.liquidity.sellLiquidity;
+            
+        // Detectar vazios de liquidez
+        DetectLiquidityVoids();
+    }
+    
+    void DetectLiquidityVoids() {
+        double currentPrice = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+        
+        // Procurar por vazios de liquidez
+        for(int i = 0; i < m_tapeAnalyzer.cache.cacheSize; i++) {
+            if(IsLiquidityVoid(i)) {
+                m_tapeAnalyzer.liquidity.isLiquidityVoid = true;
+                m_tapeAnalyzer.liquidity.voidLevel = m_tapeAnalyzer.cache.prices[i];
+                
+                // Criar sinal de vazio de liquidez
+                if(ValidateLiquidityVoid()) {
+                    CreateLiquidityVoidSignal();
+                }
+                break;
+            }
+        }
+    }
+    
+    void UpdateMarketProfileData() {
+        if(!m_marketProfile) return;
+        
+        // Atualizar Value Area com dados de liquidez
+        m_marketProfile.UpdateValueArea(
+            m_tapeAnalyzer.liquidity.buyLiquidity,
+            m_tapeAnalyzer.liquidity.sellLiquidity
+        );
+        
+        // Atualizar TPO com dados do tape
+        m_marketProfile.UpdateTPO(
+            m_tapeAnalyzer.tape.lastPrice,
+            m_tapeAnalyzer.tape.lastSize
+        );
+    }
+    
+    void CreateLargeOrderSignal() {
+        InsightSignal signal;
+        signal.type = SIGNAL_LARGE_ORDER;
+        signal.price = m_tapeAnalyzer.tape.lastPrice;
+        signal.volume = m_tapeAnalyzer.tape.lastSize;
+        signal.side = m_tapeAnalyzer.tape.side;
+        signal.timestamp = m_tapeAnalyzer.tape.timestamp;
+        signal.description = FormatLargeOrderDescription();
+        
+        // Adicionar sinal
+        AddSignal(signal);
+        
+        // Notificar via TechnologyAdvances
+        m_techManager.ProcessLargeOrder(signal);
+    }
+    
+    void CreateLiquidityVoidSignal() {
+        InsightSignal signal;
+        signal.type = SIGNAL_LIQUIDITY_VOID;
+        signal.price = m_tapeAnalyzer.liquidity.voidLevel;
+        signal.strength = CalculateVoidStrength();
+        signal.timestamp = TimeCurrent();
+        signal.description = "Liquidity Void Detected";
+        
+        // Adicionar sinal
+        AddSignal(signal);
+        
+        // Notificar equipe
+        NotifyTeam("Liquidity Void: " + signal.description);
+    }
+};

@@ -1,0 +1,14 @@
+# backend/agents/analystagent.py
+import numpy as np
+
+class AnalystAgent:
+    def calculate_win_rate(self, trades):
+        """Calcula taxa de vitória."""
+        wins = sum(1 for trade in trades if trade['profit'] > 0)
+        return wins / len(trades) if len(trades) > 0 else 0
+
+    def calculate_sharpe_ratio(self, returns, risk_free_rate=0.02):
+        """Calcula Sharpe Ratio."""
+        mean_return = np.mean(returns)
+        std_dev = np.std(returns)
+        return (mean_return - risk_free_rate) / std_dev if std_dev != 0 else 0

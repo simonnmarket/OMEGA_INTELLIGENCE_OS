@@ -1,0 +1,30 @@
+4.1 Conexão com MT5
+
+import MetaTrader5 as mt5
+
+class MT5Connector:
+    def __init__(self):
+        if not mt5.initialize():
+            print("Falha na inicialização do MT5")
+            mt5.shutdown()
+            exit()
+
+    def get_market_data(self, symbol, timeframe, count):
+        rates = mt5.copy_rates_from_pos(symbol, timeframe, 0, count)
+        return rates
+
+    def send_order(self, action, symbol, volume, price):
+        request = {
+            "action": mt5.TRADE_ACTION_DEAL,
+            "symbol": symbol,
+            "volume": volume,
+            "type": mt5.ORDER_TYPE_BUY if action == "buy" else mt5.ORDER_TYPE_SELL,
+            "price": price,
+            "deviation": 20,
+            "magic": 100,
+            "comment": "Ordem enviada pela plataforma",
+            "type_time": mt5.ORDER_TIME_GTC,
+            "type_filling": mt5.ORDER_FILLING_IOC,
+        }
+        result = mt5.order_send(request)
+        return result

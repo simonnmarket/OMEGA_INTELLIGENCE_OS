@@ -1,0 +1,160 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part8.mq5    |
+//+------------------------------------------------------------------+
+
+class CPerformanceAnalyzer {
+private:
+    struct TradeMetrics {
+        int totalTrades;
+        int winningTrades;
+        int losingTrades;
+        double grossProfit;
+        double grossLoss;
+        double netProfit;
+        double profitFactor;
+        double expectedPayoff;
+        double sharpeRatio;
+        double sortinoRatio;
+        double maxDrawdown;
+        double recoveryFactor;
+        double winRate;
+        double calmarRatio;
+        double omega_ratio;
+        double treynorRatio;
+        double informationRatio;
+        double sterlingRatio;
+        double ulcerIndex;
+        double painIndex;
+        int maxConsecutiveWins;
+        int maxConsecutiveLosses;
+        datetime bestTradingDay;
+        datetime worstTradingDay;
+    };
+    
+    struct TimeAnalysis {
+        double profitByHour[24];
+        double profitByDay[7];
+        int tradesByHour[24];
+        int tradesByDay[7];
+        double bestHourReturn;
+        double worstHourReturn;
+        double volatilityByHour[24];
+        double sharpByHour[24];
+        double volumeByHour[24];
+        int bestHour;
+        int bestDay;
+        datetime optimalEntryTimes[];
+        datetime optimalExitTimes[];
+    };
+    
+    struct AdvancedAnalysis {
+        double returnDistribution[];
+        double volatilityRegimes[];
+        double marketConditions[];
+        double tradingEfficiency;
+        double adaptivePerformance;
+        double regimeStability;
+        double marketImpact;
+        double executionQuality;
+        double slippage;
+    };
+    
+    int logHandle;
+    string logFileName;
+    bool isLoggingEnabled;
+    
+    TradeMetrics metrics;
+    TimeAnalysis timeAnalysis;
+    AdvancedAnalysis advAnalysis;
+    double returns[];
+    datetime lastUpdate;
+    
+    const int MAX_HISTORY_DAYS = 90;
+    const int MIN_TRADES_ANALYSIS = 30;
+    const int DISTRIBUTION_BINS = 100;
+    const int REGIME_STATES = 5;
+    
+    CVolatilityAnalyzer* volAnalyzer;
+    CMarketRegimeDetector* regimeDetector;
+    CExecutionAnalyzer* execAnalyzer;
+    CStatisticalTests* statTests;
+
+public:
+    CPerformanceAnalyzer() {
+        volAnalyzer = new CVolatilityAnalyzer();
+        regimeDetector = new CMarketRegimeDetector();
+        execAnalyzer = new CExecutionAnalyzer();
+        statTests = new CStatisticalTests();
+    }
+    
+    ~CPerformanceAnalyzer() {
+        SafeDelete(volAnalyzer);
+        SafeDelete(regimeDetector);
+        SafeDelete(execAnalyzer);
+        SafeDelete(statTests);
+        if(logHandle != INVALID_HANDLE) FileClose(logHandle);
+    }
+    
+    bool Initialize() {
+        if(!InitializeComponents()) return false;
+        if(!InitializeLogging()) return false;
+        
+        ResetMetrics();
+        InitializeArrays();
+        
+        return true;
+    }
+    
+    void UpdateStats() {
+        if(!ShouldUpdate()) return false;
+        
+        CollectTradeData();
+        CalculateMetrics();
+        AnalyzeTimePatterns();
+        PerformAdvancedAnalysis();
+        UpdateReturns();
+        
+        LogPerformance();
+        lastUpdate = TimeCurrent();
+    }
+    
+    string GenerateDetailedReport() {
+        string report = GenerateBasicStats();
+        report += GenerateAdvancedStats();
+        report += GenerateTimeAnalysis();
+        report += GenerateRiskMetrics();
+        report += GenerateStatisticalTests();
+        
+        return report;
+    }
+    
+    TradeMetrics GetMetrics() const {
+        return metrics;
+    }
+    
+    TimeAnalysis GetTimeAnalysis() const {
+        return timeAnalysis;
+    }
+    
+    AdvancedAnalysis GetAdvancedAnalysis() const {
+        return advAnalysis;
+    }
+
+private:
+    bool InitializeComponents() {
+        if(!volAnalyzer.Initialize()) return false;
+        if(!regimeDetector.Initialize()) return false;
+        if(!execAnalyzer.Initialize()) return false;
+        if(!statTests.Initialize()) return false;
+        
+        return true;
+    }
+    
+    void InitializeArrays() {
+        ArrayResize(returns, 0);
+        ArrayResize(advAnalysis.returnDistribution, DISTRIBUTION_BINS);
+        ArrayResize(advAnalysis.volatilityRegimes, REGIME_STATES);
+        ArrayResize(advAnalysis.marketConditions, REGIME_STATES);
+        ArrayResize(timeAnalysis.optimalEntryTimes, 0);
+        ArrayResize(timeAnalysis.optimalExitTimes, 0);
+    }

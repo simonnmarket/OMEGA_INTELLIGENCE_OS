@@ -1,0 +1,265 @@
+//+------------------------------------------------------------------+
+//| Sistema de Monitoramento de Performance em Tempo Real             |
+//+------------------------------------------------------------------+
+
+class CRealTimePerformanceMonitor {
+private:
+    // Componentes principais
+    CTechnologyManager* m_tech_manager;
+    CTeamStructure* m_team_structure;
+    CQuantumLogger* m_logger;
+    
+    struct RealTimeMetrics {
+        double current_performance;
+        double system_load;
+        double response_time;
+        datetime last_update;
+    };
+
+    struct SystemHealth {
+        double cpu_usage;
+        double memory_usage;
+        double network_latency;
+        int active_processes;
+    };
+
+    struct AlertThresholds {
+        double performance_threshold;
+        double load_threshold;
+        double latency_threshold;
+        int process_threshold;
+    };
+
+    RealTimeMetrics m_metrics;
+    SystemHealth m_health;
+    AlertThresholds m_thresholds;
+    
+    // Constantes
+    const double CRITICAL_THRESHOLD = 0.90;
+    const double WARNING_THRESHOLD = 0.75;
+    const int UPDATE_INTERVAL = 100; // milissegundos
+
+public:
+    CRealTimePerformanceMonitor(
+        CTechnologyManager* tech_manager,
+        CTeamStructure* team_structure,
+        CQuantumLogger* logger
+    ) : m_tech_manager(tech_manager),
+        m_team_structure(team_structure),
+        m_logger(logger) {
+        Initialize();
+    }
+
+    bool Initialize() {
+        if(!ValidateComponents()) {
+            m_logger.Log("Failed to validate monitor components", LOG_ERROR, "RTMonitor");
+            return false;
+        }
+
+        InitializeMonitoring();
+        return true;
+    }
+
+    bool UpdateMonitoring() {
+        // Verificar intervalo de atualização
+        if(!NeedsUpdate()) return true;
+
+        // Monitorar métricas em tempo real
+        if(!MonitorRealTimeMetrics()) return false;
+
+        // Verificar saúde do sistema
+        if(!CheckSystemHealth()) return false;
+
+        // Processar alertas se necessário
+        ProcessAlerts();
+
+        return true;
+    }
+
+private:
+    bool ValidateComponents() {
+        if(m_tech_manager == NULL || 
+           m_team_structure == NULL || 
+           m_logger == NULL) {
+            return false;
+        }
+        return true;
+    }
+
+    void InitializeMonitoring() {
+        // Inicializar métricas em tempo real
+        m_metrics.current_performance = 0.0;
+        m_metrics.system_load = 0.0;
+        m_metrics.response_time = 0.0;
+        m_metrics.last_update = TimeCurrent();
+
+        // Inicializar saúde do sistema
+        m_health.cpu_usage = 0.0;
+        m_health.memory_usage = 0.0;
+        m_health.network_latency = 0.0;
+        m_health.active_processes = 0;
+
+        // Configurar thresholds
+        ConfigureThresholds();
+    }
+
+    void ConfigureThresholds() {
+        m_thresholds.performance_threshold = WARNING_THRESHOLD;
+        m_thresholds.load_threshold = WARNING_THRESHOLD;
+        m_thresholds.latency_threshold = WARNING_THRESHOLD;
+        m_thresholds.process_threshold = 100; // número máximo de processos
+    }
+
+    bool NeedsUpdate() {
+        return (GetTickCount() - m_metrics.last_update >= UPDATE_INTERVAL);
+    }
+
+    bool MonitorRealTimeMetrics() {
+        // Obter métricas do TechnologyManager
+        DataAnalytics analytics = m_tech_manager.GetDataAnalytics();
+        ExecutionMetrics exec_metrics = m_tech_manager.GetExecutionMetrics();
+
+        // Atualizar métricas em tempo real
+        m_metrics.current_performance = CalculateCurrentPerformance(analytics, exec_metrics);
+        m_metrics.system_load = CalculateSystemLoad();
+        m_metrics.response_time = CalculateResponseTime(exec_metrics);
+        m_metrics.last_update = GetTickCount();
+
+        return ValidateMetrics();
+    }
+
+    double CalculateCurrentPerformance(const DataAnalytics &analytics, const ExecutionMetrics &exec_metrics) {
+        return (analytics.machine_learning_score * 0.3 +
+                analytics.ai_prediction_confidence * 0.3 +
+                exec_metrics.execution_accuracy * 0.4);
+    }
+
+    double CalculateSystemLoad() {
+        return TerminalInfoDouble(TERMINAL_CPU_USAGE) / 100.0;
+    }
+
+    double CalculateResponseTime(const ExecutionMetrics &exec_metrics) {
+        return exec_metrics.latency;
+    }
+
+    bool ValidateMetrics() {
+        if(m_metrics.current_performance < m_thresholds.performance_threshold) {
+            LogAlert("Performance below threshold", "Performance");
+            return false;
+        }
+
+        if(m_metrics.system_load > m_thresholds.load_threshold) {
+            LogAlert("System load too high", "Load");
+            return false;
+        }
+
+        return true;
+    }
+
+    bool CheckSystemHealth() {
+        // Monitorar CPU
+        m_health.cpu_usage = TerminalInfoDouble(TERMINAL_CPU_USAGE) / 100.0;
+
+        // Monitorar memória
+        m_health.memory_usage = TerminalInfoInteger(TERMINAL_MEMORY_USED) / 
+                              (double)TerminalInfoInteger(TERMINAL_MEMORY_TOTAL);
+
+        // Monitorar latência de rede
+        m_health.network_latency = CalculateNetworkLatency();
+
+        // Monitorar processos ativos
+        m_health.active_processes = CountActiveProcesses();
+
+        return ValidateSystemHealth();
+    }
+
+    double CalculateNetworkLatency() {
+        // Implementar cálculo de latência de rede
+        return 0.05; // Placeholder
+    }
+
+    int CountActiveProcesses() {
+        // Implementar contagem de processos ativos
+        return 50; // Placeholder
+    }
+
+    bool ValidateSystemHealth() {
+        if(m_health.cpu_usage > CRITICAL_THRESHOLD) {
+            LogAlert("Critical CPU usage detected", "CPU");
+            return false;
+        }
+
+        if(m_health.memory_usage > CRITICAL_THRESHOLD) {
+            LogAlert("Critical memory usage detected", "Memory");
+            return false;
+        }
+
+        return true;
+    }
+
+    void ProcessAlerts() {
+        // Verificar alertas de performance
+        if(m_metrics.current_performance < WARNING_THRESHOLD) {
+            GeneratePerformanceAlert();
+        }
+
+        // Verificar alertas de sistema
+        if(m_health.cpu_usage > WARNING_THRESHOLD || 
+           m_health.memory_usage > WARNING_THRESHOLD) {
+            GenerateSystemAlert();
+        }
+
+        // Verificar alertas de rede
+        if(m_health.network_latency > m_thresholds.latency_threshold) {
+            GenerateNetworkAlert();
+        }
+    }
+
+    void GeneratePerformanceAlert() {
+        string alert = StringFormat(
+            "Performance Alert:\n" +
+            "Current Performance: %.2f\n" +
+            "System Load: %.2f\n" +
+            "Response Time: %.2f",
+            m_metrics.current_performance,
+            m_metrics.system_load,
+            m_metrics.response_time
+        );
+
+        LogAlert(alert, "Performance");
+    }
+
+    void GenerateSystemAlert() {
+        string alert = StringFormat(
+            "System Alert:\n" +
+            "CPU Usage: %.2f%%\n" +
+            "Memory Usage: %.2f%%\n" +
+            "Active Processes: %d",
+            m_health.cpu_usage * 100,
+            m_health.memory_usage * 100,
+            m_health.active_processes
+        );
+
+        LogAlert(alert, "System");
+    }
+
+    void GenerateNetworkAlert() {
+        string alert = StringFormat(
+            "Network Alert:\n" +
+            "Network Latency: %.3f\n" +
+            "Response Time: %.3f",
+            m_health.network_latency,
+            m_metrics.response_time
+        );
+
+        LogAlert(alert, "Network");
+    }
+
+    void LogAlert(string message, string type) {
+        m_logger.Log(
+            message,
+            LOG_WARNING,
+            StringFormat("RTMonitor-%s", type)
+        );
+    }
+};

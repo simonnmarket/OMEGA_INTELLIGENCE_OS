@@ -1,0 +1,389 @@
+//+------------------------------------------------------------------+
+//|                                   QuantumTradeSystem_Part10.mq5    |
+//+------------------------------------------------------------------+
+
+// Sistema Principal de Controle
+class CQuantumMasterControl {
+private:
+    // Componentes principais
+    CTechnicalAnalysis*    techAnalysis;
+    CMLOptimization*       mlSystem;
+    CRiskManagement*       riskManager;
+    CPerformanceAnalyzer*  perfAnalyzer;
+    CDataManager*          dataManager;
+    CVisualInterface*      visualInterface;
+    
+    // Estado do sistema
+    enum SYSTEM_STATE {
+        STATE_INITIALIZING,
+        STATE_READY,
+        STATE_TRADING,
+        STATE_ERROR,
+        STATE_SHUTDOWN
+    };
+    
+    SYSTEM_STATE currentState;
+    bool isLive;
+    datetime lastUpdateTime;
+    
+    // Configurações
+    struct SystemConfig {
+        bool enableRealTrading;
+        bool enableLogging;
+        bool enableOptimization;
+        int updateInterval;
+        double minBalance;
+        int maxDailyTrades;
+        double targetDailyProfit;
+        double maxDailyLoss;
+    } config;
+    
+    // Constantes
+    const int MIN_BARS_REQUIRED = 100;
+    const int MAX_RETRY_ATTEMPTS = 3;
+    const int ERROR_WAIT_TIME = 5000; // 5 segundos
+
+public:
+    CQuantumMasterControl(void) {
+        currentState = STATE_INITIALIZING;
+        isLive = false;
+        lastUpdateTime = 0;
+        
+        InitializeComponents();
+        LoadConfiguration();
+    }
+    
+    ~CQuantumMasterControl(void) {
+        Cleanup();
+    }
+    
+    bool Initialize(void) {
+        if(!ValidateEnvironment()) return false;
+        
+        // Inicializar componentes
+        if(!InitializeAllComponents()) {
+            LogError("Falha na inicialização dos componentes");
+            return false;
+        }
+        
+        currentState = STATE_READY;
+        return true;
+    }
+    
+    void ProcessTick(void) {
+        if(!CanProcess()) return;
+        
+        switch(currentState) {
+            case STATE_READY:
+                if(ValidateTrading()) {
+                    currentState = STATE_TRADING;
+                }
+                break;
+                
+            case STATE_TRADING:
+                ProcessTrading();
+                break;
+                
+            case STATE_ERROR:
+                HandleError();
+                break;
+                
+            default: break;
+        }
+        
+        UpdateInterface();
+        lastUpdateTime = TimeCurrent();
+    }
+    
+    void ProcessTrade(void) {
+        if(currentState != STATE_TRADING) return;
+        
+        MqlTradeTransaction lastTrans;
+        if(GetLastTransaction(lastTrans)) {
+            ProcessTransaction(lastTrans);
+            UpdateStatistics();
+        }
+    }
+    
+    void Stop(void) {
+        currentState = STATE_SHUTDOWN;
+        CloseAllPositions();
+        GenerateFinalReport();
+    }
+
+private:
+    void InitializeComponents(void) {
+        techAnalysis = new CTechnicalAnalysis();
+        mlSystem = new CMLOptimization();
+        riskManager = new CRiskManagement();
+        perfAnalyzer = new CPerformanceAnalyzer();
+        dataManager = new CDataManager();
+        visualInterface = new CVisualInterface();
+    }
+    
+    void LoadConfiguration(void) {
+        config.enableRealTrading = true;
+        config.enableLogging = true;
+        config.enableOptimization = true;
+        config.updateInterval = 1;
+        config.minBalance = 1000.0;
+        config.maxDailyTrades = 5;
+        config.targetDailyProfit = 100.0;
+        config.maxDailyLoss = -50.0;
+    }
+    
+    bool ValidateEnvironment(void) {
+        if(!TerminalInfoInteger(TERMINAL_CONNECTED)) {
+            LogError("Sem conexão com o servidor");
+            return false;
+        }
+        
+        if(AccountInfoDouble(ACCOUNT_BALANCE) < config.minBalance) {
+            LogError("Saldo insuficiente");
+            return false;
+        }
+        
+        if(Bars(Symbol(), PERIOD_CURRENT) < MIN_BARS_REQUIRED) {
+            LogError("Dados históricos insuficientes");
+            return false;
+        }
+        
+        return true;
+    }
+    
+    bool InitializeAllComponents(void) {
+        if(!techAnalysis.Initialize()) return false;
+        if(!mlSystem.Initialize()) return false;
+        if(!riskManager.Initialize(AccountInfoDouble(ACCOUNT_BALANCE))) return false;
+        if(!perfAnalyzer.Initialize()) return false;
+        if(!dataManager.Initialize()) return false;
+        if(!visualInterface.Initialize()) return false;
+        
+        return true;
+    }
+    
+    bool CanProcess(void) {
+        if(currentState == STATE_SHUTDOWN) return false;
+        if(TimeCurrent() - lastUpdateTime < config.updateInterval) return false;
+        return true;
+    }
+    
+    bool ValidateTrading(void) {
+        if(!TerminalInfoInteger(TERMINAL_TRADE_ALLOWED)) return false;
+        if(!IsTradeTime()) return false;
+        if(ReachedDailyLimits()) return false;
+        return true;
+    }
+    
+    void ProcessTrading(void) {
+        // Análise técnica
+        double techScore = techAnalysis.AnalyzeMarket();
+        
+        // Análise ML
+        double mlProbability = mlSystem.GetTradeProbability();
+        
+        // Combinar sinais
+        if(ValidateSignals(techScore, mlProbability)) {
+            ExecuteTradeSetup(techScore, mlProbability);
+        }
+        
+        // Gerenciar posições existentes
+        ManageOpenPositions();
+    }
+    
+    void HandleError(void) {
+        static int retryCount = 0;
+        
+        if(retryCount < MAX_RETRY_ATTEMPTS) {
+            Sleep(ERROR_WAIT_TIME);
+            retryCount++;
+            currentState = STATE_READY;
+        } else {
+            Stop();
+        }
+    }
+    
+    void UpdateInterface(void) {
+        if(!visualInterface) return;
+        
+        SDisplayData data;
+        data.currentProfit = AccountInfoDouble(ACCOUNT_PROFIT);
+        data.totalTrades = perfAnalyzer.GetTotalTrades();
+        data.winRate = perfAnalyzer.GetWinRate();
+        data.systemState = EnumToString(currentState);
+        
+        visualInterface.Update(data);
+    }
+    
+    bool GetLastTransaction(MqlTradeTransaction& trans) {
+        // Implementar lógica para obter última transação
+        return false;
+    }
+    
+    void ProcessTransaction(const MqlTradeTransaction& trans) {
+        if(!dataManager) return;
+        
+        dataManager.SaveTrade(trans);
+        
+        if(trans.type == TRADE_TRANSACTION_DEAL_ADD) {
+            UpdateTradingStats(trans);
+        }
+    }
+    
+    void UpdateStatistics(void) {
+        if(!perfAnalyzer) return;
+        
+        perfAnalyzer.UpdateStats();
+        
+        if(perfAnalyzer.GetDrawdown() > riskManager.GetMaxDrawdown()) {
+            Stop();
+        }
+    }
+    
+    void CloseAllPositions(void) {
+        for(int i = PositionsTotal() - 1; i >= 0; i--) {
+            ulong ticket = PositionGetTicket(i);
+            if(ticket > 0) {
+                Trade.PositionClose(ticket);
+            }
+        }
+    }
+    
+    void GenerateFinalReport(void) {
+        if(!perfAnalyzer) return;
+        
+        string report = perfAnalyzer.GenerateReport();
+        
+        if(visualInterface) {
+            visualInterface.ShowReport(report);
+        }
+        
+        if(dataManager) {
+            dataManager.SaveReport(report);
+        }
+    }
+    
+    bool ValidateSignals(double techScore, double mlProbability) {
+        if(techScore < 0.5 || mlProbability < 0.7) return false;
+        if(!riskManager.ValidateNewTrade()) return false;
+        return true;
+    }
+    
+    void ExecuteTradeSetup(double techScore, double mlProbability) {
+        double lotSize = riskManager.GetOptimalPositionSize(mlProbability);
+        double stopLoss = techAnalysis.GetOptimalStopLoss();
+        double takeProfit = techAnalysis.GetOptimalTakeProfit();
+        
+        if(lotSize <= 0 || stopLoss <= 0 || takeProfit <= 0) return;
+        
+        Trade.SetExpertMagicNumber(EXPERT_MAGIC);
+        
+        if(techAnalysis.IsBuySignal()) {
+            Trade.Buy(lotSize, Symbol(), 0, stopLoss, takeProfit);
+        }
+        else if(techAnalysis.IsSellSignal()) {
+            Trade.Sell(lotSize, Symbol(), 0, stopLoss, takeProfit);
+        }
+    }
+    
+    void ManageOpenPositions(void) {
+        for(int i = 0; i < PositionsTotal(); i++) {
+            if(PositionSelectByTicket(PositionGetTicket(i))) {
+                UpdatePositionManagement();
+            }
+        }
+    }
+    
+    void UpdatePositionManagement(void) {
+        double currentPrice = PositionGetDouble(POSITION_PRICE_CURRENT);
+        double openPrice = PositionGetDouble(POSITION_PRICE_OPEN);
+        double stopLoss = PositionGetDouble(POSITION_SL);
+        double takeProfit = PositionGetDouble(POSITION_TP);
+        
+        // Implementar trailing stop e gerenciamento dinâmico
+    }
+    
+    bool IsTradeTime(void) {
+        datetime time = TimeCurrent();
+        int hour = TimeHour(time);
+        int dayOfWeek = TimeDayOfWeek(time);
+        
+        if(dayOfWeek == 0 || dayOfWeek == 6) return false;
+        if(hour < 2 || hour > 23) return false;
+        
+        return true;
+    }
+    
+    bool ReachedDailyLimits(void) {
+        double dailyProfit = perfAnalyzer.GetDailyProfit();
+        int dailyTrades = perfAnalyzer.GetDailyTrades();
+        
+        if(dailyTrades >= config.maxDailyTrades) return true;
+        if(dailyProfit <= config.maxDailyLoss) return true;
+        if(dailyProfit >= config.targetDailyProfit) return true;
+        
+        return false;
+    }
+    
+    void LogError(const string& message) {
+        Print("Erro: ", message);
+        if(visualInterface) {
+            visualInterface.ShowError(message);
+        }
+    }
+    
+    void Cleanup(void) {
+        delete techAnalysis;
+        delete mlSystem;
+        delete riskManager;
+        delete perfAnalyzer;
+        delete dataManager;
+        delete visualInterface;
+    }
+};
+
+// Variáveis globais
+CQuantumMasterControl* MasterControl = NULL;
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                     |
+//+------------------------------------------------------------------+
+int OnInit() {
+    MasterControl = new CQuantumMasterControl();
+    
+    if(!MasterControl || !MasterControl.Initialize()) {
+        Print("Falha na inicialização do sistema");
+        return INIT_FAILED;
+    }
+    
+    return INIT_SUCCEEDED;
+}
+
+//+------------------------------------------------------------------+
+//| Expert deinitialization function                                  |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason) {
+    if(MasterControl) {
+        MasterControl.Stop();
+        delete MasterControl;
+        MasterControl = NULL;
+    }
+}
+
+//+------------------------------------------------------------------+
+//| Expert tick function                                              |
+//+------------------------------------------------------------------+
+void OnTick() {
+    if(MasterControl) {
+        MasterControl.ProcessTick();
+    }
+}
+
+//+------------------------------------------------------------------+
+//| Expert trade function                                             |
+//+------------------------------------------------------------------+
+void OnTrade() {
+    if(MasterControl) {
+        MasterControl.ProcessTrade();
+    }
+}

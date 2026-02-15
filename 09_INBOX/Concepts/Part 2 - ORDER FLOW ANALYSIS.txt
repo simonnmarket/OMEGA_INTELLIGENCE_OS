@@ -1,0 +1,159 @@
+//+------------------------------------------------------------------+
+//| Order Flow Analysis - Parte 2                                      |
+//|                                                                    |
+//| OBJETIVO: Implementar análise de Delta Volume e Footprint com:     |
+//| - Cálculo de Delta                                                |
+//| - Análise de Absorção                                             |
+//| - Footprint Chart                                                 |
+//| - Integração com TechnologyAdvances                               |
+//+------------------------------------------------------------------+
+
+private:
+    // Estruturas de Análise
+    struct OrderFlowAnalyzer {
+        // Delta Analysis
+        struct DeltaAnalysis {
+            double buyStrength;      // Força compradora
+            double sellStrength;     // Força vendedora
+            double netFlow;          // Fluxo líquido
+            double absorption;       // Nível de absorção
+            bool isAbsorbing;       // Estado de absorção
+            datetime lastDelta;      // Último cálculo
+        } delta;
+        
+        // Footprint Analysis
+        struct FootprintAnalysis {
+            double volumeProfile[];  // Perfil de volume
+            double pricePoints[];    // Pontos de preço
+            double imbalance[];      // Desequilíbrio
+            int levels;             // Níveis ativos
+            bool isValid;           // Dados válidos
+        } footprint;
+    } m_analyzer;
+    
+    void AnalyzeDeltaVolume() {
+        if(!ValidateDeltaData()) return;
+        
+        // Calcular volumes
+        double buyVol = CalculateBuyVolume();
+        double sellVol = CalculateSellVolume();
+        
+        // Atualizar delta
+        m_data.delta.buyVolume = buyVol;
+        m_data.delta.sellVolume = sellVol;
+        m_data.delta.delta = buyVol - sellVol;
+        m_data.delta.cumDelta += m_data.delta.delta;
+        
+        // Analisar absorção
+        AnalyzeAbsorption();
+        
+        // Integrar com TechnologyAdvances
+        UpdateDeltaMetrics();
+    }
+    
+    void AnalyzeAbsorption() {
+        // Calcular força relativa
+        m_analyzer.delta.buyStrength = CalculateBuyStrength();
+        m_analyzer.delta.sellStrength = CalculateSellStrength();
+        
+        // Calcular fluxo líquido
+        m_analyzer.delta.netFlow = m_analyzer.delta.buyStrength - 
+                                 m_analyzer.delta.sellStrength;
+        
+        // Detectar absorção
+        if(IsAbsorptionPattern()) {
+            ProcessAbsorption();
+        }
+    }
+    
+    bool IsAbsorptionPattern() {
+        // Verificar padrão de absorção
+        if(fabs(m_data.delta.delta) > m_config.largeOrderThreshold &&
+           m_analyzer.delta.netFlow < 0) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    void ProcessAbsorption() {
+        m_data.delta.isAbsorption = true;
+        m_data.delta.strength = CalculateAbsorptionStrength();
+        
+        // Criar sinal de absorção
+        if(m_data.delta.strength > 0.7) {
+            CreateAbsorptionSignal();
+        }
+    }
+    
+    void UpdateFootprint() {
+        if(!m_config.enableDetailedFootprint) return;
+        
+        // Limpar dados antigos
+        ClearOldFootprintData();
+        
+        // Atualizar níveis
+        for(int i = 0; i < m_config.maxFootprintLevels; i++) {
+            UpdateFootprintLevel(i);
+        }
+        
+        // Calcular desequilíbrios
+        CalculateImbalances();
+        
+        // Validar footprint
+        ValidateFootprint();
+    }
+    
+    void UpdateFootprintLevel(const int level) {
+        double price = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_BID) + 
+                                     level * SymbolInfoDouble(_Symbol, SYMBOL_POINT), _Digits);
+                                     
+        // Atualizar volumes
+        m_data.footprint.buyPrice[level] = price;
+        m_data.footprint.sellPrice[level] = price;
+        m_data.footprint.buyVol[level] = GetBuyVolumeAtPrice(price);
+        m_data.footprint.sellVol[level] = GetSellVolumeAtPrice(price);
+        
+        // Calcular imbalance
+        m_data.footprint.imbalance[level] = CalculateImbalance(level);
+    }
+    
+    double CalculateImbalance(const int level) {
+        double buyVol = m_data.footprint.buyVol[level];
+        double sellVol = m_data.footprint.sellVol[level];
+        
+        if(buyVol + sellVol == 0) return 0;
+        
+        return (buyVol - sellVol) / (buyVol + sellVol);
+    }
+    
+    void UpdateDeltaMetrics() {
+        // Criar pacote de métricas
+        DeltaMetrics metrics;
+        metrics.buyVolume = m_data.delta.buyVolume;
+        metrics.sellVolume = m_data.delta.sellVolume;
+        metrics.delta = m_data.delta.delta;
+        metrics.cumDelta = m_data.delta.cumDelta;
+        metrics.absorption = m_data.delta.isAbsorption;
+        metrics.strength = m_data.delta.strength;
+        
+        // Enviar para TechnologyAdvances
+        m_techManager.UpdateDeltaMetrics(metrics);
+    }
+    
+    void CreateAbsorptionSignal() {
+        InsightSignal signal;
+        signal.type = SIGNAL_ABSORPTION;
+        signal.strength = m_data.delta.strength;
+        signal.price = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+        signal.volume = m_data.delta.buyVolume + m_data.delta.sellVolume;
+        signal.timestamp = TimeCurrent();
+        signal.description = "Strong Absorption Detected";
+        
+        // Adicionar sinal
+        AddSignal(signal);
+        
+        // Notificar equipe
+        NotifyTeam("Absorption Signal: " + signal.description);
+    }
+};

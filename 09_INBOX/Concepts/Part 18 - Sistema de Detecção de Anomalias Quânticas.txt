@@ -1,0 +1,265 @@
+//+------------------------------------------------------------------+
+//| Sistema de Detecção de Anomalias Quânticas                        |
+//+------------------------------------------------------------------+
+
+class CQuantumAnomalyDetector {
+private:
+    struct AnomalyState {
+        double baseline_patterns[];
+        double deviation_thresholds[];
+        double confidence_levels[];
+        datetime last_detection;
+    };
+
+    struct AnomalyMetrics {
+        double anomaly_score;
+        double pattern_deviation;
+        double temporal_correlation;
+        int anomaly_count;
+    };
+
+    struct DetectionConfig {
+        double sensitivity;
+        int window_size;
+        double threshold_multiplier;
+        int min_samples;
+    };
+
+    AnomalyState m_state;
+    AnomalyMetrics m_metrics;
+    DetectionConfig m_config;
+    
+    CQuantumLogger* m_logger;
+    CQuantumValidator* m_validator;
+    
+    // Buffer circular para histórico
+    double m_history_buffer[];
+    int m_buffer_position;
+    
+    // Constantes
+    const int BUFFER_SIZE = 1000;
+    const double MIN_CONFIDENCE = 0.85;
+    const int DETECTION_INTERVAL = 60; // 1 minuto
+
+public:
+    CQuantumAnomalyDetector(CQuantumLogger* logger, CQuantumValidator* validator)
+        : m_logger(logger), m_validator(validator) {
+        Initialize();
+    }
+
+    bool Initialize() {
+        // Inicializar configurações
+        InitializeConfig();
+        
+        // Inicializar buffers
+        InitializeBuffers();
+        
+        // Inicializar estado
+        InitializeState();
+        
+        m_logger.Log("Quantum Anomaly Detector Initialized", LOG_INFO, "AnomalyDetector");
+        return true;
+    }
+
+    bool DetectAnomalies(const CQuantumState* state) {
+        if(!ValidateDetection(state)) return false;
+        
+        // Atualizar histórico
+        UpdateHistory(state);
+        
+        // Detectar anomalias
+        bool anomalies_found = PerformDetection();
+        
+        // Atualizar métricas
+        UpdateMetrics(anomalies_found);
+        
+        return true;
+    }
+
+private:
+    void InitializeConfig() {
+        m_config.sensitivity = 2.0;        // Desvios padrão
+        m_config.window_size = 100;        // Amostras
+        m_config.threshold_multiplier = 1.5;
+        m_config.min_samples = 30;
+    }
+
+    void InitializeBuffers() {
+        ArrayResize(m_history_buffer, BUFFER_SIZE);
+        ArrayInitialize(m_history_buffer, 0);
+        m_buffer_position = 0;
+    }
+
+    void InitializeState() {
+        ArrayResize(m_state.baseline_patterns, m_config.window_size);
+        ArrayResize(m_state.deviation_thresholds, m_config.window_size);
+        ArrayResize(m_state.confidence_levels, m_config.window_size);
+        
+        ArrayInitialize(m_state.baseline_patterns, 0);
+        ArrayInitialize(m_state.deviation_thresholds, m_config.sensitivity);
+        ArrayInitialize(m_state.confidence_levels, 1.0);
+        
+        m_state.last_detection = 0;
+    }
+
+    bool ValidateDetection(const CQuantumState* state) {
+        if(state == NULL || m_validator == NULL) return false;
+        return m_validator.ValidateQuantumState(state);
+    }
+
+    void UpdateHistory(const CQuantumState* state) {
+        // Obter valores do estado quântico
+        double wave[];
+        state.GetWaveFunction(wave);
+        
+        // Calcular valor representativo
+        double state_value = CalculateStateValue(wave);
+        
+        // Atualizar buffer circular
+        m_history_buffer[m_buffer_position] = state_value;
+        m_buffer_position = (m_buffer_position + 1) % BUFFER_SIZE;
+    }
+
+    double CalculateStateValue(const double &wave[]) {
+        double value = 0;
+        int size = ArraySize(wave);
+        
+        for(int i = 0; i < size; i++) {
+            value += wave[i] * wave[i];
+        }
+        
+        return MathSqrt(value / size);
+    }
+
+    bool PerformDetection() {
+        if(!HasSufficientData()) return false;
+        
+        // Calcular estatísticas
+        double mean, stddev;
+        CalculateStatistics(mean, stddev);
+        
+        // Detectar anomalias
+        bool anomalies_found = false;
+        int anomaly_count = 0;
+        
+        for(int i = 0; i < m_config.window_size; i++) {
+            int idx = (m_buffer_position - i + BUFFER_SIZE) % BUFFER_SIZE;
+            double value = m_history_buffer[idx];
+            
+            if(IsAnomaly(value, mean, stddev)) {
+                anomaly_count++;
+                anomalies_found = true;
+                
+                LogAnomaly(value, mean, stddev);
+            }
+        }
+        
+        m_metrics.anomaly_count = anomaly_count;
+        return anomalies_found;
+    }
+
+    bool HasSufficientData() {
+        int valid_count = 0;
+        
+        for(int i = 0; i < m_config.window_size; i++) {
+            if(m_history_buffer[i] != 0) valid_count++;
+        }
+        
+        return valid_count >= m_config.min_samples;
+    }
+
+    void CalculateStatistics(double &mean, double &stddev) {
+        mean = 0;
+        stddev = 0;
+        
+        // Calcular média
+        for(int i = 0; i < m_config.window_size; i++) {
+            int idx = (m_buffer_position - i + BUFFER_SIZE) % BUFFER_SIZE;
+            mean += m_history_buffer[idx];
+        }
+        mean /= m_config.window_size;
+        
+        // Calcular desvio padrão
+        for(int i = 0; i < m_config.window_size; i++) {
+            int idx = (m_buffer_position - i + BUFFER_SIZE) % BUFFER_SIZE;
+            stddev += MathPow(m_history_buffer[idx] - mean, 2);
+        }
+        stddev = MathSqrt(stddev / m_config.window_size);
+    }
+
+    bool IsAnomaly(double value, double mean, double stddev) {
+        double z_score = MathAbs(value - mean) / (stddev + 0.0000001);
+        return z_score > m_config.sensitivity;
+    }
+
+    void LogAnomaly(double value, double mean, double stddev) {
+        string message = StringFormat(
+            "Anomaly detected: Value=%.6f, Mean=%.6f, StdDev=%.6f",
+            value, mean, stddev
+        );
+        
+        m_logger.Log(message, LOG_WARNING, "AnomalyDetector");
+    }
+
+    void UpdateMetrics(bool anomalies_found) {
+        // Calcular score de anomalia
+        m_metrics.anomaly_score = CalculateAnomalyScore();
+        
+        // Calcular desvio de padrão
+        m_metrics.pattern_deviation = CalculatePatternDeviation();
+        
+        // Calcular correlação temporal
+        m_metrics.temporal_correlation = CalculateTemporalCorrelation();
+        
+        m_state.last_detection = TimeCurrent();
+        
+        if(anomalies_found) {
+            m_logger.Log(
+                StringFormat("Anomaly Metrics - Score: %.2f, Deviation: %.2f, Correlation: %.2f",
+                           m_metrics.anomaly_score,
+                           m_metrics.pattern_deviation,
+                           m_metrics.temporal_correlation),
+                LOG_INFO,
+                "AnomalyDetector"
+            );
+        }
+    }
+
+    double CalculateAnomalyScore() {
+        return (double)m_metrics.anomaly_count / m_config.window_size;
+    }
+
+    double CalculatePatternDeviation() {
+        double deviation = 0;
+        double mean = 0;
+        
+        // Calcular média móvel
+        for(int i = 0; i < m_config.window_size; i++) {
+            int idx = (m_buffer_position - i + BUFFER_SIZE) % BUFFER_SIZE;
+            mean += m_history_buffer[idx];
+        }
+        mean /= m_config.window_size;
+        
+        // Calcular desvio
+        for(int i = 0; i < m_config.window_size; i++) {
+            int idx = (m_buffer_position - i + BUFFER_SIZE) % BUFFER_SIZE;
+            deviation += MathAbs(m_history_buffer[idx] - mean);
+        }
+        
+        return deviation / m_config.window_size;
+    }
+
+    double CalculateTemporalCorrelation() {
+        if(m_config.window_size < 2) return 0;
+        
+        double correlation = 0;
+        for(int i = 0; i < m_config.window_size - 1; i++) {
+            int idx1 = (m_buffer_position - i + BUFFER_SIZE) % BUFFER_SIZE;
+            int idx2 = (m_buffer_position - i - 1 + BUFFER_SIZE) % BUFFER_SIZE;
+            
+            correlation += m_history_buffer[idx1] * m_history_buffer[idx2];
+        }
+        
+        return correlation / (m_config.window_size - 1);
+    }
+};

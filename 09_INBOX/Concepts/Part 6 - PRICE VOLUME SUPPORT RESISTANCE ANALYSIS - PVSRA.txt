@@ -1,0 +1,169 @@
+//+------------------------------------------------------------------+
+//| PVSRA (Price Volume Support Resistance Analysis) - Parte 6         |
+//|                                                                    |
+//| OBJETIVO: Implementar visualização e interface com:                |
+//| - Visualização de Dados PVSRA                                     |
+//| - Interface com TechnologyAdvances                                 |
+//| - Interface com TeamStructure                                     |
+//| - Sistema de Alertas                                              |
+//+------------------------------------------------------------------+
+
+private:
+    // Estruturas de Visualização
+    struct PVSRAVisualizer {
+        // Configurações Visuais
+        struct VisualConfig {
+            color volumeColor;          // Cor do volume
+            color supportColor;         // Cor do suporte
+            color resistanceColor;      // Cor da resistência
+            color breakoutColor;        // Cor dos breakouts
+            int lineThickness;          // Espessura das linhas
+            bool showLabels;            // Mostrar labels
+            bool showAlerts;            // Mostrar alertas
+        } config;
+        
+        // Estado Visual
+        struct VisualState {
+            string objectPrefix;        // Prefixo dos objetos
+            int objectCount;            // Contador de objetos
+            datetime lastUpdate;        // Última atualização
+            bool isVisible;            // Visibilidade
+        } state;
+    } m_visual;
+    
+    void UpdatePVSRAVisuals() {
+        if(!m_visual.state.isVisible) return;
+        
+        // Limpar objetos antigos
+        ClearOldObjects();
+        
+        // Desenhar elementos PVSRA
+        DrawVolumeProfile();
+        DrawSupportResistance();
+        DrawBreakouts();
+        DrawLabels();
+        
+        // Atualizar estado
+        m_visual.state.lastUpdate = TimeCurrent();
+    }
+    
+    void DrawVolumeProfile() {
+        string name = m_visual.state.objectPrefix + "Volume_" + 
+                     IntegerToString(m_visual.state.objectCount++);
+                     
+        // Desenhar perfil de volume
+        for(int i = 0; i < m_integration.cache.cacheSize; i++) {
+            double volume = m_integration.cache.volumeCache[i];
+            color volColor = DetermineVolumeColor(volume);
+            
+            ObjectCreate(0, name + "_" + IntegerToString(i), OBJ_HISTOGRAM,
+                        0, Time[i], 0, volume);
+            ObjectSetInteger(0, name + "_" + IntegerToString(i), 
+                           OBJPROP_COLOR, volColor);
+        }
+    }
+    
+    void DrawSupportResistance() {
+        // Desenhar níveis de suporte
+        string suppName = m_visual.state.objectPrefix + "Support_" + 
+                         IntegerToString(m_visual.state.objectCount++);
+                         
+        ObjectCreate(0, suppName, OBJ_TREND, 0,
+                    Time[20], m_data.levels.support,
+                    Time[0], m_data.levels.support);
+                    
+        ObjectSetInteger(0, suppName, OBJPROP_COLOR, m_visual.config.supportColor);
+        ObjectSetInteger(0, suppName, OBJPROP_WIDTH, m_visual.config.lineThickness);
+        
+        // Desenhar níveis de resistência
+        string resName = m_visual.state.objectPrefix + "Resistance_" + 
+                        IntegerToString(m_visual.state.objectCount++);
+                        
+        ObjectCreate(0, resName, OBJ_TREND, 0,
+                    Time[20], m_data.levels.resistance,
+                    Time[0], m_data.levels.resistance);
+                    
+        ObjectSetInteger(0, resName, OBJPROP_COLOR, m_visual.config.resistanceColor);
+        ObjectSetInteger(0, resName, OBJPROP_WIDTH, m_visual.config.lineThickness);
+    }
+    
+    void DrawBreakouts() {
+        if(!m_data.levels.isBreakout) return;
+        
+        string breakName = m_visual.state.objectPrefix + "Breakout_" + 
+                          IntegerToString(m_visual.state.objectCount++);
+                          
+        // Desenhar seta de breakout
+        ObjectCreate(0, breakName, OBJ_ARROW,
+                    0, Time[0], m_data.price.close);
+                    
+        ObjectSetInteger(0, breakName, OBJPROP_ARROWCODE, 
+                        m_data.price.isUptrend ? 233 : 234);
+        ObjectSetInteger(0, breakName, OBJPROP_COLOR, 
+                        m_visual.config.breakoutColor);
+    }
+    
+    void DrawLabels() {
+        if(!m_visual.config.showLabels) return;
+        
+        // Label de volume
+        string volLabel = m_visual.state.objectPrefix + "VolumeLabel_" + 
+                         IntegerToString(m_visual.state.objectCount++);
+                         
+        string volText = StringFormat("Volume: %.2f\nSpike: %.2f",
+                                    m_data.volume.current,
+                                    m_data.volume.spike);
+                                    
+        CreateLabel(volLabel, volText, 10, 20);
+        
+        // Label de padrões
+        string patternLabel = m_visual.state.objectPrefix + "PatternLabel_" + 
+                            IntegerToString(m_visual.state.objectCount++);
+                            
+        string patternText = GetPatternDescription();
+        CreateLabel(patternLabel, patternText, 10, 40);
+    }
+    
+    void CreateLabel(const string name, const string text, 
+                    const int x, const int y) {
+        ObjectCreate(0, name, OBJ_LABEL, 0, 0, 0);
+        ObjectSetString(0, name, OBJPROP_TEXT, text);
+        ObjectSetInteger(0, name, OBJPROP_XDISTANCE, x);
+        ObjectSetInteger(0, name, OBJPROP_YDISTANCE, y);
+        ObjectSetInteger(0, name, OBJPROP_CORNER, CORNER_LEFT_UPPER);
+    }
+    
+    string GetPatternDescription() {
+        string desc = "";
+        
+        if(m_patterns.volume.isChurn)
+            desc += "Churn Volume\n";
+        if(m_patterns.volume.isClimax)
+            desc += "Climax Volume\n";
+        if(m_patterns.volume.isAccumulation)
+            desc += "Accumulation\n";
+        if(m_patterns.volume.isDistribution)
+            desc += "Distribution\n";
+            
+        return desc;
+    }
+    
+    void ProcessAlerts() {
+        if(!m_visual.config.showAlerts) return;
+        
+        // Alertas de volume
+        if(m_data.volume.spike > 2.0) {
+            Alert("PVSRA: Volume Spike Detectado!");
+        }
+        
+        // Alertas de breakout
+        if(m_data.levels.isBreakout) {
+            Alert("PVSRA: Breakout Detectado!");
+        }
+        
+        // Alertas de padrões
+        if(m_patterns.volume.isClimax) {
+            Alert("PVSRA: Volume Climático Detectado!");
+        }
+    }
+};

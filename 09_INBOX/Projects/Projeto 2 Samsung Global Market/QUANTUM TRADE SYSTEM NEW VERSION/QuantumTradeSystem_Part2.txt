@@ -1,0 +1,503 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part2.mq5    |
+//+------------------------------------------------------------------+
+
+// Sistema de Análise Técnica Avançado
+class CTechnicalAnalysis {
+private:
+    // Handles dos indicadores expandidos
+    int handleMA[];      // Array para múltiplas MAs
+    int handleRSI;
+    int handleMACD;
+    int handleStoch;
+    int handleBB;
+    int handleWaveTrend;
+    int handleVolumeProfile;
+    int handleMarketProfile;
+    
+    // Configurações avançadas
+    struct IndicatorSettings {
+        // Configurações existentes melhoradas
+        int maPeriods[5];    
+        int rsiPeriod;
+        int macdFast;
+        int macdSlow;
+        int macdSignal;
+        int stochK;
+        int stochD;
+        int bbPeriod;
+        double bbDeviation;
+        
+        // Novas configurações
+        struct WaveTrendSettings {
+            int channelLength;
+            int averageLength;
+            double momentum_factor;
+        } waveTrend;
+        
+        struct VolumeProfileSettings {
+            int numOfProfiles;
+            int valueAreaPercent;
+            int lookbackPeriod;
+        } volumeProfile;
+        
+        struct MarketProfileSettings {
+            double tickSize;
+            int profilePeriod;
+            double valueAreaVolume;
+        } marketProfile;
+    } settings;
+    
+    // Cache de dados aprimorado
+    struct IndicatorCache {
+        // Cache existente
+        double maValues[];
+        double rsiValue;
+        double macdMain;
+        double macdSignal;
+        double stochMain;
+        double stochSignal;
+        double bbUpper;
+        double bbMiddle;
+        double bbLower;
+        
+        // Novo cache
+        struct WaveTrendCache {
+            double wave1;
+            double wave2;
+            double momentum;
+            datetime lastUpdate;
+        } waveTrend;
+        
+        struct VolumeProfileCache {
+            double poc;        // Point of Control
+            double vaHigh;     // Value Area High
+            double vaLow;      // Value Area Low
+            double[] volumes;
+            datetime lastUpdate;
+        } volumeProfile;
+        
+        datetime lastUpdate;
+        
+        void Reset() {
+            ArrayInitialize(maValues, 0);
+            rsiValue = 0;
+            macdMain = 0;
+            macdSignal = 0;
+            stochMain = 0;
+            stochSignal = 0;
+            bbUpper = 0;
+            bbMiddle = 0;
+            bbLower = 0;
+            lastUpdate = 0;
+        }
+    } cache;
+
+public:
+    CTechnicalAnalysis() {
+        InitializeSettings();
+    }
+    
+    ~CTechnicalAnalysis() {
+        ReleaseIndicators();
+    }
+    
+    bool Initialize() {
+        if(!InitializeSettings()) return false;
+        if(!InitializeIndicators()) return false;
+        return true;
+    }
+    
+    // Métodos públicos aprimorados
+    double GetTrendStrength(bool useCache = true) {
+        if(useCache && !IsCacheExpired()) {
+            return CalculateTrendStrength();
+        }
+        UpdateCache();
+        return CalculateTrendStrength();
+    }
+    
+    double GetMomentumScore(bool useCache = true) {
+        if(useCache && !IsCacheExpired()) {
+            return CalculateMomentumScore();
+        }
+        UpdateCache();
+        return CalculateMomentumScore();
+    }
+    
+    double GetVolatilityScore(bool useCache = true) {
+        if(useCache && !IsCacheExpired()) {
+            return CalculateVolatilityScore();
+        }
+        UpdateCache();
+        return CalculateVolatilityScore();
+    }
+    
+    bool IsBuySignal(bool useCache = true) {
+        if(useCache && !IsCacheExpired()) {
+            return ValidateBuySignal();
+        }
+        UpdateCache();
+        return ValidateBuySignal();
+    }
+    
+    bool IsSellSignal(bool useCache = true) {
+        if(useCache && !IsCacheExpired()) {
+            return ValidateSellSignal();
+        }
+        UpdateCache();
+        return ValidateSellSignal();
+    }
+    
+    // Novos métodos públicos
+    double GetWaveTrendSignal() {
+        UpdateWaveTrendCache();
+        return CalculateWaveTrendSignal();
+    }
+    
+    double GetVolumeProfileSignal() {
+        UpdateVolumeProfileCache();
+        return CalculateVolumeProfileSignal();
+    }
+    
+    double GetMarketProfileSignal() {
+        UpdateMarketProfileCache();
+        return CalculateMarketProfileSignal();
+    }
+
+private:
+    // Métodos privados aprimorados...
+    // (Continua na próxima parte)
+private:
+    void InitializeSettings() {
+        // Configurações de MAs
+        settings.maPeriods[0] = 10;
+        settings.maPeriods[1] = 20;
+        settings.maPeriods[2] = 50;
+        settings.maPeriods[3] = 100;
+        settings.maPeriods[4] = 200;
+        
+        // Configurações avançadas de indicadores
+        settings.rsiPeriod = 14;
+        settings.macdFast = 12;
+        settings.macdSlow = 26;
+        settings.macdSignal = 9;
+        settings.stochK = 14;
+        settings.stochD = 3;
+        settings.bbPeriod = 20;
+        settings.bbDeviation = 2.0;
+        
+        // WaveTrend settings
+        settings.waveTrend.channelLength = 10;
+        settings.waveTrend.averageLength = 21;
+        settings.waveTrend.momentum_factor = 1.5;
+        
+        // Volume Profile settings
+        settings.volumeProfile.numOfProfiles = 24;
+        settings.volumeProfile.valueAreaPercent = 70;
+        settings.volumeProfile.lookbackPeriod = 24;
+        
+        // Market Profile settings
+        settings.marketProfile.tickSize = SymbolInfoDouble(Symbol(), SYMBOL_TRADE_TICK_SIZE);
+        settings.marketProfile.profilePeriod = 24;
+        settings.marketProfile.valueAreaVolume = 0.7;
+    }
+    
+    bool InitializeIndicators() {
+        // Inicializar MAs
+        ArrayResize(handleMA, 5);
+        for(int i = 0; i < 5; i++) {
+            handleMA[i] = iMA(Symbol(), Period(), settings.maPeriods[i], 0, MODE_SMA, PRICE_CLOSE);
+            if(handleMA[i] == INVALID_HANDLE) return false;
+        }
+        
+        // Inicializar indicadores principais
+        handleRSI = iRSI(Symbol(), Period(), settings.rsiPeriod, PRICE_CLOSE);
+        handleMACD = iMACD(Symbol(), Period(), settings.macdFast, settings.macdSlow, 
+                          settings.macdSignal, PRICE_CLOSE);
+        handleStoch = iStochastic(Symbol(), Period(), settings.stochK, settings.stochD, 
+                                settings.stochD, MODE_SMA, STO_LOWHIGH);
+        handleBB = iBands(Symbol(), Period(), settings.bbPeriod, settings.bbDeviation, 
+                         0, PRICE_CLOSE);
+                         
+        // Inicializar indicadores avançados
+        handleWaveTrend = iCustom(Symbol(), Period(), "WaveTrend", 
+                                settings.waveTrend.channelLength,
+                                settings.waveTrend.averageLength);
+                                
+        handleVolumeProfile = iCustom(Symbol(), Period(), "VolumeProfile",
+                                    settings.volumeProfile.numOfProfiles,
+                                    settings.volumeProfile.valueAreaPercent);
+                                    
+        handleMarketProfile = iCustom(Symbol(), Period(), "MarketProfile",
+                                    settings.marketProfile.profilePeriod,
+                                    settings.marketProfile.valueAreaVolume);
+        
+        return ValidateAllHandles();
+    }
+    
+    void UpdateCache() {
+        if(!IsCacheExpired()) return;
+        
+        // Atualizar MAs
+        for(int i = 0; i < 5; i++) {
+            double maBuffer[];
+            ArraySetAsSeries(maBuffer, true);
+            CopyBuffer(handleMA[i], 0, 0, 1, maBuffer);
+            cache.maValues[i] = maBuffer[0];
+        }
+        
+        // Atualizar indicadores principais
+        UpdateMainIndicators();
+        
+        // Atualizar indicadores avançados
+        UpdateAdvancedIndicators();
+        
+        cache.lastUpdate = TimeCurrent();
+    }
+    
+    void UpdateMainIndicators() {
+        double buffer[];
+        ArraySetAsSeries(buffer, true);
+        
+        // RSI
+        CopyBuffer(handleRSI, 0, 0, 1, buffer);
+        cache.rsiValue = buffer[0];
+        
+        // MACD
+        CopyBuffer(handleMACD, 0, 0, 1, buffer);
+        cache.macdMain = buffer[0];
+        CopyBuffer(handleMACD, 1, 0, 1, buffer);
+        cache.macdSignal = buffer[0];
+        
+        // Stochastic
+        CopyBuffer(handleStoch, 0, 0, 1, buffer);
+        cache.stochMain = buffer[0];
+        CopyBuffer(handleStoch, 1, 0, 1, buffer);
+        cache.stochSignal = buffer[0];
+        
+        // Bollinger Bands
+        CopyBuffer(handleBB, 0, 0, 1, buffer);
+        cache.bbMiddle = buffer[0];
+        CopyBuffer(handleBB, 1, 0, 1, buffer);
+        cache.bbUpper = buffer[0];
+        CopyBuffer(handleBB, 2, 0, 1, buffer);
+        cache.bbLower = buffer[0];
+    }
+    
+    void UpdateAdvancedIndicators() {
+        // WaveTrend
+        UpdateWaveTrendCache();
+        
+        // Volume Profile
+        UpdateVolumeProfileCache();
+        
+        // Market Profile
+        UpdateMarketProfileCache();
+    }
+    
+    double CalculateTrendStrength() {
+        double strength = 0;
+        
+        // Análise das MAs
+        for(int i = 1; i < 5; i++) {
+            if(cache.maValues[i-1] > cache.maValues[i]) 
+                strength += 0.1 * (5-i); // Peso maior para MAs mais curtas
+        }
+        
+        // Análise do MACD
+        if(cache.macdMain > cache.macdSignal) 
+            strength += 0.2 * MathAbs(cache.macdMain - cache.macdSignal);
+        
+        // Análise do RSI
+        strength += 0.2 * NormalizeRSI(cache.rsiValue);
+        
+        // Análise WaveTrend
+        strength += 0.3 * NormalizeWaveTrend(cache.waveTrend.wave1);
+        
+        return NormalizeDouble(strength, 2);
+    }
+    
+    // ... (Continua na próxima parte)
+    double CalculateMomentumScore() {
+        double momentum = 0;
+        
+        // RSI Analysis
+        momentum += NormalizeRSI(cache.rsiValue) * 0.25;
+        
+        // MACD Analysis
+        double macdDiff = cache.macdMain - cache.macdSignal;
+        momentum += NormalizeMACD(macdDiff) * 0.25;
+        
+        // Stochastic Analysis
+        momentum += NormalizeStochastic(cache.stochMain, cache.stochSignal) * 0.25;
+        
+        // WaveTrend Analysis
+        momentum += NormalizeWaveTrend(cache.waveTrend.momentum) * 0.25;
+        
+        return NormalizeDouble(momentum, 2);
+    }
+    
+    double CalculateVolatilityScore() {
+        double volatility = 0;
+        
+        // Bollinger Bands Width
+        double bbWidth = (cache.bbUpper - cache.bbLower) / cache.bbMiddle;
+        volatility += NormalizeBBWidth(bbWidth) * 0.4;
+        
+        // Volume Profile Volatility
+        double vpVolatility = (cache.volumeProfile.vaHigh - cache.volumeProfile.vaLow) / cache.volumeProfile.poc;
+        volatility += NormalizeVPVolatility(vpVolatility) * 0.3;
+        
+        // Market Profile Volatility
+        volatility += CalculateMarketProfileVolatility() * 0.3;
+        
+        return NormalizeDouble(volatility, 2);
+    }
+    
+    bool ValidateBuySignal() {
+        int signalStrength = 0;
+        
+        // RSI Oversold
+        if(cache.rsiValue < 30) signalStrength++;
+        
+        // MACD Crossover
+        if(cache.macdMain > cache.macdSignal && 
+           cache.macdMain > 0) signalStrength++;
+        
+        // Stochastic Oversold
+        if(cache.stochMain < 20 && 
+           cache.stochMain > cache.stochSignal) signalStrength++;
+        
+        // Price near BB Lower
+        if(SymbolInfoDouble(Symbol(), SYMBOL_ASK) < cache.bbLower) signalStrength++;
+        
+        // WaveTrend Buy Signal
+        if(IsWaveTrendBuySignal()) signalStrength++;
+        
+        // Volume Profile Support
+        if(IsVolumeProfileSupport()) signalStrength++;
+        
+        return (signalStrength >= 4);
+    }
+    
+    bool ValidateSellSignal() {
+        int signalStrength = 0;
+        
+        // RSI Overbought
+        if(cache.rsiValue > 70) signalStrength++;
+        
+        // MACD Crossover
+        if(cache.macdMain < cache.macdSignal && 
+           cache.macdMain < 0) signalStrength++;
+        
+        // Stochastic Overbought
+        if(cache.stochMain > 80 && 
+           cache.stochMain < cache.stochSignal) signalStrength++;
+        
+        // Price near BB Upper
+        if(SymbolInfoDouble(Symbol(), SYMBOL_BID) > cache.bbUpper) signalStrength++;
+        
+        // WaveTrend Sell Signal
+        if(IsWaveTrendSellSignal()) signalStrength++;
+        
+        // Volume Profile Resistance
+        if(IsVolumeProfileResistance()) signalStrength++;
+        
+        return (signalStrength >= 4);
+    }
+    
+    // Métodos de normalização
+    double NormalizeRSI(double value) {
+        return (value - 50) / 50;
+    }
+    
+    double NormalizeMACD(double value) {
+        return value / (GetAverageTrueRange() * 2);
+    }
+    
+    double NormalizeStochastic(double main, double signal) {
+        return ((main + signal) / 2 - 50) / 50;
+    }
+    
+    double NormalizeBBWidth(double width) {
+        return MathMin(width / 0.05, 1.0);
+    }
+    
+    double NormalizeWaveTrend(double value) {
+        return value / 100.0;
+    }
+    
+    double NormalizeVPVolatility(double value) {
+        return MathMin(value / 0.02, 1.0);
+    }
+    
+    // Métodos auxiliares
+    bool IsCacheExpired() {
+        return (TimeCurrent() - cache.lastUpdate > PeriodSeconds());
+    }
+    
+    bool ValidateAllHandles() {
+        for(int i = 0; i < ArraySize(handleMA); i++) {
+            if(handleMA[i] == INVALID_HANDLE) return false;
+        }
+        
+        return (handleRSI != INVALID_HANDLE && 
+                handleMACD != INVALID_HANDLE && 
+                handleStoch != INVALID_HANDLE && 
+                handleBB != INVALID_HANDLE &&
+                handleWaveTrend != INVALID_HANDLE &&
+                handleVolumeProfile != INVALID_HANDLE &&
+                handleMarketProfile != INVALID_HANDLE);
+    }
+    
+    void ReleaseIndicators() {
+        for(int i = 0; i < ArraySize(handleMA); i++) {
+            IndicatorRelease(handleMA[i]);
+        }
+        
+        IndicatorRelease(handleRSI);
+        IndicatorRelease(handleMACD);
+        IndicatorRelease(handleStoch);
+        IndicatorRelease(handleBB);
+        IndicatorRelease(handleWaveTrend);
+        IndicatorRelease(handleVolumeProfile);
+        IndicatorRelease(handleMarketProfile);
+    }
+    
+    double GetAverageTrueRange() {
+        double atr[];
+        ArraySetAsSeries(atr, true);
+        int atrHandle = iATR(Symbol(), Period(), 14);
+        CopyBuffer(atrHandle, 0, 0, 1, atr);
+        IndicatorRelease(atrHandle);
+        return atr[0];
+    }
+    
+    bool IsWaveTrendBuySignal() {
+        return (cache.waveTrend.wave1 < -30 && 
+                cache.waveTrend.wave2 < -30 &&
+                cache.waveTrend.momentum > 0);
+    }
+    
+    bool IsWaveTrendSellSignal() {
+        return (cache.waveTrend.wave1 > 30 && 
+                cache.waveTrend.wave2 > 30 &&
+                cache.waveTrend.momentum < 0);
+    }
+    
+    bool IsVolumeProfileSupport() {
+        double price = SymbolInfoDouble(Symbol(), SYMBOL_ASK);
+        return (MathAbs(price - cache.volumeProfile.vaLow) < GetAverageTrueRange());
+    }
+    
+    bool IsVolumeProfileResistance() {
+        double price = SymbolInfoDouble(Symbol(), SYMBOL_BID);
+        return (MathAbs(price - cache.volumeProfile.vaHigh) < GetAverageTrueRange());
+    }
+    
+    double CalculateMarketProfileVolatility() {
+        // Implementação personalizada da volatilidade baseada no Market Profile
+        return 0.5; // Valor padrão para exemplo
+    }
+};

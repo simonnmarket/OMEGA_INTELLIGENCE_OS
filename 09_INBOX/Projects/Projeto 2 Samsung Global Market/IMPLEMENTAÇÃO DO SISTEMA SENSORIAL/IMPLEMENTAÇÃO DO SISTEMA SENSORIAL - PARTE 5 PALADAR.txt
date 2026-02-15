@@ -1,0 +1,194 @@
+IMPLEMENTAÇÃO DO SISTEMA SENSORIAL - PARTE 5 PALADAR
+
+//+------------------------------------------------------------------+
+//|                                    QuantumTasteSystem.mqh          |
+//+------------------------------------------------------------------+
+
+class CMarketTasteSystem : public CAdvancedBacktesting {
+private:
+    struct TasteMetrics {
+        double profitTaste;
+        double riskTolerance;
+        double marketPreference;
+        double instrumentSelection;
+        double tradeSweetness;
+        double marketSourness;
+        double positionFlavor;
+        double trendTaste;
+    };
+    
+    struct TasteParameters {
+        int tasteSensitivity;
+        double profitThreshold;
+        int preferenceDepth;
+        double selectionCriteria;
+        int sweetnessWindow;
+        double bitternessTolerance;
+        int flavorProfile;
+        double tasteIntensity;
+    };
+    
+    struct MarketTaste {
+        datetime time;
+        double profitability;
+        double riskProfile;
+        double preference;
+        double sweetness;
+        double sourness;
+        double flavor;
+        bool isAppetizing;
+    };
+    
+    TasteMetrics metrics;
+    TasteParameters params;
+    CArrayObj* tasteHistory;
+    CProfitTaster* profitTaster;
+    CRiskProfiler* riskProfiler;
+    CMarketFlavor* marketFlavor;
+    CPositionTaster* positionTaster;
+    
+public:
+    CMarketTasteSystem() {
+        tasteHistory = new CArrayObj();
+        profitTaster = new CProfitTaster();
+        riskProfiler = new CRiskProfiler();
+        marketFlavor = new CMarketFlavor();
+        positionTaster = new CPositionTaster();
+        InitializeParameters();
+    }
+    
+    ~CMarketTasteSystem() {
+        SafeDelete(tasteHistory);
+        SafeDelete(profitTaster);
+        SafeDelete(riskProfiler);
+        SafeDelete(marketFlavor);
+        SafeDelete(positionTaster);
+    }
+    
+    bool Initialize() {
+        if(!InitializeComponents()) return false;
+        if(!CalibrateTasteSensors()) return false;
+        if(!ValidateTasteParameters()) return false;
+        
+        return true;
+    }
+    
+    void ProcessMarketTaste() {
+        TasteProfit();
+        AssessRiskProfile();
+        SampleMarketFlavor();
+        TastePositions();
+        UpdateTasteMetrics();
+    }
+    
+    TasteMetrics GetMetrics() const {
+        return metrics;
+    }
+
+private:
+    void InitializeParameters() {
+        params.tasteSensitivity = 15;
+        params.profitThreshold = 0.7;
+        params.preferenceDepth = 25;
+        params.selectionCriteria = 0.8;
+        params.sweetnessWindow = 20;
+        params.bitternessTolerance = 0.4;
+        params.flavorProfile = 30;
+        params.tasteIntensity = 0.85;
+    }
+    
+    bool InitializeComponents() {
+        if(!profitTaster.Initialize(params.tasteSensitivity)) return false;
+        if(!riskProfiler.Initialize(params.profitThreshold)) return false;
+        if(!marketFlavor.Initialize(params.preferenceDepth)) return false;
+        if(!positionTaster.Initialize(params.sweetnessWindow)) return false;
+        
+        return true;
+    }
+    
+    void TasteProfit() {
+        ProfitProfile profit;
+        if(profitTaster.TasteCurrentProfit(profit)) {
+            metrics.profitTaste = AnalyzeProfitTaste(profit);
+            metrics.tradeSweetness = MeasureTradeSweetness(profit);
+        }
+    }
+    
+    void AssessRiskProfile() {
+        RiskProfile risk;
+        if(riskProfiler.AssessCurrentRisk(risk)) {
+            metrics.riskTolerance = CalculateRiskTaste(risk);
+            metrics.marketSourness = AnalyzeMarketSourness(risk);
+        }
+    }
+    
+    void SampleMarketFlavor() {
+        MarketProfile market;
+        if(marketFlavor.SampleCurrentMarket(market)) {
+            metrics.marketPreference = EvaluateMarketTaste(market);
+            metrics.trendTaste = AnalyzeTrendFlavor(market);
+        }
+    }
+    
+    void TastePositions() {
+        PositionProfile position;
+        if(positionTaster.TasteCurrentPositions(position)) {
+            metrics.positionFlavor = AssessPositionFlavor(position);
+            metrics.instrumentSelection = SelectInstrumentTaste(position);
+        }
+    }
+    
+    double AnalyzeProfitTaste(const ProfitProfile& profit) {
+        double realizedTaste = TasteRealizedProfit(profit);
+        double potentialTaste = TastePotentialProfit(profit);
+        double consistencyFlavor = AnalyzeConsistency(realizedTaste, potentialTaste);
+        
+        return NormalizeProfitTaste(consistencyFlavor);
+    }
+    
+    double CalculateRiskTaste(const RiskProfile& risk) {
+        double riskAppetite = MeasureRiskAppetite(risk);
+        double riskAversion = MeasureRiskAversion(risk);
+        double balancedTaste = BalanceRiskTaste(riskAppetite, riskAversion);
+        
+        return NormalizeRiskTaste(balancedTaste);
+    }
+    
+    double EvaluateMarketTaste(const MarketProfile& market) {
+        double marketSweetness = TasteMarketConditions(market);
+        double marketBitterness = TasteMarketChallenges(market);
+        double blendedTaste = BlendMarketTaste(marketSweetness, marketBitterness);
+        
+        return NormalizeMarketTaste(blendedTaste);
+    }
+    
+    void UpdateTasteMetrics() {
+        ValidateMetrics();
+        NormalizeAllMetrics();
+        UpdateTasteHistory();
+        AnalyzeTastePatterns();
+    }
+    
+    bool CalibrateTasteSensors() {
+        return (CalibrateProfitTasting() &&
+                CalibrateRiskTasting() &&
+                CalibrateMarketTasting() &&
+                CalibratePositionTasting());
+    }
+    
+    template<typename T>
+    void SafeDelete(T* &ptr) {
+        if(ptr != NULL) {
+            delete ptr;
+            ptr = NULL;
+        }
+    }
+};
+
+Esta é a implementação final do sistema de "paladar" do Adan, que permite:
+    • Degustar perfis de lucro
+    • Avaliar sabor do risco
+    • Provar condições de mercado
+    • Saborear posições
+    • Selecionar instrumentos
+    • Analisar padrões de sabor 

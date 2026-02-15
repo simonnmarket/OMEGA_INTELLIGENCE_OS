@@ -1,0 +1,164 @@
+//+------------------------------------------------------------------+
+//| Order Flow Analysis - Parte 6                                      |
+//|                                                                    |
+//| OBJETIVO: Implementar otimização e gestão de risco com:           |
+//| - Otimização de Parâmetros                                        |
+//| - Gestão de Risco Dinâmica                                        |
+//| - Backtesting                                                     |
+//| - Integração com TechnologyAdvances Risk System                   |
+//+------------------------------------------------------------------+
+
+private:
+    // Estruturas de Otimização e Risco
+    struct OrderFlowOptimizer {
+        // Parâmetros de Otimização
+        struct OptimParams {
+            double deltaThresholds[];    // Thresholds de delta
+            double volumeThresholds[];   // Thresholds de volume
+            double riskFactors[];        // Fatores de risco
+            double mlThresholds[];       // Thresholds de ML
+        } params;
+        
+        // Gestão de Risco
+        struct RiskManager {
+            double maxRiskPerTrade;      // Risco máximo por trade
+            double currentExposure;      // Exposição atual
+            double deltaRisk;            // Risco baseado em delta
+            double volumeRisk;           // Risco baseado em volume
+            bool isRiskExceeded;         // Risco excedido
+        } risk;
+        
+        // Resultados de Backtesting
+        struct BacktestResults {
+            int totalTrades;             // Total de trades
+            double profitFactor;         // Fator de lucro
+            double sharpeRatio;          // Índice Sharpe
+            double maxDrawdown;          // Drawdown máximo
+            datetime period;             // Período do teste
+        } backtest;
+    } m_optimizer;
+    
+    void OptimizeParameters() {
+        // Validar estado
+        if(!ValidateOptimizationState()) return;
+        
+        // Iniciar otimização
+        InitializeOptimization();
+        
+        // Executar backtests
+        RunOptimizationTests();
+        
+        // Analisar resultados
+        AnalyzeOptimizationResults();
+        
+        // Aplicar parâmetros otimizados
+        ApplyOptimalParameters();
+    }
+    
+    void InitializeOptimization() {
+        // Configurar ranges de otimização
+        ConfigureOptimizationRanges();
+        
+        // Preparar ambiente de teste
+        PrepareTestEnvironment();
+        
+        // Integrar com TechnologyAdvances
+        m_techManager.InitializeOptimization(GetOptimizationConfig());
+    }
+    
+    void ConfigureOptimizationRanges() {
+        // Delta thresholds
+        ArrayResize(m_optimizer.params.deltaThresholds, 5);
+        m_optimizer.params.deltaThresholds[0] = 0.5;
+        m_optimizer.params.deltaThresholds[1] = 1.0;
+        m_optimizer.params.deltaThresholds[2] = 1.5;
+        m_optimizer.params.deltaThresholds[3] = 2.0;
+        m_optimizer.params.deltaThresholds[4] = 2.5;
+        
+        // Volume thresholds
+        ArrayResize(m_optimizer.params.volumeThresholds, 5);
+        m_optimizer.params.volumeThresholds[0] = 100;
+        m_optimizer.params.volumeThresholds[1] = 200;
+        m_optimizer.params.volumeThresholds[2] = 300;
+        m_optimizer.params.volumeThresholds[3] = 400;
+        m_optimizer.params.volumeThresholds[4] = 500;
+    }
+    
+    void UpdateRiskManagement() {
+        // Calcular exposição atual
+        CalculateCurrentExposure();
+        
+        // Atualizar fatores de risco
+        UpdateRiskFactors();
+        
+        // Verificar limites
+        CheckRiskLimits();
+        
+        // Integrar com TechnologyAdvances
+        UpdateRiskMetrics();
+    }
+    
+    void CalculateCurrentExposure() {
+        double positionValue = 0;
+        
+        if(PositionSelect(_Symbol)) {
+            positionValue = PositionGetDouble(POSITION_VOLUME) * 
+                          PositionGetDouble(POSITION_PRICE_CURRENT);
+        }
+        
+        m_optimizer.risk.currentExposure = positionValue / 
+            AccountInfoDouble(ACCOUNT_EQUITY);
+    }
+    
+    void UpdateRiskFactors() {
+        // Calcular risco baseado em delta
+        m_optimizer.risk.deltaRisk = CalculateDeltaRisk();
+        
+        // Calcular risco baseado em volume
+        m_optimizer.risk.volumeRisk = CalculateVolumeRisk();
+        
+        // Ajustar risco máximo
+        AdjustMaxRisk();
+    }
+    
+    void CheckRiskLimits() {
+        bool wasExceeded = m_optimizer.risk.isRiskExceeded;
+        
+        // Verificar limites
+        m_optimizer.risk.isRiskExceeded = 
+            (m_optimizer.risk.currentExposure > m_optimizer.risk.maxRiskPerTrade) ||
+            (m_optimizer.risk.deltaRisk > 0.8) ||
+            (m_optimizer.risk.volumeRisk > 0.8);
+            
+        // Notificar se estado mudou
+        if(!wasExceeded && m_optimizer.risk.isRiskExceeded) {
+            NotifyRiskExceeded();
+        }
+    }
+    
+    void UpdateRiskMetrics() {
+        // Criar pacote de métricas
+        RiskMetrics metrics;
+        metrics.exposure = m_optimizer.risk.currentExposure;
+        metrics.deltaRisk = m_optimizer.risk.deltaRisk;
+        metrics.volumeRisk = m_optimizer.risk.volumeRisk;
+        metrics.isExceeded = m_optimizer.risk.isRiskExceeded;
+        
+        // Enviar para TechnologyAdvances
+        m_techManager.UpdateRiskMetrics(metrics);
+        
+        // Notificar equipe se necessário
+        if(metrics.isExceeded) {
+            NotifyTeam(FormatRiskAlert(metrics));
+        }
+    }
+    
+    string FormatRiskAlert(const RiskMetrics &metrics) {
+        return StringFormat(
+            "Risk Alert!\nExposure: %.2f%%\nDelta Risk: %.2f\nVolume Risk: %.2f",
+            metrics.exposure * 100,
+            metrics.deltaRisk,
+            metrics.volumeRisk
+        );
+    }
+};

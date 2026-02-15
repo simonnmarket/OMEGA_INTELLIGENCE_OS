@@ -1,0 +1,189 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part2.mq5    |
+//+------------------------------------------------------------------+
+
+// Classe para análise técnica avançada
+class CTechnicalAnalysis {
+private:
+    // Handles adicionais para indicadores
+    int handleRSI;
+    int handleMACD;
+    int handleBB;
+    int handleFisher;
+    
+    struct TrendData {
+        bool isStrong;
+        bool isUp;
+        double strength;
+        double momentum;
+    };
+    
+    struct VolatilityData {
+        double current;
+        double average;
+        double deviation;
+        bool isIncreasing;
+    };
+
+public:
+    bool Initialize() {
+        handleRSI = iRSI(Symbol(), Period(), 14, PRICE_CLOSE);
+        handleMACD = iMACD(Symbol(), Period(), 12, 26, 9, PRICE_CLOSE);
+        handleBB = iBands(Symbol(), Period(), 20, 2, 0, PRICE_CLOSE);
+        handleFisher = iCustom(Symbol(), Period(), "Fisher_m11");
+        
+        return (handleRSI != INVALID_HANDLE && 
+                handleMACD != INVALID_HANDLE && 
+                handleBB != INVALID_HANDLE &&
+                handleFisher != INVALID_HANDLE);
+    }
+    
+    TrendData AnalyzeTrend() {
+        TrendData trend;
+        
+        double adx[], plusDI[], minusDI[];
+        ArraySetAsSeries(adx, true);
+        ArraySetAsSeries(plusDI, true);
+        ArraySetAsSeries(minusDI, true);
+        
+        // Copiar dados do ADX
+        CopyBuffer(handleADX, 0, 0, 3, adx);
+        CopyBuffer(handleADX, 1, 0, 3, plusDI);
+        CopyBuffer(handleADX, 2, 0, 3, minusDI);
+        
+        trend.isStrong = (adx[0] > 25);
+        trend.isUp = (plusDI[0] > minusDI[0]);
+        trend.strength = adx[0];
+        trend.momentum = plusDI[0] - minusDI[0];
+        
+        return trend;
+    }
+    
+    VolatilityData AnalyzeVolatility() {
+        VolatilityData vol;
+        
+        double atr[];
+        ArraySetAsSeries(atr, true);
+        CopyBuffer(handleATR, 0, 0, 10, atr);
+        
+        vol.current = atr[0];
+        vol.average = ArrayAverage(atr);
+        vol.deviation = ArrayStdDev(atr);
+        vol.isIncreasing = (atr[0] > atr[1]);
+        
+        return vol;
+    }
+    
+    bool IsValidSetup() {
+        // Verificar Fisher
+        double fisher[];
+        ArraySetAsSeries(fisher, true);
+        CopyBuffer(handleFisher, 0, 0, 3, fisher);
+        
+        // Verificar MACD
+        double macd[], signal[];
+        ArraySetAsSeries(macd, true);
+        ArraySetAsSeries(signal, true);
+        CopyBuffer(handleMACD, 0, 0, 3, macd);
+        CopyBuffer(handleMACD, 1, 0, 3, signal);
+        
+        // Verificar RSI
+        double rsi[];
+        ArraySetAsSeries(rsi, true);
+        CopyBuffer(handleRSI, 0, 0, 3, rsi);
+        
+        // Análise combinada
+        bool fisherTrend = (fisher[0] > fisher[1]);
+        bool macdCross = (macd[1] < signal[1] && macd[0] > signal[0]);
+        bool rsiValid = (rsi[0] > 40 && rsi[0] < 60);
+        
+        return (fisherTrend && macdCross && rsiValid);
+    }
+    
+    double GetSetupScore() {
+        TrendData trend = AnalyzeTrend();
+        VolatilityData vol = AnalyzeVolatility();
+        
+        double score = 0;
+        
+        // Pontuação baseada na tendência
+        if(trend.isStrong) score += 0.3;
+        if(trend.strength > 30) score += 0.2;
+        
+        // Pontuação baseada na volatilidade
+        if(vol.current < vol.average) score += 0.2;
+        if(!vol.isIncreasing) score += 0.1;
+        
+        // Pontuação baseada em confirmações
+        if(IsValidSetup()) score += 0.2;
+        
+        return score;
+    }
+    
+private:
+    double ArrayAverage(const double& arr[]) {
+        double sum = 0;
+        for(int i = 0; i < ArraySize(arr); i++) {
+            sum += arr[i];
+        }
+        return sum/ArraySize(arr);
+    }
+    
+    double ArrayStdDev(const double& arr[]) {
+        double avg = ArrayAverage(arr);
+        double sum = 0;
+        for(int i = 0; i < ArraySize(arr); i++) {
+            sum += MathPow(arr[i] - avg, 2);
+        }
+        return MathSqrt(sum/ArraySize(arr));
+    }
+};
+
+// Classe para gestão de risco avançada
+class CRiskManagement {
+private:
+    double maxDailyLoss;
+    double maxDrawdown;
+    int maxDailyTrades;
+    
+    struct DailyStats {
+        double profit;
+        int trades;
+        datetime lastTrade;
+    } dailyStats;
+
+public:
+    void Initialize(double riskPercent) {
+        maxDailyLoss = AccountInfoDouble(ACCOUNT_BALANCE) * (riskPercent/100);
+        maxDrawdown = AccountInfoDouble(ACCOUNT_BALANCE) * 0.05; // 5% máximo drawdown
+        maxDailyTrades = 2;
+        ResetDailyStats();
+    }
+    
+    bool CanTrade() {
+        if(dailyStats.trades >= maxDailyTrades) return false;
+        if(dailyStats.profit < -maxDailyLoss) return false;
+        if(GetCurrentDrawdown() > maxDrawdown) return false;
+        
+        return true;
+    }
+    
+    void UpdateStats(double profit) {
+        dailyStats.profit += profit;
+        dailyStats.trades++;
+        dailyStats.lastTrade = TimeCurrent();
+    }
+    
+    void ResetDailyStats() {
+        dailyStats.profit = 0;
+        dailyStats.trades = 0;
+        dailyStats.lastTrade = 0;
+    }
+    
+private:
+    double GetCurrentDrawdown() {
+        double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+        double balance = AccountInfoDouble(ACCOUNT_BALANCE);
+        return balance - equity;
+    }
+};

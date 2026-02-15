@@ -1,0 +1,114 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumScoutPro.mq5             |
+//|                                    Version 2.0                      |
+//+------------------------------------------------------------------+
+
+#property copyright "Quantum Trading Systems"
+#property version   "2.0"
+#property strict
+
+// Includes necessários
+#include <Trade\Trade.mqh>
+#include <Trade\PositionInfo.mqh>
+
+//+------------------------------------------------------------------+
+//| Enums e Definições                                                |
+//+------------------------------------------------------------------+
+enum ENUM_TRADE_SIGNAL {
+    SIGNAL_NONE,
+    SIGNAL_BUY,
+    SIGNAL_SELL
+};
+
+enum ENUM_MARKET_CONDITION {
+    CONDITION_TRENDING,
+    CONDITION_RANGING,
+    CONDITION_VOLATILE,
+    CONDITION_UNDEFINED
+};
+
+//+------------------------------------------------------------------+
+//| Inputs                                                            |
+//+------------------------------------------------------------------+
+input group "=== Configurações Gerais ==="
+input int    TimeframeMin     = 5;         // Timeframe (minutos)
+input double RiskPercent      = 1.0;       // Risco por operação (%)
+input int    MaxDailyTrades   = 3;         // Máximo trades diários
+input bool   UseBreakEven     = true;      // Usar Break Even
+input int    BreakEvenPoints  = 300;       // Pontos para Break Even
+
+input group "=== Configurações de Volume ==="
+input double VolumeThreshold  = 1.5;       // Multiplicador de Volume
+input int    VolumePeriod     = 20;        // Período Volume Médio
+
+input group "=== Configurações de Stop ==="
+input int    StopLoss         = 400;       // Stop Loss (pontos)
+input int    TakeProfit       = 800;       // Take Profit (pontos)
+
+input group "=== Configurações Avançadas ==="
+input bool   UseVolumeProfile = true;      // Usar Volume Profile
+input bool   UseOrderFlow     = true;      // Usar Order Flow
+input bool   UseMarketProfile = true;      // Usar Market Profile
+input bool   UseInstitutional = true;      // Usar Análise Institucional
+
+//+------------------------------------------------------------------+
+//| Estruturas Principais                                             |
+//+------------------------------------------------------------------+
+struct MarketData {
+    // Preços
+    double open;
+    double high;
+    double low;
+    double close;
+    
+    // Volume
+    double volume;
+    double volumeMA;
+    double volumeDelta;
+    
+    // Tendência
+    double trend;
+    double momentum;
+    double volatility;
+    
+    // Market Profile
+    double valueAreaHigh;
+    double valueAreaLow;
+    double poc;              // Point of Control
+    
+    // Order Flow
+    double buyingPressure;
+    double sellingPressure;
+    double deltaFlow;
+    
+    // Estado
+    ENUM_MARKET_CONDITION condition;
+    bool isValid;
+    datetime lastUpdate;
+};
+
+struct TradeSetup {
+    ENUM_TRADE_SIGNAL signal;
+    double entry;
+    double stopLoss;
+    double takeProfit;
+    double volume;
+    double risk;
+    double reward;
+    double confidence;
+    string reason;
+    bool isValid;
+};
+
+//+------------------------------------------------------------------+
+//| Variáveis Globais                                                 |
+//+------------------------------------------------------------------+
+CTrade         trade;                  // Objeto de trading
+MarketData     marketData;             // Dados de mercado
+TradeSetup     setup;                  // Setup atual
+int            maHandle;               // Handle da Média Móvel
+int            volumeHandle;           // Handle do Volume
+int            atrHandle;              // Handle do ATR
+double         maBuffer[];             // Buffer da Média Móvel
+double         volumeBuffer[];         // Buffer do Volume
+double         atrBuffer[];            // Buffer do ATR

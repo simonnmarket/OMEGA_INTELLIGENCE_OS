@@ -1,0 +1,163 @@
+//+------------------------------------------------------------------+
+//| PVSRA (Price Volume Support Resistance Analysis) - Parte 1         |
+//|                                                                    |
+//| OBJETIVO: Implementar análise PVSRA com:                          |
+//| - Análise de Preço                                                |
+//| - Análise de Volume                                               |
+//| - Suporte e Resistência Dinâmicos                                 |
+//| - Integração com Sistema Base                                     |
+//+------------------------------------------------------------------+
+
+class CPVSRAAnalysis : public IVolumeSubCategory {
+private:
+    // Estruturas Core
+    struct PVSRAData {
+        // Dados de Preço
+        struct Price {
+            double open;
+            double high;
+            double low;
+            double close;
+            double average;
+            double range;
+            bool isUptrend;
+        } price;
+        
+        // Dados de Volume
+        struct Volume {
+            double current;
+            double average;
+            double delta;
+            double spike;
+            bool isHighVolume;
+            bool isClimactic;
+        } volume;
+        
+        // Níveis S/R
+        struct Levels {
+            double support;
+            double resistance;
+            double dynamicSupport;
+            double dynamicResistance;
+            double valueArea;
+            bool isBreakout;
+        } levels;
+        
+        // Estado do Mercado
+        struct State {
+            ENUM_TRADE_SIGNAL direction;
+            double strength;
+            double confidence;
+            bool isValid;
+            datetime lastUpdate;
+        } state;
+    } m_data;
+    
+    // Configurações
+    struct Config {
+        int volumePeriod;
+        double spikeThreshold;
+        int srPeriod;
+        double breakoutThreshold;
+        bool useAdaptiveThresholds;
+        bool useDynamicLevels;
+    } m_config;
+    
+    // Componentes
+    CTechnologyManager* m_techManager;
+    CArrayObj* m_signals;
+    
+public:
+    CPVSRAAnalysis(CTechnologyManager* techManager)
+        : m_techManager(techManager) {
+        Initialize();
+    }
+    
+    ~CPVSRAAnalysis() {
+        Cleanup();
+    }
+    
+    virtual bool Initialize() override {
+        if(!ValidateComponents()) return false;
+        
+        // Configurar parâmetros
+        ConfigureDefaults();
+        
+        // Inicializar buffers
+        InitializeBuffers();
+        
+        // Configurar time responsável
+        AssignResponsibleTeam();
+        
+        return true;
+    }
+    
+    virtual void Update() override {
+        try {
+            // 1. Atualizar dados
+            UpdatePVSRAData();
+            
+            // 2. Análise
+            PerformPVSRAAnalysis();
+            
+            // 3. Gerar sinais
+            GenerateSignals();
+            
+            // 4. Otimização
+            OptimizeState();
+            
+        } catch(const int error) {
+            HandleError(error);
+        }
+    }
+
+private:
+    void UpdatePVSRAData() {
+        // Atualizar preços
+        m_data.price.open = iOpen(_Symbol, PERIOD_CURRENT, 0);
+        m_data.price.high = iHigh(_Symbol, PERIOD_CURRENT, 0);
+        m_data.price.low = iLow(_Symbol, PERIOD_CURRENT, 0);
+        m_data.price.close = iClose(_Symbol, PERIOD_CURRENT, 0);
+        
+        // Calcular médias
+        m_data.price.average = CalculatePriceAverage();
+        m_data.price.range = m_data.price.high - m_data.price.low;
+        m_data.price.isUptrend = DetermineTrend();
+        
+        // Atualizar volume
+        UpdateVolumeData();
+        
+        // Atualizar níveis
+        UpdateSRLevels();
+        
+        // Validar estado
+        ValidateMarketState();
+    }
+    
+    void UpdateVolumeData() {
+        m_data.volume.current = iVolume(_Symbol, PERIOD_CURRENT, 0);
+        m_data.volume.average = CalculateVolumeMA();
+        m_data.volume.delta = CalculateVolumeDelta();
+        m_data.volume.spike = DetectVolumeSpikes();
+        m_data.volume.isHighVolume = IsHighVolume();
+        m_data.volume.isClimactic = IsClimacticVolume();
+    }
+    
+    void UpdateSRLevels() {
+        // Níveis estáticos
+        m_data.levels.support = CalculateSupportLevel();
+        m_data.levels.resistance = CalculateResistanceLevel();
+        
+        // Níveis dinâmicos
+        if(m_config.useDynamicLevels) {
+            m_data.levels.dynamicSupport = CalculateDynamicSupport();
+            m_data.levels.dynamicResistance = CalculateDynamicResistance();
+        }
+        
+        // Área de valor
+        m_data.levels.valueArea = CalculateValueArea();
+        m_data.levels.isBreakout = DetectBreakout();
+    }
+    
+    // ... continuação na próxima parte
+};

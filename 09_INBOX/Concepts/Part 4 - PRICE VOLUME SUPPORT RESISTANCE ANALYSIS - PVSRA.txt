@@ -1,0 +1,161 @@
+//+------------------------------------------------------------------+
+//| PVSRA (Price Volume Support Resistance Analysis) - Parte 4         |
+//|                                                                    |
+//| OBJETIVO: Implementar análise avançada de padrões PVSRA com:      |
+//| - Reconhecimento de Padrões                                       |
+//| - Machine Learning                                                |
+//| - Análise Estatística                                            |
+//| - Previsão de Movimentos                                         |
+//+------------------------------------------------------------------+
+
+private:
+    // Estruturas de Análise Avançada
+    struct PVSRAPatterns {
+        // Padrões de Volume
+        struct VolumePatterns {
+            bool isChurn;           // Volume alto sem movimento de preço
+            bool isClimax;         // Volume extremamente alto
+            bool isExhaustion;     // Volume decrescente
+            bool isAccumulation;   // Volume crescente em suporte
+            bool isDistribution;   // Volume crescente em resistência
+            double strength;       // Força do padrão
+        } volume;
+        
+        // Padrões de Preço
+        struct PricePatterns {
+            bool isBreakout;       // Rompimento de nível
+            bool isFakeout;        // Falso rompimento
+            bool isReversal;       // Reversão de tendência
+            bool isConsoldiation;  // Consolidação
+            double reliability;    // Confiabilidade do padrão
+        } price;
+        
+        // Machine Learning
+        struct MLMetrics {
+            double prediction;     // Previsão de direção
+            double probability;    // Probabilidade da previsão
+            double confidence;     // Confiança do modelo
+            datetime lastUpdate;   // Última atualização
+        } ml;
+    } m_patterns;
+    
+    // Análise de Padrões
+    void AnalyzePVSRAPatterns() {
+        if(!ValidateDataForPatternAnalysis()) return;
+        
+        // 1. Análise de Padrões de Volume
+        AnalyzeVolumePatterns();
+        
+        // 2. Análise de Padrões de Preço
+        AnalyzePricePatterns();
+        
+        // 3. Análise ML
+        if(m_config.useML) {
+            PerformMLAnalysis();
+        }
+        
+        // 4. Validação Cruzada
+        ValidatePatterns();
+    }
+    
+    void AnalyzeVolumePatterns() {
+        // Detectar Churn
+        m_patterns.volume.isChurn = DetectChurnVolume();
+        
+        // Detectar Climax
+        m_patterns.volume.isClimax = DetectClimaxVolume();
+        
+        // Detectar Exaustão
+        m_patterns.volume.isExhaustion = DetectExhaustionVolume();
+        
+        // Detectar Acumulação/Distribuição
+        DetectAccumulationDistribution();
+        
+        // Calcular força do padrão
+        m_patterns.volume.strength = CalculatePatternStrength();
+    }
+    
+    bool DetectChurnVolume() {
+        double volumeRatio = m_data.volume.current / m_data.volume.average;
+        double priceRange = m_data.price.range / m_data.price.average;
+        
+        return (volumeRatio > 1.5 && priceRange < 0.3);
+    }
+    
+    bool DetectClimaxVolume() {
+        if(m_data.volume.current < m_data.volume.average * 2) return false;
+        
+        // Verificar máximos anteriores
+        double maxVolume = 0;
+        for(int i = 1; i < 20; i++) {
+            maxVolume = MathMax(maxVolume, iVolume(_Symbol, PERIOD_CURRENT, i));
+        }
+        
+        return m_data.volume.current > maxVolume;
+    }
+    
+    void DetectAccumulationDistribution() {
+        double volumeTrend = CalculateVolumeTrend();
+        double pricePosition = CalculatePricePosition();
+        
+        m_patterns.volume.isAccumulation = (volumeTrend > 0 && pricePosition < 0.3);
+        m_patterns.volume.isDistribution = (volumeTrend > 0 && pricePosition > 0.7);
+    }
+    
+    void PerformMLAnalysis() {
+        // Preparar dados
+        double features[];
+        PrepareMLFeatures(features);
+        
+        // Executar previsão
+        m_patterns.ml.prediction = PredictNextMove(features);
+        m_patterns.ml.probability = CalculatePredictionProbability();
+        m_patterns.ml.confidence = ValidatePrediction();
+        m_patterns.ml.lastUpdate = TimeCurrent();
+        
+        // Integrar com TechnologyAdvances
+        UpdateMLMetrics();
+    }
+    
+    void PrepareMLFeatures(double &features[]) {
+        ArrayResize(features, 10);
+        
+        features[0] = m_data.volume.spike;
+        features[1] = m_data.volume.delta;
+        features[2] = m_data.price.range;
+        features[3] = CalculateRSI();
+        features[4] = CalculateMomentum();
+        features[5] = m_patterns.volume.strength;
+        features[6] = m_data.levels.isBreakout ? 1 : 0;
+        features[7] = m_data.price.isUptrend ? 1 : 0;
+        features[8] = CalculateVolatility();
+        features[9] = CalculateMarketEfficiency();
+    }
+    
+    double PredictNextMove(const double &features[]) {
+        // Integração com modelo ML
+        MLPrediction prediction;
+        prediction.features = features;
+        prediction.timestamp = TimeCurrent();
+        
+        return m_techManager.GetMLPrediction(prediction);
+    }
+    
+    void ValidatePatterns() {
+        // Validação estatística
+        double confidence = 0;
+        
+        confidence += ValidateVolumePattern() * 0.4;
+        confidence += ValidatePricePattern() * 0.3;
+        confidence += ValidateMLPrediction() * 0.3;
+        
+        // Atualizar métricas
+        PatternMetrics metrics;
+        metrics.confidence = confidence;
+        metrics.volumeStrength = m_patterns.volume.strength;
+        metrics.priceReliability = m_patterns.price.reliability;
+        metrics.mlProbability = m_patterns.ml.probability;
+        
+        m_techManager.UpdatePatternMetrics(metrics);
+    }
+};

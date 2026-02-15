@@ -1,0 +1,24 @@
+
+The fractal indicator is a market reversal indicator used in technical analysis. The fractal pattern is composed of five candlesticks that reveal a “V” or “U” shape (with a bearish fractal pattern, the “V” or “U” would appear inverted, upside down) formed by the price action movement of a security.
+
+The Fractal Indicator works by identifying specific patterns in price movements that signify potential trend reversals. It does this by looking for sequences of five consecutive bars, where the middle bar has the highest high or the lowest low compared to the two bars on either side
+
+The idea of this trading strategy suggests filtering the fractal indicator signals using a ZIgZag indicator. ZigZag is an indicator that connects the most significant highs and lows with straight lines, forming a broken line.
+
+The Mandelbrot set is widely considered the most popular fractal, and has been referenced several times in popular culture.
+
+How is Bill Williams' fractal indicator used? The fractal indicator looks for possible reversals in the market. Fractal formations occur where there are five consecutive candles and the middle candle (the third) is either the highest high or the lowest low.
+
+
+https://www.litefinance.org/blog/for-beginners/best-technical-indicators/fractal-trading/#:~:text=Fractal%20Reversal%20Patterns,lines%2C%20forming%20a%20broken%20line.
+
+
+https://www.bajajbroking.in/blog/fractal-indicator-meaning
+
+https://fbs.eu/en/analytics/guidebooks/fractals-251
+
+
+
+
+Aprenda lucrar utilizando o Fractal no Day Trade!
+https://www.youtube.com/watch?v=Gz9YDM_vrcQ&ab_channel=RaioXPreditivo

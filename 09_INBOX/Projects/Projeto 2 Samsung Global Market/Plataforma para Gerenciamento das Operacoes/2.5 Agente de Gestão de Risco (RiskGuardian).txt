@@ -1,0 +1,6 @@
+# backend/agents/riskguardian.py
+class RiskGuardian:
+    def monitor_risk(self, current_positions):
+        """Monitora risco das posições atuais."""
+        total_exposure = sum(pos['risk'] for pos in current_positions)
+        return total_exposure <= 0.02  # Limite de risco: 2%

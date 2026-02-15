@@ -1,0 +1,194 @@
+IMPLEMENTAÇÃO DO SISTEMA SENSORIAL - PARTE 4 OLFATO
+
+//+------------------------------------------------------------------+
+//|                                    QuantumSmellSystem.mqh          |
+//+------------------------------------------------------------------+
+
+class CRiskSmellingSystem : public CAdvancedML {
+private:
+    struct SmellMetrics {
+        double volatilityScent;
+        double riskAversion;
+        double dangerDetection;
+        double opportunityScent;
+        double marketStress;
+        double liquidityAroma;
+        double sentimentFragrance;
+        double trendScent;
+    };
+    
+    struct SmellParameters {
+        int volatilitySensitivity;
+        double riskThreshold;
+        int dangerDetectionPeriod;
+        double opportunityThreshold;
+        int stressWindow;
+        double aromaIntensity;
+        int sentimentDepth;
+        double scentSensitivity;
+    };
+    
+    struct MarketScent {
+        datetime time;
+        double volatilityLevel;
+        double riskLevel;
+        double dangerLevel;
+        double opportunityLevel;
+        double stressLevel;
+        double liquidityLevel;
+        bool isWarning;
+    };
+    
+    SmellMetrics metrics;
+    SmellParameters params;
+    CArrayObj* scentHistory;
+    CVolatilityScanner* volatilityScanner;
+    CRiskDetector* riskDetector;
+    COpportunityFinder* opportunityFinder;
+    CStressAnalyzer* stressAnalyzer;
+    
+public:
+    CRiskSmellingSystem() {
+        scentHistory = new CArrayObj();
+        volatilityScanner = new CVolatilityScanner();
+        riskDetector = new CRiskDetector();
+        opportunityFinder = new COpportunityFinder();
+        stressAnalyzer = new CStressAnalyzer();
+        InitializeParameters();
+    }
+    
+    ~CRiskSmellingSystem() {
+        SafeDelete(scentHistory);
+        SafeDelete(volatilityScanner);
+        SafeDelete(riskDetector);
+        SafeDelete(opportunityFinder);
+        SafeDelete(stressAnalyzer);
+    }
+    
+    bool Initialize() {
+        if(!InitializeComponents()) return false;
+        if(!CalibrateSmellSensors()) return false;
+        if(!ValidateSmellParameters()) return false;
+        
+        return true;
+    }
+    
+    void ProcessMarketSmell() {
+        DetectVolatility();
+        AssessRisk();
+        ScanForDanger();
+        SniffOpportunities();
+        UpdateSmellMetrics();
+    }
+    
+    SmellMetrics GetMetrics() const {
+        return metrics;
+    }
+
+private:
+    void InitializeParameters() {
+        params.volatilitySensitivity = 12;
+        params.riskThreshold = 0.65;
+        params.dangerDetectionPeriod = 10;
+        params.opportunityThreshold = 0.75;
+        params.stressWindow = 30;
+        params.aromaIntensity = 0.8;
+        params.sentimentDepth = 40;
+        params.scentSensitivity = 0.9;
+    }
+    
+    bool InitializeComponents() {
+        if(!volatilityScanner.Initialize(params.volatilitySensitivity)) return false;
+        if(!riskDetector.Initialize(params.riskThreshold)) return false;
+        if(!opportunityFinder.Initialize(params.opportunityThreshold)) return false;
+        if(!stressAnalyzer.Initialize(params.stressWindow)) return false;
+        
+        return true;
+    }
+    
+    void DetectVolatility() {
+        VolatilityData volatility;
+        if(volatilityScanner.ScanCurrentVolatility(volatility)) {
+            metrics.volatilityScent = AnalyzeVolatilityScent(volatility);
+            metrics.marketStress = MeasureMarketStress(volatility);
+        }
+    }
+    
+    void AssessRisk() {
+        RiskData risk;
+        if(riskDetector.DetectCurrentRisk(risk)) {
+            metrics.riskAversion = CalculateRiskLevel(risk);
+            metrics.liquidityAroma = AnalyzeLiquidityScent(risk);
+        }
+    }
+    
+    void ScanForDanger() {
+        DangerData danger;
+        if(riskDetector.ScanForDanger(danger)) {
+            metrics.dangerDetection = AssessDangerLevel(danger);
+            metrics.sentimentFragrance = AnalyzeSentimentScent(danger);
+        }
+    }
+    
+    void SniffOpportunities() {
+        OpportunityData opportunity;
+        if(opportunityFinder.FindCurrentOpportunities(opportunity)) {
+            metrics.opportunityScent = EvaluateOpportunityScent(opportunity);
+            metrics.trendScent = AnalyzeTrendAroma(opportunity);
+        }
+    }
+    
+    double AnalyzeVolatilityScent(const VolatilityData& volatility) {
+        double impliedVolatility = MeasureImpliedVolatility(volatility);
+        double historicalVolatility = MeasureHistoricalVolatility(volatility);
+        double volatilitySkew = CalculateVolatilitySkew(impliedVolatility, historicalVolatility);
+        
+        return NormalizeVolatilityScent(volatilitySkew);
+    }
+    
+    double CalculateRiskLevel(const RiskData& risk) {
+        double systematicRisk = CalculateSystematicRisk(risk);
+        double specificRisk = CalculateSpecificRisk(risk);
+        double correlationRisk = CalculateCorrelationRisk(risk);
+        
+        return NormalizeRiskLevel(systematicRisk, specificRisk, correlationRisk);
+    }
+    
+    double AssessDangerLevel(const DangerData& danger) {
+        double marketThreat = CalculateMarketThreat(danger);
+        double systemicRisk = CalculateSystemicRisk(danger);
+        double contagionRisk = CalculateContagionRisk(danger);
+        
+        return NormalizeDangerLevel(marketThreat, systemicRisk, contagionRisk);
+    }
+    
+    void UpdateSmellMetrics() {
+        ValidateMetrics();
+        NormalizeAllMetrics();
+        UpdateScentHistory();
+        AnalyzeScentPatterns();
+    }
+    
+    bool CalibrateSmellSensors() {
+        return (CalibrateVolatilitySensor() &&
+                CalibrateRiskDetection() &&
+                CalibrateDangerSensing() &&
+                CalibrateOpportunityScent());
+    }
+    
+    template<typename T>
+    void SafeDelete(T* &ptr) {
+        if(ptr != NULL) {
+            delete ptr;
+            ptr = NULL;
+        }
+    }
+};
+
+Esta é a implementação do sistema de "olfato" do Adan, que permite:
+    • Detectar volatilidade do mercado
+    • Avaliar níveis de risco
+    • Identificar perigos potenciais
+    • Encontrar oportunidades
+    • Medir estresse do mercado
+    • Analisar sentimento 

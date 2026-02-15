@@ -1,0 +1,328 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part9.mq5    |
+//+------------------------------------------------------------------+
+
+// Sistema de Banco de Dados e Comunicação
+class CDataManager {
+private:
+    // Estruturas de dados
+    struct DatabaseConfig {
+        string dbName;
+        string host;
+        int port;
+        string user;
+        string password;
+        bool useSSL;
+    };
+    
+    struct CommunicationConfig {
+        bool enableEmail;
+        bool enablePush;
+        bool enableWebhook;
+        string webhookUrl;
+        int retryAttempts;
+        int timeoutMs;
+    };
+    
+    // Tabelas principais
+    struct TradeRecord {
+        long ticket;
+        datetime openTime;
+        datetime closeTime;
+        double openPrice;
+        double closePrice;
+        double lots;
+        double profit;
+        double commission;
+        double swap;
+        string comment;
+    };
+    
+    struct SignalRecord {
+        datetime time;
+        string type;
+        double probability;
+        double entryPrice;
+        double stopLoss;
+        double takeProfit;
+        bool executed;
+    };
+    
+    // Membros privados
+    DatabaseConfig dbConfig;
+    CommunicationConfig commConfig;
+    int dbHandle;
+    bool isConnected;
+    string lastError;
+    
+    // Cache
+    CHashMap<long, TradeRecord*> tradeCache;
+    CQueue<SignalRecord*> signalQueue;
+    
+    // Constantes
+    const int MAX_CACHE_SIZE = 1000;
+    const int MAX_QUEUE_SIZE = 100;
+    const int MAX_RETRY_ATTEMPTS = 3;
+
+public:
+    void Initialize() {
+        LoadConfiguration();
+        InitializeDatabase();
+        SetupCommunication();
+        CreateTables();
+    }
+    
+    bool SaveTrade(const MqlTradeTransaction& trans) {
+        if(!isConnected) return false;
+        
+        TradeRecord* record = new TradeRecord();
+        FillTradeRecord(record, trans);
+        
+        if(SaveToDatabase("trades", record)) {
+            UpdateCache(record);
+            SendNotification(record);
+            return true;
+        }
+        
+        delete record;
+        return false;
+    }
+    
+    bool SaveSignal(const SignalRecord& signal) {
+        if(!isConnected) return false;
+        
+        SignalRecord* record = new SignalRecord();
+        *record = signal;
+        
+        if(SaveToDatabase("signals", record)) {
+            AddToSignalQueue(record);
+            return true;
+        }
+        
+        delete record;
+        return false;
+    }
+    
+    TradeRecord* GetTrade(long ticket) {
+        // Tentar cache primeiro
+        TradeRecord* cached = NULL;
+        if(tradeCache.TryGetValue(ticket, cached)) {
+            return cached;
+        }
+        
+        // Se não estiver em cache, buscar no banco
+        return LoadTradeFromDB(ticket);
+    }
+    
+    string GetLastError() const {
+        return lastError;
+    }
+    
+    void Cleanup() {
+        CloseDatabase();
+        ClearCache();
+    }
+
+private:
+    void LoadConfiguration() {
+        // Configuração do banco de dados
+        dbConfig.dbName = "QuantumDB";
+        dbConfig.host = "localhost";
+        dbConfig.port = 5432;
+        dbConfig.useSSL = true;
+        
+        // Configuração de comunicação
+        commConfig.enableEmail = true;
+        commConfig.enablePush = true;
+        commConfig.enableWebhook = false;
+        commConfig.retryAttempts = 3;
+        commConfig.timeoutMs = 5000;
+    }
+    
+    void InitializeDatabase() {
+        // Implementar inicialização do banco de dados
+        isConnected = true;
+    }
+    
+    void SetupCommunication() {
+        // Configurar canais de comunicação
+    }
+    
+    void CreateTables() {
+        if(!isConnected) return;
+        
+        string queries[] = {
+            // Tabela de trades
+            "CREATE TABLE IF NOT EXISTS trades ("
+            "ticket BIGINT PRIMARY KEY,"
+            "open_time TIMESTAMP,"
+            "close_time TIMESTAMP,"
+            "open_price DOUBLE PRECISION,"
+            "close_price DOUBLE PRECISION,"
+            "lots DOUBLE PRECISION,"
+            "profit DOUBLE PRECISION,"
+            "commission DOUBLE PRECISION,"
+            "swap DOUBLE PRECISION,"
+            "comment TEXT"
+            ")",
+            
+            // Tabela de sinais
+            "CREATE TABLE IF NOT EXISTS signals ("
+            "id SERIAL PRIMARY KEY,"
+            "time TIMESTAMP,"
+            "type VARCHAR(10),"
+            "probability DOUBLE PRECISION,"
+            "entry_price DOUBLE PRECISION,"
+            "stop_loss DOUBLE PRECISION,"
+            "take_profit DOUBLE PRECISION,"
+            "executed BOOLEAN"
+            ")"
+        };
+        
+        for(int i = 0; i < ArraySize(queries); i++) {
+            ExecuteQuery(queries[i]);
+        }
+    }
+    
+    void FillTradeRecord(TradeRecord* record, const MqlTradeTransaction& trans) {
+        record.ticket = trans.order;
+        record.openTime = trans.time;
+        record.closeTime = TimeCurrent();
+        record.openPrice = trans.price;
+        record.closePrice = SymbolInfoDouble(Symbol(), SYMBOL_BID);
+        record.lots = trans.volume;
+        record.profit = trans.profit;
+        record.commission = trans.commission;
+        record.swap = 0; // Atualizar com valor real
+        record.comment = trans.comment;
+    }
+    
+    bool SaveToDatabase(const string& table, void* record) {
+        string query = GenerateInsertQuery(table, record);
+        return ExecuteQuery(query);
+    }
+    
+    void UpdateCache(TradeRecord* record) {
+        // Limpar cache se necessário
+        if(tradeCache.Count() >= MAX_CACHE_SIZE) {
+            ClearOldestCache();
+        }
+        
+        tradeCache.Add(record.ticket, record);
+    }
+    
+    void AddToSignalQueue(SignalRecord* record) {
+        if(signalQueue.Count() >= MAX_QUEUE_SIZE) {
+            SignalRecord* oldest;
+            signalQueue.TryDequeue(oldest);
+            delete oldest;
+        }
+        
+        signalQueue.Enqueue(record);
+    }
+    
+    TradeRecord* LoadTradeFromDB(long ticket) {
+        string query = StringFormat(
+            "SELECT * FROM trades WHERE ticket = %d",
+            ticket
+        );
+        
+        void* result = ExecuteSelect(query);
+        if(result != NULL) {
+            TradeRecord* record = ParseTradeRecord(result);
+            UpdateCache(record);
+            return record;
+        }
+        
+        return NULL;
+    }
+    
+    void SendNotification(const TradeRecord* record) {
+        if(!commConfig.enablePush && !commConfig.enableEmail) return;
+        
+        string message = FormatTradeNotification(record);
+        
+        if(commConfig.enablePush) {
+            SendPushNotification(message);
+        }
+        
+        if(commConfig.enableEmail) {
+            SendEmailNotification(message);
+        }
+        
+        if(commConfig.enableWebhook) {
+            SendWebhookNotification(record);
+        }
+    }
+    
+    string FormatTradeNotification(const TradeRecord* record) {
+        return StringFormat(
+            "Trade #%d closed\nProfit: %.2f\nTime: %s",
+            record.ticket,
+            record.profit,
+            TimeToString(record.closeTime)
+        );
+    }
+    
+    bool ExecuteQuery(const string& query) {
+        for(int attempt = 0; attempt < MAX_RETRY_ATTEMPTS; attempt++) {
+            if(TryExecuteQuery(query)) return true;
+            Sleep(100 * (attempt + 1));
+        }
+        
+        return false;
+    }
+    
+    void ClearOldestCache() {
+        long oldestTicket = 0;
+        datetime oldestTime = TimeCurrent();
+        
+        // Encontrar o registro mais antigo
+        for(int i = 0; i < tradeCache.Count(); i++) {
+            TradeRecord* record = NULL;
+            long ticket = tradeCache.Keys().Get(i);
+            if(tradeCache.TryGetValue(ticket, record)) {
+                if(record.closeTime < oldestTime) {
+                    oldestTime = record.closeTime;
+                    oldestTicket = ticket;
+                }
+            }
+        }
+        
+        // Remover o mais antigo
+        if(oldestTicket != 0) {
+            TradeRecord* record = NULL;
+            if(tradeCache.TryGetValue(oldestTicket, record)) {
+                delete record;
+                tradeCache.Remove(oldestTicket);
+            }
+        }
+    }
+    
+    void CloseDatabase() {
+        if(isConnected) {
+            // Implementar fechamento do banco
+            isConnected = false;
+        }
+    }
+    
+    void ClearCache() {
+        // Limpar trade cache
+        long[] keys = tradeCache.Keys().ToArray();
+        for(int i = 0; i < ArraySize(keys); i++) {
+            TradeRecord* record = NULL;
+            if(tradeCache.TryGetValue(keys[i], record)) {
+                delete record;
+            }
+        }
+        tradeCache.Clear();
+        
+        // Limpar fila de sinais
+        while(!signalQueue.IsEmpty()) {
+            SignalRecord* record;
+            if(signalQueue.TryDequeue(record)) {
+                delete record;
+            }
+        }
+    }
+};

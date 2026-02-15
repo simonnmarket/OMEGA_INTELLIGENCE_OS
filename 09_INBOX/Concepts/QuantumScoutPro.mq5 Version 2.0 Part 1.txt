@@ -1,0 +1,64 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumScoutPro.mq5             |
+//|                                     Version 2.0                      |
+//+------------------------------------------------------------------+
+
+#property copyright "Samsung Global Market"
+#property version   "2.0"
+#property strict
+
+#include <MQL5.mqh>
+#include <Trade\Trade.mqh>
+
+enum ENUM_TRADE_SIGNAL {
+    SIGNAL_NONE,
+    SIGNAL_BUY,
+    SIGNAL_SELL
+};
+
+enum ENUM_MARKET_CONDITION {
+    CONDITION_TRENDING,
+    CONDITION_RANGING,
+    CONDITION_VOLATILE,
+    CONDITION_UNDEFINED
+};
+
+struct MarketData {
+    double open;
+    double high;
+    double low;
+    double close;
+
+    double volume;
+    double volumeMA;
+    double volumeDelta;
+
+    double trend;
+    double momentum;
+    double volatility;
+
+    double valueAreaHigh;
+    double valueAreaLow;
+    double poc;
+
+    double buyingPressure;
+    double sellingPressure;
+    double deltaFlow;
+
+    ENUM_MARKET_CONDITION condition;
+    bool isValid;
+    datetime lastUpdate;
+};
+
+struct TradeSetup {
+    ENUM_TRADE_SIGNAL signal;
+    double entry;
+    double stopLoss;
+    double takeProfit;
+    double volume;
+    double risk;
+    double reward;
+    double confidence;
+    string reason;
+    bool isValid;
+};

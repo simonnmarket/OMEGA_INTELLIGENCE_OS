@@ -1,0 +1,279 @@
+//+------------------------------------------------------------------+
+//| Sistema de Inicialização e Configuração Global                     |
+//+------------------------------------------------------------------+
+
+// Arquivo: QuantumSystemGlobal.mqh
+
+#property copyright "Quantum Trading Systems"
+#property version   "2.1"
+#property strict
+
+// Includes necessários
+#include "QuantumMasterController.mqh"
+#include "QuantumLogger.mqh"
+#include "QuantumValidator.mqh"
+
+// Configurações globais
+struct GlobalConfiguration {
+    // Parâmetros do sistema
+    string SystemName;
+    string Version;
+    string Author;
+    datetime BuildDate;
+    
+    // Configurações de performance
+    int ThreadCount;
+    double MemoryLimit;
+    int MaxCycles;
+    int UpdateInterval;
+    
+    // Limites e thresholds
+    double MinStability;
+    double MinCoherence;
+    double MaxLatency;
+    double ErrorThreshold;
+    
+    // Flags de controle
+    bool EnableLogging;
+    bool EnableDebug;
+    bool EnableOptimization;
+    bool EnableAutoRecovery;
+};
+
+// Classe de inicialização global
+class CQuantumSystemInitializer {
+private:
+    GlobalConfiguration m_config;
+    CQuantumMasterController* m_controller;
+    bool m_is_initialized;
+    
+    // Constantes
+    const string CONFIG_FILE = "quantum_config.json";
+    const int MIN_THREAD_COUNT = 2;
+    const double DEFAULT_MEMORY_LIMIT = 1024.0; // MB
+
+public:
+    CQuantumSystemInitializer() : m_controller(NULL), m_is_initialized(false) {
+        InitializeDefaultConfig();
+    }
+
+    ~CQuantumSystemInitializer() {
+        Shutdown();
+    }
+
+    bool Initialize() {
+        if(m_is_initialized) return true;
+        
+        // Carregar configurações
+        if(!LoadConfiguration()) {
+            Print("Erro ao carregar configurações");
+            return false;
+        }
+        
+        // Validar ambiente
+        if(!ValidateEnvironment()) {
+            Print("Ambiente não atende aos requisitos mínimos");
+            return false;
+        }
+        
+        // Inicializar controller principal
+        m_controller = new CQuantumMasterController();
+        if(!m_controller || !m_controller.Initialize()) {
+            Print("Erro ao inicializar controller principal");
+            return false;
+        }
+        
+        m_is_initialized = true;
+        return true;
+    }
+
+    CQuantumMasterController* GetController() {
+        return m_controller;
+    }
+
+    GlobalConfiguration GetConfiguration() {
+        return m_config;
+    }
+
+private:
+    void InitializeDefaultConfig() {
+        m_config.SystemName = "Quantum Trading System";
+        m_config.Version = "2.1.0";
+        m_config.Author = "Quantum Team";
+        m_config.BuildDate = __DATETIME__;
+        
+        m_config.ThreadCount = (int)MathMax(
+            MIN_THREAD_COUNT,
+            TerminalInfoInteger(TERMINAL_CPU_CORES)
+        );
+        m_config.MemoryLimit = DEFAULT_MEMORY_LIMIT;
+        m_config.MaxCycles = 10000;
+        m_config.UpdateInterval = 100;
+        
+        m_config.MinStability = 0.75;
+        m_config.MinCoherence = 0.80;
+        m_config.MaxLatency = 0.15;
+        m_config.ErrorThreshold = 0.05;
+        
+        m_config.EnableLogging = true;
+        m_config.EnableDebug = false;
+        m_config.EnableOptimization = true;
+        m_config.EnableAutoRecovery = true;
+    }
+
+    bool LoadConfiguration() {
+        if(!FileIsExist(CONFIG_FILE)) {
+            // Criar arquivo de configuração padrão
+            if(!SaveConfiguration()) {
+                return false;
+            }
+            return true;
+        }
+        
+        // Carregar configurações do arquivo
+        int handle = FileOpen(CONFIG_FILE, FILE_READ|FILE_TXT);
+        if(handle == INVALID_HANDLE) {
+            Print("Erro ao abrir arquivo de configuração: ", GetLastError());
+            return false;
+        }
+        
+        string json = FileReadString(handle);
+        FileClose(handle);
+        
+        if(!ParseConfiguration(json)) {
+            Print("Erro ao parsear configurações");
+            return false;
+        }
+        
+        return true;
+    }
+
+    bool SaveConfiguration() {
+        string json = GenerateConfigurationJson();
+        
+        int handle = FileOpen(CONFIG_FILE, FILE_WRITE|FILE_TXT);
+        if(handle == INVALID_HANDLE) {
+            Print("Erro ao criar arquivo de configuração: ", GetLastError());
+            return false;
+        }
+        
+        FileWriteString(handle, json);
+        FileClose(handle);
+        
+        return true;
+    }
+
+    string GenerateConfigurationJson() {
+        return StringFormat(
+            "{\n" +
+            "    \"SystemName\": \"%s\",\n" +
+            "    \"Version\": \"%s\",\n" +
+            "    \"Author\": \"%s\",\n" +
+            "    \"BuildDate\": \"%s\",\n" +
+            "    \"ThreadCount\": %d,\n" +
+            "    \"MemoryLimit\": %.2f,\n" +
+            "    \"MaxCycles\": %d,\n" +
+            "    \"UpdateInterval\": %d,\n" +
+            "    \"MinStability\": %.2f,\n" +
+            "    \"MinCoherence\": %.2f,\n" +
+            "    \"MaxLatency\": %.2f,\n" +
+            "    \"ErrorThreshold\": %.2f,\n" +
+            "    \"EnableLogging\": %s,\n" +
+            "    \"EnableDebug\": %s,\n" +
+            "    \"EnableOptimization\": %s,\n" +
+            "    \"EnableAutoRecovery\": %s\n" +
+            "}",
+            m_config.SystemName,
+            m_config.Version,
+            m_config.Author,
+            TimeToString(m_config.BuildDate),
+            m_config.ThreadCount,
+            m_config.MemoryLimit,
+            m_config.MaxCycles,
+            m_config.UpdateInterval,
+            m_config.MinStability,
+            m_config.MinCoherence,
+            m_config.MaxLatency,
+            m_config.ErrorThreshold,
+            m_config.EnableLogging ? "true" : "false",
+            m_config.EnableDebug ? "true" : "false",
+            m_config.EnableOptimization ? "true" : "false",
+            m_config.EnableAutoRecovery ? "true" : "false"
+        );
+    }
+
+    bool ParseConfiguration(string json) {
+        // Implementar parser JSON
+        // Por simplicidade, usando valores padrão por enquanto
+        return true;
+    }
+
+    bool ValidateEnvironment() {
+        // Verificar memória disponível
+        double available_memory = TerminalInfoInteger(TERMINAL_MEMORY_AVAILABLE) / 1048576.0;
+        if(available_memory < m_config.MemoryLimit) {
+            Print("Memória insuficiente disponível");
+            return false;
+        }
+        
+        // Verificar número de cores
+        int cpu_cores = (int)TerminalInfoInteger(TERMINAL_CPU_CORES);
+        if(cpu_cores < MIN_THREAD_COUNT) {
+            Print("Número insuficiente de cores de CPU");
+            return false;
+        }
+        
+        // Verificar permissões
+        if(!TerminalInfoInteger(TERMINAL_TRADE_ALLOWED)) {
+            Print("Trading não permitido");
+            return false;
+        }
+        
+        return true;
+    }
+
+    void Shutdown() {
+        if(m_controller != NULL) {
+            delete m_controller;
+            m_controller = NULL;
+        }
+        m_is_initialized = false;
+    }
+};
+
+// Variável global do inicializador
+CQuantumSystemInitializer* GlobalInitializer = NULL;
+
+//+------------------------------------------------------------------+
+//| Funções globais de inicialização                                  |
+//+------------------------------------------------------------------+
+
+// Função de inicialização principal
+int OnInit() {
+    GlobalInitializer = new CQuantumSystemInitializer();
+    
+    if(!GlobalInitializer || !GlobalInitializer.Initialize()) {
+        Print("Erro fatal na inicialização do sistema");
+        return INIT_FAILED;
+    }
+    
+    return INIT_SUCCEEDED;
+}
+
+// Função de desinicialização
+void OnDeinit(const int reason) {
+    if(GlobalInitializer != NULL) {
+        delete GlobalInitializer;
+        GlobalInitializer = NULL;
+    }
+}
+
+// Função de processamento de ticks
+void OnTick() {
+    if(GlobalInitializer != NULL) {
+        CQuantumMasterController* controller = GlobalInitializer.GetController();
+        if(controller != NULL) {
+            controller.ProcessCycle();
+        }
+    }
+}

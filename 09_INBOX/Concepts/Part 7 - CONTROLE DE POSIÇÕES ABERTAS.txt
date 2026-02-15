@@ -1,0 +1,34 @@
+// Verificação de break even
+void CheckBreakEven() {
+    if(!UseBreakEven || !PositionSelect(_Symbol)) return;
+
+    double openPrice = PositionGetDouble(POSITION_PRICE_OPEN);
+    double currentPrice = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+    double stopLoss = PositionGetDouble(POSITION_SL);
+
+    if(setup.signal == SIGNAL_BUY && currentPrice - openPrice > BreakEvenPoints * _Point) {
+        if(trade.PositionModify(_Symbol, openPrice, PositionGetDouble(POSITION_TP))) {
+            Log("Break even ativado para compra.");
+        }
+    } else if(setup.signal == SIGNAL_SELL && openPrice - currentPrice > BreakEvenPoints * _Point) {
+        if(trade.PositionModify(_Symbol, openPrice, PositionGetDouble(POSITION_TP))) {
+            Log("Break even ativado para venda.");
+        }
+    }
+}
+
+// Atualização de stops dinâmicos
+void UpdateStops() {
+    if(!PositionSelect(_Symbol)) return;
+
+    double currentPrice = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+    double trailingDistance = TrailingStopPoints * _Point;
+
+    if(setup.signal == SIGNAL_BUY && currentPrice - PositionGetDouble(POSITION_PRICE_OPEN) > trailingDistance) {
+        double newStopLoss = currentPrice - trailingDistance;
+        trade.PositionModify(_Symbol, newStopLoss, PositionGetDouble(POSITION_TP));
+    } else if(setup.signal == SIGNAL_SELL && PositionGetDouble(POSITION_PRICE_OPEN) - currentPrice > trailingDistance) {
+        double newStopLoss = currentPrice + trailingDistance;
+        trade.PositionModify(_Symbol, newStopLoss, PositionGetDouble(POSITION_TP));
+    }
+}

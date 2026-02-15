@@ -1,0 +1,426 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumVolumeAnalyzer.mqh       |
+//|                                    Version 1.0                      |
+//+------------------------------------------------------------------+
+
+class CQuantumVolumeAnalyzer {
+private:
+    struct VolumeMetrics {
+        double currentVolume;
+        double averageVolume;
+        double relativeVolume;
+        double volumeChange;
+        double priceSpread;
+        double volumeForce;
+        bool isClimax;
+        bool isChurn;
+    };
+    
+    struct PriceVolume {
+        double price;
+        double volume;
+        double spread;
+        datetime time;
+        bool isUp;
+        bool isDown;
+        double delta;
+    };
+    
+    struct VolumeProfile {
+        double pocPrice;
+        double valueAreaHigh;
+        double valueAreaLow;
+        double volumeWeightedPrice;
+        int volumeNodes[];
+        double priceNodes[];
+    };
+    
+    VolumeMetrics metrics;
+    VolumeProfile profile;
+    CArrayObj* priceVolume;
+    
+public:
+    CQuantumVolumeAnalyzer() {
+        priceVolume = new CArrayObj();
+        InitializeAnalyzer();
+    }
+    
+    bool Initialize() {
+        if(!ValidateData()) return false;
+        if(!InitializeBuffers()) return false;
+        
+        return true;
+    }
+    
+    void UpdateVolume() {
+        CalculateMetrics();
+        UpdateProfile();
+        AnalyzeVolumePatterns();
+        DetectAnomalies();
+    }
+    
+    bool IsVolumeSignificant() {
+        return ValidateVolumeSignal();
+    }
+
+private:
+    void CalculateMetrics() {
+        metrics.currentVolume = GetCurrentVolume();
+        metrics.averageVolume = CalculateAverageVolume(20);
+        metrics.relativeVolume = metrics.currentVolume / metrics.averageVolume;
+        metrics.volumeChange = CalculateVolumeChange();
+        metrics.priceSpread = CalculatePriceSpread();
+        metrics.volumeForce = CalculateVolumeForce();
+        
+        DetectClimaxConditions();
+        DetectChurnConditions();
+    }
+    
+    void UpdateProfile() {
+        CalculatePOC();
+        CalculateValueArea();
+        UpdateVolumeNodes();
+        CalculateVWAP();
+    }
+    
+    bool ValidateVolumeSignal() {
+        if(metrics.relativeVolume < 1.0) return false;
+        if(metrics.volumeForce < 0.5) return false;
+        if(!ValidatePriceAction()) return false;
+        
+        return true;
+    }
+};
+
+class CVolumePatternAnalyzer {
+private:
+    struct PatternMetrics {
+        bool isAccumulation;
+        bool isDistribution;
+        bool isBreakout;
+        bool isExhaustion;
+        double patternStrength;
+    };
+    
+    PatternMetrics patterns;
+    
+public:
+    void AnalyzePatterns(const VolumeMetrics& metrics) {
+        patterns.isAccumulation = DetectAccumulation(metrics);
+        patterns.isDistribution = DetectDistribution(metrics);
+        patterns.isBreakout = DetectBreakout(metrics);
+        patterns.isExhaustion = DetectExhaustion(metrics);
+        
+        CalculatePatternStrength();
+    }
+    
+    bool IsValidPattern() {
+        return ValidatePattern();
+    }
+};
+
+class CVolumeSignalGenerator {
+private:
+    struct VolumeSignal {
+        ENUM_SIGNAL_TYPE type;
+        double confidence;
+        double entryPrice;
+        double stopLoss;
+        double target;
+        datetime signalTime;
+    };
+    
+    CArrayObj* signals;
+    
+public:
+    bool GenerateSignal(const VolumeMetrics& metrics, const PatternMetrics& patterns) {
+        if(!ValidateConditions(metrics, patterns)) return false;
+        
+        VolumeSignal* signal = CreateSignal(metrics, patterns);
+        return signals.Add(signal);
+    }
+    
+    VolumeSignal* GetLatestSignal() {
+        return signals.At(signals.Total() - 1);
+    }
+};
+
+class CVolumeStatisticalAnalyzer {
+private:
+    struct VolumeStats {
+        double correlation;
+        double standardDev;
+        double zscore;
+        double momentum;
+        double efficiency;
+    };
+    
+    VolumeStats stats;
+    
+public:
+    void AnalyzeStatistics(const double& volume[], const double& price[]) {
+        CalculateCorrelation(volume, price);
+        CalculateVolatility(volume);
+        CalculateMomentum(volume);
+        CalculateEfficiency(volume, price);
+    }
+    
+    bool IsStatisticallyValid() {
+        return ValidateStatistics();
+    }
+};
+
+class CVolumeFilterManager {
+private:
+    struct FilterConfig {
+        double minVolumeRatio;
+        double minConfidence;
+        double maxSpread;
+        int minSequence;
+    };
+    
+    FilterConfig config;
+    
+public:
+    bool ApplyFilters(const VolumeMetrics& metrics) {
+        if(!CheckVolumeRatio(metrics)) return false;
+        if(!CheckConfidence(metrics)) return false;
+        if(!CheckSpread(metrics)) return false;
+        if(!CheckSequence(metrics)) return false;
+        
+        return true;
+    }
+    
+    void UpdateFilters(const double& performance) {
+        OptimizeFilters(performance);
+    }
+};
+
+class CVolumeVisualizer {
+private:
+    struct VisualConfig {
+        color volumeColor;
+        color signalColor;
+        int thickness;
+        ENUM_LINE_STYLE style;
+    };
+    
+    VisualConfig config;
+    
+public:
+    void DrawVolumeProfile(const VolumeProfile& profile) {
+        DrawPOC(profile);
+        DrawValueArea(profile);
+        DrawVolumeNodes(profile);
+    }
+    
+    void ShowVolumeSignals(const VolumeSignal& signal) {
+        DrawSignal(signal);
+        ShowAlert(signal);
+    }
+};
+//+------------------------------------------------------------------+
+//|                                    QuantumVolumeAnalyzer.mqh       |
+//|                                    Continuation                     |
+//+------------------------------------------------------------------+
+
+class CVolumeDataCollector {
+private:
+    struct VolumeData {
+        datetime time;
+        double price;
+        double volume;
+        double delta;
+        bool buyerInitiated;
+        double cumDelta;
+    };
+    
+    struct DataBuffer {
+        double priceBuffer[];
+        double volumeBuffer[];
+        double deltaBuffer[];
+        int bufferSize;
+    };
+    
+    VolumeData* currentData;
+    DataBuffer buffer;
+    
+public:
+    bool CollectData() {
+        if(!UpdateBuffers()) return false;
+        
+        ProcessVolumeData();
+        CalculateDelta();
+        UpdateCumulativeDelta();
+        
+        return true;
+    }
+    
+    VolumeData* GetCurrentData() {
+        return currentData;
+    }
+
+private:
+    void ProcessVolumeData() {
+        currentData = new VolumeData;
+        currentData.time = TimeCurrent();
+        currentData.price = SymbolInfoDouble(_Symbol, SYMBOL_LAST);
+        currentData.volume = GetRealVolume();
+        
+        DetermineInitiator();
+    }
+    
+    void DetermineInitiator() {
+        double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+        double ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+        
+        currentData.buyerInitiated = (currentData.price >= ask);
+    }
+};
+
+class CVolumeProfileBuilder {
+private:
+    struct ProfileData {
+        double priceLevel;
+        double volumeAtPrice;
+        int transactions;
+        bool isValueArea;
+    };
+    
+    CArrayObj* profileLevels;
+    
+public:
+    void BuildProfile(const VolumeData& data) {
+        UpdatePriceLevels(data);
+        CalculateValueArea();
+        IdentifyPOC();
+        BuildVolumeNodes();
+    }
+    
+    void OptimizeProfile() {
+        MergeLowVolumeLevels();
+        SmoothProfile();
+        ValidateProfile();
+    }
+};
+
+class CVolumeDeltaAnalyzer {
+private:
+    struct DeltaMetrics {
+        double currentDelta;
+        double deltaMean;
+        double deltaStdDev;
+        double deltaStrength;
+        bool isDeltaDiverging;
+    };
+    
+    DeltaMetrics metrics;
+    
+public:
+    void AnalyzeDelta(const VolumeData& data) {
+        CalculateDeltaMetrics(data);
+        AssessDeltaStrength();
+        CheckDeltaDivergence();
+    }
+    
+    bool IsDeltaSignificant() {
+        return ValidateDelta();
+    }
+};
+
+class CVolumeMarketStructure {
+private:
+    struct StructurePoints {
+        double[] supportLevels;
+        double[] resistanceLevels;
+        double[] volumeNodes;
+        bool isAccumulating;
+    };
+    
+    StructurePoints structure;
+    
+public:
+    void AnalyzeStructure(const VolumeProfile& profile) {
+        IdentifyKeyLevels(profile);
+        AssessAccumulation();
+        MapVolumeNodes();
+    }
+    
+    bool IsStructureValid() {
+        return ValidateStructure();
+    }
+};
+
+class CVolumeEfficiencyRatio {
+private:
+    struct EfficiencyData {
+        double ratio;
+        double threshold;
+        int period;
+        bool isEfficient;
+    };
+    
+    EfficiencyData efficiency;
+    
+public:
+    void CalculateEfficiency(const double& price[], const double& volume[]) {
+        efficiency.ratio = CalculateRatio(price, volume);
+        efficiency.isEfficient = (efficiency.ratio > efficiency.threshold);
+    }
+    
+    double GetEfficiencyRatio() {
+        return efficiency.ratio;
+    }
+};
+
+class CVolumeQualityAnalyzer {
+private:
+    struct QualityMetrics {
+        double spread;
+        double liquidity;
+        double consistency;
+        bool isQualityVolume;
+    };
+    
+    QualityMetrics quality;
+    
+public:
+    void AnalyzeQuality(const VolumeData& data) {
+        AssessSpread(data);
+        MeasureLiquidity(data);
+        CheckConsistency(data);
+        
+        quality.isQualityVolume = ValidateQuality();
+    }
+    
+    bool IsQualityVolume() {
+        return quality.isQualityVolume;
+    }
+};
+
+class CVolumeAlertManager {
+private:
+    struct AlertConfig {
+        bool enableSound;
+        bool enableEmail;
+        bool enablePush;
+        int minimumInterval;
+    };
+    
+    AlertConfig config;
+    
+public:
+    void GenerateAlert(const VolumeSignal& signal) {
+        if(!ValidateAlertConditions(signal)) return;
+        
+        if(config.enableSound) PlaySound("alert.wav");
+        if(config.enableEmail) SendEmail(FormatAlert(signal));
+        if(config.enablePush) SendNotification(FormatAlert(signal));
+    }
+    
+    void UpdateAlertConfig(const bool sound, const bool email, const bool push) {
+        config.enableSound = sound;
+        config.enableEmail = email;
+        config.enablePush = push;
+    }
+};

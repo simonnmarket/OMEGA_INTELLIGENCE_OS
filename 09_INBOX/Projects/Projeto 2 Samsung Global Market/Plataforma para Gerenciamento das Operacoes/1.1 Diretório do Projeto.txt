@@ -1,0 +1,23 @@
+samsung_global_market/
+│
+├── backend/           # Código Python para processamento de dados e integração com MT5.
+│   ├── api.py          # Integração com MetaTrader 5 API.
+│   ├── database.py     # Configuração e manipulação do banco de dados.
+│   ├── agents/         # Implementação dos agentes IA.
+│       ├── traderbot.py
+│       ├── analystagent.py
+│       ├── riskguardian.py
+│   ├── utils.py        # Funções auxiliares (logs, validações, etc.).
+│
+├── frontend/          # Interface React/Vue.js para visualização.
+│   ├── App.jsx         # Componente principal do dashboard.
+│   ├── components/     # Componentes reutilizáveis.
+│       ├── Chart.jsx   # Gráficos interativos.
+│       ├── Reports.jsx # Relatórios dinâmicos.
+│
+├── tests/             # Testes automatizados para validação.
+│   ├── test_api.py     # Testes para integração com MT5.
+│   ├── test_agents.py  # Testes para os agentes IA.
+│
+├── requirements.txt   # Dependências do projeto.
+└── README.md          # Documentação inicial.

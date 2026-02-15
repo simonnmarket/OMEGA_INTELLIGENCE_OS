@@ -1,0 +1,7 @@
+# Instalação do PostgreSQL
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+
+# Criar banco de dados
+createdb samsung_global_market
+psql -U postgres -f backend/database.sql

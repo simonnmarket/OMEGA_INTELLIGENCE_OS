@@ -1,0 +1,95 @@
+// Localização: Novo componente
+// Problema: Falta de métricas detalhadas em tempo real
+// Solução: Implementar sistema de métricas avançado
+
+class CQuantumMetrics {
+private:
+    struct MetricPoint {
+        datetime timestamp;
+        double value;
+        double confidence;
+    };
+
+    struct MetricSeries {
+        string name;
+        CArrayObj points;
+        double current_value;
+        double average;
+        double peak;
+        double valley;
+    };
+
+    CHashMap<string, MetricSeries*> m_metrics;
+    const int MAX_HISTORY_POINTS = 1000;
+
+public:
+    void UpdateMetric(const string &name, double value, double confidence = 1.0) {
+        MetricSeries* series = NULL;
+        
+        if(!m_metrics.TryGetValue(name, series)) {
+            series = new MetricSeries();
+            series.name = name;
+            m_metrics.Add(name, series);
+        }
+        
+        // Adicionar novo ponto
+        MetricPoint* point = new MetricPoint();
+        point.timestamp = TimeCurrent();
+        point.value = value;
+        point.confidence = confidence;
+        
+        series.points.Add(point);
+        series.current_value = value;
+        
+        // Atualizar estatísticas
+        UpdateSeriesStats(series);
+        
+        // Limpar histórico se necessário
+        if(series.points.Total() > MAX_HISTORY_POINTS) {
+            delete series.points.At(0);
+            series.points.Delete(0);
+        }
+    }
+
+    string GetMetricReport(const string &name) {
+        MetricSeries* series = NULL;
+        if(!m_metrics.TryGetValue(name, series)) {
+            return "Métrica não encontrada: " + name;
+        }
+        
+        return StringFormat(
+            "Métrica: %s\n" +
+            "Valor Atual: %.6f\n" +
+            "Média: %.6f\n" +
+            "Pico: %.6f\n" +
+            "Vale: %.6f\n" +
+            "Pontos: %d",
+            series.name,
+            series.current_value,
+            series.average,
+            series.peak,
+            series.valley,
+            series.points.Total()
+        );
+    }
+
+private:
+    void UpdateSeriesStats(MetricSeries* series) {
+        if(series.points.Total() == 0) return;
+        
+        double sum = 0;
+        series.peak = DBL_MIN;
+        series.valley = DBL_MAX;
+        
+        for(int i = 0; i < series.points.Total(); i++) {
+            MetricPoint* point = series.points.At(i);
+            if(point == NULL) continue;
+            
+            sum += point.value;
+            series.peak = MathMax(series.peak, point.value);
+            series.valley = MathMin(series.valley, point.value);
+        }
+        
+        series.average = sum / series.points.Total();
+    }
+};

@@ -1,0 +1,182 @@
+//+------------------------------------------------------------------+
+//| Volume Footprint Chart - Sistema de Monitoramento de Performance   |
+//|                                                                    |
+//| OBJETIVO: Implementar sistema avançado de métricas com:           |
+//| - Cálculo de Drawdown                                             |
+//| - Sharpe Ratio                                                    |
+//| - Métricas de Risco/Retorno                                      |
+//| - Análise Estatística                                             |
+//+------------------------------------------------------------------+
+
+private:
+    struct PerformanceMonitor {
+        // Métricas de Performance
+        struct Metrics {
+            // Métricas de Retorno
+            double totalReturn;        // Retorno total
+            double dailyReturn;        // Retorno diário
+            double monthlyReturn;      // Retorno mensal
+            double annualizedReturn;   // Retorno anualizado
+            
+            // Métricas de Risco
+            double maxDrawdown;        // Drawdown máximo
+            double currentDrawdown;    // Drawdown atual
+            double volatility;         // Volatilidade
+            double sharpeRatio;        // Índice Sharpe
+            double sortinoRatio;       // Índice Sortino
+            
+            // Métricas de Trade
+            int totalTrades;           // Total de trades
+            double winRate;            // Taxa de acerto
+            double profitFactor;       // Fator de lucro
+            double avgTradeReturn;     // Retorno médio por trade
+        } metrics;
+        
+        // Configurações de Análise
+        struct Config {
+            int historyDepth;         // Profundidade histórica
+            double riskFreeRate;      // Taxa livre de risco
+            bool useIntraday;         // Usar dados intraday
+            int updateInterval;       // Intervalo de atualização
+        } config;
+        
+        // Cache de Dados
+        struct Cache {
+            double returns[];         // Array de retornos
+            double drawdowns[];       // Array de drawdowns
+            datetime timestamps[];    // Timestamps
+            int size;                // Tamanho do cache
+        } cache;
+    } m_perfMonitor;
+    
+    double CalculateDrawdown() {
+        double peak = 0.0;
+        double currentDrawdown = 0.0;
+        
+        // Inicializar cache se necessário
+        if(m_perfMonitor.cache.size == 0) {
+            InitializePerformanceCache();
+        }
+        
+        // Calcular drawdown histórico
+        for(int i = OrdersHistoryTotal() - 1; i >= 0; i--) {
+            if(OrderSelect(i, SELECT_BY_POS, MODE_HISTORY)) {
+                double balance = OrderProfit();
+                
+                // Atualizar pico
+                if(balance > peak) {
+                    peak = balance;
+                }
+                // Calcular drawdown
+                else {
+                    currentDrawdown = MathMax(currentDrawdown, peak - balance);
+                }
+                
+                // Atualizar cache
+                UpdateDrawdownCache(currentDrawdown);
+            }
+        }
+        
+        // Atualizar métricas
+        m_perfMonitor.metrics.maxDrawdown = MathMax(
+            m_perfMonitor.metrics.maxDrawdown,
+            currentDrawdown
+        );
+        
+        // Integração com TechnologyAdvances
+        UpdatePerformanceMetrics();
+        
+        return currentDrawdown;
+    }
+    
+    double CalculateSharpeRatio() {
+        double meanReturn = 0.0;
+        double variance = 0.0;
+        int count = 0;
+        
+        // Primeira passagem: calcular média
+        for(int i = OrdersHistoryTotal() - 1; i >= 0; i--) {
+            if(OrderSelect(i, SELECT_BY_POS, MODE_HISTORY)) {
+                double profit = OrderProfit();
+                meanReturn += profit;
+                count++;
+                
+                // Armazenar retorno no cache
+                UpdateReturnsCache(profit);
+            }
+        }
+        
+        if(count == 0) return 0;
+        
+        meanReturn /= count;
+        
+        // Segunda passagem: calcular variância
+        for(int i = 0; i < count; i++) {
+            if(OrderSelect(i, SELECT_BY_POS, MODE_HISTORY)) {
+                double profit = OrderProfit();
+                variance += MathPow(profit - meanReturn, 2);
+            }
+        }
+        
+        double stdDev = MathSqrt(variance / count);
+        
+        // Calcular Sharpe Ratio
+        double sharpeRatio = (stdDev != 0) ? 
+            (meanReturn - m_perfMonitor.config.riskFreeRate) / stdDev : 0;
+        
+        // Atualizar métricas
+        m_perfMonitor.metrics.sharpeRatio = sharpeRatio;
+        m_perfMonitor.metrics.volatility = stdDev;
+        m_perfMonitor.metrics.avgTradeReturn = meanReturn;
+        
+        return sharpeRatio;
+    }
+    
+    void UpdatePerformanceMetrics() {
+        // Calcular métricas adicionais
+        CalculateWinRate();
+        CalculateProfitFactor();
+        CalculateReturns();
+        
+        // Criar pacote de métricas
+        PerformanceMetrics metrics;
+        metrics.sharpeRatio = m_perfMonitor.metrics.sharpeRatio;
+        metrics.drawdown = m_perfMonitor.metrics.currentDrawdown;
+        metrics.winRate = m_perfMonitor.metrics.winRate;
+        metrics.profitFactor = m_perfMonitor.metrics.profitFactor;
+        
+        // Enviar para TechnologyAdvances
+        m_techManager.UpdatePerformanceMetrics(metrics);
+        
+        // Notificar se necessário
+        CheckPerformanceAlerts();
+    }
+    
+    void InitializePerformanceCache() {
+        m_perfMonitor.cache.size = m_perfMonitor.config.historyDepth;
+        ArrayResize(m_perfMonitor.cache.returns, m_perfMonitor.cache.size);
+        ArrayResize(m_perfMonitor.cache.drawdowns, m_perfMonitor.cache.size);
+        ArrayResize(m_perfMonitor.cache.timestamps, m_perfMonitor.cache.size);
+    }
+    
+    void UpdateDrawdownCache(const double drawdown) {
+        // Implementar lógica circular de cache
+        for(int i = m_perfMonitor.cache.size - 1; i > 0; i--) {
+            m_perfMonitor.cache.drawdowns[i] = m_perfMonitor.cache.drawdowns[i-1];
+        }
+        m_perfMonitor.cache.drawdowns[0] = drawdown;
+    }
+    
+    void CheckPerformanceAlerts() {
+        if(m_perfMonitor.metrics.currentDrawdown > m_perfMonitor.metrics.maxDrawdown) {
+            string alert = StringFormat(
+                "Alerta de Performance!\nNovo Drawdown Máximo: %.2f%%\nSharpe Ratio: %.2f",
+                m_perfMonitor.metrics.currentDrawdown,
+                m_perfMonitor.metrics.sharpeRatio
+            );
+            
+            LogMessage(alert, LOG_WARNING);
+            NotifyTeam(alert);
+        }
+    }
+};

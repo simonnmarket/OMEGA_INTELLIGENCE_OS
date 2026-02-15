@@ -1,0 +1,117 @@
+// Localização: Novo componente a ser adicionado
+// Problema: Falta de sistema robusto de logging
+// Solução: Implementar sistema de logging quantum
+
+class CQuantumLogger {
+private:
+    struct LogEntry {
+        datetime timestamp;
+        string message;
+        int level;
+        string component;
+        string details;
+    };
+
+    CArrayObj m_log_entries;
+    string m_log_file;
+    bool m_initialized;
+    
+    // Configurações
+    static const int MAX_LOG_ENTRIES = 1000;
+    static const int FLUSH_THRESHOLD = 800;
+
+public:
+    enum LOG_LEVEL {
+        LOG_DEBUG,
+        LOG_INFO,
+        LOG_WARNING,
+        LOG_ERROR,
+        LOG_CRITICAL
+    };
+
+    CQuantumLogger()
+        : m_initialized(false) {
+        m_log_file = "QuantumSystem_" + TimeToString(TimeCurrent()) + ".log";
+    }
+
+    bool Initialize() {
+        if(m_initialized) return true;
+        
+        // Criar arquivo de log
+        int handle = FileOpen(m_log_file, FILE_WRITE|FILE_TXT);
+        if(handle == INVALID_HANDLE) {
+            Print("Erro ao criar arquivo de log: ", GetLastError());
+            return false;
+        }
+        
+        FileClose(handle);
+        m_initialized = true;
+        
+        Log("Sistema de Log Inicializado", LOG_INFO, "Logger");
+        return true;
+    }
+
+    void Log(string message, LOG_LEVEL level, string component, string details = "") {
+        if(!m_initialized) return;
+
+        LogEntry* entry = new LogEntry;
+        entry.timestamp = TimeCurrent();
+        entry.message = message;
+        entry.level = level;
+        entry.component = component;
+        entry.details = details;
+
+        m_log_entries.Add(entry);
+
+        // Verificar necessidade de flush
+        if(m_log_entries.Total() >= FLUSH_THRESHOLD) {
+            FlushLogs();
+        }
+
+        // Log crítico: salvar imediatamente
+        if(level == LOG_CRITICAL) {
+            FlushLogs();
+        }
+    }
+
+private:
+    void FlushLogs() {
+        int handle = FileOpen(m_log_file, FILE_READ|FILE_WRITE|FILE_TXT);
+        if(handle == INVALID_HANDLE) return;
+
+        FileSeek(handle, 0, SEEK_END);
+
+        for(int i = 0; i < m_log_entries.Total(); i++) {
+            LogEntry* entry = m_log_entries.At(i);
+            if(entry == NULL) continue;
+
+            string log_line = FormatLogEntry(entry);
+            FileWrite(handle, log_line);
+        }
+
+        FileClose(handle);
+        m_log_entries.Clear();
+    }
+
+    string FormatLogEntry(const LogEntry* entry) {
+        return StringFormat(
+            "[%s][%s][%s] %s %s",
+            TimeToString(entry.timestamp),
+            GetLevelString(entry.level),
+            entry.component,
+            entry.message,
+            entry.details != "" ? (" - " + entry.details) : ""
+        );
+    }
+
+    string GetLevelString(int level) {
+        switch(level) {
+            case LOG_DEBUG: return "DEBUG";
+            case LOG_INFO: return "INFO";
+            case LOG_WARNING: return "WARNING";
+            case LOG_ERROR: return "ERROR";
+            case LOG_CRITICAL: return "CRITICAL";
+        }
+        return "UNKNOWN";
+    }
+};

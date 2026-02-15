@@ -1,0 +1,201 @@
+//+------------------------------------------------------------------+
+//|                                    QuantumTradeSystem_Part6.mq5    |
+//+------------------------------------------------------------------+
+
+class CVisualInterface {
+private:
+    const string PANEL_NAME = "QuantumPanel_";
+    const int CHART_DISTANCE = 20;
+    const int BUTTON_WIDTH = 150;
+    const int BUTTON_HEIGHT = 30;
+    const color BG_COLOR = C'25,25,25';
+    const color TEXT_COLOR = clrWhite;
+    const color PROFIT_COLOR = clrLime;
+    const color LOSS_COLOR = clrRed;
+    const color WARNING_COLOR = clrOrange;
+    const color NEURAL_COLOR = C'70,130,180';
+    
+    struct UIElements {
+        string mainPanel;
+        string profitLabel;
+        string tradesLabel;
+        string signalLabel;
+        string probabilityLabel;
+        string riskLabel;
+        string statusLabel;
+        string quantumLabel;
+        string neuralLabel;
+        string regimeLabel;
+        string[] buttons;
+        string[] charts;
+    } ui;
+    
+    struct MonitorData {
+        double currentProfit;
+        int totalTrades;
+        double winRate;
+        double probability;
+        double riskLevel;
+        string currentSignal;
+        string systemStatus;
+        double quantumState;
+        double neuralConfidence;
+        string marketRegime;
+        double[] performanceMetrics;
+        datetime lastUpdate;
+    } monitor;
+    
+    struct AlertSettings {
+        bool enableEmail;
+        bool enablePush;
+        bool enableSound;
+        bool enableTelegram;
+        double profitThreshold;
+        double lossThreshold;
+        double riskThreshold;
+        double quantumThreshold;
+        int alertFrequency;
+        bool adaptiveAlerts;
+    } alerts;
+    
+    struct ChartSettings {
+        bool showEquityCurve;
+        bool showDrawdown;
+        bool showQuantumStates;
+        bool showNeuralActivity;
+        int updateFrequency;
+        int historyDepth;
+    } chartSettings;
+    
+    CArrayObj* chartObjects;
+    CTelegram* telegramBot;
+    
+public:
+    CVisualInterface() {
+        chartObjects = new CArrayObj();
+        telegramBot = new CTelegram();
+    }
+    
+    ~CVisualInterface() {
+        SafeDelete(chartObjects);
+        SafeDelete(telegramBot);
+    }
+    
+    bool Initialize() {
+        if(!InitializeComponents()) return false;
+        if(!CreateVisualElements()) return false;
+        if(!SetupCommunication()) return false;
+        
+        InitializeCharts();
+        SetupAlerts();
+        
+        return true;
+    }
+    
+    void Update(const MonitorData& data) {
+        monitor = data;
+        UpdateDisplay();
+        UpdateCharts();
+        ProcessAlerts();
+        
+        if(ShouldUpdateMetrics()) {
+            UpdatePerformanceMetrics();
+        }
+    }
+    
+    void ProcessClick(string clickedObject) {
+        if(StringFind(clickedObject, PANEL_NAME) >= 0) {
+            HandleInteraction(clickedObject);
+        }
+    }
+    
+    void ShowNotification(const string& message, int importance = 0) {
+        if(!ValidateMessage(message)) return;
+        
+        color messageColor = GetMessageColor(importance);
+        SendAlerts(message, importance);
+        UpdateStatusLabel(message, messageColor);
+    }
+    
+    void Cleanup() {
+        CleanupVisualElements();
+        CleanupCharts();
+        SaveSettings();
+    }
+
+private:
+    bool InitializeComponents() {
+        if(!chartObjects.Initialize(100)) return false;
+        if(!telegramBot.Initialize()) return false;
+        return true;
+    }
+    
+    bool CreateVisualElements() {
+        if(!CreateMainPanel()) return false;
+        if(!CreateLabels()) return false;
+        if(!CreateButtons()) return false;
+        if(!CreateCharts()) return false;
+        return true;
+    }
+    
+    void UpdateDisplay() {
+        UpdateLabels();
+        UpdateButtons();
+        UpdateColors();
+        
+        if(monitor.quantumState != 0) {
+            UpdateQuantumDisplay();
+        }
+        
+        if(monitor.neuralConfidence > 0) {
+            UpdateNeuralDisplay();
+        }
+        
+        ChartRedraw();
+    }
+    
+    void UpdateCharts() {
+        for(int i = 0; i < chartObjects.Total(); i++) {
+            CChartObject* chart = chartObjects.At(i);
+            if(chart != NULL) {
+                chart.Update(monitor);
+            }
+        }
+    }
+    
+    void ProcessAlerts() {
+        if(!ShouldProcessAlert()) return;
+        
+        CheckProfitAlerts();
+        CheckRiskAlerts();
+        CheckQuantumAlerts();
+        CheckNeuralAlerts();
+        
+        if(alerts.adaptiveAlerts) {
+            UpdateAlertThresholds();
+        }
+    }
+    
+    void HandleInteraction(string clickedObject) {
+        if(StringFind(clickedObject, "Btn") >= 0) {
+            ProcessButtonClick(clickedObject);
+        }
+        else if(StringFind(clickedObject, "Chart") >= 0) {
+            ProcessChartInteraction(clickedObject);
+        }
+    }
+    
+    void UpdatePerformanceMetrics() {
+        CalculateMetrics();
+        UpdateMetricsDisplay();
+        SaveMetricsHistory();
+    }
+    
+    template<typename T>
+    void SafeDelete(T* &ptr) {
+        if(ptr != NULL) {
+            delete ptr;
+            ptr = NULL;
+        }
+    }
+};

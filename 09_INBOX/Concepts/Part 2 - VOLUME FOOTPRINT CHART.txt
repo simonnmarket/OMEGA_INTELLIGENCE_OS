@@ -1,0 +1,173 @@
+//+------------------------------------------------------------------+
+//| Volume Footprint Chart - Sistema de Logs e Diagnóstico            |
+//+------------------------------------------------------------------+
+
+private:
+    // Estruturas de Diagnóstico
+    struct DiagnosticMetrics {
+        double cpuUsage;
+        double memoryUsage;
+        int errorCount;
+        datetime lastCheck;
+        bool isSystemHealthy;
+    };
+    
+    struct LogConfig {
+        string logFile;
+        bool enableDetailedLogs;
+        bool enablePerformanceLogs;
+        bool enableErrorLogs;
+        int logRetentionDays;
+    };
+    
+    DiagnosticMetrics m_diagnostics;
+    LogConfig m_logConfig;
+    
+    // Sistema de Logs Avançado
+    void LogMessage(const string message, ENUM_LOG_LEVEL level = LOG_INFO) {
+        if(!ValidateLogSystem()) return;
+        
+        string formattedMessage = FormatLogMessage(message, level);
+        
+        // Log interno
+        Print(formattedMessage);
+        
+        // Log em arquivo
+        if(m_logConfig.enableDetailedLogs) {
+            int fileHandle = FileOpen(m_logConfig.logFile, FILE_WRITE|FILE_TXT|FILE_ANSI);
+            if(fileHandle != INVALID_HANDLE) {
+                FileWriteString(fileHandle, formattedMessage + "\n");
+                FileClose(fileHandle);
+            }
+        }
+        
+        // Integração com TechnologyAdvances
+        m_techManager.LogMessage(formattedMessage, level);
+        
+        // Notificação da equipe em caso de erro
+        if(level == LOG_ERROR) {
+            NotifyTeamOfError(message);
+        }
+    }
+    
+    string FormatLogMessage(const string message, ENUM_LOG_LEVEL level) {
+        string levelStr = EnumToString(level);
+        string timeStr = TimeToString(TimeCurrent(), TIME_DATE|TIME_SECONDS);
+        string footprint = "VolumeFootprint";
+        
+        return StringFormat("[%s][%s][%s] %s", 
+            timeStr, footprint, levelStr, message);
+    }
+    
+    // Sistema de Diagnóstico
+    bool ValidateSystemResources() {
+        // Atualizar métricas
+        m_diagnostics.cpuUsage = GetCPUUsage();
+        m_diagnostics.memoryUsage = GetMemoryUsage();
+        m_diagnostics.lastCheck = TimeCurrent();
+        
+        // Validar recursos
+        if(m_diagnostics.cpuUsage > 80 || m_diagnostics.memoryUsage > 80) {
+            string errorMsg = StringFormat(
+                "Sistema com recursos críticos. CPU: %.2f%%, Memória: %.2f%%",
+                m_diagnostics.cpuUsage,
+                m_diagnostics.memoryUsage
+            );
+            
+            LogMessage(errorMsg, LOG_ERROR);
+            m_diagnostics.isSystemHealthy = false;
+            
+            // Notificar equipe técnica
+            NotifyTechnicalTeam(errorMsg);
+            
+            return false;
+        }
+        
+        m_diagnostics.isSystemHealthy = true;
+        return true;
+    }
+    
+    void NotifyTechnicalTeam(const string &message) {
+        if(m_responsibleTeam == NULL) return;
+        
+        for(int i = 0; i < ArraySize(m_responsibleTeam); i++) {
+            if(m_responsibleTeam[i].department == TECHNICAL_SUPPORT) {
+                SendNotification(m_responsibleTeam[i], message);
+            }
+        }
+    }
+    
+    bool ValidateLogSystem() {
+        if(m_logConfig.logFile == "") {
+            m_logConfig.logFile = "VolumeFootprint_" + 
+                                 TimeToString(TimeCurrent(), TIME_DATE) + 
+                                 ".log";
+        }
+        
+        // Limpar logs antigos
+        if(m_logConfig.enableDetailedLogs) {
+            CleanOldLogs();
+        }
+        
+        return true;
+    }
+    
+    void CleanOldLogs() {
+        datetime currentTime = TimeCurrent();
+        datetime cleanBefore = currentTime - 
+                             (m_logConfig.logRetentionDays * PeriodSeconds(PERIOD_D1));
+                             
+        string folder = TerminalInfoString(TERMINAL_DATA_PATH) + "\\MQL5\\Logs\\";
+        string search = folder + "VolumeFootprint_*.log";
+        
+        string files[];
+        int totalFiles = FileFindFirst(search, files);
+        
+        for(int i = 0; i < totalFiles; i++) {
+            datetime fileTime = (datetime)StringToTime(files[i]);
+            if(fileTime < cleanBefore) {
+                FileDelete(folder + files[i]);
+            }
+        }
+    }
+    
+    void InitializeLogSystem() {
+        m_logConfig.enableDetailedLogs = true;
+        m_logConfig.enablePerformanceLogs = true;
+        m_logConfig.enableErrorLogs = true;
+        m_logConfig.logRetentionDays = 30;
+        m_logConfig.logFile = "VolumeFootprint_" + 
+                             TimeToString(TimeCurrent(), TIME_DATE) + 
+                             ".log";
+                             
+        LogMessage("Sistema de Logs Inicializado", LOG_INFO);
+    }
+    
+    void UpdateDiagnostics() {
+        static datetime lastUpdate = 0;
+        datetime current = TimeCurrent();
+        
+        // Atualizar a cada minuto
+        if(current - lastUpdate >= 60) {
+            if(!ValidateSystemResources()) {
+                // Tentar otimizar recursos
+                OptimizeResources();
+            }
+            
+            // Atualizar métricas de performance
+            UpdatePerformanceMetrics();
+            
+            lastUpdate = current;
+        }
+    }
+    
+    void OptimizeResources() {
+        // Limpar buffers não utilizados
+        ArrayFree(m_buffers.ma);
+        ArrayFree(m_buffers.rsi);
+        ArrayFree(m_buffers.atr);
+        
+        // Forçar coleta de lixo
+        ResetLastError();
+    }
+};

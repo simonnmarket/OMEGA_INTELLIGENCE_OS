@@ -1,0 +1,213 @@
+//+------------------------------------------------------------------+
+//| Sistema de Integração Fundamental-Quântica                         |
+//+------------------------------------------------------------------+
+
+class CQuantumFundamentalIntegrator {
+private:
+    // Componentes existentes
+    CFundamentalAnalyzer* m_fundamental_analyzer;
+    CQuantumPredictiveAnalyzer* m_quantum_analyzer;
+    CQuantumLogger* m_logger;
+    
+    struct IntegratedMetrics {
+        double quantum_correlation;
+        double fundamental_impact;
+        double combined_confidence;
+        double prediction_accuracy;
+    };
+
+    struct MarketState {
+        double intrinsic_value;
+        double quantum_state;
+        double market_sentiment;
+        double volatility_regime;
+    };
+
+    IntegratedMetrics m_metrics;
+    MarketState m_state;
+    
+    // Constantes
+    const double MIN_CONFIDENCE = 0.75;
+    const double CORRELATION_THRESHOLD = 0.65;
+    const int ANALYSIS_DEPTH = 20;
+
+public:
+    CQuantumFundamentalIntegrator(
+        CFundamentalAnalyzer* fundamental_analyzer,
+        CQuantumPredictiveAnalyzer* quantum_analyzer,
+        CQuantumLogger* logger
+    ) : m_fundamental_analyzer(fundamental_analyzer),
+        m_quantum_analyzer(quantum_analyzer),
+        m_logger(logger) {
+        Initialize();
+    }
+
+    bool Initialize() {
+        if(!ValidateComponents()) {
+            m_logger.Log("Failed to validate components", LOG_ERROR, "FundamentalIntegrator");
+            return false;
+        }
+
+        InitializeState();
+        m_logger.Log("Fundamental-Quantum Integrator Initialized", LOG_INFO, "FundamentalIntegrator");
+        return true;
+    }
+
+    bool AnalyzeMarket() {
+        // Análise fundamental
+        double intrinsic_value = m_fundamental_analyzer.CalculateIntrinsicValue();
+        bool market_conditions = m_fundamental_analyzer.AnalyzeMarketConditions();
+        
+        // Análise quântica
+        double predictions[];
+        bool quantum_success = m_quantum_analyzer.AnalyzeAndPredict(GetMarketData(), predictions);
+        
+        if(!quantum_success) {
+            m_logger.Log("Quantum analysis failed", LOG_WARNING, "FundamentalIntegrator");
+            return false;
+        }
+        
+        // Integrar análises
+        return IntegrateAnalysis(intrinsic_value, market_conditions, predictions);
+    }
+
+    IntegratedMetrics GetMetrics() const {
+        return m_metrics;
+    }
+
+private:
+    bool ValidateComponents() {
+        if(m_fundamental_analyzer == NULL || 
+           m_quantum_analyzer == NULL || 
+           m_logger == NULL) {
+            return false;
+        }
+        return true;
+    }
+
+    void InitializeState() {
+        m_state.intrinsic_value = 0;
+        m_state.quantum_state = 0;
+        m_state.market_sentiment = 0;
+        m_state.volatility_regime = 0;
+    }
+
+    bool IntegrateAnalysis(
+        double intrinsic_value, 
+        bool market_conditions,
+        const double &predictions[]
+    ) {
+        // Calcular correlação quântica
+        m_metrics.quantum_correlation = CalculateQuantumCorrelation(predictions);
+        
+        // Calcular impacto fundamental
+        m_metrics.fundamental_impact = CalculateFundamentalImpact(
+            intrinsic_value,
+            market_conditions
+        );
+        
+        // Combinar análises
+        if(!CombineAnalysis()) {
+            m_logger.Log("Failed to combine analyses", LOG_ERROR, "FundamentalIntegrator");
+            return false;
+        }
+        
+        // Atualizar estado
+        UpdateMarketState();
+        
+        return ValidateResults();
+    }
+
+    double CalculateQuantumCorrelation(const double &predictions[]) {
+        double correlation = 0;
+        
+        for(int i = 0; i < ArraySize(predictions); i++) {
+            correlation += MathAbs(predictions[i] - m_state.quantum_state);
+        }
+        
+        return 1.0 - (correlation / ArraySize(predictions));
+    }
+
+    double CalculateFundamentalImpact(double intrinsic_value, bool market_conditions) {
+        double impact = 0;
+        
+        // Calcular diferença do valor intrínseco
+        impact += MathAbs(intrinsic_value - m_state.intrinsic_value);
+        
+        // Ajustar baseado nas condições de mercado
+        if(market_conditions) {
+            impact *= 1.25; // Boost positivo
+        } else {
+            impact *= 0.75; // Redução do impacto
+        }
+        
+        return MathMin(impact, 1.0);
+    }
+
+    bool CombineAnalysis() {
+        // Combinar métricas quânticas e fundamentais
+        m_metrics.combined_confidence = 
+            (m_metrics.quantum_correlation * 0.6) +
+            (m_metrics.fundamental_impact * 0.4);
+            
+        // Calcular precisão da previsão
+        m_metrics.prediction_accuracy = 
+            CalculatePredictionAccuracy();
+            
+        return m_metrics.combined_confidence >= MIN_CONFIDENCE;
+    }
+
+    double CalculatePredictionAccuracy() {
+        return (m_metrics.quantum_correlation * 
+                m_metrics.fundamental_impact * 
+                m_state.market_sentiment);
+    }
+
+    void UpdateMarketState() {
+        // Atualizar estado do mercado
+        m_state.quantum_state = m_metrics.quantum_correlation;
+        m_state.market_sentiment = 
+            (m_metrics.fundamental_impact + m_metrics.quantum_correlation) / 2;
+            
+        // Atualizar regime de volatilidade
+        m_state.volatility_regime = 
+            CalculateVolatilityRegime();
+    }
+
+    double CalculateVolatilityRegime() {
+        return (m_state.market_sentiment * 
+                m_metrics.prediction_accuracy);
+    }
+
+    bool ValidateResults() {
+        if(m_metrics.combined_confidence < MIN_CONFIDENCE) {
+            m_logger.Log(
+                StringFormat(
+                    "Low confidence in analysis: %.2f",
+                    m_metrics.combined_confidence
+                ),
+                LOG_WARNING,
+                "FundamentalIntegrator"
+            );
+            return false;
+        }
+        
+        if(m_metrics.quantum_correlation < CORRELATION_THRESHOLD) {
+            m_logger.Log(
+                "Low quantum correlation detected",
+                LOG_WARNING,
+                "FundamentalIntegrator"
+            );
+            return false;
+        }
+        
+        return true;
+    }
+
+    double[] GetMarketData() {
+        // Implementar coleta de dados de mercado
+        double data[];
+        // ... implementação ...
+        return data;
+    }
+};

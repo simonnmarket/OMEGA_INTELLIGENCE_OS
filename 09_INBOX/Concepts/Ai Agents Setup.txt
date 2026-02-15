@@ -1,0 +1,55 @@
+# Código atualizado para configuração dos agentes AI na VPS
+import MetaTrader5 as mt5
+import time
+import pandas as pd
+
+# Conectar ao MetaTrader 5
+if not mt5.initialize():
+    print("Falha ao conectar ao MT5")
+    mt5.shutdown()
+
+# Definição de pares e estratégias
+assets = ["USDJPY", "EURUSD", "GBPUSD", "AUDCAD", "CADJPY", "XAUUSD"]
+
+# Função para coletar dados em tempo real
+def get_data(symbol, timeframe=mt5.TIMEFRAME_M1, bars=100):
+    rates = mt5.copy_rates_from_pos(symbol, timeframe, 0, bars)
+    return pd.DataFrame(rates)
+
+# Criar agentes para diferentes estratégias
+class TradingAgent:
+    def __init__(self, symbol):
+        self.symbol = symbol
+
+    def analyze_market(self):
+        data = get_data(self.symbol)
+        return data
+
+    def execute_trade(self):
+        price = mt5.symbol_info_tick(self.symbol).ask
+        request = {
+            "action": mt5.TRADE_ACTION_DEAL,
+            "symbol": self.symbol,
+            "volume": 0.1,
+            "type": mt5.ORDER_TYPE_BUY,
+            "price": price,
+            "deviation": 10,
+            "magic": 123456,
+            "comment": "Trade Executado",
+            "type_time": mt5.ORDER_TIME_GTC,
+            "type_filling": mt5.ORDER_FILLING_IOC,
+        }
+        result = mt5.order_send(request)
+        return result
+
+# Criando e rodando os agentes
+agents = [TradingAgent(symbol) for symbol in assets]
+
+for agent in agents:
+    print(f"Rodando análise para {agent.symbol}")
+    market_data = agent.analyze_market()
+    trade_result = agent.execute_trade()
+    print(f"Resultado da operação em {agent.symbol}: {trade_result}")
+
+# Encerrando conexão com MT5
+mt5.shutdown()

@@ -1,0 +1,107 @@
+    // Análise de tendência
+    bool AnalyzeTrend() {
+        // Verificar direção da média móvel
+        bool trendUp = (maBuffer[0] > maBuffer[1] && maBuffer[1] > maBuffer[2]);
+        bool trendDown = (maBuffer[0] < maBuffer[1] && maBuffer[1] < maBuffer[2]);
+        
+        // Verificar momentum
+        bool momentumValid = (MathAbs(marketData.momentum) > MinimumMomentum);
+        
+        // Verificar volume na tendência
+        bool volumeConfirms = (marketData.volume > marketData.volumeMA);
+        
+        // Análise institucional se ativada
+        if(UseInstitutional) {
+            return (trendUp || trendDown) && momentumValid && volumeConfirms && CheckInstitutionalLevels();
+        }
+        
+        return (trendUp || trendDown) && momentumValid && volumeConfirms;
+    }
+    
+    // Análise de volume
+    bool AnalyzeVolume() {
+        // Volume relativo
+        double relativeVolume = marketData.volume / marketData.volumeMA;
+        
+        // Delta volume
+        bool deltaPositive = (marketData.volumeDelta > 0);
+        bool deltaSignificant = (MathAbs(marketData.volumeDelta) > MinimumDelta);
+        
+        // Volume Profile se ativado
+        if(UseVolumeProfile) {
+            return (relativeVolume > VolumeThreshold) && 
+                   deltaSignificant && 
+                   CheckVolumeProfile();
+        }
+        
+        return (relativeVolume > VolumeThreshold) && deltaSignificant;
+    }
+    
+    // Análise de preço
+    bool AnalyzePrice() {
+        // Estrutura de preço
+        bool hasStructure = CheckPriceStructure();
+        
+        // Padrões de preço
+        bool hasPattern = IdentifyPricePattern();
+        
+        // Níveis importantes
+        bool atKeyLevel = CheckKeyLevels();
+        
+        // Market Profile se ativado
+        if(UseMarketProfile) {
+            return hasStructure && hasPattern && atKeyLevel && CheckMarketProfile();
+        }
+        
+        return hasStructure && hasPattern && atKeyLevel;
+    }
+    
+    // Análise de Order Flow
+    bool AnalyzeFlow() {
+        if(!UseOrderFlow) return true;
+        
+        // Pressão compradora/vendedora
+        bool buyingPressure = (marketData.buyingPressure > marketData.sellingPressure);
+        bool sellingPressure = (marketData.sellingPressure > marketData.buyingPressure);
+        
+        // Delta significativo
+        bool significantDelta = (MathAbs(marketData.deltaFlow) > MinimumFlowDelta);
+        
+        // Absorção
+        bool hasAbsorption = CheckAbsorption();
+        
+        return (buyingPressure || sellingPressure) && significantDelta && hasAbsorption;
+    }
+    
+    // Verificação de níveis institucionais
+    bool CheckInstitutionalLevels() {
+        if(!UseInstitutional) return true;
+        
+        // Níveis de liquidez
+        bool nearLiquidity = CheckLiquidityLevels();
+        
+        // Stop Hunts
+        bool potentialStopHunt = CheckStopHunts();
+        
+        // Manipulação
+        bool hasManipulation = CheckManipulation();
+        
+        return nearLiquidity || potentialStopHunt || hasManipulation;
+    }
+    
+    // Análise do Volume Profile
+    bool CheckVolumeProfile() {
+        if(!UseVolumeProfile) return true;
+        
+        // Point of Control
+        bool nearPOC = (MathAbs(marketData.close - marketData.poc) < MaxPOCDistance);
+        
+        // Value Area
+        bool inValueArea = (marketData.close >= marketData.valueAreaLow && 
+                          marketData.close <= marketData.valueAreaHigh);
+        
+        // Volume Node
+        bool atVolumeNode = CheckVolumeNode();
+        
+        return nearPOC || inValueArea || atVolumeNode;
+    }

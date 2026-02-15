@@ -1,0 +1,26 @@
+ANÁLISE DE CORREÇÕES NECESSÁRIAS
+
+// Localização: Início do arquivo, após as definições de enums
+// Problema: Acesso aos dados da função de onda
+// Solução: Implementar interface completa de acesso
+
+class CQuantumState : public CBaseMetrics {
+private:
+    double m_wave_function[];
+    // ... outros membros privados
+
+public:
+    // Métodos atualizados de acesso
+    void GetWaveFunction(double &wave[]) const {
+        ArrayResize(wave, ArraySize(m_wave_function));
+        ArrayCopy(wave, m_wave_function);
+    }
+
+    const double* GetWaveFunctionPtr() const {
+        return m_wave_function;
+    }
+
+    int GetWaveFunctionSize() const {
+        return ArraySize(m_wave_function);
+    }
+};

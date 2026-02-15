@@ -1,0 +1,200 @@
+//+------------------------------------------------------------------+
+//| PVSRA (Price Volume Support Resistance Analysis) - Parte 9         |
+//|                                                                    |
+//| OBJETIVO: Implementar sistema de relatórios e análise com:         |
+//| - Relatórios Detalhados                                           |
+//| - Métricas de Performance                                         |
+//| - Análise Estatística                                             |
+//| - Dashboard Interativo                                            |
+//+------------------------------------------------------------------+
+
+private:
+    // Estruturas de Relatórios
+    struct PVSRAReporting {
+        // Configuração de Relatórios
+        struct ReportConfig {
+            bool enableDailyReports;     // Relatórios diários
+            bool enableWeeklyReports;    // Relatórios semanais
+            bool enableAlertReports;     // Relatórios de alertas
+            bool enablePerformanceStats; // Estatísticas de performance
+            string reportPath;           // Caminho dos relatórios
+        } config;
+        
+        // Métricas de Performance
+        struct PerformanceStats {
+            // Métricas Gerais
+            double totalReturn;          // Retorno total
+            double winRate;              // Taxa de acerto
+            double profitFactor;         // Fator de lucro
+            double sharpeRatio;          // Índice Sharpe
+            
+            // Métricas PVSRA
+            double volumeAccuracy;       // Precisão volume
+            double srAccuracy;           // Precisão S/R
+            double patternAccuracy;      // Precisão padrões
+            double mlAccuracy;           // Precisão ML
+        } stats;
+        
+        // Estado dos Relatórios
+        struct ReportState {
+            datetime lastDailyReport;    // Último relatório diário
+            datetime lastWeeklyReport;   // Último relatório semanal
+            int reportCount;             // Contador de relatórios
+            bool isReporting;            // Flag de geração
+        } state;
+    } m_reporting;
+    
+    void GenerateReports() {
+        if(m_reporting.state.isReporting) return;
+        
+        m_reporting.state.isReporting = true;
+        
+        try {
+            // Gerar relatórios periódicos
+            GeneratePeriodicReports();
+            
+            // Atualizar estatísticas
+            UpdatePerformanceStats();
+            
+            // Gerar dashboard
+            UpdateDashboard();
+            
+        } catch(const int error) {
+            HandleReportingError(error);
+        }
+        
+        m_reporting.state.isReporting = false;
+    }
+    
+    void GeneratePeriodicReports() {
+        datetime current = TimeCurrent();
+        
+        // Relatório diário
+        if(m_reporting.config.enableDailyReports && 
+           NeedsDailyReport(current)) {
+            GenerateDailyReport();
+        }
+        
+        // Relatório semanal
+        if(m_reporting.config.enableWeeklyReports && 
+           NeedsWeeklyReport(current)) {
+            GenerateWeeklyReport();
+        }
+    }
+    
+    void GenerateDailyReport() {
+        DailyReport* report = new DailyReport();
+        
+        // Dados gerais
+        report.date = TimeCurrent();
+        report.symbol = _Symbol;
+        report.timeframe = PERIOD_CURRENT;
+        
+        // Métricas PVSRA
+        report.volumeMetrics = GetVolumeMetrics();
+        report.srMetrics = GetSRMetrics();
+        report.patternMetrics = GetPatternMetrics();
+        report.mlMetrics = GetMLMetrics();
+        
+        // Performance
+        report.performance = GetDailyPerformance();
+        
+        // Salvar relatório
+        SaveReport(report, "daily");
+        
+        // Enviar para TechnologyAdvances
+        m_techManager.ProcessDailyReport(report);
+        
+        // Notificar equipe
+        NotifyTeam(FormatDailyReport(report));
+        
+        delete report;
+    }
+    
+    void UpdatePerformanceStats() {
+        // Calcular métricas gerais
+        m_reporting.stats.totalReturn = CalculateTotalReturn();
+        m_reporting.stats.winRate = CalculateWinRate();
+        m_reporting.stats.profitFactor = CalculateProfitFactor();
+        m_reporting.stats.sharpeRatio = CalculateSharpeRatio();
+        
+        // Calcular métricas PVSRA
+        m_reporting.stats.volumeAccuracy = CalculateVolumeAccuracy();
+        m_reporting.stats.srAccuracy = CalculateSRAccuracy();
+        m_reporting.stats.patternAccuracy = CalculatePatternAccuracy();
+        m_reporting.stats.mlAccuracy = CalculateMLAccuracy();
+        
+        // Atualizar TechnologyAdvances
+        UpdateTechPerformanceStats();
+    }
+    
+    void UpdateDashboard() {
+        // Atualizar elementos visuais
+        UpdateDashboardVisuals();
+        
+        // Atualizar métricas
+        UpdateDashboardMetrics();
+        
+        // Atualizar alertas
+        UpdateDashboardAlerts();
+        
+        // Refresh
+        ChartRedraw();
+    }
+    
+    void UpdateDashboardVisuals() {
+        string prefix = "PVSRA_Dashboard_";
+        
+        // Volume Profile
+        CreateDashboardPanel(prefix + "Volume", 10, 10, 200, 150);
+        DrawVolumeProfile(prefix + "Volume");
+        
+        // S/R Levels
+        CreateDashboardPanel(prefix + "SR", 220, 10, 200, 150);
+        DrawSRLevels(prefix + "SR");
+        
+        // Performance
+        CreateDashboardPanel(prefix + "Performance", 10, 170, 410, 150);
+        DrawPerformanceMetrics(prefix + "Performance");
+    }
+    
+    void DrawPerformanceMetrics(const string objName) {
+        string metrics = StringFormat(
+            "Win Rate: %.2f%%\n" +
+            "Profit Factor: %.2f\n" +
+            "Sharpe Ratio: %.2f\n" +
+            "Volume Accuracy: %.2f%%\n" +
+            "S/R Accuracy: %.2f%%\n" +
+            "Pattern Accuracy: %.2f%%\n" +
+            "ML Accuracy: %.2f%%",
+            m_reporting.stats.winRate * 100,
+            m_reporting.stats.profitFactor,
+            m_reporting.stats.sharpeRatio,
+            m_reporting.stats.volumeAccuracy * 100,
+            m_reporting.stats.srAccuracy * 100,
+            m_reporting.stats.patternAccuracy * 100,
+            m_reporting.stats.mlAccuracy * 100
+        );
+        
+        ObjectSetString(0, objName + "_Text", OBJPROP_TEXT, metrics);
+    }
+    
+    void SaveReport(const DailyReport* report, const string type) {
+        string filename = StringFormat(
+            "%s/PVSRA_%s_%s.json",
+            m_reporting.config.reportPath,
+            type,
+            TimeToString(report.date, TIME_DATE)
+        );
+        
+        // Converter para JSON
+        string json = ReportToJson(report);
+        
+        // Salvar arquivo
+        int handle = FileOpen(filename, FILE_WRITE|FILE_TXT);
+        if(handle != INVALID_HANDLE) {
+            FileWriteString(handle, json);
+            FileClose(handle);
+        }
+    }
+};

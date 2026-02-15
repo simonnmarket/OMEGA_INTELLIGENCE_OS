@@ -1,0 +1,176 @@
+//+------------------------------------------------------------------+
+//| PVSRA (Price Volume Support Resistance Analysis) - Parte 5         |
+//|                                                                    |
+//| OBJETIVO: Implementar sistema de gestão de risco e execução com:   |
+//| - Gestão de Risco Adaptativa                                      |
+//| - Execução Inteligente                                            |
+//| - Otimização de Entradas/Saídas                                   |
+//| - Integração com TechnologyAdvances e TeamStructure               |
+//+------------------------------------------------------------------+
+
+private:
+    // Estruturas de Gestão de Risco
+    struct PVSRARiskManager {
+        // Parâmetros de Risco
+        struct RiskParams {
+            double maxRiskPerTrade;     // Risco máximo por trade
+            double maxDailyRisk;        // Risco máximo diário
+            double maxDrawdown;         // Drawdown máximo permitido
+            double volatilityFactor;    // Fator de volatilidade
+            bool useAdaptiveRisk;       // Usar risco adaptativo
+        } params;
+        
+        // Estado do Risco
+        struct RiskState {
+            double currentRisk;         // Risco atual
+            double dailyRisk;           // Risco diário acumulado
+            double currentDrawdown;     // Drawdown atual
+            bool isRiskExceeded;        // Risco excedido
+            datetime lastCheck;         // Última verificação
+        } state;
+    } m_risk;
+    
+    // Sistema de Execução
+    void ExecutePVSRAStrategy() {
+        if(!ValidateExecutionConditions()) return;
+        
+        // 1. Calcular parâmetros de entrada
+        CalculateEntryParameters();
+        
+        // 2. Validar risco
+        if(!ValidateRiskParameters()) return;
+        
+        // 3. Executar ordem
+        ExecuteOrder();
+        
+        // 4. Monitorar posição
+        MonitorPosition();
+    }
+    
+    void CalculateEntryParameters() {
+        // Base no PVSRA
+        double baseEntry = CalculateOptimalEntry();
+        double baseStop = CalculateOptimalStop();
+        double baseTarget = CalculateOptimalTarget();
+        
+        // Ajustes adaptativos
+        if(m_risk.params.useAdaptiveRisk) {
+            AdjustParametersForRisk(baseEntry, baseStop, baseTarget);
+        }
+        
+        // Definir parâmetros finais
+        m_orderParams.entry = baseEntry;
+        m_orderParams.stopLoss = baseStop;
+        m_orderParams.takeProfit = baseTarget;
+        m_orderParams.volume = CalculatePositionSize();
+    }
+    
+    double CalculateOptimalEntry() {
+        double entry = m_data.price.close;
+        
+        // Ajuste baseado em padrões PVSRA
+        if(m_patterns.volume.isAccumulation) {
+            entry = GetAccumulationEntry();
+        }
+        else if(m_patterns.volume.isDistribution) {
+            entry = GetDistributionEntry();
+        }
+        
+        return entry;
+    }
+    
+    void AdjustParametersForRisk(double &entry, double &stop, double &target) {
+        // Fator de volatilidade
+        double volFactor = CalculateVolatilityFactor();
+        
+        // Ajustar stops
+        stop = AdjustStopForVolatility(stop, volFactor);
+        target = AdjustTargetForVolatility(target, volFactor);
+        
+        // Validar ajustes
+        ValidateAdjustments(entry, stop, target);
+    }
+    
+    double CalculatePositionSize() {
+        double riskAmount = AccountInfoDouble(ACCOUNT_BALANCE) * 
+                          m_risk.params.maxRiskPerTrade;
+                          
+        double stopDistance = MathAbs(m_orderParams.entry - m_orderParams.stopLoss);
+        
+        if(stopDistance == 0) return 0;
+        
+        double positionSize = riskAmount / (stopDistance * SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE));
+        
+        // Ajustar para limites do símbolo
+        return NormalizeVolume(positionSize);
+    }
+    
+    void MonitorPosition() {
+        if(!PositionSelect(_Symbol)) return;
+        
+        // Atualizar stops dinâmicos
+        UpdateDynamicStops();
+        
+        // Verificar condições de saída
+        CheckExitConditions();
+        
+        // Atualizar métricas
+        UpdatePositionMetrics();
+    }
+    
+    void UpdateDynamicStops() {
+        double currentStop = PositionGetDouble(POSITION_SL);
+        double newStop = CalculateDynamicStop();
+        
+        if(IsBetterStop(newStop, currentStop)) {
+            ModifyPosition(newStop);
+        }
+    }
+    
+    double CalculateDynamicStop() {
+        ENUM_POSITION_TYPE posType = (ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE);
+        double baseStop = PositionGetDouble(POSITION_SL);
+        
+        // Ajustar baseado em PVSRA
+        if(posType == POSITION_TYPE_BUY) {
+            return CalculateLongStop(baseStop);
+        }
+        else {
+            return CalculateShortStop(baseStop);
+        }
+    }
+    
+    void CheckExitConditions() {
+        // Verificar padrões de reversão
+        if(IsReversalPattern()) {
+            ClosePosition("Padrão de reversão detectado");
+            return;
+        }
+        
+        // Verificar volume climático
+        if(m_patterns.volume.isClimax) {
+            ClosePosition("Volume climático detectado");
+            return;
+        }
+        
+        // Verificar previsão ML
+        if(IsMLExitSignal()) {
+            ClosePosition("Sinal de saída ML");
+        }
+    }
+    
+    void UpdatePositionMetrics() {
+        PositionMetrics metrics;
+        metrics.risk = CalculateCurrentRisk();
+        metrics.profit = CalculateFloatingProfit();
+        metrics.duration = CalculatePositionDuration();
+        
+        // Enviar para TechnologyAdvances
+        m_techManager.UpdatePositionMetrics(metrics);
+        
+        // Notificar equipe se necessário
+        if(NeedsTeamNotification(metrics)) {
+            NotifyTeam(FormatPositionUpdate(metrics));
+        }
+    }
+};

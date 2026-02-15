@@ -1,0 +1,39 @@
+// Inicialização dos indicadores
+bool InitializeIndicators() {
+    maHandle = iMA(_Symbol, PERIOD_CURRENT, 20, 0, MODE_EMA, PRICE_CLOSE);
+    if(maHandle == INVALID_HANDLE) {
+        Log("Erro: Falha ao inicializar Média Móvel.");
+        return false;
+    }
+
+    rsiHandle = iRSI(_Symbol, PERIOD_CURRENT, 14, PRICE_CLOSE);
+    if(rsiHandle == INVALID_HANDLE) {
+        Log("Erro: Falha ao inicializar RSI.");
+        return false;
+    }
+
+    atrHandle = iATR(_Symbol, PERIOD_CURRENT, 14);
+    if(atrHandle == INVALID_HANDLE) {
+        Log("Erro: Falha ao inicializar ATR.");
+        return false;
+    }
+
+    ArraySetAsSeries(maBuffer, true);
+    ArraySetAsSeries(rsiBuffer, true);
+    ArraySetAsSeries(atrBuffer, true);
+
+    CopyBuffer(maHandle, 0, 0, 100, maBuffer);
+    CopyBuffer(rsiHandle, 0, 0, 100, rsiBuffer);
+    CopyBuffer(atrHandle, 0, 0, 100, atrBuffer);
+
+    return true;
+}
+
+// Cálculo de volume médio
+double CalculateVolumeMA() {
+    double sum = 0;
+    for(int i = 0; i < VolumePeriod; i++) {
+        sum += volumeBuffer[i];
+    }
+    return sum / VolumePeriod;
+}

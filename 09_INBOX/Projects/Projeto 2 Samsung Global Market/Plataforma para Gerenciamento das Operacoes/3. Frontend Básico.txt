@@ -1,0 +1,57 @@
+// frontend/App.jsx
+import React, { useState, useEffect } from 'react';
+
+function App() {
+    const [positions, setPositions] = useState([]);
+    const [logs, setLogs] = useState([]);
+
+    useEffect(() => {
+        // Simulação de recebimento de dados da API
+        const fetchMarketData = async () => {
+            const data = await fetch('/api/market-data');
+            const json = await data.json();
+            setPositions(json.positions);
+            setLogs(json.logs);
+        };
+
+        fetchMarketData();
+        const interval = setInterval(fetchMarketData, 60000); // Atualiza a cada minuto
+        return () => clearInterval(interval);
+    }, []);
+
+    return (
+        <div>
+            <h1>SAMSUNG GLOBAL MARKET</h1>
+            <h2>Posições Abertas</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Símbolo</th>
+                        <th>Tipo</th>
+                        <th>Preço</th>
+                        <th>Risco</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {positions.map(pos => (
+                        <tr key={pos.id}>
+                            <td>{pos.symbol}</td>
+                            <td>{pos.action}</td>
+                            <td>{pos.price.toFixed(5)}</td>
+                            <td>{pos.risk * 100}%</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+
+            <h2>Logs de Operações</h2>
+            <ul>
+                {logs.map(log => (
+                    <li key={log.id}>{log.message}</li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+
+export default App;

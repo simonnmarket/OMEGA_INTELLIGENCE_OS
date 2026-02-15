@@ -1,0 +1,22 @@
+// Envio de dados para backend
+void SendDataToBackend(const string &data) {
+    string url = "http://<IP_DO_SERVIDOR>:8000/api/log-trade";
+    WebRequest("POST", url, "", "", 0, "", "", data);
+}
+
+// Registro de trade
+void RegisterTrade() {
+    string logMessage = StringFormat(
+        "Trade %d: %s, Volume: %.2f, Entry: %.2f, SL: %.2f, TP: %.2f, Result: %s",
+        performance.totalTrades,
+        EnumToString(setup.signal),
+        setup.volume,
+        setup.entry,
+        setup.stopLoss,
+        setup.takeProfit,
+        IsLastTradeWin() ? "Win" : "Loss"
+    );
+
+    Log(logMessage);
+    SendDataToBackend(logMessage);
+}

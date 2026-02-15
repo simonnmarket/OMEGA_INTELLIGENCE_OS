@@ -1,0 +1,38 @@
+// Cálculo de drawdown
+double CalculateDrawdown() {
+    double peak = 0, drawdown = 0;
+
+    for(int i = OrdersHistoryTotal() - 1; i >= 0; i--) {
+        if(OrderSelect(i, SELECT_BY_POS, MODE_HISTORY)) {
+            double balance = OrderProfit();
+            if(balance > peak) {
+                peak = balance;
+            } else {
+                drawdown = MathMax(drawdown, peak - balance);
+            }
+        }
+    }
+
+    return drawdown;
+}
+
+// Cálculo do Sharpe Ratio
+double CalculateSharpeRatio() {
+    double meanReturn = 0, stdDev = 0, count = 0;
+
+    for(int i = OrdersHistoryTotal() - 1; i >= 0; i--) {
+        if(OrderSelect(i, SELECT_BY_POS, MODE_HISTORY)) {
+            double profit = OrderProfit();
+            meanReturn += profit;
+            stdDev += MathPow(profit, 2);
+            count++;
+        }
+    }
+
+    if(count == 0) return 0;
+
+    meanReturn /= count;
+    stdDev = MathSqrt(stdDev / count - MathPow(meanReturn, 2));
+
+    return stdDev != 0 ? meanReturn / stdDev : 0;
+}
