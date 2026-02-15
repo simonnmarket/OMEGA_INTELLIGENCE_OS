@@ -1,0 +1,137 @@
+# Plano de Implementação: OMEGA Intelligence OS - UI Enhancements
+
+Refinamento da interface web do OMEGA Intelligence OS para padrões de SaaS de alta qualidade, com foco em visualização de dados em tempo real e experiência premium.
+
+## Análise do Sistema Atual
+
+### ✅ Estado Atual
+- **Frontend**: Interface moderna com design system baseado em Vercel/Linear/Abacum
+- **Backend**: Servidor Python rodando em `localhost:8000` com 3 endpoints API
+- **Dados Disponíveis**:
+  - 16 eventos no [audit_log.json](file:///c:/Users/User/.gemini/antigravity/playground/ultraviolet-nadir/07_LOGS/audit_log.json) (últimos de 2026-02-14)
+  - 2 arquivos ingeridos: QuantumScoutPro.mq5 e STO DEFENSE Strategy
+  - Módulos: Core, RiskManager, Bridge, Engineering, Include
+  - Tipos de eventos: CONFLICT, SYSTEM, PROCESS, AI_EXEC, ASSESSOR, ASSESSMENT, RISK, LIBRARY, BRIDGE_INGEST
+
+### 🎯 Objetivos
+1. Adicionar widgets informativos com dados reais do sistema
+2. Melhorar visualização de atividades e eventos
+3. Implementar micro-interações e animações premium
+4. Substituir emojis por iconografia profissional
+5. Adicionar glassmorphism e gradientes sofisticados
+
+---
+
+## Mudanças Propostas
+
+### 1. Novos Widgets no Dashboard
+
+#### [NEW] Widget: Ingested Files
+**Arquivo**: [index.html](file:///c:/Users/User/.gemini/antigravity/playground/ultraviolet-nadir/01_CORE/interfaces/web/index.html)
+
+Adicionar card mostrando arquivos recentemente ingeridos pelo Bridge Layer:
+- Nome do arquivo
+- Tamanho e hash MD5
+- Status de risk scan
+- Timestamp de ingestão
+
+#### [NEW] Widget: Module Breakdown
+**Arquivo**: [index.html](file:///c:/Users/User/.gemini/antigravity/playground/ultraviolet-nadir/01_CORE/interfaces/web/index.html)
+
+Card visual mostrando distribuição de módulos:
+- Core, RiskManager, Bridge, Engineering, Include
+- Status: Completo, Pendente, Em Revisão
+- Indicadores visuais por categoria
+
+---
+
+### 2. Melhorias Visuais
+
+#### [MODIFY] [style.css](file:///c:/Users/User/.gemini/antigravity/playground/ultraviolet-nadir/01_CORE/interfaces/web/style.css)
+
+**Glassmorphism Avançado**:
+```css
+- Adicionar backdrop-filter: blur() nos cards
+- Gradientes sutis com transparência
+- Bordas com gradiente animado em hover
+```
+
+**Iconografia Profissional**:
+```css
+- Substituir emojis por SVG icons ou Lucide icons
+- Ícones consistentes com o design system
+- Animações de ícones em hover
+```
+
+**Micro-interações**:
+```css
+- Animação de contadores (count-up effect)
+- Pulse effect em novos eventos
+- Smooth transitions em todos os estados
+- Skeleton loading states
+```
+
+---
+
+### 3. Integração de Dados
+
+#### [MODIFY] [app.js](file:///c:/Users/User/.gemini/antigravity/playground/ultraviolet-nadir/01_CORE/interfaces/web/app.js)
+
+**Novas Funções**:
+- `renderIngestedFiles()` - Renderiza arquivos do Bridge
+- `renderModuleBreakdown()` - Mostra distribuição de módulos
+- `animateCounter()` - Animação de números incrementais
+- `addEventPulse()` - Destaca novos eventos
+
+**Melhorias na API**:
+- Adicionar endpoint `/api/ingested` para arquivos do Bridge
+- Melhorar parsing de eventos por tipo
+- Adicionar cache local para reduzir polling
+
+---
+
+### 4. Componentes Adicionais
+
+#### [NEW] Activity Timeline
+Visualização temporal de eventos com:
+- Linha do tempo vertical
+- Agrupamento por hora/dia
+- Filtros por tipo de evento
+- Expansão de detalhes
+
+#### [NEW] Status Indicators
+Indicadores visuais melhorados:
+- Dot indicators animados por status
+- Progress bars para processos em andamento
+- Health score visual (gauge chart)
+
+---
+
+## Plano de Verificação
+
+### Testes Visuais
+- [ ] Verificar responsividade em 1920x1080, 1366x768, mobile
+- [ ] Testar animações em diferentes navegadores
+- [ ] Validar contraste e acessibilidade (WCAG AA)
+
+### Testes Funcionais
+- [ ] Confirmar polling de dados a cada 3s
+- [ ] Verificar renderização de novos eventos
+- [ ] Testar navegação entre seções
+- [ ] Validar todos os endpoints API
+
+### Testes de Performance
+- [ ] Medir tempo de carregamento inicial
+- [ ] Verificar uso de memória com polling contínuo
+- [ ] Otimizar re-renders desnecessários
+
+---
+
+## Próximos Passos
+
+1. **Fase 1**: Adicionar novos widgets (Ingested Files, Module Breakdown)
+2. **Fase 2**: Implementar melhorias visuais (glassmorphism, icons, animations)
+3. **Fase 3**: Integrar dados reais do sistema
+4. **Fase 4**: Testes e ajustes finais
+
+**Estimativa**: 2-3 horas de implementação + 1 hora de testes
