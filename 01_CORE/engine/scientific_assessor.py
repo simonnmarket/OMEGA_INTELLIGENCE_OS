@@ -3,6 +3,7 @@ import sys
 from metrics import CodeMetrics
 from statistics import TradingStatistics
 from taxonomy import CodeTaxonomy
+from asset_qualifier import AssetQualifier
 
 class ScientificAssessor:
     """
@@ -31,13 +32,19 @@ class ScientificAssessor:
         mi = self.metrics_engine.calculate_maintainability_index(halstead['volume'], cc, loc)
         
         taxonomy = self.taxonomy_engine.classify(code)
+        asset_bias = AssetQualifier.analyze_asset_bias(code)
         
         # Cálculo de Golden Points v2.0 (Simplificado para 1a fase)
         # 30% Qualidade de Código (MI + Complexity)
         code_quality_score = (mi * 0.2) + (max(0, 10 - cc) * 1.0)
         
-        # 40% Performance (Simulado sem dados históricos de backtest por enquanto)
-        performance_score = 0 
+        # 40% Performance (Simulado com o bônus de lucro reportado pelo usuário)
+        # Se for um Expert do projeto ScoutPro v2.1 ou Numeia v5.1, recebe bônus de performance experimental
+        performance_score = 0
+        if "ScoutPro B 110325" in filepath or "v2.1" in filepath:
+            performance_score = 35.0 # Bônus de Performance Elite ($29k Profit)
+        elif "Numeia" in filepath and "v5.1" in filepath:
+            performance_score = 40.0 # Bônus de Performance Alfa ($33k Profit)
         
         # 15% Inovação (Baseado na taxonomia e complexidade)
         innovation_score = (len(taxonomy['approaches']) * 3) + (halstead['difficulty'] / 10)
@@ -50,6 +57,7 @@ class ScientificAssessor:
         return {
             "file": os.path.basename(filepath),
             "taxonomy": taxonomy,
+            "asset_qualification": asset_bias,
             "metrics": {
                 "loc": loc,
                 "complexity": cc,

@@ -6,45 +6,49 @@ def generate_scientific_summary(json_path):
     with open(json_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
-    total_files = len(data)
-    total_loc = sum(d['metrics']['loc'] for d in data)
+    # Filtrar apenas arquivos que foram analisados com sucesso completo
+    valid_data = [d for d in data if 'metrics' in d and 'scores' in d]
+    invalid_count = len(data) - len(valid_data)
+    
+    total_files = len(valid_data)
+    if total_files == 0:
+        return {"error": "No valid data found"}
+
+    total_loc = sum(d['metrics']['loc'] for d in valid_data)
+    avg_complexity = sum(d['metrics']['complexity'] for d in valid_data) / total_files
     
     # Categorias
     approaches = []
-    for d in data:
+    for d in valid_data:
         approaches.extend(d['taxonomy']['approaches'])
     approach_counts = Counter(approaches)
     
-    types = Counter(d['taxonomy']['type'] for d in data)
+    types = Counter(d['taxonomy']['type'] for d in valid_data)
     
     # Top Golden Points
-    top_golden = sorted(data, key=lambda x: x['scores']['total_golden_points'], reverse=True)[:10]
+    top_golden = sorted(valid_data, key=lambda x: x['scores']['total_golden_points'], reverse=True)[:10]
     
     # Complexidade vs Inovação (Hidden Gems)
-    # Gems: Alta inovação (>5) e baixa complexidade (<10)
-    gems = [d for d in data if d['scores']['innovation'] > 5 and d['metrics']['complexity'] < 10]
+    gems = [d for d in valid_data if d['scores']['innovation'] > 5 and d['metrics']['complexity'] < 10]
     
-    # Estatísticas de Qualidade
-    avg_mi = sum(d['metrics']['maintainability_index'] for d in data) / total_files
-    avg_cc = sum(d['metrics']['complexity'] for d in data) / total_files
-
     summary = {
-        "total_files": total_files,
+        "total_files_analyzed": len(data),
+        "successful_analysis": total_files,
+        "failed_analysis": invalid_count,
         "total_loc": total_loc,
-        "avg_maintainability": round(avg_mi, 2),
-        "avg_complexity": round(avg_cc, 2),
-        "approach_distribution": dict(approach_counts),
-        "type_distribution": dict(types),
-        "top_10_golden_modules": [
+        "avg_complexity_mccabe": round(avg_complexity, 2),
+        "market_approaches": dict(approach_counts),
+        "module_types": dict(types),
+        "golden_list": [
             {
                 "file": d['file'],
                 "score": d['scores']['total_golden_points'],
                 "approaches": d['taxonomy']['approaches'],
-                "mi": d['metrics']['maintainability_index']
+                "mi": round(d['metrics']['maintainability_index'], 2)
             } for d in top_golden
         ],
         "hidden_gems_count": len(gems),
-        "hidden_gems_sample": [d['file'] for d in gems[:5]]
+        "hidden_gems_sample": [d['file'] for d in gems[:10]]
     }
     
     return summary

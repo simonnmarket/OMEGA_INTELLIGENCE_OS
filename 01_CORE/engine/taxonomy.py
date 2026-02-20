@@ -9,12 +9,13 @@ class CodeTaxonomy:
         "SMART_MONEY": [r'liquidity', r'absorption', r'big.?player', r'institutional', r'stop.?hunt', r'imbalance'],
         "VOLUME_BASED": [r'volume.?profile', r'market.?profile', r'vwap', r'footprint', r'delta', r'poc'],
         "TECHNICAL": [r'ema', r'rsi', r'macd', r'atr', r'bollinger', r'support', r'resistance', r'trend'],
-        "QUANTITATIVE": [r'machine.?learning', r'neural', r'statistical', r'optimization', r'backtest', r'probability']
+        "QUANTITATIVE": [r'machine.?learning', r'neural', r'statistical', r'optimization', r'backtest', r'probability'],
+        "PORTFOLIO": [r'diversification', r'multi.?asset', r'rebalance', r'correlation', r'basket', r'portfolio', r'hedge', r'fund']
     }
 
     TYPE_KEYWORDS = {
         "INDICATOR": [r'#property indicator', r'OnCalculate', r'iIndicator'],
-        "STRATEGY": [r'Expert', r'EA', r'OnTick', r'OrderSend', r'PositionOpen'],
+        "STRATEGY": [r'Expert', r'EA', r'OnTick', r'OrderSend', r'PositionOpen', r'Portfolio', r'HedgeFund'],
         "UTILITY": [r'library', r'include', r'utils', r'.mqh']
     }
 
