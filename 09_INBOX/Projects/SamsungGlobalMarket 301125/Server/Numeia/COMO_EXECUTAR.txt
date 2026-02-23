@@ -1,0 +1,70 @@
+========================================
+COMO EXECUTAR O PROMETHEUS V1.0
+========================================
+
+OPÇÃO 1: EXECUTAR O ARQUIVO .BAT (MAIS FÁCIL)
+========================================
+
+1. Navegue até a pasta:
+   C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia
+
+2. Clique duas vezes no arquivo:
+   INICIAR_PROMETHEUS_V1.0.bat
+
+3. O sistema iniciará automaticamente!
+
+
+OPÇÃO 2: EXECUTAR VIA POWERSHELL
+========================================
+
+1. Abra o PowerShell
+
+2. Execute os comandos:
+   cd C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia
+   python prometheus_v1.0_mvpo.py
+
+3. O sistema iniciará e você verá os logs em tempo real
+
+
+OPÇÃO 3: EXECUTAR VIA CMD (Prompt de Comando)
+========================================
+
+1. Abra o CMD (Prompt de Comando)
+
+2. Execute os comandos:
+   cd C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia
+   python prometheus_v1.0_mvpo.py
+
+3. O sistema iniciará e você verá os logs em tempo real
+
+
+========================================
+O QUE VOCÊ VERÁ:
+========================================
+
+1. Tentativa de conexão com MT5
+2. Descoberta de ativos do Market Watch
+3. Quantidade de ativos descobertos
+4. Início dos ciclos de análise
+5. Sinais BUY quando detectados
+6. Execução de ordens (quando houver sinal)
+
+
+========================================
+PARA PARAR O SISTEMA:
+========================================
+
+Pressione: Ctrl + C
+
+
+========================================
+OBSERVAÇÕES:
+========================================
+
+- O sistema roda continuamente
+- Analisa todos os ativos a cada 5 minutos
+- Executa ordens BUY quando a condição é atendida
+- Você pode acompanhar tudo no terminal
+
+========================================
+

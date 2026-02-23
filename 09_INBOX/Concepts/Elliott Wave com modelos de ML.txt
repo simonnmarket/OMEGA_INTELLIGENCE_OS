@@ -1,0 +1,137 @@
+1 — O que a literatura mostra (resumo com evidência)
+
+Há trabalhos que combinam Elliott Wave com modelos de ML (RNNs, LSTM, agentes multi-agente e até LLMs orientando análises) para automatizar contagem e gerar sinais/explicações. Essas abordagens frequentemente tratam Elliott como fonte de rótulos estruturais (impulse/corrective) e alimentam modelos sequenciais para previsão/decisão.
+
+A literatura moderna de generative models para séries temporais (VAEs, GANs, Diffusion, Transformer-diffusion hybrids) demonstra capacidade de gerar cenários plausíveis e explorar o espaço latente para stress testing e simulação de caudas. Vários trabalhos recentes mostram que modelos condicionais (CVAE, conditional diffusion) conseguem preservar propriedades financeiras importantes (heteroscedasticidade, autocorrelação).
+
+Há pesquisas aplicando autoencoders supervisionados para extrair latentes preditivos (ou utilitários para downstream tasks como regime detection) que melhoram tarefas financeiras quando combinados com rótulos e features econômicas. Wavelet-augmented autoencoders melhoram captura multiescala.
+
+Interpretação prática: não existe (na literatura pública de alto nível) um “pacote pronto” exatamente chamado “DALL+Elliott” — mas há dois grupos de técnicas claramente compatíveis:
+
+Elliott → labels / conditions (onde a contagem de ondas fornece o estado/condição), e
+
+DALL-like generative latent models → conditional scenario generator / latent regime encoder.
+A fusão natural é condicionar o gerador latente no estado ELO para produzir cenários e probabilidades úteis ao trading/risk.
+
+2 — Padrões de fusão úteis (formas de usar isso a favor no mercado)
+Padrão A — Conditioned Scenario Generation for Risk & Position Sizing
+
+Detecte ondas ELO em tempo t (tipo, grau, confiança).
+
+Alimente um gerador condicional (CVAE / conditional diffusion) com a condição = wave state + recent features (vol, skew, liquidity).
+
+Gere N cenários futuros condicionados; calcule VaR/ES condicional, probabilidade de continuação de impulso, probabilidade de reversão.
+
+Uso: gestão de risco (ajuste de tamanho, hedge) e não sinal de entrada direta — reduz drawdowns quando wave indicates high-risk regime.
+
+Por que funciona: generative models capturam distribuição de trajetória, e condi- tioning por estado estrutural (ELO) focaliza a massa das cenários em comportamentos coerentes com a estrutura detectada. Evidência conceitual nas literaturas de CVAE/diffusion para séries.
+
+Padrão B — Latent-Wave Features → Predictive Classifier
+
+Extraia latente representations do mercado (autoencoder / DALL-style encoder).
+
+Combine vetores latentes com features ELO (tipo de onda, fib fit, confidence) e treine um classificador/regressor que prevê: probabilidade de >X% move nos próximos H barras, probabilidade de quebra de onda, ou regime mudança.
+
+Uso: gerar probabilidades operacionais (scores) que alimentam regras de execução (ex.: only trade if P(move)>θ e ELO.confidence>c).
+
+Por que funciona: latentes podem capturar padrões de volatilidade / micro-structure que complementam a informação qualitativa da estrutura de ondas. Vários trabalhos mostram ganhos quando latentes são supervisionados para tarefas downstream.
+
+Padrão C — Regime Discovery: clustering latente condicionada em ELO degrees
+
+Use AE / VAE latente space e clusterize latentes condicionados por grau ELO (Primary/Intermediate/Minor).
+
+Mapear regimes (trend, mean-reversion, high-vol) para estratégias distintas (momentum, mean-revert).
+
+Uso: alocar estratégia ativa conforme regime identificado (portfolio switching).
+
+Por que funciona: multiescala + fractalidade de Elliott sugere regimes em diferentes graus; latentes multi-scale (wavelet-VAE) casam bem com essa ideia.
+
+3 — Arquitetura técnica recomendada (implementável hoje)
+Componentes (produção / research stack)
+
+Feed & Feature Store — ticks/bars + derived (returns, vol, realized skew, liquidity).
+
+ELO Detector (state) — module that produces: {degree, type, start,end, amplitude, confidence, fib_features} (use heuristic + ML ensemble). Save as state DB.
+
+Latent Encoder (DALL-scaffold) — AE / VAE / diffusion encoder trained on windows to produce z_t. Optionally multi-scale wavelet front end.
+
+Conditional Generator — CVAE or conditional diffusion model p(x_{t:t+H} | z_t, elo_state, macro_features) that outputs scenario trajectories.
+
+Decision Layer — risk module computes conditional VaR/ES and strategy layer uses probabilities to size positions or block signals.
+
+Backtest & Audit — automated walk-forward, Kupiec/Christoffersen for VaR, economic P&L metrics and reproducible audit logs.
+
+Data flows (fast)
+
+Real-time: Feed → FeatureStore → ELO Detector & Encoder (inference) → Generator (fast sampling) → Risk/Decision → EA.
+
+Offline: Retrain encoder/generator periodically (nightly/weekly) with expanded data.
+
+4 — Experimentos testáveis (hipóteses refutáveis) — práticos
+Experimento 1 — AE-ELO conditional VaR vs GARCH
+
+H0: VaR coverage of AE-ELO conditional VaR equals GARCH baseline.
+
+Setup: choose assets (SPX, BTC, EURUSD), horizon H=1,5,20; train conditional generator on T_train; test walk-forward.
+
+Metrics: Kupiec p-value, Christoffersen, ES backtest (Acerbi). Rej. H0 if AE-ELO yields statistically better coverage (p>0.05 for null of correct coverage) or lower loss in tail events.
+
+(References on deep scenario generation & diffusion use.)
+
+Experimento 2 — Predictive lift from combining features
+
+H0: adding ELO features to latent-based classifier does not improve prediction of directional moves (AUC).
+
+Train classifiers: (A) latents only, (B) latents + ELO features; evaluate ROC/AUC, precision at top k, economic Sharpe of a simple signal. Use cross-validation and permutation tests for significance.
+
+Experimento 3 — Regime switching utility
+
+Cluster latent space conditioned on ELO degree; measure whether clusters have significantly different realized vol/skew/drawdown distributions (ANOVA, permutation). If clusters predict different risk profiles, use them to switch strategy and report economic improvement.
+
+5 — Metrificação e aceitação
+
+Estatística:
+
+Kupiec POF & Christoffersen for VaR.
+
+AUC, precision/recall for directional tasks.
+
+Permutation/Bootstrap p-values for observed lift.
+
+Econômica:
+
+Sharpe, Sortino, Max Drawdown, Calmar, turnover, slippage-adjusted returns.
+
+Margin utilization / expected funding cost for futures/crypto.
+
+Reprodutibilidade:
+
+Save model checkpoints, data hashes, seed, package versions; include audit.json for each run. (Best practice used previously.)
+
+6 — Riscos, vieses e armadilhas — o que evitar
+
+Lookahead leakage — condition models only on information available at time t.
+
+Overfitting to labels — Elliott counts are subjective; build gold standard via multiple annotators and consensus.
+
+False confidence from generator — generative models can produce plausible but unrealistic tails if not calibrated (calibrate noise & diffusion schedule).
+
+Data-snooping — multiple testing without correction will produce false positives; use hold-out and pre-registered experiments.
+
+7 — Planos de entrega — o que eu posso gerar agora (pronto para você rodar)
+
+Se você quiser eu posso gerar imediatamente (e disponibilizar para download):
+
+Prototype pipeline (research-quality) in Python:
+
+elo_encoder.py — ELO detector (heuristic + small CNN/RNN stub) producing ELO state JSON.
+
+dall_latent_module.py — autoencoder/vae scaffold with wavelet preprocessing and training script.
+
+conditional_generator.py — CVAE scaffold (train + sample), plus an example of conditioning on ELO state.
+
+fusion_backtest.py — end-to-end example: fetch data (yfinance), detect ELO state, encode latent, generate N scenarios, compute conditional VaR and run Kupiec test vs GARCH baseline; outputs audit files.
+
+Small reproducible experiment on a chosen asset (e.g., BTC-USD, ^GSPC) using public data — includes scripts to run training locally and produce audit outputs. I will include instructions for CPU/GPU, dependencies, and recommended hyperparameters.
+
+Notebook walkthrough that walks through results, shows scenario plots, latent space visualization, and explains how the decision layer uses outputs.

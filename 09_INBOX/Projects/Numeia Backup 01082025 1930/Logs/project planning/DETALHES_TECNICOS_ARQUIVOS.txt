@@ -1,0 +1,188 @@
+//+------------------------------------------------------------------+
+//| DETALHES TÉCNICOS - ARQUIVOS DO PROJETO NUMEIA                   |
+//| Data: 2025-07-18 | Status: ATIVO | Versão: v1.0                  |
+//+------------------------------------------------------------------+
+
+📋 DETALHES TÉCNICOS POR ARQUIVO:
+==================================
+
+🔵 CORE/CORE_BRAIN_MANAGER.MQH
+├── 📍 LOCALIZAÇÃO: core/core_brain_manager.mqh
+├── 📏 TAMANHO: 180 linhas
+├── 🟢 BLINDAGEM: SHA3 Implementado
+├── 🔢 VERSÃO: v2.3 (Thaler-Enhanced + Blindagem Institucional)
+├── 🔐 SHA3: 8f7e6d5c4b3a2918273645544332211009abcdef87654321
+├── 📊 STATUS: APROVADO
+├── 🔴 DEPENDÊNCIAS PENDENTES:
+│   ├── ❌ include/executionlogic/safe_mode_manager.mqh
+│   ├── ❌ include/executionlogic/trade_executor.mqh
+│   ├── ❌ include/types/trade_signal_enum.mqh
+│   ├── ❌ include/utils/logger_institutional.mqh
+│   └── ❌ include/security/quantumfirewall.mqh
+└── ✅ FUNCIONALIDADES:
+    ├── ✅ Validação de ponteiros
+    ├── ✅ Proteção de exceções SAFE_EXEC
+    ├── ✅ Logging institucional
+    ├── ✅ Histórico de operações
+    └── ✅ Modo simulado
+
+🔵 INCLUDE/EXECUTIONLOGIC/SAFE_MODE_MANAGER.MQH
+├── 📍 LOCALIZAÇÃO: include/executionlogic/safe_mode_manager.mqh
+├── 📏 TAMANHO: 280 linhas
+├── 🟢 BLINDAGEM: SHA3 Implementado
+├── 🔢 VERSÃO: v1.2 (GodMode Final + Blindagem Institucional)
+├── 🔐 SHA3: 7e6d5c4b3a2918273645544332211009abcdef876543210
+├── 📊 STATUS: APROVADO
+├── 🔴 DEPENDÊNCIAS PENDENTES:
+│   ├── ❌ include/utils/logger_institutional.mqh
+│   ├── ❌ include/analysis/market_regime_detector.mqh
+│   └── ❌ include/visuals/decision_panel.mq5
+└── ✅ FUNCIONALIDADES:
+    ├── ✅ Contador automático de erros
+    ├── ✅ Ativação automática de modo seguro
+    ├── ✅ Detecção de erros críticos
+    ├── ✅ Interface visual de status
+    └── ✅ Tempo de reativação configurável
+
+🔵 INCLUDE/ANALYSIS/MARKET_REGIME_DETECTOR.MQH
+├── 📍 LOCALIZAÇÃO: include/analysis/market_regime_detector.mqh
+├── 📏 TAMANHO: 305 linhas
+├── 🔴 BLINDAGEM: SHA3 Pendente
+├── 🔢 VERSÃO: v2.0 (Quantum Genesis Engine)
+├── 📊 STATUS: CRÍTICO
+├── 🔴 DEPENDÊNCIAS PENDENTES:
+│   ├── ❌ include/utils/logger_institutional.mqh
+│   ├── ❌ include/risk/risk_profile.mqh
+│   └── ❌ GeneticOptimizer.mqh
+└── ⚠️ PROBLEMAS IDENTIFICADOS:
+    ├── ❌ Função ArrayPushBack() não existe
+    ├── ❌ Classe GeneticOptimizer não existe
+    ├── ❌ Métodos não implementados
+    └── ❌ Falta validação de arrays
+
+🔵 INCLUDE/ANALYSIS/MULTI_TIMEFRAME_VALIDATOR.MQH
+├── 📍 LOCALIZAÇÃO: include/analysis/multi_timeframe_validator.mqh
+├── 📏 TAMANHO: 150 linhas
+├── 🔴 BLINDAGEM: SHA3 Pendente
+├── 🔢 VERSÃO: v2.1 (GodMode Ready)
+├── 📊 STATUS: CRÍTICO
+├── 🔴 DEPENDÊNCIAS PENDENTES:
+│   ├── ❌ include/types/trade_signal_enum.mqh
+│   └── ❌ include/utils/logger_institutional.mqh
+└── ⚠️ PROBLEMAS IDENTIFICADOS:
+    ├── ❌ Métodos não implementados
+    ├── ❌ Falta validação de arrays
+    └── ❌ Falta proteção de exceções
+
+🔵 INCLUDE/DECISIONENGINE/DECISION_ROUTER.MQH
+├── 📍 LOCALIZAÇÃO: include/decisionengine/decision_router.mqh
+├── 📏 TAMANHO: 125 linhas
+├── 🔴 BLINDAGEM: SHA3 Pendente
+├── 🔢 VERSÃO: v3.1 (GodMode Ready)
+├── 📊 STATUS: CRÍTICO
+├── 🔴 DEPENDÊNCIAS PENDENTES:
+│   ├── ❌ include/types/trade_signal_enum.mqh
+│   └── ❌ include/utils/logger_institutional.mqh
+└── ⚠️ PROBLEMAS IDENTIFICADOS:
+    ├── ❌ Métodos não implementados na ThalerBiasEngine
+    ├── ❌ Falta validação de arrays
+    └── ❌ Falta proteção de exceções
+
+🔵 INCLUDE/INTELLIGENCE/THALER_BIAS_ENGINE.MQH
+├── 📍 LOCALIZAÇÃO: include/intelligence/thaler_bias_engine.mqh
+├── 📏 TAMANHO: 252 linhas
+├── 🔴 BLINDAGEM: SHA3 Pendente
+├── 🔢 VERSÃO: v2.1 (GodMode Final + IA Ready)
+├── 📊 STATUS: CRÍTICO
+├── 🔴 DEPENDÊNCIAS PENDENTES:
+│   ├── ❌ include/utils/logger_institutional.mqh
+│   ├── ❌ include/risk/risk_profile.mqh
+│   ├── ❌ include/types/trade_signal_enum.mqh
+│   ├── ❌ include/visuals/quantum_decision_panel.mq5
+│   ├── ❌ DarkPoolScanner.mqh
+│   └── ❌ BloombergFeed.mqh
+└── ⚠️ PROBLEMAS IDENTIFICADOS:
+    ├── ❌ Função ArrayPushBack() não existe
+    ├── ❌ Classe CLabel não incluída
+    ├── ❌ Métodos não implementados
+    └── ❌ Falta validação de arrays
+
+🔵 EXPERT/NUMEIEA.MQ5
+├── 📍 LOCALIZAÇÃO: expert/NumeiaEA.mq5
+├── 📏 TAMANHO: 28 linhas
+├── 🔴 BLINDAGEM: SHA3 Pendente
+├── 🔢 VERSÃO: v1.0
+├── 📊 STATUS: CRÍTICO
+├── 🔴 DEPENDÊNCIAS PENDENTES:
+│   ├── ❌ include/executionlogic/trade_executor.mqh
+│   ├── ❌ include/executionlogic/safe_mode_manager.mqh
+│   └── ❌ utils/logger_institutional.mqh
+└── ⚠️ PROBLEMAS IDENTIFICADOS:
+    ├── ❌ Falta validação de inicialização
+    ├── ❌ Falta proteção de exceções
+    └── ❌ Falta logging institucional
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚨 ARQUIVOS DELETADOS/INEXISTENTES:
+===================================
+
+❌ INCLUDE/ANALYSIS/CORRELATION_MATRIX.MQH
+├── 📍 LOCALIZAÇÃO: include/analysis/correlation_matrix.mqh
+├── 📊 STATUS: DELETADO
+└── 🔥 AÇÃO: RECRIAR NECESSÁRIO
+
+❌ INCLUDE/EXECUTIONLOGIC/TRADE_EXECUTOR.MQH
+├── 📍 LOCALIZAÇÃO: include/executionlogic/trade_executor.mqh
+├── 📊 STATUS: NÃO EXISTE
+└── 🔥 AÇÃO: CRIAR NECESSÁRIO
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 ESTATÍSTICAS GERAIS:
+=======================
+
+📈 ARQUIVOS POR STATUS:
+├── 🟢 APROVADO: 2 (28.6%)
+├── 🔴 CRÍTICO: 5 (71.4%)
+└── ❌ INEXISTENTE: 2
+
+📈 ARQUIVOS POR BLINDAGEM:
+├── 🟢 SHA3 IMPLEMENTADO: 2 (28.6%)
+├── 🔴 SHA3 PENDENTE: 5 (71.4%)
+└── ❌ DELETADO: 2
+
+📈 DEPENDÊNCIAS MAIS CRÍTICAS:
+├── 🔥 logger_institutional.mqh: 7 módulos dependem
+├── 🔥 trade_signal_enum.mqh: 5 módulos dependem
+├── 🔥 risk_profile.mqh: 4 módulos dependem
+└── 🔥 trade_executor.mqh: 2 módulos dependem
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 PRÓXIMAS AÇÕES PRIORITÁRIAS:
+=================================
+
+1️⃣ CRIAR ARQUIVOS CRÍTICOS (TIER-0):
+   ├── 🔥 logger_institutional.mqh
+   ├── 🔥 trade_signal_enum.mqh
+   └── 🔥 risk_profile.mqh
+
+2️⃣ APLICAR BLINDAGEM SHA3:
+   ├── 🔥 market_regime_detector.mqh
+   ├── 🔥 multi_timeframe_validator.mqh
+   ├── 🔥 decision_router.mqh
+   ├── 🔥 thaler_bias_engine.mqh
+   └── 🔥 NumeiaEA.mq5
+
+3️⃣ RECRIAR ARQUIVOS DELETADOS:
+   ├── 🔥 correlation_matrix.mqh
+   └── 🔥 trade_executor.mqh
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔄 ÚLTIMA ATUALIZAÇÃO: 2025-07-18 15:30 UTC
+📝 PRÓXIMA REVISÃO: 2025-07-18 16:00 UTC
+🎯 STATUS: PROJETO EM DESENVOLVIMENTO ATIVO
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 

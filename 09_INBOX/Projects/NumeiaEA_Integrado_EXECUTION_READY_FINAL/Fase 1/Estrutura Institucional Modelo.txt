@@ -1,0 +1,19 @@
+MQL5/
+├── Include/
+│   ├── Analysis/
+│   │   ├── CVaRManager.mqh
+│   │   ├── GARCH.mqh
+│   │   ├── LinearReg.mqh
+│   │   ├── QuantumEntanglementMap.mqh
+│   │   ├── WhaleDetector.mqh
+│   │   ├── CurrencyDNAManager.mqh
+│   │   ├── AsymmetricCorrelationDetector.mqh
+│   ├── ExecutionLogic/
+│   │   ├── PositionManager.mqh
+│   │   ├── EntropyTrailingStop.mqh
+│   │   ├── HydraManager.mqh
+│   ├── DecisionEngine/
+│   ├── Integration/
+├── Experts/
+│   └── Numeia/
+│       └── NumeiaEA_Integrado_EXECUTION_READY_FINAL.mq5

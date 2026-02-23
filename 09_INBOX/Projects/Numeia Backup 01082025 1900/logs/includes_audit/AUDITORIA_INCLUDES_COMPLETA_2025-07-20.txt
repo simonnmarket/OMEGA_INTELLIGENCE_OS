@@ -1,0 +1,279 @@
+//+------------------------------------------------------------------+
+//| AUDITORIA COMPLETA DE INCLUDES - PROJETO NUMEIA                  |
+//| Data: 2025-07-29 | Status: EXECUTANDO | Versão: v1.0             |
+//| Protocolo: QA-INCLUDE-AUDIT-2025-07-29-0002                      |
+//+------------------------------------------------------------------+
+
+╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗
+║                                    🔍 AUDITORIA DE INCLUDES                                        ║
+║                                         PROTOCOLO EXECUTANDO                                       ║
+╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝
+
+📋 MAPEAMENTO ESTRUTURAL:
+==========================
+
+🔍 ARQUIVOS IDENTIFICADOS PARA AUDITORIA:
+├── ✅ core/core_brain_manager.mqh
+├── ✅ include/analysis/market_regime_detector.mqh
+├── ✅ include/analysis/multi_timeframe_validator.mqh
+├── ✅ include/analysis/correlation_matrix.mqh
+├── ✅ include/decisionengine/decision_router.mqh
+├── ✅ include/intelligence/thaler_bias_engine.mqh
+├── ✅ include/executionlogic/safe_mode_manager.mqh
+├── ✅ include/utils/logger_institutional.mqh
+└── ✅ expert/NumeiaEA.mq5
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔍 VERIFICAÇÃO DE INCLUDES POR ARQUIVO:
+=======================================
+
+📁 ARQUIVO 1: core/core_brain_manager.mqh
+├── 📍 LOCALIZAÇÃO: core/core_brain_manager.mqh
+├── 📏 TAMANHO: 180 linhas
+├── 🔍 INCLUDES ENCONTRADOS:
+│   ├── #include <include/executionlogic/safe_mode_manager.mqh>
+│   ├── #include <include/executionlogic/trade_executor.mqh>
+│   ├── #include <include/types/trade_signal_enum.mqh>
+│   ├── #include <include/utils/logger_institutional.mqh>
+│   └── #include <include/security/quantumfirewall.mqh>
+├── 🔴 PROBLEMAS IDENTIFICADOS:
+│   ├── ❌ CAMINHO INCORRETO: <include/executionlogic/safe_mode_manager.mqh> → <executionlogic/safe_mode_manager.mqh>
+│   ├── ❌ CAMINHO INCORRETO: <include/executionlogic/trade_executor.mqh> → <executionlogic/trade_executor.mqh>
+│   ├── ❌ CAMINHO INCORRETO: <include/types/trade_signal_enum.mqh> → <types/trade_signal_enum.mqh>
+│   ├── ❌ CAMINHO INCORRETO: <include/utils/logger_institutional.mqh> → <utils/logger_institutional.mqh>
+│   └── ❌ CAMINHO INCORRETO: <include/security/quantumfirewall.mqh> → <security/quantumfirewall.mqh>
+└── 📊 STATUS: CRÍTICO (5 problemas)
+
+📁 ARQUIVO 2: include/analysis/market_regime_detector.mqh
+├── 📍 LOCALIZAÇÃO: include/analysis/market_regime_detector.mqh
+├── 📏 TAMANHO: 305 linhas
+├── 🔍 INCLUDES ENCONTRADOS:
+│   ├── #include <include/utils/logger_institutional.mqh>
+│   ├── #include <include/risk/risk_profile.mqh>
+│   └── #include <GeneticOptimizer.mqh>
+├── 🔴 PROBLEMAS IDENTIFICADOS:
+│   ├── ❌ CAMINHO INCORRETO: <include/utils/logger_institutional.mqh> → <utils/logger_institutional.mqh>
+│   ├── ❌ CAMINHO INCORRETO: <include/risk/risk_profile.mqh> → <risk/risk_profile.mqh>
+│   └── ❌ ARQUIVO AUSENTE: <GeneticOptimizer.mqh> → Arquivo não encontrado
+└── 📊 STATUS: CRÍTICO (3 problemas)
+
+📁 ARQUIVO 3: include/analysis/multi_timeframe_validator.mqh
+├── 📍 LOCALIZAÇÃO: include/analysis/multi_timeframe_validator.mqh
+├── 📏 TAMANHO: 150 linhas
+├── 🔍 INCLUDES ENCONTRADOS:
+│   ├── #include <include/types/trade_signal_enum.mqh>
+│   └── #include <include/utils/logger_institutional.mqh>
+├── 🔴 PROBLEMAS IDENTIFICADOS:
+│   ├── ❌ CAMINHO INCORRETO: <include/types/trade_signal_enum.mqh> → <types/trade_signal_enum.mqh>
+│   └── ❌ CAMINHO INCORRETO: <include/utils/logger_institutional.mqh> → <utils/logger_institutional.mqh>
+└── 📊 STATUS: MODERADO (2 problemas)
+
+📁 ARQUIVO 4: include/analysis/correlation_matrix.mqh
+├── 📍 LOCALIZAÇÃO: include/analysis/correlation_matrix.mqh
+├── 📏 TAMANHO: 120 linhas
+├── 🔍 INCLUDES ENCONTRADOS:
+│   ├── #include <include/utils/logger_institutional.mqh>
+│   ├── #include <include/risk/risk_profile.mqh>
+│   └── #include <include/types/trade_signal_enum.mqh>
+├── 🔴 PROBLEMAS IDENTIFICADOS:
+│   ├── ❌ CAMINHO INCORRETO: <include/utils/logger_institutional.mqh> → <utils/logger_institutional.mqh>
+│   ├── ❌ CAMINHO INCORRETO: <include/risk/risk_profile.mqh> → <risk/risk_profile.mqh>
+│   └── ❌ CAMINHO INCORRETO: <include/types/trade_signal_enum.mqh> → <types/trade_signal_enum.mqh>
+└── 📊 STATUS: MODERADO (3 problemas)
+
+📁 ARQUIVO 5: include/decisionengine/decision_router.mqh
+├── 📍 LOCALIZAÇÃO: include/decisionengine/decision_router.mqh
+├── 📏 TAMANHO: 125 linhas
+├── 🔍 INCLUDES ENCONTRADOS:
+│   ├── #include <include/types/trade_signal_enum.mqh>
+│   └── #include <include/utils/logger_institutional.mqh>
+├── 🔴 PROBLEMAS IDENTIFICADOS:
+│   ├── ❌ CAMINHO INCORRETO: <include/types/trade_signal_enum.mqh> → <types/trade_signal_enum.mqh>
+│   └── ❌ CAMINHO INCORRETO: <include/utils/logger_institutional.mqh> → <utils/logger_institutional.mqh>
+└── 📊 STATUS: MODERADO (2 problemas)
+
+📁 ARQUIVO 6: include/intelligence/thaler_bias_engine.mqh
+├── 📍 LOCALIZAÇÃO: include/intelligence/thaler_bias_engine.mqh
+├── 📏 TAMANHO: 252 linhas
+├── 🔍 INCLUDES ENCONTRADOS:
+│   ├── #include <include/utils/logger_institutional.mqh>
+│   ├── #include <include/risk/risk_profile.mqh>
+│   ├── #include <include/types/trade_signal_enum.mqh>
+│   ├── #include <include/visuals/quantum_decision_panel.mq5>
+│   ├── #include <DarkPoolScanner.mqh>
+│   └── #include <BloombergFeed.mqh>
+├── 🔴 PROBLEMAS IDENTIFICADOS:
+│   ├── ❌ CAMINHO INCORRETO: <include/utils/logger_institutional.mqh> → <utils/logger_institutional.mqh>
+│   ├── ❌ CAMINHO INCORRETO: <include/risk/risk_profile.mqh> → <risk/risk_profile.mqh>
+│   ├── ❌ CAMINHO INCORRETO: <include/types/trade_signal_enum.mqh> → <types/trade_signal_enum.mqh>
+│   ├── ❌ CAMINHO INCORRETO: <include/visuals/quantum_decision_panel.mq5> → <visuals/quantum_decision_panel.mq5>
+│   ├── ❌ ARQUIVO AUSENTE: <DarkPoolScanner.mqh> → Arquivo não encontrado
+│   └── ❌ ARQUIVO AUSENTE: <BloombergFeed.mqh> → Arquivo não encontrado
+└── 📊 STATUS: CRÍTICO (6 problemas)
+
+📁 ARQUIVO 7: include/executionlogic/safe_mode_manager.mqh
+├── 📍 LOCALIZAÇÃO: include/executionlogic/safe_mode_manager.mqh
+├── 📏 TAMANHO: 280 linhas
+├── 🔍 INCLUDES ENCONTRADOS:
+│   ├── #include <include/utils/logger_institutional.mqh>
+│   ├── #include <include/analysis/market_regime_detector.mqh>
+│   └── #include <include/visuals/decision_panel.mq5>
+├── 🔴 PROBLEMAS IDENTIFICADOS:
+│   ├── ❌ CAMINHO INCORRETO: <include/utils/logger_institutional.mqh> → <utils/logger_institutional.mqh>
+│   ├── ❌ CAMINHO INCORRETO: <include/analysis/market_regime_detector.mqh> → <analysis/market_regime_detector.mqh>
+│   └── ❌ CAMINHO INCORRETO: <include/visuals/decision_panel.mq5> → <visuals/decision_panel.mq5>
+└── 📊 STATUS: MODERADO (3 problemas)
+
+📁 ARQUIVO 8: include/utils/logger_institutional.mqh
+├── 📍 LOCALIZAÇÃO: include/utils/logger_institutional.mqh
+├── 📏 TAMANHO: 80 linhas
+├── 🔍 INCLUDES ENCONTRADOS:
+│   └── Nenhum include encontrado
+├── 🔴 PROBLEMAS IDENTIFICADOS:
+│   └── Nenhum problema identificado
+└── 📊 STATUS: APROVADO (0 problemas)
+
+📁 ARQUIVO 9: expert/NumeiaEA.mq5
+├── 📍 LOCALIZAÇÃO: expert/NumeiaEA.mq5
+├── 📏 TAMANHO: 28 linhas
+├── 🔍 INCLUDES ENCONTRADOS:
+│   ├── #include <include/executionlogic/trade_executor.mqh>
+│   ├── #include <include/executionlogic/safe_mode_manager.mqh>
+│   └── #include <utils/logger_institutional.mqh>
+├── 🔴 PROBLEMAS IDENTIFICADOS:
+│   ├── ❌ CAMINHO INCORRETO: <include/executionlogic/trade_executor.mqh> → <executionlogic/trade_executor.mqh>
+│   ├── ❌ CAMINHO INCORRETO: <include/executionlogic/safe_mode_manager.mqh> → <executionlogic/safe_mode_manager.mqh>
+│   └── ❌ CAMINHO INCORRETO: <utils/logger_institutional.mqh> → <include/utils/logger_institutional.mqh>
+└── 📊 STATUS: CRÍTICO (3 problemas)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 CATEGORIZAÇÃO DE PROBLEMAS:
+===============================
+
+🔴 CAMINHO INCORRETO (25 problemas):
+├── ❌ <include/executionlogic/safe_mode_manager.mqh> → <executionlogic/safe_mode_manager.mqh>
+├── ❌ <include/executionlogic/trade_executor.mqh> → <executionlogic/trade_executor.mqh>
+├── ❌ <include/types/trade_signal_enum.mqh> → <types/trade_signal_enum.mqh>
+├── ❌ <include/utils/logger_institutional.mqh> → <utils/logger_institutional.mqh>
+├── ❌ <include/security/quantumfirewall.mqh> → <security/quantumfirewall.mqh>
+├── ❌ <include/risk/risk_profile.mqh> → <risk/risk_profile.mqh>
+├── ❌ <include/analysis/market_regime_detector.mqh> → <analysis/market_regime_detector.mqh>
+├── ❌ <include/visuals/decision_panel.mq5> → <visuals/decision_panel.mq5>
+├── ❌ <include/visuals/quantum_decision_panel.mq5> → <visuals/quantum_decision_panel.mq5>
+└── ❌ <utils/logger_institutional.mqh> → <include/utils/logger_institutional.mqh>
+
+🔴 ARQUIVO AUSENTE (4 problemas):
+├── ❌ <GeneticOptimizer.mqh> → Arquivo não encontrado
+├── ❌ <DarkPoolScanner.mqh> → Arquivo não encontrado
+├── ❌ <BloombergFeed.mqh> → Arquivo não encontrado
+└── ❌ <trade_executor.mqh> → Arquivo não encontrado
+
+🔴 FORMATO INVÁLIDO (0 problemas):
+└── ✅ Nenhum problema de formato identificado
+
+🔴 DEPENDÊNCIA CIRCULAR (0 problemas):
+└── ✅ Nenhuma dependência circular identificada
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📈 ESTATÍSTICAS DA AUDITORIA:
+==============================
+
+📊 RESUMO POR ARQUIVO:
+├── 🔴 CRÍTICO: 4 arquivos (44.4%)
+├── 🟡 MODERADO: 4 arquivos (44.4%)
+└── 🟢 APROVADO: 1 arquivo (11.1%)
+
+📊 RESUMO POR TIPO DE PROBLEMA:
+├── 🔴 CAMINHO INCORRETO: 25 problemas
+├── 🔴 ARQUIVO AUSENTE: 4 problemas
+├── 🔴 FORMATO INVÁLIDO: 0 problemas
+└── 🔴 DEPENDÊNCIA CIRCULAR: 0 problemas
+
+📊 ARQUIVOS MAIS CRÍTICOS:
+├── 🔥 thaler_bias_engine.mqh: 6 problemas
+├── 🔥 core_brain_manager.mqh: 5 problemas
+├── 🔥 market_regime_detector.mqh: 3 problemas
+├── 🔥 correlation_matrix.mqh: 3 problemas
+├── 🔥 safe_mode_manager.mqh: 3 problemas
+├── 🔥 NumeiaEA.mq5: 3 problemas
+├── 🔥 multi_timeframe_validator.mqh: 2 problemas
+├── 🔥 decision_router.mqh: 2 problemas
+└── 🔥 logger_institutional.mqh: 0 problemas
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 PLANO DE AÇÃO PARA CORREÇÃO:
+================================
+
+1️⃣ PRIORIDADE MÁXIMA (CRÍTICA):
+   ├── 🔥 CORRIGIR CAMINHOS INCORRETOS em 8 arquivos
+   ├── 🔥 NOTIFICAR SOBRE 4 ARQUIVOS AUSENTES
+   └── 🔥 APLICAR BLINDAGEM SHA3 em logger_institutional.mqh
+
+2️⃣ PRIORIDADE ALTA:
+   ├── 🔥 CRIAR ARQUIVOS AUSENTES (após aprovação TIER-0)
+   ├── 🔥 VALIDAR COMPILAÇÃO após correções
+   └── 🔥 TESTAR INTEGRAÇÃO de módulos
+
+3️⃣ PRIORIDADE MÉDIA:
+   ├── 🔥 APLICAR BLINDAGEM SHA3 em todos os arquivos
+   ├── 🔥 IMPLEMENTAR SISTEMA DE NOTIFICAÇÕES
+   └── 🔥 CRIAR RELATÓRIOS DE AUDITORIA AUTOMÁTICOS
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 ARQUIVOS AUSENTES IDENTIFICADOS:
+===================================
+
+🔴 ARQUIVOS CRÍTICOS (TIER-0):
+├── ❌ include/types/trade_signal_enum.mqh
+├── ❌ include/risk/risk_profile.mqh
+└── ❌ include/executionlogic/trade_executor.mqh
+
+🔴 ARQUIVOS ESPECIALIZADOS (TIER-1):
+├── ❌ include/security/quantumfirewall.mqh
+├── ❌ include/visuals/decision_panel.mq5
+└── ❌ include/visuals/quantum_decision_panel.mq5
+
+🔴 ARQUIVOS AVANÇADOS (TIER-2):
+├── ❌ GeneticOptimizer.mqh
+├── ❌ DarkPoolScanner.mqh
+└── ❌ BloombergFeed.mqh
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ CRITÉRIOS DE SUCESSO:
+========================
+
+1. ✅ Todos os arquivos .mqh e .mq5 foram auditados (9/9)
+2. ✅ Todos os includes foram validados contra a estrutura oficial
+3. ✅ Todos os problemas foram categorizados e documentados
+4. ✅ Plano de ação foi gerado com recomendações claras
+5. 🔴 Compilação pós-correção (PENDENTE)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔄 STATUS FINAL:
+================
+
+⚠️ **Status Final:** CRÍTICO
+A auditoria identificou 29 problemas em 8 arquivos. Recomenda-se corrigir
+os caminhos incorretos imediatamente e solicitar aprovação TIER-0 para
+criação dos arquivos ausentes identificados.
+
+📊 PRÓXIMAS AÇÕES:
+├── 🔥 Corrigir 25 caminhos incorretos
+├── 🔥 Notificar sobre 4 arquivos ausentes
+├── 🔥 Aplicar blindagem SHA3 em logger_institutional.mqh
+└── 🔥 Validar compilação após correções
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔄 ÚLTIMA ATUALIZAÇÃO: 2025-07-29 15:45 UTC
+📝 PRÓXIMA REVISÃO: 2025-07-29 16:00 UTC
+🎯 STATUS: AUDITORIA COMPLETA - CORREÇÕES PENDENTES
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 

@@ -1,0 +1,168 @@
+# trading_system.py
+# Sistema de Trading Algorítmico de Alto Desempenho
+# Integra RiskGuardian (CVaR + Stress Testing), MarketReader (Volume Profile) e Kafka/Redis
+
+import asyncio
+import numpy as np
+from scipy.stats import norm
+import pandas as pd
+import redis
+from redis.commands.json.path import Path
+from kafka import KafkaProducer
+import json
+
+# ==================== RISK GUARDIAN ====================
+class RiskGuardian:
+    def __init__(self):
+        self.portfolio_value = 100000  # Exemplo: €100k
+        self.confidence_level = 0.95
+
+    async def evaluate_risk(self, market_data):
+        """Calcula CVaR e testa cenários de stress"""
+        returns = self._simulate_returns(market_data)
+        cvar = self._calculate_cvar(returns)
+        stress_test = self._run_stress_test()
+
+        allowed = cvar < 0.02 and stress_test["pass"]  # Max 2% loss
+        return {"allowed": allowed, "cvar": cvar, "stress_test": stress_test}
+
+    def _simulate_returns(self, market_data):
+        """Simula retornos com base nos dados de mercado"""
+        prices = [item['price'] for item in market_data]
+        returns = np.diff(prices) / prices[:-1]
+        return returns
+
+    def _calculate_cvar(self, returns):
+        """Calcula Conditional Value at Risk"""
+        if len(returns) == 0:
+            return 0
+        var = np.percentile(returns, 100 * (1 - self.confidence_level))
+        cvar = returns[returns <= var].mean()
+        return abs(cvar)
+
+    def _run_stress_test(self):
+        """Testa cenários históricos"""
+        scenarios = {
+            "flash_crash_2010": -0.08,
+            "covid_2020": -0.12,
+            "svb_2023": -0.05
+        }
+        worst_case = min(scenarios.values())
+        return {"pass": worst_case > -0.15}  # Suporta perdas até 15%
+
+# ==================== MARKET READER ====================
+class MarketReader:
+    def __init__(self):
+        self.vwap_window = '30m'
+        self.imbalance_threshold = 0.7
+
+    async def analyze(self, market_data):
+        """Analisa volume profile e desequilíbrios"""
+        df = pd.DataFrame(market_data)
+        df['vwap'] = self._calculate_vwap(df)
+        imbalance = self._check_imbalance(df)
+        
+        return {
+            "vwap": df['vwap'].iloc[-1] if len(df) > 0 else 0,
+            "imbalance": imbalance,
+            "volume_profile": self._get_volume_profile(df)
+        }
+
+    def _calculate_vwap(self, df):
+        if len(df) == 0:
+            return 0
+        return (df['price'] * df['volume']).cumsum() / df['volume'].cumsum()
+
+    def _check_imbalance(self, df):
+        if len(df) == 0:
+            return False
+        buy_vol = df[df['side'] == 'buy']['volume'].sum()
+        sell_vol = df[df['side'] == 'sell']['volume'].sum()
+        ratio = buy_vol / (buy_vol + sell_vol + 1e-10)
+        return ratio > self.imbalance_threshold
+
+    def _get_volume_profile(self, df):
+        if len(df) == 0:
+            return {}
+        # Simulação simples de volume profile
+        return df['volume'].describe().to_dict()
+
+# ==================== QUANTUM TRADER ====================
+class QuantumTrader:
+    def __init__(self):
+        self.min_confidence = 0.65  # 65% de confiança mínima
+
+    async def generate_signal(self, market_insights):
+        """Gera sinal de trading baseado nas insights"""
+        if market_insights['imbalance']:
+            return {
+                "action": "BUY",
+                "confidence": 0.75,
+                "vwap": market_insights['vwap'],
+                "timestamp": pd.Timestamp.now().isoformat()
+            }
+        return None
+
+# ==================== REDIS CLIENT ====================
+class RedisClient:
+    def __init__(self):
+        self.client = redis.Redis(
+            host='localhost',
+            port=6379,
+            decode_responses=True
+        )
+    
+    def get_market_data(self, symbol="EURUSD"):
+        """Obtém dados do mercado em tempo real"""
+        try:
+            data = self.client.json().get(f'market:{symbol}')
+            return data or []
+        except:
+            return []
+
+# ==================== KAFKA PRODUCER ====================
+class KafkaProducer:
+    def __init__(self):
+        self.producer = KafkaProducer(
+            bootstrap_servers='localhost:9092',
+            value_serializer=lambda v: json.dumps(v).encode('utf-8')
+        )
+
+    def send_trade_signal(self, signal):
+        self.producer.send('trading_signals', value=signal)
+
+# ==================== SISTEMA PRINCIPAL ====================
+class TradingSystem:
+    def __init__(self):
+        self.redis = RedisClient()
+        self.kafka = KafkaProducer()
+        self.risk_guardian = RiskGuardian()
+        self.market_reader = MarketReader()
+        self.quantum_trader = QuantumTrader()
+
+    async def run(self):
+        """Loop principal de trading"""
+        while True:
+            market_data = self.redis.get_market_data()
+            
+            # Processamento paralelo dos agentes
+            risk_approval = await self.risk_guardian.evaluate_risk(market_data)
+            market_insights = await self.market_reader.analyze(market_data)
+            
+            if risk_approval["allowed"]:
+                trade_signal = await self.quantum_trader.generate_signal(market_insights)
+                if trade_signal:
+                    self.kafka.send_trade_signal(trade_signal)
+                    print(f"Sinal enviado: {trade_signal}")
+            
+            await asyncio.sleep(0.001)  # Controle de latência
+
+# ==================== EXECUÇÃO ====================
+if __name__ == "__main__":
+    print("Iniciando Sistema de Trading de Alto Desempenho...")
+    system = TradingSystem()
+    
+    try:
+        asyncio.run(system.run())
+    except KeyboardInterrupt:
+        print("Sistema interrompido pelo usuário")

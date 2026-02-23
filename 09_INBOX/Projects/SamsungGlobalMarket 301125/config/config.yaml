@@ -1,0 +1,49 @@
+database:
+  connection_string: "sqlite:///finance.db"
+
+modules:
+  metals:
+    kitco_url: "https://www.kitco.com/"
+    alert_limits:
+      gold: 2000.0
+      silver: 50.0
+      platinum: 2000.0
+      palladium: 1500.0
+  crypto:
+    api_url: "https://api.binance.com/api/v3/ticker/price"
+    symbols:
+      - "BTCUSDT"
+      - "ETHUSDT"
+    timeout: 5
+    metrics_port: 8002
+    metrics_interval_seconds: 15
+  forex:
+    api_url: "https://api-fxpractice.oanda.com/v3/accounts/{account_id}/pricing"
+    account_id: "SUA_CONTA"
+    api_token: "SEU_TOKEN"
+    instruments:
+      - "EUR_USD"
+      - "GBP_USD"
+    timeout: 5
+    metrics_port: 8003
+    metrics_interval_seconds: 15
+alerts:
+  slack_webhook: ""
+  email:
+    enabled: false
+    smtp_server: "smtp.seudominio.com"
+    smtp_port: 587
+    username: "prometheus@seudominio.com"
+    password: "SUA_SENHA_SEGURA"
+    recipients:
+      - "risks@seudominio.com"
+monitoring:
+  metrics_path: "metrics/prometheus_metrics.json"
+risk:
+  kill_switch_balance: -250.0
+news:
+  enabled: false
+  api_key: "SUA_CHAVE_NEWSAPI"
+  endpoint: "https://newsapi.org/v2/everything"
+  query: "gold OR silver OR platinum OR palladium"
+

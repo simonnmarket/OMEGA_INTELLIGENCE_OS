@@ -1,0 +1,192 @@
+//+------------------------------------------------------------------+
+//| PortfolioBalancer.mqh - Portfolio Risk Management                |
+//+------------------------------------------------------------------+
+#property copyright "Copyright 2024, MetaQuotes Ltd."
+#property link      "https://www.mql5.com"
+#property version   "1.00"
+#property strict
+
+#include <Trade\Trade.mqh>
+#include <Object.mqh>
+#include <StdLibErr.mqh>
+#include <Trade\OrderInfo.mqh>
+#include <Trade\HistoryOrderInfo.mqh>
+#include <Trade\PositionInfo.mqh>
+#include <Trade\DealInfo.mqh>
+
+class PortfolioBalancer
+{
+private:
+   string m_symbol;
+   ENUM_TIMEFRAMES m_timeframe;
+   double m_risk_per_trade;
+   double m_max_daily_risk;
+   double m_max_drawdown;
+   int m_atr_period;
+   int m_atr_handle;
+   bool m_is_initialized;
+   
+   // Validações
+   bool ValidateSymbol(string symbol) {
+      return (symbol != NULL && symbol != "");
+   }
+   
+   bool ValidateTimeframe(ENUM_TIMEFRAMES timeframe) {
+      return (timeframe > 0);
+   }
+   
+   bool ValidateRisk(double risk) {
+      return (risk > 0 && risk <= 1);
+   }
+   
+   bool ValidatePeriod(int period) {
+      return (period > 0);
+   }
+   
+public:
+   PortfolioBalancer()
+   {
+      m_symbol = NULL;
+      m_timeframe = PERIOD_CURRENT;
+      m_risk_per_trade = 0.02;
+      m_max_daily_risk = 0.05;
+      m_max_drawdown = 0.15;
+      m_atr_period = 14;
+      m_atr_handle = INVALID_HANDLE;
+      m_is_initialized = false;
+   }
+   
+   ~PortfolioBalancer()
+   {
+      Release();
+   }
+   
+   bool Initialize(string symbol, ENUM_TIMEFRAMES timeframe, double risk_per_trade = 0.02, double max_daily_risk = 0.05, double max_drawdown = 0.15, int atr_period = 14)
+   {
+      if(m_is_initialized) {
+         Print("PortfolioBalancer já inicializado");
+         return false;
+      }
+      
+      if(!ValidateSymbol(symbol)) {
+         Print("Símbolo inválido: ", symbol);
+         return false;
+      }
+      
+      if(!ValidateTimeframe(timeframe)) {
+         Print("Timeframe inválido: ", timeframe);
+         return false;
+      }
+      
+      if(!ValidateRisk(risk_per_trade)) {
+         Print("Risco por trade inválido: ", risk_per_trade);
+         return false;
+      }
+      
+      if(!ValidateRisk(max_daily_risk)) {
+         Print("Risco diário máximo inválido: ", max_daily_risk);
+         return false;
+      }
+      
+      if(!ValidateRisk(max_drawdown)) {
+         Print("Drawdown máximo inválido: ", max_drawdown);
+         return false;
+      }
+      
+      if(!ValidatePeriod(atr_period)) {
+         Print("Período ATR inválido: ", atr_period);
+         return false;
+      }
+      
+      m_symbol = symbol;
+      m_timeframe = timeframe;
+      m_risk_per_trade = risk_per_trade;
+      m_max_daily_risk = max_daily_risk;
+      m_max_drawdown = max_drawdown;
+      m_atr_period = atr_period;
+      
+      // Inicializar ATR
+      m_atr_handle = iATR(m_symbol, m_timeframe, m_atr_period);
+      if(m_atr_handle == INVALID_HANDLE) {
+         Print("Erro ao criar ATR: ", GetLastError());
+         return false;
+      }
+      
+      m_is_initialized = true;
+      return true;
+   }
+   
+   void Release()
+   {
+      if(!m_is_initialized) return;
+      
+      if(m_atr_handle != INVALID_HANDLE) {
+         IndicatorRelease(m_atr_handle);
+         m_atr_handle = INVALID_HANDLE;
+      }
+      
+      m_is_initialized = false;
+   }
+   
+   bool IsInitialized() const
+   {
+      return m_is_initialized;
+   }
+   
+   double GetATR(int shift)
+   {
+      if(!m_is_initialized || m_atr_handle == INVALID_HANDLE) return 0;
+      
+      double buffer[];
+      if(CopyBuffer(m_atr_handle, 0, shift, 1, buffer) <= 0) return 0;
+      return buffer[0];
+   }
+   
+   bool CheckDailyRisk()
+   {
+      if(!m_is_initialized) return false;
+      
+      double account_balance = AccountInfoDouble(ACCOUNT_BALANCE);
+      double account_equity = AccountInfoDouble(ACCOUNT_EQUITY);
+      double daily_profit = account_equity - account_balance;
+      
+      double max_daily_loss = account_balance * m_max_daily_risk;
+      
+      return (daily_profit >= -max_daily_loss);
+   }
+   
+   bool CheckDrawdown()
+   {
+      if(!m_is_initialized) return false;
+      
+      double account_balance = AccountInfoDouble(ACCOUNT_BALANCE);
+      double account_equity = AccountInfoDouble(ACCOUNT_EQUITY);
+      double drawdown = (account_balance - account_equity) / account_balance;
+      
+      return (drawdown <= m_max_drawdown);
+   }
+   
+   double CalculatePositionSize(double stop_loss_points)
+   {
+      if(!m_is_initialized) return 0;
+      
+      double account_balance = AccountInfoDouble(ACCOUNT_BALANCE);
+      double risk_amount = account_balance * m_risk_per_trade;
+      
+      double tick_size = SymbolInfoDouble(m_symbol, SYMBOL_TRADE_TICK_SIZE);
+      double tick_value = SymbolInfoDouble(m_symbol, SYMBOL_TRADE_TICK_VALUE);
+      double point_value = tick_value / tick_size;
+      
+      double position_size = risk_amount / (stop_loss_points * point_value);
+      
+      // Normalizar para o lote mínimo
+      double min_lot = SymbolInfoDouble(m_symbol, SYMBOL_VOLUME_MIN);
+      double max_lot = SymbolInfoDouble(m_symbol, SYMBOL_VOLUME_MAX);
+      double lot_step = SymbolInfoDouble(m_symbol, SYMBOL_VOLUME_STEP);
+      
+      position_size = MathFloor(position_size / lot_step) * lot_step;
+      position_size = MathMax(min_lot, MathMin(max_lot, position_size));
+      
+      return position_size;
+   }
+}; 

@@ -1,0 +1,17 @@
+========================================
+COMANDO DIRETO PARA EXECUTAR NO POWERSHELL
+========================================
+
+Copie e cole este comando completo:
+
+cd C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia; python prometheus_v2.3_gerenciamento_escalonado.py
+
+========================================
+OU EXECUTE EM DUAS LINHAS:
+========================================
+
+cd C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia
+python prometheus_v2.3_gerenciamento_escalonado.py
+
+========================================
+

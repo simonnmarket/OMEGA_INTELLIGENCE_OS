@@ -1,0 +1,21 @@
+groups:
+  - name: forex_alerts
+    rules:
+      - alert: ForexPriceDrop
+        expr: forex_price{instrument="EUR_USD"} < avg_over_time(forex_price{instrument="EUR_USD"}[15m]) * 0.95
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Queda maior que 5% no preço do EUR/USD"
+          description: "O preço médio caiu mais de 5% na janela de 15 minutos."
+
+      - alert: ForexSpreadHigh
+        expr: forex_spread{instrument="EUR_USD"} > 0.001
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Spread elevado no EUR/USD"
+          description: "Spread acima do limite crítico definido."
+

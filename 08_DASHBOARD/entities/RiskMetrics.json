@@ -1,0 +1,59 @@
+{
+    "name": "RiskMetrics",
+    "type": "object",
+    "properties": {
+        "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp"
+        },
+        "global_aum": {
+            "type": "number",
+            "description": "Assets Under Management total"
+        },
+        "deployed_capital": {
+            "type": "number",
+            "description": "Capital atualmente em posições"
+        },
+        "available_capital": {
+            "type": "number",
+            "description": "Capital disponível"
+        },
+        "global_pnl": {
+            "type": "number",
+            "description": "PnL global"
+        },
+        "vix_level": {
+            "type": "number",
+            "description": "Nível VIX do mercado"
+        },
+        "variance_cap_current": {
+            "type": "number",
+            "description": "Cap de variância atual (%)"
+        },
+        "system_toxicity": {
+            "type": "string",
+            "enum": [
+                "SAFE",
+                "ELEVATED",
+                "HIGH",
+                "CRITICAL"
+            ],
+            "default": "SAFE",
+            "description": "Toxicidade sistêmica"
+        },
+        "correlation_matrix": {
+            "type": "object",
+            "description": "Matriz de correlação entre hubs"
+        },
+        "emergency_mode": {
+            "type": "boolean",
+            "default": false,
+            "description": "Modo de emergência ativado"
+        }
+    },
+    "required": [
+        "timestamp",
+        "global_aum"
+    ]
+}

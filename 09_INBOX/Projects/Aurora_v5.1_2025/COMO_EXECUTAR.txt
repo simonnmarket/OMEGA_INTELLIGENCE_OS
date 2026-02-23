@@ -1,0 +1,52 @@
+================================================================================
+COMO EXECUTAR O SISTEMA AURORA v5.1
+================================================================================
+
+⚠️  IMPORTANTE: Você está dentro do Python (>>>)
+
+Para executar o sistema, você precisa estar no PowerShell ou CMD, NÃO dentro do Python.
+
+================================================================================
+OPÇÃO 1: SAIR DO PYTHON E EXECUTAR NO POWERSHELL
+================================================================================
+
+1. SAIR DO PYTHON:
+   Digite: exit()
+   ou pressione: Ctrl+Z e Enter
+
+2. NO POWERSHELL, execute:
+   cd C:\Users\Lenovo\Projects\Aurora
+   python AURORA_FINAL_EXECUCAO_AIC_V5.1.py beta
+
+================================================================================
+OPÇÃO 2: USAR O SCRIPT POWERSHELL
+================================================================================
+
+1. SAIR DO PYTHON:
+   Digite: exit()
+
+2. NO POWERSHELL, execute:
+   cd C:\Users\Lenovo\Projects\Aurora
+   .\EXECUTAR_AURORA_SIMPLES.ps1
+
+================================================================================
+OPÇÃO 3: EXECUTAR DIRETO NO CMD/POWERSHELL (SEM ENTRAR NO PYTHON)
+================================================================================
+
+Abra um NOVO terminal PowerShell ou CMD e execute:
+
+   cd C:\Users\Lenovo\Projects\Aurora
+   python AURORA_FINAL_EXECUCAO_AIC_V5.1.py beta
+
+================================================================================
+RESUMO
+================================================================================
+
+❌ ERRADO (dentro do Python):
+   >>> python AURORA_FINAL_EXECUCAO_AIC_V5.1.py beta
+
+✅ CORRETO (no PowerShell/CMD):
+   PS> python AURORA_FINAL_EXECUCAO_AIC_V5.1.py beta
+
+================================================================================
+

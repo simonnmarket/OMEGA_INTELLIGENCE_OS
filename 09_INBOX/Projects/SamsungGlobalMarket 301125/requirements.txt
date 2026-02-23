@@ -1,0 +1,10 @@
+requests
+beautifulsoup4
+SQLAlchemy
+PyYAML
+pytest
+streamlit
+pandas
+plotly
+vaderSentiment
+

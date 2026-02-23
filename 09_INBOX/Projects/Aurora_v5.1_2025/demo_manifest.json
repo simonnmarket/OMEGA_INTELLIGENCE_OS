@@ -1,0 +1,320 @@
+{
+    "global_logs": [
+        {
+            "action": "Módulo registrado via conceptual_list",
+            "actor": "System",
+            "id": "EVENT-000001",
+            "module_id": "MOD-001",
+            "module_name": "Quantum Firewall",
+            "new_status": "BACKLOG",
+            "previous_status": null,
+            "regulatory_context": [],
+            "system_version": "2.0-enterprise",
+            "timestamp": "2025-12-25T13:56:24.606926",
+            "type": "IMPORT"
+        },
+        {
+            "action": "Módulo registrado via conceptual_list",
+            "actor": "System",
+            "id": "EVENT-000002",
+            "module_id": "MOD-002",
+            "module_name": "Tier 1 Risk Validator",
+            "new_status": "BACKLOG",
+            "previous_status": null,
+            "regulatory_context": [],
+            "system_version": "2.0-enterprise",
+            "timestamp": "2025-12-25T13:56:24.606926",
+            "type": "IMPORT"
+        },
+        {
+            "action": "Módulo registrado via conceptual_list",
+            "actor": "System",
+            "id": "EVENT-000003",
+            "module_id": "MOD-003",
+            "module_name": "Audit System Complete",
+            "new_status": "BACKLOG",
+            "previous_status": null,
+            "regulatory_context": [],
+            "system_version": "2.0-enterprise",
+            "timestamp": "2025-12-25T13:56:24.606926",
+            "type": "IMPORT"
+        },
+        {
+            "action": "Módulo registrado via conceptual_list",
+            "actor": "System",
+            "id": "EVENT-000004",
+            "module_id": "MOD-004",
+            "module_name": "CEO Agent Decision Engine",
+            "new_status": "BACKLOG",
+            "previous_status": null,
+            "regulatory_context": [],
+            "system_version": "2.0-enterprise",
+            "timestamp": "2025-12-25T13:56:24.606926",
+            "type": "IMPORT"
+        },
+        {
+            "action": "Módulo registrado via conceptual_list",
+            "actor": "System",
+            "id": "EVENT-000005",
+            "module_id": "MOD-005",
+            "module_name": "Market Risk Module",
+            "new_status": "BACKLOG",
+            "previous_status": null,
+            "regulatory_context": [],
+            "system_version": "2.0-enterprise",
+            "timestamp": "2025-12-25T13:56:24.606926",
+            "type": "IMPORT"
+        },
+        {
+            "action": "Módulo registrado via conceptual_list",
+            "actor": "System",
+            "id": "EVENT-000006",
+            "module_id": "MOD-006",
+            "module_name": "Alpha Momentum Strategy",
+            "new_status": "BACKLOG",
+            "previous_status": null,
+            "regulatory_context": [],
+            "system_version": "2.0-enterprise",
+            "timestamp": "2025-12-25T13:56:24.606926",
+            "type": "IMPORT"
+        },
+        {
+            "action": "Módulo registrado via conceptual_list",
+            "actor": "System",
+            "id": "EVENT-000007",
+            "module_id": "MOD-007",
+            "module_name": "MT5 Execution Gateway",
+            "new_status": "BACKLOG",
+            "previous_status": null,
+            "regulatory_context": [],
+            "system_version": "2.0-enterprise",
+            "timestamp": "2025-12-25T13:56:24.606926",
+            "type": "IMPORT"
+        },
+        {
+            "action": "Módulo registrado via conceptual_list",
+            "actor": "System",
+            "id": "EVENT-000008",
+            "module_id": "MOD-008",
+            "module_name": "Neural Connection Monitor",
+            "new_status": "BACKLOG",
+            "previous_status": null,
+            "regulatory_context": [],
+            "system_version": "2.0-enterprise",
+            "timestamp": "2025-12-25T13:56:24.606926",
+            "type": "IMPORT"
+        },
+        {
+            "action": "Início do desenvolvimento do Quantum Firewall com validação MiFID II",
+            "actor": "Chief Risk Officer",
+            "id": "EVENT-000009",
+            "module_id": "MOD-001",
+            "module_name": "Quantum Firewall",
+            "new_status": "ACTIVE",
+            "previous_status": "BACKLOG",
+            "regulatory_context": [
+                "MiFID II",
+                "Basel III",
+                "SEC Rule 611"
+            ],
+            "system_version": "2.0-enterprise",
+            "timestamp": "2025-12-25T13:56:24.608926",
+            "type": "ACTIVE"
+        },
+        {
+            "action": "Tag de compliance adicionada: MiFID II Artigo 16, 48",
+            "actor": "System",
+            "id": "EVENT-000010",
+            "module_id": "MOD-001",
+            "module_name": "Quantum Firewall",
+            "new_status": "ACTIVE",
+            "previous_status": "ACTIVE",
+            "regulatory_context": [],
+            "system_version": "2.0-enterprise",
+            "timestamp": "2025-12-25T13:56:24.612942",
+            "type": "COMPLIANCE"
+        },
+        {
+            "action": "Tag de compliance adicionada: Basel III Pillar 1",
+            "actor": "System",
+            "id": "EVENT-000011",
+            "module_id": "MOD-001",
+            "module_name": "Quantum Firewall",
+            "new_status": "ACTIVE",
+            "previous_status": "ACTIVE",
+            "regulatory_context": [],
+            "system_version": "2.0-enterprise",
+            "timestamp": "2025-12-25T13:56:24.614005",
+            "type": "COMPLIANCE"
+        },
+        {
+            "action": "Quantum Firewall implementado com validação regulatória completa",
+            "actor": "Head of Technology",
+            "id": "EVENT-000012",
+            "metadata": {
+                "test_coverage": "95%",
+                "version": "1.0.0"
+            },
+            "module_id": "MOD-001",
+            "module_name": "Quantum Firewall",
+            "new_status": "COMPLETED",
+            "previous_status": "ACTIVE",
+            "regulatory_context": [
+                "MiFID II",
+                "GDPR",
+                "FINRA 4511"
+            ],
+            "system_version": "2.0-enterprise",
+            "timestamp": "2025-12-25T13:56:24.615017",
+            "type": "COMPLETED"
+        }
+    ],
+    "metadata": {
+        "compliance_frameworks": [
+            "MiFID II",
+            "Basel III",
+            "SEC Rule 611",
+            "GDPR"
+        ],
+        "created_at": "2025-12-25T13:56:24.605925",
+        "data_retention_policy": "7 years (FINRA 4511 compliant)",
+        "governance_framework": "FSM Institutional v3.0",
+        "last_updated": "2025-12-25T13:56:24.615017",
+        "project": "AURORA Trading System v5.1",
+        "version": "2.0-enterprise"
+    },
+    "modules": {
+        "MOD-001": {
+            "actions": [
+                {
+                    "action": "Início do desenvolvimento do Quantum Firewall com validação MiFID II",
+                    "actor": "Chief Risk Officer",
+                    "new_status": "ACTIVE",
+                    "previous_status": "BACKLOG",
+                    "regulatory_context": [
+                        "MiFID II",
+                        "Basel III",
+                        "SEC Rule 611"
+                    ],
+                    "timestamp": "2025-12-25T13:56:24.608926",
+                    "type": "ACTIVE",
+                    "version_affected": null
+                },
+                {
+                    "action": "Quantum Firewall implementado com validação regulatória completa",
+                    "actor": "Head of Technology",
+                    "metadata": {
+                        "test_coverage": "95%",
+                        "version": "1.0.0"
+                    },
+                    "new_status": "COMPLETED",
+                    "previous_status": "ACTIVE",
+                    "regulatory_context": [
+                        "MiFID II",
+                        "GDPR",
+                        "FINRA 4511"
+                    ],
+                    "timestamp": "2025-12-25T13:56:24.615017",
+                    "type": "COMPLETED",
+                    "version_affected": "1.0.0"
+                }
+            ],
+            "compliance_tags": [
+                "MiFID II Artigo 16, 48",
+                "Basel III Pillar 1"
+            ],
+            "created_at": "2025-12-25T13:56:24.606926",
+            "description": "Importado via lista conceitual - 2025-12-25",
+            "import_source": "conceptual_list",
+            "import_timestamp": "2025-12-25T13:56:24.606926",
+            "last_modified": "2025-12-25T13:56:24.615017",
+            "name": "Quantum Firewall",
+            "risk_score": null,
+            "status": "COMPLETED"
+        },
+        "MOD-002": {
+            "actions": [],
+            "compliance_tags": [],
+            "created_at": "2025-12-25T13:56:24.606926",
+            "description": "Importado via lista conceitual - 2025-12-25",
+            "import_source": "conceptual_list",
+            "import_timestamp": "2025-12-25T13:56:24.606926",
+            "last_modified": "2025-12-25T13:56:24.606926",
+            "name": "Tier 1 Risk Validator",
+            "risk_score": null,
+            "status": "BACKLOG"
+        },
+        "MOD-003": {
+            "actions": [],
+            "compliance_tags": [],
+            "created_at": "2025-12-25T13:56:24.606926",
+            "description": "Importado via lista conceitual - 2025-12-25",
+            "import_source": "conceptual_list",
+            "import_timestamp": "2025-12-25T13:56:24.606926",
+            "last_modified": "2025-12-25T13:56:24.606926",
+            "name": "Audit System Complete",
+            "risk_score": null,
+            "status": "BACKLOG"
+        },
+        "MOD-004": {
+            "actions": [],
+            "compliance_tags": [],
+            "created_at": "2025-12-25T13:56:24.606926",
+            "description": "Importado via lista conceitual - 2025-12-25",
+            "import_source": "conceptual_list",
+            "import_timestamp": "2025-12-25T13:56:24.606926",
+            "last_modified": "2025-12-25T13:56:24.606926",
+            "name": "CEO Agent Decision Engine",
+            "risk_score": null,
+            "status": "BACKLOG"
+        },
+        "MOD-005": {
+            "actions": [],
+            "compliance_tags": [],
+            "created_at": "2025-12-25T13:56:24.606926",
+            "description": "Importado via lista conceitual - 2025-12-25",
+            "import_source": "conceptual_list",
+            "import_timestamp": "2025-12-25T13:56:24.606926",
+            "last_modified": "2025-12-25T13:56:24.606926",
+            "name": "Market Risk Module",
+            "risk_score": null,
+            "status": "BACKLOG"
+        },
+        "MOD-006": {
+            "actions": [],
+            "compliance_tags": [],
+            "created_at": "2025-12-25T13:56:24.606926",
+            "description": "Importado via lista conceitual - 2025-12-25",
+            "import_source": "conceptual_list",
+            "import_timestamp": "2025-12-25T13:56:24.606926",
+            "last_modified": "2025-12-25T13:56:24.606926",
+            "name": "Alpha Momentum Strategy",
+            "risk_score": null,
+            "status": "BACKLOG"
+        },
+        "MOD-007": {
+            "actions": [],
+            "compliance_tags": [],
+            "created_at": "2025-12-25T13:56:24.606926",
+            "description": "Importado via lista conceitual - 2025-12-25",
+            "import_source": "conceptual_list",
+            "import_timestamp": "2025-12-25T13:56:24.606926",
+            "last_modified": "2025-12-25T13:56:24.606926",
+            "name": "MT5 Execution Gateway",
+            "risk_score": null,
+            "status": "BACKLOG"
+        },
+        "MOD-008": {
+            "actions": [],
+            "compliance_tags": [],
+            "created_at": "2025-12-25T13:56:24.606926",
+            "description": "Importado via lista conceitual - 2025-12-25",
+            "import_source": "conceptual_list",
+            "import_timestamp": "2025-12-25T13:56:24.606926",
+            "last_modified": "2025-12-25T13:56:24.606926",
+            "name": "Neural Connection Monitor",
+            "risk_score": null,
+            "status": "BACKLOG"
+        }
+    }
+}

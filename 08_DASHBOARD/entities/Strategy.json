@@ -1,0 +1,79 @@
+{
+    "name": "Strategy",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "Nome da estratégia"
+        },
+        "agent_type": {
+            "type": "string",
+            "enum": [
+                "ScoutPro_v2",
+                "Apollo11",
+                "DALL_ELO",
+                "Numeia_Treasury"
+            ],
+            "description": "Tipo de agente"
+        },
+        "hub": {
+            "type": "string",
+            "description": "Hub associado"
+        },
+        "tier": {
+            "type": "string",
+            "enum": [
+                "TIER-0",
+                "TIER-1",
+                "TIER-2",
+                "EXPERIMENTAL"
+            ],
+            "default": "EXPERIMENTAL",
+            "description": "Nível de aprovação"
+        },
+        "resonance_score": {
+            "type": "number",
+            "description": "Score do protocolo de ressonância (0-100)"
+        },
+        "execution_quality_score": {
+            "type": "number",
+            "description": "Execution Quality Score (0-100)"
+        },
+        "total_trades": {
+            "type": "number",
+            "description": "Total de trades executados"
+        },
+        "win_rate": {
+            "type": "number",
+            "description": "Taxa de acerto (%)"
+        },
+        "sharpe_ratio": {
+            "type": "number",
+            "description": "Sharpe Ratio"
+        },
+        "max_drawdown": {
+            "type": "number",
+            "description": "Max drawdown (%)"
+        },
+        "status": {
+            "type": "string",
+            "enum": [
+                "LIVE",
+                "PAPER",
+                "PAUSED",
+                "ARCHIVED"
+            ],
+            "default": "PAPER",
+            "description": "Status da estratégia"
+        },
+        "ml_weights": {
+            "type": "object",
+            "description": "Pesos atuais do modelo ML"
+        }
+    },
+    "required": [
+        "name",
+        "agent_type",
+        "hub"
+    ]
+}

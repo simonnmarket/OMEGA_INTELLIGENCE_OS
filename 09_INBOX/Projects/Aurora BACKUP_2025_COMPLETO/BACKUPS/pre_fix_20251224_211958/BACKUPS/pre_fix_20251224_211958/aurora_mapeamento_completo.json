@@ -1,0 +1,1273 @@
+{
+  "timestamp": "2025-12-19T23:44:38.908605",
+  "diretorio_raiz": "C:\\Users\\Lenovo\\Projects\\Aurora",
+  "total_modulos": 252,
+  "modulos_operacionais": 252,
+  "modulos_com_problema": 0,
+  "modulos_por_status": {
+    "operacional": 252
+  },
+  "lista_completa": [
+    {
+      "modulo": "aurora_etapa_a.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\aurora_etapa_a.py"
+    },
+    {
+      "modulo": "aurora_etapa_b.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\aurora_etapa_b.py"
+    },
+    {
+      "modulo": "aurora_etapa_c.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\aurora_etapa_c.py"
+    },
+    {
+      "modulo": "aurora_etapa_d.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\aurora_etapa_d.py"
+    },
+    {
+      "modulo": "aurora_etapa_e.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\aurora_etapa_e.py"
+    },
+    {
+      "modulo": "AURORA_V5_CORRECAO_DEFINITIVA_100_PERCENT.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\AURORA_V5_CORRECAO_DEFINITIVA_100_PERCENT.py"
+    },
+    {
+      "modulo": "AURORA_V5_MAPEAMENTO_COMPLETO_274_MODULOS.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\AURORA_V5_MAPEAMENTO_COMPLETO_274_MODULOS.py"
+    },
+    {
+      "modulo": "AURORA_V5_VALIDACAO_DEFINITIVA_100_PERCENT.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\AURORA_V5_VALIDACAO_DEFINITIVA_100_PERCENT.py"
+    },
+    {
+      "modulo": "complete_integration.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\complete_integration.py"
+    },
+    {
+      "modulo": "create_structure.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\create_structure.py"
+    },
+    {
+      "modulo": "executive_presentation.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\executive_presentation.py"
+    },
+    {
+      "modulo": "fase2_ativar_nucleo_tier0.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\fase2_ativar_nucleo_tier0.py"
+    },
+    {
+      "modulo": "fase3_migracao_massa.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\fase3_migracao_massa.py"
+    },
+    {
+      "modulo": "fase4_validacao_final.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\fase4_validacao_final.py"
+    },
+    {
+      "modulo": "fix_all_8_modules.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\fix_all_8_modules.py"
+    },
+    {
+      "modulo": "integrate_ncnt.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\integrate_ncnt.py"
+    },
+    {
+      "modulo": "main.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\main.py"
+    },
+    {
+      "modulo": "main_ncnt.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\main_ncnt.py"
+    },
+    {
+      "modulo": "ncnt_scan.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\ncnt_scan.py"
+    },
+    {
+      "modulo": "ncnt_system_complete.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\ncnt_system_complete.py"
+    },
+    {
+      "modulo": "ncnt_wrapper_generator.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\ncnt_wrapper_generator.py"
+    },
+    {
+      "modulo": "validate_239_modules.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\validate_239_modules.py"
+    },
+    {
+      "modulo": "visual_presentation.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\visual_presentation.py"
+    },
+    {
+      "modulo": "visual_presentation_simple.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\visual_presentation_simple.py"
+    },
+    {
+      "modulo": "00-Governanca\\audit_system_complete.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\audit_system_complete.py"
+    },
+    {
+      "modulo": "00-Governanca\\complete_activation_final.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\complete_activation_final.py"
+    },
+    {
+      "modulo": "00-Governanca\\complexity_guard.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\complexity_guard.py"
+    },
+    {
+      "modulo": "00-Governanca\\fix_report_errors.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\fix_report_errors.py"
+    },
+    {
+      "modulo": "00-Governanca\\generate_complete_report.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\generate_complete_report.py"
+    },
+    {
+      "modulo": "00-Governanca\\generate_complete_technical_report.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\generate_complete_technical_report.py"
+    },
+    {
+      "modulo": "00-Governanca\\generate_technical_report.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\generate_technical_report.py"
+    },
+    {
+      "modulo": "00-Governanca\\generate_ultra_complete_report.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\generate_ultra_complete_report.py"
+    },
+    {
+      "modulo": "00-Governanca\\genesis_includes.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\genesis_includes.py"
+    },
+    {
+      "modulo": "00-Governanca\\genesis_includes_v3_complete.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\genesis_includes_v3_complete.py"
+    },
+    {
+      "modulo": "00-Governanca\\governance_module.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\governance_module.py"
+    },
+    {
+      "modulo": "00-Governanca\\integration_gate_v2.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\integration_gate_v2.py"
+    },
+    {
+      "modulo": "00-Governanca\\integration_gate_v3.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\integration_gate_v3.py"
+    },
+    {
+      "modulo": "00-Governanca\\prepare_fix_environment.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\prepare_fix_environment.py"
+    },
+    {
+      "modulo": "00-Governanca\\process_fix_file.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\process_fix_file.py"
+    },
+    {
+      "modulo": "00-Governanca\\quantum_firewall.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\quantum_firewall.py"
+    },
+    {
+      "modulo": "00-Governanca\\regulatory_context.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\regulatory_context.py"
+    },
+    {
+      "modulo": "00-Governanca\\restore_executive_report.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\restore_executive_report.py"
+    },
+    {
+      "modulo": "00-Governanca\\run_complete_audit.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\run_complete_audit.py"
+    },
+    {
+      "modulo": "00-Governanca\\script_1_command_injection_test.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\script_1_command_injection_test.py"
+    },
+    {
+      "modulo": "00-Governanca\\script_2_smoke_test_critical_modules.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\script_2_smoke_test_critical_modules.py"
+    },
+    {
+      "modulo": "00-Governanca\\script_3_compliance_quick_validator.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\script_3_compliance_quick_validator.py"
+    },
+    {
+      "modulo": "00-Governanca\\script_4_integration_score_calculator.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\script_4_integration_score_calculator.py"
+    },
+    {
+      "modulo": "00-Governanca\\script_5_master_test_runner.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\script_5_master_test_runner.py"
+    },
+    {
+      "modulo": "00-Governanca\\test_module_v2.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\test_module_v2.py"
+    },
+    {
+      "modulo": "00-Governanca\\tier1_risk_validator.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\tier1_risk_validator.py"
+    },
+    {
+      "modulo": "00-Governanca\\validate_upgrade_proposal.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\validate_upgrade_proposal.py"
+    },
+    {
+      "modulo": "00-Governanca\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\__init__.py"
+    },
+    {
+      "modulo": "01-Departamentos\\AGENTS\\CEO_Agent.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\AGENTS\\CEO_Agent.py"
+    },
+    {
+      "modulo": "01-Departamentos\\AGENTS\\CFO_Agent.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\AGENTS\\CFO_Agent.py"
+    },
+    {
+      "modulo": "01-Departamentos\\AGENTS\\CKO_Agent.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\AGENTS\\CKO_Agent.py"
+    },
+    {
+      "modulo": "01-Departamentos\\AGENTS\\CTO_Agent.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\AGENTS\\CTO_Agent.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Compliance-Audit\\audit_trail.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Compliance-Audit\\audit_trail.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Compliance-Audit\\compliance_module.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Compliance-Audit\\compliance_module.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Compliance-Audit\\reg_tracker.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Compliance-Audit\\reg_tracker.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Compliance-Audit\\report_generator.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Compliance-Audit\\report_generator.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Compliance-Audit\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Compliance-Audit\\__init__.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Engineering-Infra\\api_gateway.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Engineering-Infra\\api_gateway.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Engineering-Infra\\coreengine_module.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Engineering-Infra\\coreengine_module.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Engineering-Infra\\core_engine.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Engineering-Infra\\core_engine.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Engineering-Infra\\data_layer.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Engineering-Infra\\data_layer.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Engineering-Infra\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Engineering-Infra\\__init__.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\order_management.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Execution-Trading\\order_management.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\smart_routing.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Execution-Trading\\smart_routing.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategy_module.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Execution-Trading\\strategy_module.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Execution-Trading\\__init__.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategies\\alpha_momentum.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Execution-Trading\\strategies\\alpha_momentum.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategies\\base_strategy.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Execution-Trading\\strategies\\base_strategy.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategies\\breakout_detection.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Execution-Trading\\strategies\\breakout_detection.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategies\\mean_reversion.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Execution-Trading\\strategies\\mean_reversion.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategies\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Execution-Trading\\strategies\\__init__.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategy_modules\\interface.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Execution-Trading\\strategy_modules\\interface.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategy_modules\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Execution-Trading\\strategy_modules\\__init__.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategy_modules\\implementations\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Execution-Trading\\strategy_modules\\implementations\\__init__.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategy_modules\\templates\\strategy_template.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Execution-Trading\\strategy_modules\\templates\\strategy_template.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategy_modules\\templates\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Execution-Trading\\strategy_modules\\templates\\__init__.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Innovation-Lab\\ab_testing.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Innovation-Lab\\ab_testing.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Innovation-Lab\\innovationlab_module.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Innovation-Lab\\innovationlab_module.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Innovation-Lab\\prototypes.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Innovation-Lab\\prototypes.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Innovation-Lab\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Innovation-Lab\\__init__.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Risk-Controls\\circuit_breakers.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Risk-Controls\\circuit_breakers.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Risk-Controls\\risk_engine.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Risk-Controls\\risk_engine.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Risk-Controls\\risk_module.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Risk-Controls\\risk_module.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Risk-Controls\\tier1_validator_v3.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Risk-Controls\\tier1_validator_v3.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Risk-Controls\\tier1_validator_v3_complete.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Risk-Controls\\tier1_validator_v3_complete.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Risk-Controls\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Risk-Controls\\__init__.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Treasury-Capital\\allocation_engine.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Treasury-Capital\\allocation_engine.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Treasury-Capital\\capital_manager.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Treasury-Capital\\capital_manager.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Treasury-Capital\\treasury_module.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Treasury-Capital\\treasury_module.py"
+    },
+    {
+      "modulo": "01-Departamentos\\Treasury-Capital\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\Treasury-Capital\\__init__.py"
+    },
+    {
+      "modulo": "02-Processos-Chave\\backtesting\\backtest_runner_v3.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\02-Processos-Chave\\backtesting\\backtest_runner_v3.py"
+    },
+    {
+      "modulo": "02-Processos-Chave\\CI-CD\\cicdpipeline_module.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\02-Processos-Chave\\CI-CD\\cicdpipeline_module.py"
+    },
+    {
+      "modulo": "02-Processos-Chave\\CI-CD\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\02-Processos-Chave\\CI-CD\\__init__.py"
+    },
+    {
+      "modulo": "02-Processos-Chave\\CI-CD\\stages\\build.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\02-Processos-Chave\\CI-CD\\stages\\build.py"
+    },
+    {
+      "modulo": "02-Processos-Chave\\CI-CD\\stages\\deploy.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\02-Processos-Chave\\CI-CD\\stages\\deploy.py"
+    },
+    {
+      "modulo": "02-Processos-Chave\\CI-CD\\stages\\test.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\02-Processos-Chave\\CI-CD\\stages\\test.py"
+    },
+    {
+      "modulo": "02-Processos-Chave\\CI-CD\\stages\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\02-Processos-Chave\\CI-CD\\stages\\__init__.py"
+    },
+    {
+      "modulo": "02-Processos-Chave\\Incident-Response\\incidentresponse_module.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\02-Processos-Chave\\Incident-Response\\incidentresponse_module.py"
+    },
+    {
+      "modulo": "02-Processos-Chave\\Incident-Response\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\02-Processos-Chave\\Incident-Response\\__init__.py"
+    },
+    {
+      "modulo": "02-Processos-Chave\\Onboarding\\counterparty_onboarding.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\02-Processos-Chave\\Onboarding\\counterparty_onboarding.py"
+    },
+    {
+      "modulo": "02-Processos-Chave\\Onboarding\\data_onboarding.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\02-Processos-Chave\\Onboarding\\data_onboarding.py"
+    },
+    {
+      "modulo": "02-Processos-Chave\\Onboarding\\onboarding_module.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\02-Processos-Chave\\Onboarding\\onboarding_module.py"
+    },
+    {
+      "modulo": "02-Processos-Chave\\Onboarding\\strategy_onboarding.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\02-Processos-Chave\\Onboarding\\strategy_onboarding.py"
+    },
+    {
+      "modulo": "02-Processos-Chave\\Onboarding\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\02-Processos-Chave\\Onboarding\\__init__.py"
+    },
+    {
+      "modulo": "02-Processos-Chave\\QA-Backtesting\\backtest_engine.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\02-Processos-Chave\\QA-Backtesting\\backtest_engine.py"
+    },
+    {
+      "modulo": "02-Processos-Chave\\QA-Backtesting\\qabacktesting_module.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\02-Processos-Chave\\QA-Backtesting\\qabacktesting_module.py"
+    },
+    {
+      "modulo": "02-Processos-Chave\\QA-Backtesting\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\02-Processos-Chave\\QA-Backtesting\\__init__.py"
+    },
+    {
+      "modulo": "02-Processos-Chave\\QA-Backtesting\\test_suites\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\02-Processos-Chave\\QA-Backtesting\\test_suites\\__init__.py"
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Execution-Window\\executionwindow_module.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\03-Operacoes-Diarias\\Execution-Window\\executionwindow_module.py"
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Execution-Window\\throttling.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\03-Operacoes-Diarias\\Execution-Window\\throttling.py"
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Execution-Window\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\03-Operacoes-Diarias\\Execution-Window\\__init__.py"
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Post-Trade\\delta_reports.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\03-Operacoes-Diarias\\Post-Trade\\delta_reports.py"
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Post-Trade\\posttradereconciliation_module.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\03-Operacoes-Diarias\\Post-Trade\\posttradereconciliation_module.py"
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Post-Trade\\reconciliation.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\03-Operacoes-Diarias\\Post-Trade\\reconciliation.py"
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Post-Trade\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\03-Operacoes-Diarias\\Post-Trade\\__init__.py"
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Pre-Market\\premarketchecklist_module.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\03-Operacoes-Diarias\\Pre-Market\\premarketchecklist_module.py"
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Pre-Market\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\03-Operacoes-Diarias\\Pre-Market\\__init__.py"
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Pre-Market\\validators\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\03-Operacoes-Diarias\\Pre-Market\\validators\\__init__.py"
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Real-Time-Dashboard\\dashboard.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\03-Operacoes-Diarias\\Real-Time-Dashboard\\dashboard.py"
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Real-Time-Dashboard\\realtimedashboard_module.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\03-Operacoes-Diarias\\Real-Time-Dashboard\\realtimedashboard_module.py"
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Real-Time-Dashboard\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\03-Operacoes-Diarias\\Real-Time-Dashboard\\__init__.py"
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Real-Time-Dashboard\\widgets\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\03-Operacoes-Diarias\\Real-Time-Dashboard\\widgets\\__init__.py"
+    },
+    {
+      "modulo": "04-Infraestrutura\\moduleregistry.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\moduleregistry.py"
+    },
+    {
+      "modulo": "04-Infraestrutura\\api\\database.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\api\\database.py"
+    },
+    {
+      "modulo": "04-Infraestrutura\\api\\main.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\api\\main.py"
+    },
+    {
+      "modulo": "04-Infraestrutura\\api\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\api\\__init__.py"
+    },
+    {
+      "modulo": "04-Infraestrutura\\api\\endpoints\\strategies.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\api\\endpoints\\strategies.py"
+    },
+    {
+      "modulo": "04-Infraestrutura\\api\\endpoints\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\api\\endpoints\\__init__.py"
+    },
+    {
+      "modulo": "04-Infraestrutura\\database\\connection.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\database\\connection.py"
+    },
+    {
+      "modulo": "04-Infraestrutura\\database\\models.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\database\\models.py"
+    },
+    {
+      "modulo": "04-Infraestrutura\\database\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\database\\__init__.py"
+    },
+    {
+      "modulo": "04-Infraestrutura\\ML_MODELS\\MetaLearningAdapter.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\ML_MODELS\\MetaLearningAdapter.py"
+    },
+    {
+      "modulo": "04-Infraestrutura\\ML_MODELS\\PPOExecutionOptimizer.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\ML_MODELS\\PPOExecutionOptimizer.py"
+    },
+    {
+      "modulo": "04-Infraestrutura\\ML_MODELS\\TemporalFusionTransformer.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\ML_MODELS\\TemporalFusionTransformer.py"
+    },
+    {
+      "modulo": "04-Infraestrutura\\tools\\cli\\ncnt_cli.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\tools\\cli\\ncnt_cli.py"
+    },
+    {
+      "modulo": "04-Infraestrutura\\tools\\cli\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\tools\\cli\\__init__.py"
+    },
+    {
+      "modulo": "04-Infraestrutura\\tools\\cli\\commands\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\tools\\cli\\commands\\__init__.py"
+    },
+    {
+      "modulo": "04-Infraestrutura\\tools\\scripts\\deploy.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\tools\\scripts\\deploy.py"
+    },
+    {
+      "modulo": "04-Infraestrutura\\tools\\scripts\\monitor.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\tools\\scripts\\monitor.py"
+    },
+    {
+      "modulo": "04-Infraestrutura\\tools\\scripts\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\tools\\scripts\\__init__.py"
+    },
+    {
+      "modulo": "05-Documentacao\\sops_module.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\05-Documentacao\\sops_module.py"
+    },
+    {
+      "modulo": "06-Monitoramento\\feedbackloop_module.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\06-Monitoramento\\feedbackloop_module.py"
+    },
+    {
+      "modulo": "06-Monitoramento\\generate_validation_report.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\06-Monitoramento\\generate_validation_report.py"
+    },
+    {
+      "modulo": "06-Monitoramento\\neural_connection_monitor_v2.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\06-Monitoramento\\neural_connection_monitor_v2.py"
+    },
+    {
+      "modulo": "06-Monitoramento\\run_validation_scan.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\06-Monitoramento\\run_validation_scan.py"
+    },
+    {
+      "modulo": "06-Monitoramento\\Feedback-Loop\\action_items.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\06-Monitoramento\\Feedback-Loop\\action_items.py"
+    },
+    {
+      "modulo": "06-Monitoramento\\Feedback-Loop\\post_mortem.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\06-Monitoramento\\Feedback-Loop\\post_mortem.py"
+    },
+    {
+      "modulo": "06-Monitoramento\\Feedback-Loop\\rca_templates.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\06-Monitoramento\\Feedback-Loop\\rca_templates.py"
+    },
+    {
+      "modulo": "06-Monitoramento\\Feedback-Loop\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\06-Monitoramento\\Feedback-Loop\\__init__.py"
+    },
+    {
+      "modulo": "modules\\interfaces.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\modules\\interfaces.py"
+    },
+    {
+      "modulo": "modules\\ncnt_base.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\modules\\ncnt_base.py"
+    },
+    {
+      "modulo": "modules\\ncnt_module_template.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\modules\\ncnt_module_template.py"
+    },
+    {
+      "modulo": "modules\\ncnt_module_template_v2.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\modules\\ncnt_module_template_v2.py"
+    },
+    {
+      "modulo": "modules\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\modules\\__init__.py"
+    },
+    {
+      "modulo": "modules\\connectors\\data_connector.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\modules\\connectors\\data_connector.py"
+    },
+    {
+      "modulo": "modules\\connectors\\execution_connector.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\modules\\connectors\\execution_connector.py"
+    },
+    {
+      "modulo": "modules\\connectors\\risk_connector.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\modules\\connectors\\risk_connector.py"
+    },
+    {
+      "modulo": "modules\\connectors\\strategy_connector.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\modules\\connectors\\strategy_connector.py"
+    },
+    {
+      "modulo": "modules\\connectors\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\modules\\connectors\\__init__.py"
+    },
+    {
+      "modulo": "system_core\\message_bus.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\system_core\\message_bus.py"
+    },
+    {
+      "modulo": "system_core\\ncnt_orchestrator_complete.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\system_core\\ncnt_orchestrator_complete.py"
+    },
+    {
+      "modulo": "system_core\\orchestrator.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\system_core\\orchestrator.py"
+    },
+    {
+      "modulo": "system_core\\registry.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\system_core\\registry.py"
+    },
+    {
+      "modulo": "system_core\\__init__.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\system_core\\__init__.py"
+    },
+    {
+      "modulo": "tests\\test_strategies.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\tests\\test_strategies.py"
+    },
+    {
+      "modulo": "wrappers_v2\\ab_testing_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\ab_testing_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\allocation_engine_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\allocation_engine_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\alpha_momentum_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\alpha_momentum_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\api_gateway_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\api_gateway_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\audit_system_complete_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\audit_system_complete_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\audit_trail_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\audit_trail_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\aurora_etapa_a_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\aurora_etapa_a_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\backtest_engine_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\backtest_engine_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\backtest_runner_v3_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\backtest_runner_v3_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\base_strategy_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\base_strategy_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\breakout_detection_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\breakout_detection_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\build_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\build_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\capital_manager_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\capital_manager_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\cicdpipeline_module_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\cicdpipeline_module_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\circuit_breakers_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\circuit_breakers_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\complete_integration_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\complete_integration_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\complexity_guard_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\complexity_guard_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\compliance_module_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\compliance_module_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\connection_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\connection_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\coreengine_module_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\coreengine_module_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\core_engine_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\core_engine_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\counterparty_onboarding_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\counterparty_onboarding_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\create_structure_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\create_structure_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\dashboard_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\dashboard_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\data_layer_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\data_layer_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\data_onboarding_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\data_onboarding_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\delta_reports_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\delta_reports_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\deploy_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\deploy_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\executionwindow_module_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\executionwindow_module_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\executive_presentation_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\executive_presentation_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\feedbackloop_module_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\feedbackloop_module_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\fix_report_errors_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\fix_report_errors_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\generate_complete_report_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\generate_complete_report_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\generate_ultra_complete_report_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\generate_ultra_complete_report_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\genesis_includes_v3_complete_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\genesis_includes_v3_complete_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\genesis_includes_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\genesis_includes_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\governance_module_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\governance_module_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\incidentresponse_module_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\incidentresponse_module_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\innovationlab_module_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\innovationlab_module_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\integrate_ncnt_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\integrate_ncnt_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\integration_gate_v2_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\integration_gate_v2_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\integration_gate_v3_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\integration_gate_v3_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\interface_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\interface_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\main_ncnt_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\main_ncnt_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\main_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\main_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\mean_reversion_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\mean_reversion_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\models_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\models_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\moduleregistry_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\moduleregistry_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\ncnt_base_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\ncnt_base_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\ncnt_cli_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\ncnt_cli_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\ncnt_orchestrator_complete_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\ncnt_orchestrator_complete_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\ncnt_scan_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\ncnt_scan_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\ncnt_system_complete_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\ncnt_system_complete_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\onboarding_module_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\onboarding_module_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\order_management_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\order_management_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\posttradereconciliation_module_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\posttradereconciliation_module_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\premarketchecklist_module_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\premarketchecklist_module_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\prototypes_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\prototypes_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\qabacktesting_module_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\qabacktesting_module_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\realtimedashboard_module_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\realtimedashboard_module_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\reconciliation_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\reconciliation_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\regulatory_context_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\regulatory_context_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\reg_tracker_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\reg_tracker_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\report_generator_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\report_generator_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\restore_executive_report_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\restore_executive_report_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\risk_engine_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\risk_engine_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\risk_module_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\risk_module_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\run_complete_audit_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\run_complete_audit_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\smart_routing_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\smart_routing_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\sops_module_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\sops_module_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\strategies_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\strategies_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\strategy_module_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\strategy_module_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\strategy_onboarding_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\strategy_onboarding_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\strategy_template_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\strategy_template_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\test_module_v2_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\test_module_v2_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\test_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\test_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\throttling_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\throttling_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\tier1_validator_v3_complete_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\tier1_validator_v3_complete_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\tier1_validator_v3_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\tier1_validator_v3_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\treasury_module_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\treasury_module_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\visual_presentation_simple_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\visual_presentation_simple_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\visual_presentation_wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\visual_presentation_wrapper.py"
+    },
+    {
+      "modulo": "wrappers_v2\\__init___wrapper.py",
+      "status": "operacional",
+      "caminho_completo": "C:\\Users\\Lenovo\\Projects\\Aurora\\wrappers_v2\\__init___wrapper.py"
+    }
+  ],
+  "problemas_detalhados": []
+}

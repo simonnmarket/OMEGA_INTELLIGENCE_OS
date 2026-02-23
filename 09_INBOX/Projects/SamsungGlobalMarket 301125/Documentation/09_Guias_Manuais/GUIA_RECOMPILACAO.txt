@@ -1,0 +1,84 @@
+====================================================================
+GUIA DE RECOMPILAÇÃO DO EA - SAMSUNG GLOBAL MARKET
+====================================================================
+
+PROBLEMA RESOLVIDO:
+- EA não recebia mensagens porque só verificava no OnTick
+- Agora usa OnTimer() para verificar a cada 1 segundo
+- Não depende mais de movimento de preço
+
+====================================================================
+PASSO A PASSO PARA RECOMPILAR
+====================================================================
+
+1. ABRIR METAEDITOR
+   - No MT5, pressione F4
+   - Ou: Menu Tools → MetaQuotes Language Editor
+
+2. ABRIR O ARQUIVO
+   - No painel Navigator (esquerda)
+   - Experts → SamsungGlobalMarket_EA.mq5
+   - Duplo clique
+
+3. VERIFICAR VERSÃO
+   - Linha 80 deve mostrar:
+     Print("Versao: 1.01");
+   - Se mostrar 1.00, o arquivo errado está aberto!
+
+4. COMPILAR
+   - Pressione F7
+   - Ou: Menu Compile → Compile
+   - Aguarde: "0 error(s), 0 warning(s)"
+
+5. VERIFICAR COMPILAÇÃO
+   - Aba Toolbox (parte inferior)
+   - Deve aparecer:
+     "SamsungGlobalMarket_EA.ex5 generated"
+
+6. FECHAR METAEDITOR
+   - Alt+F4 ou X
+
+7. REINICIAR EA NO MT5
+   - Remover EA do gráfico (clicar com direito → EA → Remove)
+   - Anexar EA novamente (arrastar do Navigator)
+
+====================================================================
+RESULTADO ESPERADO NOS LOGS
+====================================================================
+
+Versao: 1.01  ← DEVE SER 1.01! ✓
+[TIMER] Verificacao de mensagens ativa (1s)  ← NOVO! ✓
+CONEXAO ESTABELECIDA COM SUCESSO!
+========================================
+HANDSHAKE CONFIRMADO PELO SERVIDOR  ← NOVO! ✓
+========================================
+Servidor: Samsung Global Market v3.1
+Status: READY
+CONEXAO VALIDADA. PRONTO PARA TRADING.  ← NOVO! ✓
+========================================
+
+====================================================================
+SE AINDA MOSTRAR "Versao: 1.00"
+====================================================================
+
+Isso significa que o MT5 está carregando cache antigo.
+
+SOLUÇÃO EXTREMA:
+1. Fechar completamente o MT5
+2. Reabrir MT5
+3. Recompilar (F4 → F7)
+4. Anexar EA
+
+====================================================================
+CONFIRMAÇÃO DE SUCESSO
+====================================================================
+
+✓ Versão mostra 1.01
+✓ Aparece "[TIMER] Verificacao de mensagens ativa"
+✓ Aparece "HANDSHAKE CONFIRMADO PELO SERVIDOR"
+✓ Conexão não desconecta após 90 segundos
+
+Se TODOS os itens acima aparecerem, a integração está 100% funcional!
+
+====================================================================
+

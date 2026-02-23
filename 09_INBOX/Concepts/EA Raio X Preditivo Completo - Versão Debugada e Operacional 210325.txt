@@ -1,0 +1,616 @@
+//+------------------------------------------------------------------+
+//| EA Raio X Preditivo Completo - Versão Debugada e Operacional     |
+//+------------------------------------------------------------------+
+
+#include <Trade\Trade.mqh>
+
+// Estrutura para sinais
+struct InsightSignal {
+   string categoryName;
+   string signalName;
+   double strength;
+   double confidence;
+   datetime timestamp;
+   string description;
+   bool isValid;
+   int priority;
+   double impact;
+   
+   void Init() {
+      categoryName = "";
+      signalName = "";
+      strength = 0;
+      confidence = 0;
+      timestamp = 0;
+      description = "";
+      isValid = false;
+      priority = 0;
+      impact = 0;
+   }
+};
+
+// Interface base para categorias
+interface IInsightCategory {
+   bool Initialize();
+   bool Update();
+   bool Validate();
+   string GetCategoryName();
+   double GetInsightScore();
+   bool GetSignals(InsightSignal &signals[], int &signalCount);
+};
+
+// Classe base para categorias
+class CBaseCategoryAnalyzer : public IInsightCategory {
+protected:
+   string m_categoryName;
+   InsightSignal m_signals[];
+   struct CategoryMetrics { double accuracy; double reliability; double adaptability; datetime lastUpdate; } m_metrics;
+   struct CategoryState { bool isInitialized; bool isActive; bool needsUpdate; int signalCount; } m_state;
+
+public:
+   CBaseCategoryAnalyzer(string categoryName) { m_categoryName = categoryName; InitializeBase(); }
+   
+   virtual bool Initialize() override {
+      if(m_state.isInitialized) return true;
+      if(!ValidateCategory()) { LogError("Falha na validação da categoria"); return false; }
+      m_state.isInitialized = true;
+      m_state.isActive = true;
+      return true;
+   }
+   
+   virtual bool Update() override { return true; }
+   virtual bool Validate() override { return m_state.isInitialized; }
+   virtual string GetCategoryName() override { return m_categoryName; }
+   virtual double GetInsightScore() override { return CalculateCategoryScore(); }
+   
+   virtual bool GetSignals(InsightSignal &signals[], int &signalCount) override {
+      if(!ValidateSignals()) return false;
+      signalCount = ArraySize(m_signals);
+      ArrayResize(signals, signalCount);
+      for(int i = 0; i < signalCount; i++) signals[i] = m_signals[i];
+      return true;
+   }
+
+protected:
+   void InitializeBase() {
+      m_state.isInitialized = false;
+      m_state.isActive = false;
+      m_state.needsUpdate = true;
+      m_state.signalCount = 0;
+      m_metrics.accuracy = 0;
+      m_metrics.reliability = 0;
+      m_metrics.adaptability = 0;
+      m_metrics.lastUpdate = 0;
+   }
+   
+   bool ValidateCategory() { return StringLen(m_categoryName) > 0; }
+   bool ValidateSignals() { return m_state.isInitialized && m_state.isActive; }
+   double CalculateCategoryScore() { return (m_metrics.accuracy + m_metrics.reliability + m_metrics.adaptability) / 3.0; }
+   void LogError(string message) { Print("Erro [" + m_categoryName + "]: " + message); }
+};
+
+// Módulo de Insights: Absorções e PPV
+class CInsightAnalyzer : public CBaseCategoryAnalyzer {
+private:
+   double m_volumeThreshold;
+   double m_retracementLevel;
+
+public:
+   CInsightAnalyzer(string categoryName) : CBaseCategoryAnalyzer(categoryName) {
+      m_volumeThreshold = 20;
+      m_retracementLevel = 0.05;
+   }
+   
+   virtual bool Update() override {
+      Print(m_categoryName + ": Update chamado");
+      if(!m_state.needsUpdate) return true;
+      
+      double volume = (double)iVolume(_Symbol, PERIOD_H1, 0);
+      Print(m_categoryName + ": Volume atual - " + DoubleToString(volume, 2));
+      if(DetectAbsorption()) {
+         AddSignal("Absorption", 0.8, 0.9, "Absorção detectada");
+         Print(m_categoryName + ": Absorção detectada");
+      }
+      if(DetectPPV()) {
+         AddSignal("PPV", 0.85, 0.95, "Padrão V detectado");
+         Print(m_categoryName + ": PPV detectado");
+      }
+      
+      m_state.needsUpdate = false;
+      m_metrics.lastUpdate = TimeCurrent();
+      return true;
+   }
+   
+   virtual bool Validate() override { return m_state.isInitialized && m_volumeThreshold > 0; }
+
+private:
+   bool DetectAbsorption() {
+      double volume = (double)iVolume(_Symbol, PERIOD_H1, 0);
+      return volume > m_volumeThreshold;
+   }
+   
+   bool DetectPPV() {
+      double high = iHigh(_Symbol, PERIOD_H1, 1);
+      double low = iLow(_Symbol, PERIOD_H1, 1);
+      double retracement = (high - iClose(_Symbol, PERIOD_H1, 0)) / (high - low);
+      Print(m_categoryName + ": Retracement - " + DoubleToString(retracement, 2));
+      return retracement >= m_retracementLevel;
+   }
+   
+   void AddSignal(string name, double strength, double confidence, string desc) {
+      int size = ArraySize(m_signals);
+      ArrayResize(m_signals, size + 1);
+      m_signals[size].Init();
+      m_signals[size].categoryName = m_categoryName;
+      m_signals[size].signalName = name;
+      m_signals[size].strength = strength;
+      m_signals[size].confidence = confidence;
+      m_signals[size].timestamp = TimeCurrent();
+      m_signals[size].description = desc;
+      m_signals[size].isValid = true;
+      m_signals[size].priority = 1;
+      m_signals[size].impact = strength * confidence;
+      m_state.signalCount++;
+   }
+};
+
+// Módulo de Indicadores: Satus Bar
+class CSatusBarAnalyzer : public CBaseCategoryAnalyzer {
+private:
+   double m_satusBarValue;
+
+public:
+   CSatusBarAnalyzer() : CBaseCategoryAnalyzer("SatusBar") { m_satusBarValue = 0; }
+   
+   virtual bool Update() override {
+      Print(m_categoryName + ": Update chamado");
+      if(!m_state.needsUpdate) return true;
+      
+      m_satusBarValue = CalculateSatusBar();
+      Print(m_categoryName + ": SatusBar - " + DoubleToString(m_satusBarValue, 2));
+      if(m_satusBarValue > 0.2) {
+         AddSignal("SatusBarHigh", 0.9, 0.95, "Barra de volumão detectada");
+         Print(m_categoryName + ": Volumão detectado - " + DoubleToString(m_satusBarValue, 2));
+      }
+      
+      m_state.needsUpdate = false;
+      m_metrics.lastUpdate = TimeCurrent();
+      return true;
+   }
+   
+   virtual bool Validate() override { return m_state.isInitialized && m_satusBarValue >= 0; }
+
+private:
+   double CalculateSatusBar() {
+      double avgVolume = 0.0;
+      for(int i = 0; i < 10; i++) {
+         avgVolume += (double)iVolume(_Symbol, PERIOD_H1, i);
+      }
+      avgVolume = avgVolume / 10.0;
+      double currentVolume = (double)iVolume(_Symbol, PERIOD_H1, 0);
+      return currentVolume / avgVolume;
+   }
+   
+   void AddSignal(string name, double strength, double confidence, string desc) {
+      int size = ArraySize(m_signals);
+      ArrayResize(m_signals, size + 1);
+      m_signals[size].Init();
+      m_signals[size].categoryName = m_categoryName;
+      m_signals[size].signalName = name;
+      m_signals[size].strength = strength;
+      m_signals[size].confidence = confidence;
+      m_signals[size].timestamp = TimeCurrent();
+      m_signals[size].description = desc;
+      m_signals[size].isValid = true;
+      m_signals[size].priority = 1;
+      m_signals[size].impact = strength * confidence;
+      m_state.signalCount++;
+   }
+};
+
+// Módulo de Indicadores: Market Profile (POC Simulado)
+class CMarketProfileAnalyzer : public CBaseCategoryAnalyzer {
+private:
+   double m_pocLevel;
+
+public:
+   CMarketProfileAnalyzer() : CBaseCategoryAnalyzer("MarketProfile") { m_pocLevel = 0; }
+   
+   virtual bool Update() override {
+      Print(m_categoryName + ": Update chamado");
+      if(!m_state.needsUpdate) return true;
+      
+      m_pocLevel = CalculatePOC();
+      if(IsNearPOC()) {
+         AddSignal("NearPOC", 0.75, 0.9, "Preço próximo ao POC");
+         Print(m_categoryName + ": Perto do POC - " + DoubleToString(m_pocLevel, 4));
+      }
+      
+      m_state.needsUpdate = false;
+      m_metrics.lastUpdate = TimeCurrent();
+      return true;
+   }
+   
+   virtual bool Validate() override { return m_state.isInitialized; }
+   double GetPOCLevel() { return m_pocLevel; }
+
+private:
+   double CalculatePOC() {
+      double maxVolume = 0;
+      double pocPrice = 0;
+      for(int i = 0; i < 20; i++) {
+         double vol = (double)iVolume(_Symbol, PERIOD_H1, i);
+         if(vol > maxVolume) {
+            maxVolume = vol;
+            pocPrice = (iHigh(_Symbol, PERIOD_H1, i) + iLow(_Symbol, PERIOD_H1, i)) / 2;
+         }
+      }
+      return pocPrice;
+   }
+   
+   bool IsNearPOC() {
+      double currentPrice = iClose(_Symbol, PERIOD_H1, 0);
+      return MathAbs(currentPrice - m_pocLevel) < 0.0010;
+   }
+   
+   void AddSignal(string name, double strength, double confidence, string desc) {
+      int size = ArraySize(m_signals);
+      ArrayResize(m_signals, size + 1);
+      m_signals[size].Init();
+      m_signals[size].categoryName = m_categoryName;
+      m_signals[size].signalName = name;
+      m_signals[size].strength = strength;
+      m_signals[size].confidence = confidence;
+      m_signals[size].timestamp = TimeCurrent();
+      m_signals[size].description = desc;
+      m_signals[size].isValid = true;
+      m_signals[size].priority = 1;
+      m_signals[size].impact = strength * confidence;
+      m_state.signalCount++;
+   }
+};
+
+// Módulo de Heiken Ashi
+class CHeikenAshiAnalyzer : public CBaseCategoryAnalyzer {
+private:
+   double m_haOpen[];
+   double m_haClose[];
+   double m_haHigh[];
+   double m_haLow[];
+
+public:
+   CHeikenAshiAnalyzer() : CBaseCategoryAnalyzer("HeikenAshi") {
+      ArrayResize(m_haOpen, 100);
+      ArrayResize(m_haClose, 100);
+      ArrayResize(m_haHigh, 100);
+      ArrayResize(m_haLow, 100);
+   }
+   
+   virtual bool Update() override {
+      Print(m_categoryName + ": Update chamado");
+      if(!m_state.needsUpdate) return true;
+      
+      CalculateHeikenAshi();
+      if(IsTrendUp()) {
+         AddSignal("HA_Uptrend", 0.8, 0.9, "Tendência de alta HA");
+         Print(m_categoryName + ": Tendência de alta detectada");
+      }
+      else if(IsTrendDown()) {
+         AddSignal("HA_Downtrend", 0.8, 0.9, "Tendência de baixa HA");
+         Print(m_categoryName + ": Tendência de baixa detectada");
+      }
+      
+      m_state.needsUpdate = false;
+      m_metrics.lastUpdate = TimeCurrent();
+      return true;
+   }
+   
+   virtual bool Validate() override { return m_state.isInitialized; }
+   bool IsTrendUp() { 
+      bool trend = m_haClose[0] > m_haOpen[0];
+      Print(m_categoryName + ": TrendUp - " + (trend ? "true" : "false") + " | HA_Close: " + DoubleToString(m_haClose[0], 4) + " | HA_Open: " + DoubleToString(m_haOpen[0], 4));
+      return trend;
+   }
+   bool IsTrendDown() { 
+      bool trend = m_haClose[0] < m_haOpen[0];
+      Print(m_categoryName + ": TrendDown - " + (trend ? "true" : "false") + " | HA_Close: " + DoubleToString(m_haClose[0], 4) + " | HA_Open: " + DoubleToString(m_haOpen[0], 4));
+      return trend;
+   }
+
+private:
+   void CalculateHeikenAshi() {
+      for(int i = 0; i < 100; i++) {
+         double open = iOpen(_Symbol, PERIOD_H1, i);
+         double high = iHigh(_Symbol, PERIOD_H1, i);
+         double low = iLow(_Symbol, PERIOD_H1, i);
+         double close = iClose(_Symbol, PERIOD_H1, i);
+         
+         m_haClose[i] = (open + high + low + close) / 4;
+         m_haOpen[i] = (i > 0) ? (m_haOpen[i-1] + m_haClose[i-1]) / 2 : open;
+         m_haHigh[i] = MathMax(high, MathMax(m_haOpen[i], m_haClose[i]));
+         m_haLow[i] = MathMin(low, MathMin(m_haOpen[i], m_haClose[i]));
+      }
+   }
+   
+   void AddSignal(string name, double strength, double confidence, string desc) {
+      int size = ArraySize(m_signals);
+      ArrayResize(m_signals, size + 1);
+      m_signals[size].Init();
+      m_signals[size].categoryName = m_categoryName;
+      m_signals[size].signalName = name;
+      m_signals[size].strength = strength;
+      m_signals[size].confidence = confidence;
+      m_signals[size].timestamp = TimeCurrent();
+      m_signals[size].description = desc;
+      m_signals[size].isValid = true;
+      m_signals[size].priority = 1;
+      m_signals[size].impact = strength * confidence;
+      m_state.signalCount++;
+   }
+};
+
+// Gerenciador de Categorias
+class CCategoryManager {
+private:
+   IInsightCategory* m_categories[];
+   int m_categoryCount;
+
+public:
+   CCategoryManager() { m_categoryCount = 0; }
+   
+   bool RegisterCategory(IInsightCategory* category) {
+      if(category == NULL) return false;
+      
+      string categoryName = category.GetCategoryName();
+      if(StringLen(categoryName) == 0) return false;
+      
+      if(!category.Initialize()) {
+         Print("Falha ao inicializar categoria: " + categoryName);
+         return false;
+      }
+      
+      ArrayResize(m_categories, m_categoryCount + 1);
+      m_categories[m_categoryCount] = category;
+      m_categoryCount++;
+      return true;
+   }
+   
+   IInsightCategory* GetCategory(string categoryName) {
+      for(int i = 0; i < m_categoryCount; i++) {
+         if(m_categories[i].GetCategoryName() == categoryName) return m_categories[i];
+      }
+      return NULL;
+   }
+   
+   bool UpdateAllCategories() {
+      for(int i = 0; i < m_categoryCount; i++) {
+         if(m_categories[i] != NULL) m_categories[i].Update();
+      }
+      return true;
+   }
+   
+   bool GetAllSignals(InsightSignal &signals[], int &signalCount) {
+      signalCount = 0;
+      InsightSignal tempSignals[];
+      for(int i = 0; i < m_categoryCount; i++) {
+         if(m_categories[i] != NULL) {
+            int tempCount = 0;
+            if(m_categories[i].GetSignals(tempSignals, tempCount)) {
+               int currentSize = signalCount;
+               ArrayResize(signals, currentSize + tempCount);
+               for(int j = 0; j < tempCount; j++) signals[currentSize + j] = tempSignals[j];
+               signalCount += tempCount;
+            }
+         }
+      }
+      return signalCount > 0;
+   }
+};
+
+// EA Principal
+CCategoryManager categoryManager;
+CTrade trade;
+ulong tradeTicket = 0;
+double lastStopLevel = 0;
+
+void OnInit() {
+   CInsightAnalyzer* absorption = new CInsightAnalyzer("Absorption");
+   CSatusBarAnalyzer* satusBar = new CSatusBarAnalyzer();
+   CMarketProfileAnalyzer* marketProfile = new CMarketProfileAnalyzer();
+   CHeikenAshiAnalyzer* heikenAshi = new CHeikenAshiAnalyzer();
+   
+   categoryManager.RegisterCategory(absorption);
+   categoryManager.RegisterCategory(satusBar);
+   categoryManager.RegisterCategory(marketProfile);
+   categoryManager.RegisterCategory(heikenAshi);
+   
+   Print("EA Raio X Preditivo inicializado!");
+}
+
+double GetATR(int period) {
+   double atr[];
+   ArraySetAsSeries(atr, true);
+   CopyBuffer(iATR(_Symbol, PERIOD_H1, 14), 0, 0, period, atr);
+   return atr[0];
+}
+
+void OnTick() {
+   categoryManager.UpdateAllCategories();
+   
+   InsightSignal signals[];
+   int signalCount = 0;
+   categoryManager.GetAllSignals(signals, signalCount);
+   
+   double currentPrice = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+   double atr = GetATR(14);
+   double stopLevel = 0;
+   double takeProfit = 0;
+   bool shouldTrade = false;
+   string tradeType = "";
+   
+   CHeikenAshiAnalyzer* ha = (CHeikenAshiAnalyzer*)categoryManager.GetCategory("HeikenAshi");
+   if(ha == NULL) {
+      Print("Erro: HeikenAshiAnalyzer não encontrado!");
+      return;
+   }
+   
+   Print("Sinais detectados: " + IntegerToString(signalCount));
+   for(int i = 0; i < signalCount; i++) {
+      if(!signals[i].isValid) continue;
+      
+      Print("Sinal: " + signals[i].signalName + " | " + signals[i].description + " | Preço atual: " + DoubleToString(currentPrice, 4));
+      
+      // Absorção
+      if(signals[i].signalName == "Absorption") {
+         if(ha.IsTrendUp()) {
+            tradeType = "Buy";
+            stopLevel = iLow(_Symbol, PERIOD_H1, 1) - atr * 1.0;
+            takeProfit = iHigh(_Symbol, PERIOD_H1, 1) + atr * 2.5;
+            shouldTrade = true;
+         } else if(ha.IsTrendDown()) {
+            tradeType = "Sell";
+            stopLevel = iHigh(_Symbol, PERIOD_H1, 1) + atr * 1.0;
+            takeProfit = iLow(_Symbol, PERIOD_H1, 1) - atr * 2.5;
+            shouldTrade = true;
+         }
+      }
+      
+      // PPV
+      if(signals[i].signalName == "PPV") {
+         if(ha.IsTrendUp()) {
+            tradeType = "Buy";
+            stopLevel = iLow(_Symbol, PERIOD_H1, 1) - atr * 1.0;
+            takeProfit = iHigh(_Symbol, PERIOD_H1, 1) + atr * 2.5;
+            shouldTrade = true;
+         } else if(ha.IsTrendDown()) {
+            tradeType = "Sell";
+            stopLevel = iHigh(_Symbol, PERIOD_H1, 1) + atr * 1.0;
+            takeProfit = iLow(_Symbol, PERIOD_H1, 1) - atr * 2.5;
+            shouldTrade = true;
+         } else {
+            tradeType = (currentPrice > iOpen(_Symbol, PERIOD_H1, 0)) ? "Buy" : "Sell";
+            stopLevel = (tradeType == "Buy") ? iLow(_Symbol, PERIOD_H1, 1) - atr * 1.0 : iHigh(_Symbol, PERIOD_H1, 1) + atr * 1.0;
+            takeProfit = (tradeType == "Buy") ? iHigh(_Symbol, PERIOD_H1, 1) + atr * 2.5 : iLow(_Symbol, PERIOD_H1, 1) - atr * 2.5;
+            shouldTrade = true;
+            Print("PPV sem tendência forte, forçando trade: " + tradeType);
+         }
+      }
+      
+      // Satus Bar
+      if(signals[i].signalName == "SatusBarHigh") {
+         if(currentPrice > iOpen(_Symbol, PERIOD_H1, 0) && ha.IsTrendUp()) {
+            tradeType = "Buy";
+            stopLevel = iLow(_Symbol, PERIOD_H1, 1) - atr * 1.0;
+            takeProfit = iHigh(_Symbol, PERIOD_H1, 1) + atr * 2.5;
+            shouldTrade = true;
+         } else if(currentPrice < iOpen(_Symbol, PERIOD_H1, 0) && ha.IsTrendDown()) {
+            tradeType = "Sell";
+            stopLevel = iHigh(_Symbol, PERIOD_H1, 1) + atr * 1.0;
+            takeProfit = iLow(_Symbol, PERIOD_H1, 1) - atr * 2.5;
+            shouldTrade = true;
+         }
+      }
+      
+      // Market Profile
+      CMarketProfileAnalyzer* mp = (CMarketProfileAnalyzer*)categoryManager.GetCategory("MarketProfile");
+      if(signals[i].signalName == "NearPOC" && mp != NULL) {
+         if(currentPrice > mp.GetPOCLevel() && ha.IsTrendUp()) {
+            tradeType = "Buy";
+            stopLevel = iLow(_Symbol, PERIOD_H1, 1) - atr * 1.0;
+            takeProfit = mp.GetPOCLevel() + atr * 2.5;
+            shouldTrade = true;
+         } else if(currentPrice < mp.GetPOCLevel() && ha.IsTrendDown()) {
+            tradeType = "Sell";
+            stopLevel = iHigh(_Symbol, PERIOD_H1, 1) + atr * 1.0;
+            takeProfit = mp.GetPOCLevel() - atr * 2.5;
+            shouldTrade = true;
+         } else {
+            tradeType = (currentPrice > mp.GetPOCLevel()) ? "Buy" : "Sell";
+            stopLevel = (tradeType == "Buy") ? iLow(_Symbol, PERIOD_H1, 1) - atr * 1.0 : iHigh(_Symbol, PERIOD_H1, 1) + atr * 1.0;
+            takeProfit = (tradeType == "Buy") ? mp.GetPOCLevel() + atr * 2.5 : mp.GetPOCLevel() - atr * 2.5;
+            shouldTrade = true;
+            Print("NearPOC sem tendência forte, forçando trade: " + tradeType);
+         }
+      }
+      
+      Print("shouldTrade: " + (shouldTrade ? "true" : "false") + " | tradeType: " + tradeType);
+   }
+   
+   if(shouldTrade) {
+      Print("Tentativa de trade | Tipo: " + tradeType + " | Stop: " + DoubleToString(stopLevel, 4) + " | TP: " + DoubleToString(takeProfit, 4));
+      Comment("Tentativa: " + tradeType + " | Stop: " + DoubleToString(stopLevel, 4));
+      if(tradeTicket == 0) {
+         double lotSize = 0.1;
+         if(tradeType == "Buy") {
+            Print("Enviando Buy | Preço: " + DoubleToString(currentPrice, 4));
+            trade.Buy(lotSize, _Symbol, 0, stopLevel, takeProfit, "RaioX Trade");
+            if(trade.ResultRetcode() == 10009) {
+               tradeTicket = trade.ResultOrder();
+               Print("Buy executado | Ticket: " + IntegerToString(tradeTicket) + " | Retcode: " + IntegerToString(trade.ResultRetcode()));
+               Comment("Buy OK | Ticket: " + IntegerToString(tradeTicket));
+               lastStopLevel = stopLevel;
+            } else {
+               Print("Erro ao abrir Buy | Retcode: " + IntegerToString(trade.ResultRetcode()) + " | Erro: " + IntegerToString(GetLastError()));
+               Comment("Erro Buy: " + IntegerToString(GetLastError()));
+            }
+         } else if(tradeType == "Sell") {
+            Print("Enviando Sell | Preço: " + DoubleToString(currentPrice, 4));
+            trade.Sell(lotSize, _Symbol, 0, stopLevel, takeProfit, "RaioX Trade");
+            if(trade.ResultRetcode() == 10009) {
+               tradeTicket = trade.ResultOrder();
+               Print("Sell executado | Ticket: " + IntegerToString(tradeTicket) + " | Retcode: " + IntegerToString(trade.ResultRetcode()));
+               Comment("Sell OK | Ticket: " + IntegerToString(tradeTicket));
+               lastStopLevel = stopLevel;
+            } else {
+               Print("Erro ao abrir Sell | Retcode: " + IntegerToString(trade.ResultRetcode()) + " | Erro: " + IntegerToString(GetLastError()));
+               Comment("Erro Sell: " + IntegerToString(GetLastError()));
+            }
+         }
+      }
+   }
+   
+   // Virada de mão
+   if(tradeTicket > 0 && PositionSelectByTicket(tradeTicket)) {
+      if((PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY && currentPrice < lastStopLevel) ||
+         (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL && currentPrice > lastStopLevel)) {
+         CloseTrade();
+         tradeType = (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY) ? "Sell" : "Buy";
+         double newStop = (tradeType == "Buy") ? iLow(_Symbol, PERIOD_H1, 0) - atr * 1.0 : 
+                          iHigh(_Symbol, PERIOD_H1, 0) + atr * 1.0;
+         double newTP = (tradeType == "Buy") ? iHigh(_Symbol, PERIOD_H1, 0) + atr * 2.5 : 
+                        iLow(_Symbol, PERIOD_H1, 0) - atr * 2.5;
+         Print("Tentativa de virada | Tipo: " + tradeType + " | Stop: " + DoubleToString(newStop, 4));
+         if(tradeType == "Buy") {
+            trade.Buy(0.1, _Symbol, 0, newStop, newTP, "Virada");
+            if(trade.ResultRetcode() == 10009) {
+               tradeTicket = trade.ResultOrder();
+               Print("Virada para Buy | Stop: " + DoubleToString(newStop, 4));
+               lastStopLevel = newStop;
+            } else {
+               Print("Erro na virada Buy: " + IntegerToString(GetLastError()));
+            }
+         } else {
+            trade.Sell(0.1, _Symbol, 0, newStop, newTP, "Virada");
+            if(trade.ResultRetcode() == 10009) {
+               tradeTicket = trade.ResultOrder();
+               Print("Virada para Sell | Stop: " + DoubleToString(newStop, 4));
+               lastStopLevel = newStop;
+            } else {
+               Print("Erro na virada Sell: " + IntegerToString(GetLastError()));
+            }
+         }
+      }
+   }
+}
+
+void CloseTrade() {
+   if(tradeTicket > 0 && PositionSelectByTicket(tradeTicket)) {
+      trade.PositionClose(tradeTicket);
+      Print("Posição fechada | Ticket: " + IntegerToString(tradeTicket));
+      tradeTicket = 0;
+   }
+}
+
+void OnDeinit(const int reason) {
+   Print("EA Raio X Preditivo finalizado!");
+}

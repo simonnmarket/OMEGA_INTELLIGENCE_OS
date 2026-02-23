@@ -1,0 +1,478 @@
+#property copyright "Quantum Sensory Trading System"
+#property link      "https://www.quantumsensory.com"
+#property version   "4.0"
+
+// Includes necessários
+#include <Trade\Trade.mqh>
+#include "Include\QuantumSensoryConfig.mqh"
+#include "Include\QuantumSensoryClasses.mqh"
+#include "Include\QuantumLogger.mqh"
+
+// Inputs
+input group "Configurações Gerais"
+input double RiskPercent = 2.0;       // Risco por operação (%)
+input int MaxTrades = 3;              // Máximo de trades simultâneos
+input bool UseVisualSystem = true;    // Usar sistema visual
+input bool UseHearingSystem = true;   // Usar sistema auditivo
+input bool UseTouchSystem = true;     // Usar sistema tátil
+input bool UseSmellSystem = true;     // Usar sistema olfativo
+input bool UseTasteSystem = true;     // Usar sistema gustativo
+
+input group "Configurações de Stop"
+input int StopLoss = 100;            // Stop Loss em pontos
+input int TakeProfit = 200;          // Take Profit em pontos
+input int BreakEvenStart = 50;       // Pontos para Ativar Break Even
+input int BreakEvenProfit = 10;      // Pontos de Lucro após Break Even
+input int TrailingStart = 100;       // Pontos para Ativar Trailing
+input int TrailingStep = 20;         // Passos do Trailing Stop
+input int MaxSpread = 50;            // Spread Máximo Permitido
+
+input group "Configurações de Absorção"
+input double AbsorptionPriceChange = 0.0005; // Mudança mínima de preço para absorção
+input double AbsorptionVolumeRatio = 0.8;    // Razão de volume para absorção
+input bool UseAbsorptionPattern = true;      // Usar padrão de absorção
+
+input group "Configurações de Liquidez"
+input double LiquidityZoneThickness = 0.0010; // Espessura da zona de liquidez
+input int MinZoneVolume = 1000;              // Volume mínimo para zona de liquidez
+input int MaxLiquidityZones = 5;             // Máximo de zonas de liquidez
+
+// Objetos globais
+CTrade trade;
+CQuantumLogger* logger;
+CQuantumVisionSystem* vision;
+CMarketHearingSystem* hearing;
+CMarketTouchSystem* touch;
+CRiskSmellingSystem* smell;
+CMarketTasteSystem* taste;
+CSensoryIntegration* sensoryIntegration;
+
+// Variáveis globais
+IntegratedSensoryData currentState;
+bool isInitialized = false;
+datetime lastUpdateTime = 0;
+int totalTrades = 0;
+double initialBalance = 0;
+
+// Estruturas para zonas de liquidez
+struct LiquidityZone {
+    double priceLevel;
+    double volume;
+    datetime lastTest;
+    bool isSupport;
+    bool isActive;
+};
+
+LiquidityZone liquidityZones[];
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                     |
+//+------------------------------------------------------------------+
+int OnInit() {
+    // Inicializar logger
+    logger = new CQuantumLogger("QuantumSystem");
+    
+    // Verificar período
+    if(Period() != PERIOD_M5) {
+        logger.Error("Timeframe incorreto. Use M5");
+        return INIT_PARAMETERS_INCORRECT;
+    }
+    
+    // Inicializar sistemas sensoriais
+    if(UseVisualSystem) vision = new CQuantumVisionSystem();
+    if(UseHearingSystem) hearing = new CMarketHearingSystem();
+    if(UseTouchSystem) touch = new CMarketTouchSystem();
+    if(UseSmellSystem) smell = new CRiskSmellingSystem();
+    if(UseTasteSystem) taste = new CMarketTasteSystem();
+    sensoryIntegration = new CSensoryIntegration();
+    
+    // Verificar inicialização
+    bool initOK = true;
+    if(UseVisualSystem && !vision.Initialize()) initOK = false;
+    if(UseHearingSystem && !hearing.Initialize()) initOK = false;
+    if(UseTouchSystem && !touch.Initialize()) initOK = false;
+    if(UseSmellSystem && !smell.Initialize()) initOK = false;
+    if(UseTasteSystem && !taste.Initialize()) initOK = false;
+    
+    if(!initOK) {
+        logger.Error("Falha na inicialização dos sistemas sensoriais");
+        return INIT_FAILED;
+    }
+    
+    // Configurar trade
+    trade.SetExpertMagicNumber(123456);
+    trade.SetMarginMode();
+    trade.SetTypeFillingBySymbol(_Symbol);
+    
+    // Inicializar zonas de liquidez
+    ArrayResize(liquidityZones, MaxLiquidityZones);
+    for(int i = 0; i < MaxLiquidityZones; i++) {
+        liquidityZones[i].isActive = false;
+    }
+    
+    initialBalance = AccountInfoDouble(ACCOUNT_BALANCE);
+    isInitialized = true;
+    logger.Info("Sistema inicializado com sucesso");
+    return INIT_SUCCEEDED;
+}
+
+//+------------------------------------------------------------------+
+//| Expert deinitialization function                                   |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason) {
+    if(UseVisualSystem) delete vision;
+    if(UseHearingSystem) delete hearing;
+    if(UseTouchSystem) delete touch;
+    if(UseSmellSystem) delete smell;
+    if(UseTasteSystem) delete taste;
+    delete sensoryIntegration;
+    
+    // Salvar estatísticas
+    double finalBalance = AccountInfoDouble(ACCOUNT_BALANCE);
+    double profit = finalBalance - initialBalance;
+    
+    logger.Info(StringFormat("Sistema finalizado. Resultado: %.2f. Total trades: %d", 
+                profit, totalTrades));
+                
+    // Limpar objetos do gráfico
+    ObjectsDeleteAll(0, "LiquidityZone");
+    
+    delete logger;
+}
+
+//+------------------------------------------------------------------+
+//| Expert tick function                                              |
+//+------------------------------------------------------------------+
+void OnTick() {
+    if(!isInitialized) return;
+    
+    datetime currentTime = TimeCurrent();
+    if(currentTime - lastUpdateTime < 5) return; // Atualizar a cada 5 segundos
+    lastUpdateTime = currentTime;
+    
+    // Verificar spread
+    double currentSpread = SymbolInfoInteger(_Symbol, SYMBOL_SPREAD);
+    if(currentSpread > MaxSpread) {
+        logger.Warning("Spread alto: " + DoubleToString(currentSpread, 1));
+        return;
+    }
+    
+    // Verificar número máximo de trades
+    if(PositionsTotal() >= MaxTrades) {
+        ManageOpenPositions();
+        return;
+    }
+    
+    // Atualizar sistemas sensoriais
+    if(UseVisualSystem) vision.ProcessMarketView();
+    if(UseHearingSystem) hearing.ProcessMarketSounds();
+    if(UseTouchSystem) touch.ProcessMarketTouch();
+    if(UseSmellSystem) smell.ProcessMarketSmell();
+    if(UseTasteSystem) taste.ProcessMarketTaste();
+    
+    // Integrar informações sensoriais
+    sensoryIntegration.ProcessSensoryInput(vision, hearing, touch, smell, taste);
+    currentState = sensoryIntegration.GetCurrentPerception();
+    
+    // Identificar e atualizar zonas de liquidez
+    IdentifyLiquidityZones();
+    
+    // Analisar condições de mercado e executar operações
+    AnalyzeMarketConditions();
+}
+
+//+------------------------------------------------------------------+
+//| Análise das condições de mercado                                  |
+//+------------------------------------------------------------------+
+void AnalyzeMarketConditions() {
+    if(currentState.sensoryCoherence < GlobalConfig::CoherenceThreshold) {
+        logger.Warning("Baixa coerência sensorial - aguardando");
+        return;
+    }
+    
+    if(currentState.overallPerception > GlobalConfig::MinimumConfidence) {
+        // Calcular direção do trade
+        bool isBuy = currentState.vision.trendStrength > 0.5 &&
+                    currentState.hearing.priceVelocity > 0.5 &&
+                    currentState.touch.marketMomentum > 0.5;
+        
+        // Verificar padrão de absorção
+        if(UseAbsorptionPattern && !CheckAbsorptionPattern(isBuy)) {
+            logger.Info("Padrão de absorção não confirmado");
+            return;
+        }
+        
+        // Verificar zonas de liquidez
+        if(!ValidateLiquidityZones(isBuy)) {
+            logger.Info("Zona de liquidez não favorável");
+            return;
+        }
+        
+        // Calcular volume
+        double volume = CalculatePositionSize();
+        
+        // Ajustar volume se houver absorção
+        if(UseAbsorptionPattern && CheckAbsorptionPattern(isBuy)) {
+            volume *= 1.5; // Aumenta volume em 50% se houver absorção
+        }
+        
+        // Calcular níveis de entrada e saída
+        double entryPrice = isBuy ? SymbolInfoDouble(_Symbol, SYMBOL_ASK) : SymbolInfoDouble(_Symbol, SYMBOL_BID);
+        double stopLoss = isBuy ? entryPrice - (StopLoss * _Point) : entryPrice + (StopLoss * _Point);
+        double takeProfit = isBuy ? entryPrice + (TakeProfit * _Point) : entryPrice - (TakeProfit * _Point);
+        
+        // Executar trade
+        bool tradeResult = false;
+        if(isBuy) {
+            tradeResult = trade.Buy(volume, _Symbol, entryPrice, stopLoss, takeProfit, "Quantum Buy");
+        } else {
+            tradeResult = trade.Sell(volume, _Symbol, entryPrice, stopLoss, takeProfit, "Quantum Sell");
+        }
+        
+        if(tradeResult) {
+            totalTrades++;
+            logger.Trade(StringFormat("%s: Volume=%.2f, SL=%.5f, TP=%.5f", 
+                         isBuy ? "Compra" : "Venda", volume, stopLoss, takeProfit));
+        }
+    }
+}
+
+//+------------------------------------------------------------------+
+//| Gerenciamento de posições abertas                                 |
+//+------------------------------------------------------------------+
+void ManageOpenPositions() {
+    for(int i = PositionsTotal() - 1; i >= 0; i--) {
+        ulong ticket = PositionGetTicket(i);
+        if(ticket <= 0) continue;
+        
+        if(!PositionSelectByTicket(ticket)) continue;
+        
+        // Verificar condições de saída
+        if(currentState.smell.riskLevel > GlobalConfig::RiskThreshold ||
+           currentState.taste.riskReward < GlobalConfig::MinProfitRatio) {
+            trade.PositionClose(ticket);
+            logger.Trade("Posição fechada por gerenciamento de risco");
+            continue;
+        }
+        
+        // Gerenciar Break Even
+        ManageBreakEven(ticket);
+        
+        // Gerenciar Trailing Stop
+        ManageTrailingStop(ticket);
+    }
+}
+
+//+------------------------------------------------------------------+
+//| Gerenciamento de Break Even                                       |
+//+------------------------------------------------------------------+
+void ManageBreakEven(ulong ticket) {
+    if(BreakEvenStart <= 0) return;
+    
+    if(!PositionSelectByTicket(ticket)) return;
+    
+    double openPrice = PositionGetDouble(POSITION_PRICE_OPEN);
+    double currentPrice = PositionGetDouble(POSITION_PRICE_CURRENT);
+    double stopLoss = PositionGetDouble(POSITION_SL);
+    bool isLong = PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY;
+    
+    double profitPoints = isLong ? (currentPrice - openPrice) / _Point : 
+                                 (openPrice - currentPrice) / _Point;
+                                 
+    if(profitPoints >= BreakEvenStart) {
+        double newStopLoss = isLong ? openPrice + (BreakEvenProfit * _Point) : 
+                                    openPrice - (BreakEvenProfit * _Point);
+                                    
+        if(isLong ? newStopLoss > stopLoss : newStopLoss < stopLoss) {
+            trade.PositionModify(ticket, newStopLoss, PositionGetDouble(POSITION_TP));
+            logger.Trade("Break Even ativado: " + DoubleToString(newStopLoss, _Digits));
+        }
+    }
+}
+
+//+------------------------------------------------------------------+
+//| Gerenciamento de Trailing Stop                                    |
+//+------------------------------------------------------------------+
+void ManageTrailingStop(ulong ticket) {
+    if(TrailingStart <= 0) return;
+    
+    if(!PositionSelectByTicket(ticket)) return;
+    
+    double openPrice = PositionGetDouble(POSITION_PRICE_OPEN);
+    double currentPrice = PositionGetDouble(POSITION_PRICE_CURRENT);
+    double stopLoss = PositionGetDouble(POSITION_SL);
+    bool isLong = PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY;
+    
+    double profitPoints = isLong ? (currentPrice - openPrice) / _Point : 
+                                 (openPrice - currentPrice) / _Point;
+                                 
+    if(profitPoints >= TrailingStart) {
+        double newStopLoss = isLong ? currentPrice - (TrailingStep * _Point) : 
+                                    currentPrice + (TrailingStep * _Point);
+                                    
+        if(isLong ? newStopLoss > stopLoss : newStopLoss < stopLoss) {
+            trade.PositionModify(ticket, newStopLoss, PositionGetDouble(POSITION_TP));
+            logger.Trade("Trailing Stop atualizado: " + DoubleToString(newStopLoss, _Digits));
+        }
+    }
+}
+
+//+------------------------------------------------------------------+
+//| Cálculo do tamanho da posição                                     |
+//+------------------------------------------------------------------+
+double CalculatePositionSize() {
+    double balance = AccountInfoDouble(ACCOUNT_BALANCE);
+    double risk = balance * (RiskPercent / 100.0);
+    double tickSize = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+    double tickValue = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+    double stopLoss = StopLoss * _Point;
+    
+    if(tickValue == 0) return 0.1; // Volume mínimo se não puder calcular
+    
+    double volume = risk / (stopLoss * tickValue);
+    double minVolume = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
+    double maxVolume = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX);
+    
+    volume = MathMin(maxVolume, MathMax(minVolume, volume));
+    return NormalizeDouble(volume, 2);
+}
+
+//+------------------------------------------------------------------+
+//| Verificação de padrão de absorção                                 |
+//+------------------------------------------------------------------+
+bool CheckAbsorptionPattern(bool isBuy) {
+    double close[], open[], volume[];
+    ArraySetAsSeries(close, true);
+    ArraySetAsSeries(open, true);
+    ArraySetAsSeries(volume, true);
+    
+    CopyClose(_Symbol, PERIOD_CURRENT, 0, 3, close);
+    CopyOpen(_Symbol, PERIOD_CURRENT, 0, 3, open);
+    CopyTickVolume(_Symbol, PERIOD_CURRENT, 0, 3, volume);
+    
+    if(isBuy) {
+        // Verificar absorção de venda
+        if(close[1] < open[1] && // Vela anterior vermelha
+           close[0] > open[0] && // Vela atual verde
+           volume[0] > volume[1] * AbsorptionVolumeRatio && // Volume maior
+           MathAbs(close[1] - open[1]) >= AbsorptionPriceChange && // Movimento significativo
+           close[0] > close[1]) // Fechamento acima
+            return true;
+    } else {
+        // Verificar absorção de compra
+        if(close[1] > open[1] && // Vela anterior verde
+           close[0] < open[0] && // Vela atual vermelha
+           volume[0] > volume[1] * AbsorptionVolumeRatio && // Volume maior
+           MathAbs(close[1] - open[1]) >= AbsorptionPriceChange && // Movimento significativo
+           close[0] < close[1]) // Fechamento abaixo
+            return true;
+    }
+    
+    return false;
+}
+
+//+------------------------------------------------------------------+
+//| Identificação de zonas de liquidez                                |
+//+------------------------------------------------------------------+
+void IdentifyLiquidityZones() {
+    double high[], low[], volume[];
+    ArraySetAsSeries(high, true);
+    ArraySetAsSeries(low, true);
+    ArraySetAsSeries(volume, true);
+    
+    CopyHigh(_Symbol, PERIOD_CURRENT, 0, 100, high);
+    CopyLow(_Symbol, PERIOD_CURRENT, 0, 100, low);
+    CopyTickVolume(_Symbol, PERIOD_CURRENT, 0, 100, volume);
+    
+    // Limpar zonas antigas
+    for(int i = 0; i < MaxLiquidityZones; i++) {
+        if(liquidityZones[i].isActive) {
+            if(TimeCurrent() - liquidityZones[i].lastTest > 24 * 3600) { // 24 horas
+                liquidityZones[i].isActive = false;
+            }
+        }
+    }
+    
+    // Identificar novas zonas
+    for(int i = 1; i < 99; i++) {
+        if(volume[i] > MinZoneVolume) {
+            double priceLevel = (high[i] + low[i]) / 2;
+            
+            // Verificar se já existe uma zona próxima
+            bool zoneExists = false;
+            for(int j = 0; j < MaxLiquidityZones; j++) {
+                if(liquidityZones[j].isActive) {
+                    if(MathAbs(liquidityZones[j].priceLevel - priceLevel) < LiquidityZoneThickness) {
+                        zoneExists = true;
+                        break;
+                    }
+                }
+            }
+            
+            // Adicionar nova zona
+            if(!zoneExists) {
+                for(int j = 0; j < MaxLiquidityZones; j++) {
+                    if(!liquidityZones[j].isActive) {
+                        liquidityZones[j].priceLevel = priceLevel;
+                        liquidityZones[j].volume = volume[i];
+                        liquidityZones[j].lastTest = TimeCurrent();
+                        liquidityZones[j].isSupport = low[i-1] > low[i] && low[i+1] > low[i];
+                        liquidityZones[j].isActive = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
+    // Desenhar zonas no gráfico
+    DrawLiquidityZones();
+}
+
+//+------------------------------------------------------------------+
+//| Desenhar zonas de liquidez no gráfico                             |
+//+------------------------------------------------------------------+
+void DrawLiquidityZones() {
+    ObjectsDeleteAll(0, "LiquidityZone");
+    
+    for(int i = 0; i < MaxLiquidityZones; i++) {
+        if(liquidityZones[i].isActive) {
+            string zoneName = "LiquidityZone" + IntegerToString(i);
+            double zonePrice = liquidityZones[i].priceLevel;
+            
+            ObjectCreate(0, zoneName, OBJ_HLINE, 0, 0, zonePrice);
+            ObjectSetInteger(0, zoneName, OBJPROP_COLOR, liquidityZones[i].isSupport ? clrGreen : clrRed);
+            ObjectSetInteger(0, zoneName, OBJPROP_STYLE, STYLE_DOT);
+            ObjectSetInteger(0, zoneName, OBJPROP_WIDTH, 2);
+        }
+    }
+}
+
+//+------------------------------------------------------------------+
+//| Validação das zonas de liquidez                                   |
+//+------------------------------------------------------------------+
+bool ValidateLiquidityZones(bool isBuy) {
+    double currentPrice = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+    
+    for(int i = 0; i < MaxLiquidityZones; i++) {
+        if(liquidityZones[i].isActive) {
+            if(isBuy) {
+                // Para compra, procurar suporte próximo
+                if(liquidityZones[i].isSupport &&
+                   currentPrice > liquidityZones[i].priceLevel &&
+                   currentPrice - liquidityZones[i].priceLevel < LiquidityZoneThickness * 2) {
+                    return true;
+                }
+            } else {
+                // Para venda, procurar resistência próxima
+                if(!liquidityZones[i].isSupport &&
+                   currentPrice < liquidityZones[i].priceLevel &&
+                   liquidityZones[i].priceLevel - currentPrice < LiquidityZoneThickness * 2) {
+                    return true;
+                }
+            }
+        }
+    }
+    
+    return false;
+}

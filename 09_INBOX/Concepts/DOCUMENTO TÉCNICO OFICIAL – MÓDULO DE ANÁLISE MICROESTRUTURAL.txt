@@ -1,0 +1,393 @@
+DOCUMENTO TÉCNICO OFICIAL – MÓDULO DE ANÁLISE MICROESTRUTURAL
+
+Versão 1.0 — Arquitetura Base e Referências**
+
+1. OBJETIVO DO DOCUMENTO
+
+Estabelecer a fundação técnica, conceitual e metodológica para o desenvolvimento de um módulo avançado de análise de microestrutura de mercado, baseado na fusão do Footprint (order-flow) com o Market Profile / Volume Profile, integrando práticas validadas e utilizadas por:
+
+Bancos globais: Goldman Sachs, JPMorgan, Citi, UBS, Morgan Stanley;
+
+Market makers e HFTs: Citadel Securities, Virtu Financial;
+
+Bolsas internacionais: CME (Chicago), NYSE/Nasdaq (New York), LSE (London), SGX (Singapore), DGCX (Dubai);
+
+Vendors institucionais: Bookmap, ATAS, Sierra Chart, Volfix;
+
+Literatura acadêmica (market microstructure).
+
+O documento cria um padrão único, para guiar equipes de desenvolvimento, dados, quant e produto.
+
+2. ESCOPO
+
+Este documento cobre:
+
+✔ Princípios microestruturais
+✔ Justificativa científica
+✔ Evidência institucional
+✔ Especificação de componentes do módulo
+✔ Arquitetura de dados
+✔ Modelos estatísticos e indicadores
+✔ Métricas validadas
+✔ Regras de negócio
+✔ Estrutura de testes
+✔ Checklist internacional de qualidade
+✔ Referências de alto nível
+
+Não cobre (por enquanto):
+
+✘ Implementação final
+✘ Deploy
+✘ Estratégias proprietárias específicas
+
+3. BASE TEÓRICA E CIENTÍFICA
+3.1 Market Microstructure (Relevância)
+
+A literatura de microestrutura demonstra que:
+
+Fluxo de ordens assinado (buy-initiated vs sell-initiated) possui impacto estatisticamente significativo na variação de preços.
+
+Mudanças no depth, liquidity imbalance e volume concentrado precedem movimentos de curto prazo.
+
+A distribuição de volume (profile) altera a probabilidade de aceitação/rejeição de níveis.
+
+Principais autores / validação científica:
+
+Hasbrouck (1988-2006) — The Information Content of Trades
+
+Biais, Glosten, O'Hara — Market Making and LOB Theory
+
+Bouchaud et al. — Price Impact Models
+
+BIS — Working Papers on Order Flow
+
+Almgren & Chriss — Execution & Market Impact
+
+3.2 Por que Footprint + Market Profile funciona (fundamentação)
+
+A fusão é validada porque combina:
+
+Footprint → Microestrutura local
+
+Delta por nível
+
+Volume agressor
+
+Absorção
+
+Imbalance
+
+Liquidez real-time
+
+Market Profile / Volume Profile → Estrutura global
+
+Value Area
+
+HVN/LVN
+
+POC (ponto de maior volume)
+
+Distribuição de valor e aceitação
+
+Essa integração permite detectar:
+
+Spikes com continuação
+
+Spikes com absorção → reversão
+
+Proteção de níveis
+
+Mudança estrutural de valor (shift do POC)
+
+4. EVIDÊNCIA DE USO EM INSTITUIÇÕES INTERNACIONAIS
+4.1 Bancos (NY / London / Singapore)
+
+Apesar dos algoritmos exatos serem proprietários, é publicamente conhecido que:
+
+Goldman Sachs GSET usa order-flow analytics para execução e monitoramento.
+
+JP Morgan Athena integra dados de LOB, volumes e sinais de microestrutura.
+
+Citi Velocity & UBS Neo usam imbalance + liquidez para algos de execução.
+
+Validação pública:
+Relatórios institucionais, whitepapers de execução, materiais de conferências (TradeTech, FIA Expo).
+
+4.2 Market Makers / HFTs (Chicago, NY)
+
+Grandes formadores de mercado (Citadel, Virtu) confirmam:
+
+Uso intensivo de modelos de impacto e fluxo
+
+Previsão de micro-movimentos baseada em LOB
+
+Sinais derivados de depth, imbalance, volume clusters
+
+4.3 Exchanges (CME, NYSE, LSE, SGX)
+
+As próprias bolsas:
+
+Produzem datasets para footprint e market profile
+
+Publicam guias de microestrutura
+
+Validam que os dados de volume/flow são essenciais p/ price discovery
+
+4.4 VENDORS institucionais (validação prática)
+
+Ferramentas amplamente usadas por instituições:
+
+Bookmap – heatmap + absorption + imbalance
+
+ATAS / Volfix – footprint profissional
+
+Sierra Chart – market profile nativo
+
+Jigsaw – order-flow para institucionais
+
+Todas usam exatamente os mesmos conceitos que estamos formalizando.
+
+5. ESPECIFICAÇÃO DO MÓDULO (Versão 1.0)
+
+O módulo será composto por 4 camadas principais:
+
+🔹 Camada 1 — Dados (Data Layer)
+Fontes obrigatórias:
+
+Trades tick-by-tick
+
+Best bid/ask (CLOB Level 1)
+
+Profundidade Level 2 (LOB)
+
+Volume at Price
+
+Market Profile (session e composite)
+
+Requisitos técnicos:
+
+Timestamp em micro ou millisegundos
+
+Reconstrução do agressor (trade at bid/ask)
+
+Normalização por sessões e ativos
+
+🔹 Camada 2 — Cálculo de Indicadores (Feature Layer)
+Footprint (Order Flow)
+
+Delta por nível
+
+Delta por candle
+
+Cumulative Delta (CD)
+
+Absorção por nível
+
+Imbalance por nível
+
+Prominence (volume spike detection)
+
+Heatmap de liquidez
+
+Market / Volume Profile
+
+POC
+
+Value Area (VAH, VAL)
+
+High Volume Nodes (HVN)
+
+Low Volume Nodes (LVN)
+
+Distribuições Gaussianas e bimodais
+
+Microestrutura
+
+Liquidity Imbalance (bid-depth vs ask-depth)
+
+Spread dynamics
+
+Shifts de liquidez
+
+Volatilidade microestrutural
+
+🔹 Camada 3 — Regras de Negócio e Sinais (Signal Layer)
+Eventos (Event Engine)
+
+Spike Direcional
+
+Absorção no fim do spike
+
+Reversão pós-absorção
+
+Confirmação por POC shift
+
+Proteção (defense) de nível institucional
+
+Lógica base:
+
+Spike forte + CD confirmando + POC shift = continuação
+
+Spike forte + absorption + POC revert = reversão
+
+HVN → travas
+
+LVN → transit points
+
+🔹 Camada 4 — Validação Estatística (Quant Layer)
+Modelos recomendados:
+
+Regressão logística
+
+Modelos lineares de impacto
+
+Random Forest para micro predições
+
+Testes A/B via backtesting out-of-sample
+
+Medição de alpha net of cost
+
+Testes obrigatórios
+
+Teste de significância dos coeficientes
+
+Testes de robustez por regime (vol alta/baixa)
+
+Teste de viabilidade econômica (market impact)
+
+6. ARQUITETURA (NÍVEL ENTERPRISE)
+[Market Data Feed] 
+      ↓
+[Data Normalization Layer] 
+      ↓
+[Real-Time LOB + Footprint Engine] 
+      ↓
+[Profile Builder (POC, VA, HVN, LVN)]
+      ↓
+[Signal Engine (Spikes, Absorption, POC shifts)]
+      ↓
+[Backtesting & Validation Framework]
+      ↓
+[APIs / Front-End / Dashboards]
+7. CHECKLIST DE QUALIDADE INTERNACIONAL
+✔ A) Dados
+
+Latência < 20ms
+
+Sincronização de timestamps
+
+Bid/ask integridade 99.99%
+
+Reconstrução de agressor auditada
+
+✔ B) Indicadores
+
+Footprint auditável
+
+POC/VA replicáveis
+
+Distribuição estável
+
+✔ C) Estatística
+
+Sem look-ahead
+
+Validação cruzada
+
+Net-of-cost return
+
+✔ D) Produto
+
+Logs
+
+Observabilidade
+
+Tests automáticos
+
+8. ROADMAP DO PROJETO (ALTO NÍVEL)
+Fase 1 — Fundamentos (concluída neste documento)
+
+✔ Teoria
+✔ Arquitetura base
+✔ Requisitos de dados
+
+Fase 2 — MVP
+
+Engine de footprint
+
+Engine de market profile
+
+Sinais básicos
+
+Fase 3 — Validação Quant
+
+Backtest
+
+Statistical significance
+
+Modelos de impacto
+
+Fase 4 — Produto Interno
+
+Dashboard
+
+API
+
+Alertas
+
+Fase 5 — Versão comercial
+
+UX
+
+automação
+
+documentação completa
+
+9. REFERÊNCIAS (CURADAS E VALIDADAS)
+Market Microstructure
+
+Hasbrouck (1991) — The Information Content of Trades
+
+Bouchaud et al. — Price Impact Theory
+
+O’Hara — Market Microstructure Theory
+
+Market Profile
+
+James Dalton — Markets in Profile, Mind Over Markets
+
+CBOT Official Market Profile Guide
+
+Order Flow / Ferramentas
+
+Bookmap documentation (absorção, heatmap)
+
+ATAS Footprint Docs
+
+Sierra Chart Market Profile Docs
+
+Exchanges
+
+CME Market Data Documentation
+
+NYSE Integrated Data Feed Technical Guide
+
+Academic Papers
+
+(LOB forecasting, imbalance prediction, depth models)
+
+10. CONCLUSÃO
+
+Este documento estabelece uma fundação sólida, validada, internacional e profissional para o desenvolvimento de um módulo microestrutural avançado, combinando:
+
+Footprint
+
+Market Profile
+
+Microestrutura
+
+Modelos estatísticos
+
+Práticas institucionais reais
+
+Com isso, fechamos o Passo 1 — Documentação Base com excelência técnica e alinhamento global.

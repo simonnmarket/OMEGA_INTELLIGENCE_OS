@@ -1,0 +1,25 @@
+================================================================================
+COMO EXECUTAR NO POWERSHELL
+================================================================================
+
+1. Abra o PowerShell
+
+2. Navegue até o diretório:
+   cd C:\Users\Lenovo\Projects\Aurora
+
+3. Execute o sistema:
+   python AURORA_FINAL_COMPLETO_100.py --beta
+
+OU para teste rápido:
+   python AURORA_FINAL_COMPLETO_100.py --test
+
+================================================================================
+COMANDOS COMPLETOS:
+================================================================================
+
+# PowerShell
+cd C:\Users\Lenovo\Projects\Aurora
+python AURORA_FINAL_COMPLETO_100.py --beta
+
+================================================================================
+

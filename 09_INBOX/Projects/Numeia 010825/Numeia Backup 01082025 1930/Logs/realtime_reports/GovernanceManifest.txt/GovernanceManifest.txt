@@ -1,0 +1,80 @@
+==================== GOVERNANCEMANIFEST.TXT ====================
+Projeto: Numeia
+Classificação: TIER-0 | Protocolo: ALPHA-OMEGA+
+Status: Homologado
+Assinatura: AGENT ARCHITECT
+Timestamp: 2025-07-16T13:41:47.571640Z
+
+----------------------------------------------------------------
+1. ESTRUTURA OFICIAL DE DIRETÓRIOS (FIXA)
+----------------------------------------------------------------
+- /core/                 ← Núcleo principal (imutável)
+- /agents/               ← Agentes IA e operacionais
+- /utils/                ← Scripts e ferramentas auxiliares
+- /config/               ← Parâmetros e limites de risco
+- /include/
+    ├── analysis/
+    ├── executionlogic/
+    ├── decisionengine/
+    ├── intelligence/
+    ├── integration/
+    ├── visuals/
+    ├── modules/
+    ├── tools/
+    └── types/
+- /auditor/              ← Auditoria automática e AAI
+- /expert/               ← EA principal compilável (.mq5)
+- /scripts/              ← Testes e simulações de carga
+- /logs/                 ← Registros de execução
+- /docs/                 ← Documentação interna
+- GovernanceManifest.txt ← Este documento
+
+----------------------------------------------------------------
+2. REGRAS DE PROTEÇÃO TIER-0
+----------------------------------------------------------------
+- Nenhum arquivo pode ser incluído fora das pastas listadas acima.
+- A pasta /core/ é considerada sagrada. Alterações só com comando T0_OVERRIDE().
+- O arquivo GovernanceManifest.txt não pode ser modificado sem:
+    → Auditoria ativa
+    → Comando T0_OVERRIDE()
+    → Assinatura digital CEO/CTO
+
+----------------------------------------------------------------
+3. POLÍTICA DE IA E MODELOS
+----------------------------------------------------------------
+- Modelos em /intelligence devem ser atualizados no MÁXIMO a cada 6 meses.
+- Todo novo módulo IA deve passar por validação do AAI.
+- Aprendizado federado entre agentes está autorizado, com limiar R² ≤ 0.65
+
+----------------------------------------------------------------
+4. AUDITORIA E AAI
+----------------------------------------------------------------
+- A pasta /auditor/ deve conter:
+    → quantumauditengine.mqh
+    → quantumauditagent_aai.mqh
+- O AAI deve rodar AUDIT_LOOP() a cada commit em:
+    → /core/
+    → /config/
+    → /agents/
+- Logs de auditoria devem ser armazenados em /logs/audit_trail.log
+
+----------------------------------------------------------------
+5. CRIPTOGRAFIA E INTEGRIDADE
+----------------------------------------------------------------
+- A partir da versão atual:
+    → Configurações sensíveis serão protegidas com AES-256 (QuantumCryptModule.mqh)
+    → Todos os arquivos críticos terão hash SHA3-256
+    → Rotina de verificação será executada com SHA3Validator()
+
+----------------------------------------------------------------
+6. ATIVAÇÃO DE EMERGÊNCIA
+----------------------------------------------------------------
+- O comando T0_LOCKDOWN() será executado automaticamente se:
+    → Detecção de violação no risklimits.mqh
+    → Modificação não autorizada no GovernanceManifest.txt
+
+----------------------------------------------------------------
+SHA3-256 Checksum:
+7c1f7ab3a18352fdde73d172512e7c725bcca1e4bd35703ba28856003d6f9c38
+
+==================== FIM DO DOCUMENTO ====================

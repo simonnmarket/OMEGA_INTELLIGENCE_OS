@@ -1,0 +1,13 @@
+{
+  "timestamp": "2025-07-31T17:40:57.694271",
+  "project": "Numeia",
+  "status": "COMPLETED",
+  "files_scanned": 80,
+  "dependencies_found": 370,
+  "errors": [],
+  "summary": {
+    "total_files": 80,
+    "files_with_includes": 77,
+    "total_includes": 370
+  }
+}

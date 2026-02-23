@@ -1,0 +1,11 @@
+
+Linhas baseadas entre analise e principais spots de modelos como, Quantum Volume Point of Control (VPOC); TPO Profile with Day Stat; Delta Flow Profile; Volume Delta Candles; Volume Profile with Node Detection; MarketProfile para localizarmos pontos de possiveis variacoes como alta e baixa ja identificadas no grafico criando referencias para a proxima semana. Vamos aplicar o conceitos Open Range Breakout, Tom Hougaard estratégias nos primeiros 5 a 20 minutos da sessão de abertura, explicação a seguir foi retirada do livro de J. Murphy " Análise Técnica de Mercados Financeiros". Acontece que logo após a primeira vela de 5 minutos na abertura, o mercado toma a direção oposta. Temos ja linhas areas de possiveis percurso do preco, agora vamos medir os volume com variáveis baseadas em análises quantitativas avançadas; Alphas gerados por ML;Métricas de volatilidade adaptativa; Weis Waves, Volume Spread Analysis (VSA), Volume Weighted Average Price (VWAP), PVSRA (Price/Volume/S&R Analysis), Volume Footprint Chart,Volume Price Trend Indicator - VPT.Dados e Análises, Univariada, Bivariada e Multivariada. E muito importante saber que existe uma correlacao entre as moedas outro fator que confirma tambem uma possivel alteracao no volume e confirmacao de sentido ou fluxo direcional. Temos tambem a opcao de utilizar lógica do Hammer Indicator para identificar padrões de candles e utilizá-los como confirmação. Integração de Padrões de Candlestick pois o robô poderá antecipar movimentos de mercado com maior precisão.
+
+
+
+
+
+
+
+
+

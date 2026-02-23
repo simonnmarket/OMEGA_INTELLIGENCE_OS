@@ -1,0 +1,355 @@
+
+//+------------------------------------------------------------------+
+//|                     TheodoraEA.mq5                               |
+//|               Sistema de Trading Quântico Escalonado             |
+//|                Projeto: Theodora - Genesis                       |
+//|                 Autor: [Seu Nome]                                |
+//|               Versão: 4.3 (TIER-0 Single File)                   |
+//+------------------------------------------------------------------+
+#property copyright "Theodora Quantum Trading"
+#property link      "https://www.theodora-quantum.com"
+#property version   "4.3"
+#property strict
+#property description "EA Quântico com Escalonamento Direcional"
+#property indicator_chart_window
+
+#include <Trade/Trade.mqh>
+
+//--- Parâmetros
+input double RiskPercent = 1.0;
+input int MagicNumber = 11041982;
+input bool UseDynamicSL = true;
+input double ATRMultiplierSL = 2.0;
+input double ATRMultiplierTP = 3.0;
+input int ThermalEnergyPeriod = 20;
+input double QuantumRiskQuantum = 0.001;
+input double HeisenbergThreshold = 0.0001;
+input int MaxOpenPositions = 10;
+input int ScaleDistance = 20;
+input double ScaleMultiplier = 1.5;
+input bool UsePyramidScaling = true;
+
+//--- Buffers
+double ExtGravZoneBuffer[];
+double ExtThermalEnergyBuffer[];
+double ExtPOCBuffer[];
+double ExtColorBuffer1[];
+
+//+------------------------------------------------------------------+
+//| Estruturas de Dados                                            |
+//+------------------------------------------------------------------+
+enum ENUM_QUANTUM_STATE {
+   QSTATE_SUPERPOSITION,
+   QSTATE_BULL_COLLAPSED,
+   QSTATE_BEAR_COLLAPSED
+};
+
+enum ENUM_APOLLO11_SIGNAL {
+   SIGNAL_NONE,
+   SIGNAL_BUY,
+   SIGNAL_SELL
+};
+
+//+------------------------------------------------------------------+
+//| Funções Auxiliares                                               |
+//+------------------------------------------------------------------+
+double StdDev(const double &array[], int period) {
+   double mean = 0, sum = 0;
+   int size = MathMin(period, ArraySize(array));
+   for(int i = 0; i < size; i++) mean += array[i];
+   mean /= size;
+   for(int i = 0; i < size; i++) sum += MathPow(array[i] - mean, 2);
+   return MathSqrt(sum / size);
+}
+
+double CalculateQuantumRisk(double account_risk) {
+   double quantum = AccountInfoDouble(ACCOUNT_EQUITY) * QuantumRiskQuantum;
+   int n = (int)MathFloor(account_risk / quantum);
+   return n * quantum;
+}
+
+//+------------------------------------------------------------------+
+//| Classes Internas                                                 |
+//+------------------------------------------------------------------+
+class QuantumUncertaintyEngine {
+private:
+   double hbar;
+public:
+   QuantumUncertaintyEngine(double h = 0.0001) : hbar(h) {}
+   bool IsMarketValid(double sigma_price, double sigma_momentum) {
+      return (sigma_price * sigma_momentum) >= hbar / 2;
+   }
+};
+
+class WaveFunctionCollapse {
+private:
+   double neutral_zone;
+public:
+   WaveFunctionCollapse(double zone = 0.1) : neutral_zone(zone) {}
+   ENUM_QUANTUM_STATE Collapse(double prob_bull, double prob_bear) {
+      if(prob_bull > 0.5 + neutral_zone) return QSTATE_BULL_COLLAPSED;
+      if(prob_bear > 0.5 + neutral_zone) return QSTATE_BEAR_COLLAPSED;
+      return QSTATE_SUPERPOSITION;
+   }
+};
+
+//+------------------------------------------------------------------+
+//| Variáveis Globais                                                |
+//+------------------------------------------------------------------+
+CTrade g_trade;
+QuantumUncertaintyEngine *g_heisenberg = NULL;
+WaveFunctionCollapse *g_bohr = NULL;
+int g_atr_handle = INVALID_HANDLE;
+double g_last_atr = 0.0;
+datetime g_last_trade_time = 0;
+MqlRates g_rates[];
+double g_last_signal_price = 0.0;
+int g_scale_level = 0;
+
+//+------------------------------------------------------------------+
+//| OnInit                                                           |
+//+------------------------------------------------------------------+
+int OnInit() {
+   SetIndexBuffer(0, ExtGravZoneBuffer, INDICATOR_DATA);
+   SetIndexBuffer(1, ExtThermalEnergyBuffer, INDICATOR_DATA);
+   SetIndexBuffer(2, ExtPOCBuffer, INDICATOR_DATA);
+   SetIndexBuffer(3, ExtColorBuffer1, INDICATOR_COLOR_INDEX);
+
+   g_trade.SetExpertMagicNumber(MagicNumber);
+   g_atr_handle = iATR(_Symbol, PERIOD_CURRENT, 14);
+   if(g_atr_handle == INVALID_HANDLE) return INIT_FAILED;
+
+   g_heisenberg = new QuantumUncertaintyEngine(HeisenbergThreshold);
+   g_bohr = new WaveFunctionCollapse(0.1);
+
+   Print("TheodoraEA v4.3 - Inicializado com sucesso!");
+   return INIT_SUCCEEDED;
+}
+
+//+------------------------------------------------------------------+
+//| OnDeinit                                                         |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason) {
+   if(g_atr_handle != INVALID_HANDLE) IndicatorRelease(g_atr_handle);
+   if(g_heisenberg != NULL) delete g_heisenberg;
+   if(g_bohr != NULL) delete g_bohr;
+   ObjectsDeleteAll(0, "Theodora_");
+}
+
+//+------------------------------------------------------------------+
+//| OnTick                                                           |
+//+------------------------------------------------------------------+
+void OnTick() {
+   static datetime last_tick = 0;
+   if(last_tick == TimeCurrent()) return;
+   last_tick = TimeCurrent();
+
+   if(!IsTradeAllowed()) return;
+   if(PositionsTotal() >= MaxOpenPositions) return;
+
+   UpdateATR();
+   if(CopyRates(_Symbol, PERIOD_CURRENT, 0, 100, g_rates) != 100) return;
+
+   double volume[], close[];
+   ArrayResize(volume, ThermalEnergyPeriod);
+   ArrayResize(close, ThermalEnergyPeriod);
+   for(int i = 0; i < ThermalEnergyPeriod; i++) {
+      volume[i] = (double)g_rates[i].tick_volume;
+      close[i] = g_rates[i].close;
+   }
+
+   if(!MultiTFConfirmation()) return;
+
+   double sigma_price = StdDev(close, 10);
+   double sigma_momentum = StdDev(volume, 10);
+   if(g_heisenberg == NULL || !g_heisenberg.IsMarketValid(sigma_price, sigma_momentum)) return;
+
+   double thermal_energy = volume[0] / (ArrayMaximum(volume) + 1e-10);
+   double channel = 0, vol_sum = 0;
+   for(int i = 0; i < ThermalEnergyPeriod; i++) {
+      channel += close[i] * volume[i];
+      vol_sum += volume[i];
+   }
+   channel = (vol_sum > 1e-10) ? channel / vol_sum : close[0];
+
+   double prob_bull = thermal_energy * (channel > SymbolInfoDouble(_Symbol, SYMBOL_BID) ? 1.2 : 0.8);
+   double prob_bear = (1.0 - thermal_energy) * (channel < SymbolInfoDouble(_Symbol, SYMBOL_ASK) ? 1.2 : 0.8);
+   ENUM_QUANTUM_STATE state = (g_bohr != NULL) ? g_bohr.Collapse(prob_bull, prob_bear) : QSTATE_SUPERPOSITION;
+
+   ENUM_APOLLO11_SIGNAL signal = SIGNAL_NONE;
+   if(state == QSTATE_BULL_COLLAPSED && prob_bull > 0.6) signal = SIGNAL_BUY;
+   else if(state == QSTATE_BEAR_COLLAPSED && prob_bear > 0.6) signal = SIGNAL_SELL;
+
+   if(signal != SIGNAL_NONE && (TimeCurrent() - g_last_trade_time) > 60) {
+      if(ExecuteSignal(signal)) {
+         g_last_trade_time = TimeCurrent();
+         g_last_signal_price = (signal == SIGNAL_BUY) ? SymbolInfoDouble(_Symbol, SYMBOL_ASK) : SymbolInfoDouble(_Symbol, SYMBOL_BID);
+         g_scale_level = 0;
+      }
+   }
+
+   if(g_last_signal_price > 0.0 && g_scale_level < 10) {
+      double current_price = SymbolInfoDouble(_Symbol, (signal == SIGNAL_BUY) ? SYMBOL_BID : SYMBOL_ASK);
+      double dist_points = MathAbs(current_price - g_last_signal_price) / _Point;
+      if(dist_points >= ScaleDistance) {
+         double scale_lots = CalculateScaledLot();
+         if(scale_lots > 0) {
+            if(ExecuteScaledOrder(signal, scale_lots)) {
+               g_scale_level++;
+               g_last_signal_price = current_price;
+            }
+         }
+      }
+   }
+
+   ExtGravZoneBuffer[0] = channel;
+   ExtThermalEnergyBuffer[0] = thermal_energy;
+   ExtPOCBuffer[0] = close[ArrayMaximum(close, 0, 5)];
+   ExtColorBuffer1[0] = (thermal_energy > 1.0) ? 0 : 1;
+   UpdateDecisionPanel(state, prob_bull, prob_bear);
+   ChartRedraw();
+}
+
+//+------------------------------------------------------------------+
+//| Atualizar ATR                                                    |
+//+------------------------------------------------------------------+
+void UpdateATR() {
+   double atr_values[];
+   ArraySetAsSeries(atr_values, true);
+   if(CopyBuffer(g_atr_handle, 0, 0, 1, atr_values) <= 0) g_last_atr = 0.0;
+   else g_last_atr = atr_values[0];
+}
+
+//+------------------------------------------------------------------+
+//| Confirmação em múltiplos timeframes                              |
+//+------------------------------------------------------------------+
+bool MultiTFConfirmation() {
+   ENUM_TIMEFRAMES timeframes[] = {PERIOD_D1, PERIOD_H4, PERIOD_H1, PERIOD_M15};
+   int confirmation_count = 0;
+   int total_count = ArraySize(timeframes);
+   
+   for(int i = 0; i < total_count; i++) {
+      double ma_fast = iMA(NULL, timeframes[i], 50, 0, MODE_SMA, PRICE_CLOSE, 0);
+      double ma_slow = iMA(NULL, timeframes[i], 200, 0, MODE_SMA, PRICE_CLOSE, 0);
+      double price = iClose(NULL, timeframes[i], 0);
+      
+      if(price > ma_fast && ma_fast > ma_slow) confirmation_count++;
+      else if(price < ma_fast && ma_fast < ma_slow) confirmation_count--;
+   }
+   
+   return (MathAbs(confirmation_count) == total_count);
+}
+
+//+------------------------------------------------------------------+
+//| Executar Sinal                                                   |
+//+------------------------------------------------------------------+
+bool ExecuteSignal(ENUM_APOLLO11_SIGNAL signal) {
+   if(PositionSelect(_Symbol)) return false;
+   double point = SymbolInfoDouble(_Symbol, SYMBOL_POINT);
+   double sl_points = UseDynamicSL ? g_last_atr / point : 150;
+   double lots = CalculateLots();
+   if(lots <= 0) return false;
+
+   MqlTradeRequest request = {};
+   request.action = TRADE_ACTION_DEAL;
+   request.symbol = _Symbol;
+   request.volume = MathMax(lots, SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN));
+   request.magic = MagicNumber;
+   request.deviation = 10;
+   request.type = (signal == SIGNAL_BUY) ? ORDER_TYPE_BUY : ORDER_TYPE_SELL;
+   request.price = (signal == SIGNAL_BUY) ? SymbolInfoDouble(_Symbol, SYMBOL_ASK) : SymbolInfoDouble(_Symbol, SYMBOL_BID);
+   request.sl = (signal == SIGNAL_BUY) ? request.price - sl_points * point : request.price + sl_points * point;
+   request.tp = (signal == SIGNAL_BUY) ? request.price + sl_points * point * ATRMultiplierTP / ATRMultiplierSL : request.price - sl_points * point * ATRMultiplierTP / ATRMultiplierSL;
+
+   MqlTradeResult result = {};
+   return OrderSend(request, result);
+}
+
+//+------------------------------------------------------------------+
+//| Executar Ordem Escalonada                                        |
+//+------------------------------------------------------------------+
+bool ExecuteScaledOrder(ENUM_APOLLO11_SIGNAL signal, double lots) {
+   MqlTradeRequest request = {};
+   request.action = TRADE_ACTION_DEAL;
+   request.symbol = _Symbol;
+   request.volume = lots;
+   request.magic = MagicNumber;
+   request.deviation = 10;
+
+   if(signal == SIGNAL_BUY) {
+      request.type = ORDER_TYPE_BUY;
+      request.price = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+   } else if(signal == SIGNAL_SELL) {
+      request.type = ORDER_TYPE_SELL;
+      request.price = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+   }
+
+   MqlTradeResult result = {};
+   return OrderSend(request, result);
+}
+
+//+------------------------------------------------------------------+
+//| Calcular Lotes                                                   |
+//+------------------------------------------------------------------+
+double CalculateLots() {
+   double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+   double risk_amount = equity * RiskPercent / 100.0;
+   double tick_value = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+   double tick_size = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+   double point = SymbolInfoDouble(_Symbol, SYMBOL_POINT);
+   double sl_points = UseDynamicSL ? g_last_atr / point : 150;
+   double min_lot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
+   double lot_step = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP);
+
+   if(sl_points <= 0 || tick_value <= 0 || tick_size <= 0 || point <= 0) return min_lot;
+
+   double lot = risk_amount / (sl_points * point * tick_value / tick_size);
+   lot = CalculateQuantumRisk(lot);
+   lot = MathMax(lot, min_lot);
+   lot = MathMin(lot, 10.0);
+   lot = MathRound(lot / lot_step) * lot_step;
+
+   return MathMax(lot, min_lot);
+}
+
+//+------------------------------------------------------------------+
+//| Calcular Lote Escalonado                                         |
+//+------------------------------------------------------------------+
+double CalculateScaledLot() {
+   double base_lots = CalculateLots();
+   double scale_lots = base_lots * MathPow(ScaleMultiplier, g_scale_level);
+   return MathMin(scale_lots, 10.0);
+}
+
+//+------------------------------------------------------------------+
+//| Painel de Decisão Quântica                                       |
+//+------------------------------------------------------------------+
+void UpdateDecisionPanel(ENUM_QUANTUM_STATE state, double prob_bull, double prob_bear) {
+   string panel = "Theodora_Panel";
+   ObjectCreate(0, panel, OBJ_LABEL, 0, 0, 0);
+   ObjectSetInteger(0, panel, OBJPROP_CORNER, CORNER_RIGHT_UPPER);
+   ObjectSetInteger(0, panel, OBJPROP_XDISTANCE, 10);
+   ObjectSetInteger(0, panel, OBJPROP_YDISTANCE, 20);
+   ObjectSetInteger(0, panel, OBJPROP_FONTSIZE, 10);
+   ObjectSetInteger(0, panel, OBJPROP_COLOR, clrWhite);
+
+   string state_str = (state == QSTATE_BULL_COLLAPSED) ? "BULL" : (state == QSTATE_BEAR_COLLAPSED) ? "BEAR" : "SUPERPOS";
+   string text = "Theodora v4.3\n";
+   text += "Estado: " + state_str + "\n";
+   text += "Prob: " + DoubleToString(prob_bull, 2) + " | " + DoubleToString(prob_bear, 2) + "\n";
+   text += "Escala: " + IntegerToString(g_scale_level) + "\n";
+   text += "Hbar: " + DoubleToString(HeisenbergThreshold, 6);
+
+   ObjectSetString(0, panel, OBJPROP_TEXT, text);
+}
+
+//+------------------------------------------------------------------+
+//| Verificar se pode operar                                         |
+//+------------------------------------------------------------------+
+bool IsTradeAllowed() {
+   return TerminalInfoInteger(TERMINAL_CONNECTED) &&
+          MQLInfoInteger(MQL_TRADE_ALLOWED) &&
+          SymbolInfoInteger(_Symbol, SYMBOL_TRADE_MODE) &&
+          AccountInfoInteger(ACCOUNT_TRADE_EXPERT);
+}
+//+------------------------------------------------------------------+

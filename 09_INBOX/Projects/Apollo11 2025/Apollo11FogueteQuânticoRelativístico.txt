@@ -1,0 +1,1138 @@
+#property copyright "Quantum Sensory Trading System - Enhanced with Apollo11"
+#property link      "https://www.quantumsensory.com"
+#property version   "4.7"
+#property strict
+
+#include <Trade\Trade.mqh>
+
+// Estrutura para dados sensoriais integrados
+struct IntegratedSensoryData {
+    double visualConfidence;
+    double auditoryConfidence;
+    double tactileConfidence;
+    double olfactoryConfidence;
+    double gustatoryConfidence;
+    double overallPerception;
+    double sensoryCoherence;
+    double marketStrength;
+    double trendStrength;
+    double gravForce;
+    double sphereEnergy;      // Energia = volumeForce² * gravForce
+    int rotationFactor;
+    
+    void Clear() {
+        visualConfidence = 0.0;
+        auditoryConfidence = 0.0;
+        tactileConfidence = 0.0;
+        olfactoryConfidence = 0.0;
+        gustatoryConfidence = 0.0;
+        overallPerception = 0.0;
+        sensoryCoherence = 0.0;
+        marketStrength = 0.0;
+        trendStrength = 0.0;
+        gravForce = 0.0;
+        sphereEnergy = 0.0;
+        rotationFactor = 0;
+    }
+};
+
+// Classe base para sistemas sensoriais
+class CSensoryBase {
+protected:
+    double confidence;
+    bool isInitialized;
+    
+public:
+    CSensoryBase() : confidence(0.0), isInitialized(false) {}
+    virtual ~CSensoryBase() {}
+    virtual bool Initialize() { isInitialized = true; return true; }
+    virtual void Process() = 0;
+    double GetConfidence() const { return confidence; }
+    bool IsInitialized() const { return isInitialized; }
+};
+
+// Sistema de Visão Quântica
+class CQuantumVisionSystem : public CSensoryBase {
+private:
+    double lastVolume;
+    double averageVolume;
+    double volumeChange;
+    int atrHandle;
+    int maHandle;
+    
+public:
+    CQuantumVisionSystem() : CSensoryBase() {
+        lastVolume = 0.0;
+        averageVolume = 0.0;
+        volumeChange = 0.0;
+        atrHandle = iATR(_Symbol, PERIOD_CURRENT, 14);
+        maHandle = iMA(_Symbol, PERIOD_CURRENT, 20, 0, MODE_SMA, PRICE_CLOSE);
+    }
+    
+    ~CQuantumVisionSystem() {
+        if(atrHandle != INVALID_HANDLE) IndicatorRelease(atrHandle);
+        if(maHandle != INVALID_HANDLE) IndicatorRelease(maHandle);
+    }
+    
+    virtual bool Initialize() override {
+        if(atrHandle == INVALID_HANDLE) {
+            Print("Erro ao inicializar ATR em CQuantumVisionSystem: ", GetLastError());
+            return false;
+        }
+        if(maHandle == INVALID_HANDLE) {
+            Print("Erro ao inicializar MA em CQuantumVisionSystem: ", GetLastError());
+            return false;
+        }
+        isInitialized = true;
+        return true;
+    }
+    
+    virtual void Process() override {
+        lastVolume = (double)iVolume(_Symbol, PERIOD_CURRENT, 0);
+        averageVolume = CalculateAverageVolume(20);
+        volumeChange = CalculateVolumeChange();
+        confidence = CalculateConfidence();
+    }
+    
+private:
+    double CalculateAverageVolume(int period) {
+        long volumes[];
+        ArraySetAsSeries(volumes, true);
+        if(CopyTickVolume(_Symbol, PERIOD_CURRENT, 0, period, volumes) > 0) {
+            double sum = 0.0;
+            for(int i = 0; i < ArraySize(volumes); i++) sum += (double)volumes[i];
+            return sum / ArraySize(volumes);
+        }
+        return 1.0;
+    }
+    
+    double CalculateVolumeChange() {
+        long volumes[];
+        ArraySetAsSeries(volumes, true);
+        if(CopyTickVolume(_Symbol, PERIOD_CURRENT, 0, 2, volumes) > 0) {
+            if(volumes[1] > 0) return ((double)volumes[0] - (double)volumes[1]) / (double)volumes[1];
+        }
+        return 0.0;
+    }
+    
+    double CalculateConfidence() {
+        double volumeWeight = 0.4;
+        double trendWeight = 0.3;
+        double volatilityWeight = 0.3;
+        
+        double volumeConfidence = MathMin(lastVolume / averageVolume, 1.0);
+        double trendConfidence = CalculateTrendConfidence();
+        double volatilityConfidence = CalculateVolatilityConfidence();
+        
+        return volumeWeight * volumeConfidence + trendWeight * trendConfidence + volatilityWeight * volatilityConfidence;
+    }
+    
+    double CalculateTrendConfidence() {
+        double ma[];
+        ArraySetAsSeries(ma, true);
+        if(CopyBuffer(maHandle, 0, 0, 2, ma) > 0) {
+            double close = iClose(_Symbol, PERIOD_CURRENT, 0);
+            return MathAbs(close - ma[0]) / ma[0];
+        }
+        Print("Erro ao copiar buffer de MA em CQuantumVisionSystem: ", GetLastError());
+        return 0.5;
+    }
+    
+    double CalculateVolatilityConfidence() {
+        double atr[];
+        ArraySetAsSeries(atr, true);
+        if(CopyBuffer(atrHandle, 0, 0, 2, atr) > 0) {
+            if(atr[1] > 0) return 1.0 - MathMin(atr[0] / atr[1], 1.0);
+        }
+        Print("Erro ao copiar buffer de ATR em CQuantumVisionSystem: ", GetLastError());
+        return 0.5;
+    }
+};
+
+// Sistema de Audição do Mercado
+class CMarketHearingSystem : public CSensoryBase {
+private:
+    int rsiHandle;
+    
+public:
+    CMarketHearingSystem() : CSensoryBase() {
+        rsiHandle = iRSI(_Symbol, PERIOD_CURRENT, 14, PRICE_CLOSE);
+    }
+    
+    ~CMarketHearingSystem() {
+        if(rsiHandle != INVALID_HANDLE) IndicatorRelease(rsiHandle);
+    }
+    
+    virtual bool Initialize() override {
+        if(rsiHandle == INVALID_HANDLE) {
+            Print("Erro ao inicializar RSI em CMarketHearingSystem: ", GetLastError());
+            return false;
+        }
+        isInitialized = true;
+        return true;
+    }
+    
+    virtual void Process() override {
+        confidence = CalculateConfidence();
+    }
+    
+private:
+    double CalculateConfidence() {
+        double rsi[];
+        ArraySetAsSeries(rsi, true);
+        if(CopyBuffer(rsiHandle, 0, 0, 1, rsi) > 0) {
+            return 1.0 - MathAbs(50.0 - rsi[0]) / 50.0;
+        }
+        Print("Erro ao copiar buffer de RSI em CMarketHearingSystem: ", GetLastError());
+        return 0.5;
+    }
+};
+
+// Sistema Tátil do Mercado
+class CMarketTouchSystem : public CSensoryBase {
+public:
+    virtual void Process() override {
+        confidence = CalculateConfidence();
+    }
+    
+private:
+    double CalculateConfidence() {
+        return 0.5;
+    }
+};
+
+// Sistema de Olfato de Risco
+class CRiskSmellingSystem : public CSensoryBase {
+private:
+    double riskLevel;
+    double marketStress;
+    int atrHandle;
+    
+public:
+    CRiskSmellingSystem() : CSensoryBase() {
+        riskLevel = 0.0;
+        marketStress = 0.0;
+        atrHandle = iATR(_Symbol, PERIOD_CURRENT, 14);
+    }
+    
+    ~CRiskSmellingSystem() {
+        if(atrHandle != INVALID_HANDLE) IndicatorRelease(atrHandle);
+    }
+    
+    virtual bool Initialize() override {
+        if(atrHandle == INVALID_HANDLE) {
+            Print("Erro ao inicializar ATR em CRiskSmellingSystem: ", GetLastError());
+            return false;
+        }
+        isInitialized = true;
+        return true;
+    }
+    
+    virtual void Process() override {
+        riskLevel = CalculateRiskLevel();
+        marketStress = CalculateMarketStress();
+        confidence = CalculateConfidence();
+    }
+    
+private:
+    double CalculateRiskLevel() {
+        double atr[];
+        ArraySetAsSeries(atr, true);
+        if(CopyBuffer(atrHandle, 0, 0, 2, atr) > 0) return MathMin(atr[0] / atr[1], 1.0);
+        Print("Erro ao copiar buffer de ATR em CRiskSmellingSystem (RiskLevel): ", GetLastError());
+        return 0.5;
+    }
+    
+    double CalculateMarketStress() {
+        double atr[];
+        ArraySetAsSeries(atr, true);
+        if(CopyBuffer(atrHandle, 0, 0, 20, atr) > 0) {
+            double maxAtr = atr[ArrayMaximum(atr)];
+            return atr[0] / maxAtr;
+        }
+        Print("Erro ao copiar buffer de ATR em CRiskSmellingSystem (MarketStress): ", GetLastError());
+        return 0.0;
+    }
+    
+    double CalculateConfidence() {
+        double rawConfidence = 1.0 - (riskLevel + marketStress) / 2.0;
+        return MathMax(rawConfidence, 0.0);
+    }
+};
+
+// Sistema de Paladar do Mercado
+class CMarketTasteSystem : public CSensoryBase {
+public:
+    virtual void Process() override {
+        confidence = CalculateConfidence();
+    }
+    
+private:
+    double CalculateConfidence() {
+        return 0.7;
+    }
+};
+
+// Sistema de Integração Sensorial
+class CSensoryIntegration {
+private:
+    IntegratedSensoryData currentPerception;
+    double sensoryWeights[5];
+    
+public:
+    CSensoryIntegration() {
+        currentPerception.Clear();
+        ArrayInitialize(sensoryWeights, 0.2);
+    }
+    
+    void ProcessSensoryInput(CQuantumVisionSystem *vision, CMarketHearingSystem *hearing,
+                           CMarketTouchSystem *touch, CRiskSmellingSystem *smell,
+                           CMarketTasteSystem *taste) {
+        if(vision != NULL) currentPerception.visualConfidence = vision.GetConfidence();
+        else Print("Vision é NULL em ProcessSensoryInput");
+        if(hearing != NULL) currentPerception.auditoryConfidence = hearing.GetConfidence();
+        else Print("Hearing é NULL em ProcessSensoryInput");
+        if(touch != NULL) currentPerception.tactileConfidence = touch.GetConfidence();
+        else Print("Touch é NULL em ProcessSensoryInput");
+        if(smell != NULL) currentPerception.olfactoryConfidence = smell.GetConfidence();
+        else Print("Smell é NULL em ProcessSensoryInput");
+        if(taste != NULL) currentPerception.gustatoryConfidence = taste.GetConfidence();
+        else Print("Taste é NULL em ProcessSensoryInput");
+        
+        currentPerception.gravForce = gravForce;
+        currentPerception.rotationFactor = rotationFactor;
+        
+        currentPerception.overallPerception = (
+            currentPerception.visualConfidence * sensoryWeights[0] +
+            currentPerception.auditoryConfidence * sensoryWeights[1] +
+            currentPerception.tactileConfidence * sensoryWeights[2] +
+            currentPerception.olfactoryConfidence * sensoryWeights[3] +
+            currentPerception.gustatoryConfidence * sensoryWeights[4]
+        );
+        
+        double confidences[5] = {
+            currentPerception.visualConfidence,
+            currentPerception.auditoryConfidence,
+            currentPerception.tactileConfidence,
+            currentPerception.olfactoryConfidence,
+            currentPerception.gustatoryConfidence
+        };
+        
+        double mean = currentPerception.overallPerception;
+        double variance = 0.0;
+        for(int i = 0; i < 5; i++) variance += MathPow(confidences[i] - mean, 2);
+        currentPerception.sensoryCoherence = 1.0 - MathSqrt(variance / 10.0);
+    }
+    
+    IntegratedSensoryData GetCurrentPerception() {
+        return currentPerception;
+    }
+};
+
+// Sistema de Análise de Mercado
+class CMarketAnalysis {
+private:
+    int maFastHandle;
+    int maSlowHandle;
+    int rsiHandle;
+    int stochHandle;
+    
+public:
+    CMarketAnalysis() {
+        maFastHandle = iMA(_Symbol, AnalysisTimeframe, 20, 0, MODE_EMA, PRICE_CLOSE);
+        maSlowHandle = iMA(_Symbol, AnalysisTimeframe, 50, 0, MODE_EMA, PRICE_CLOSE);
+        rsiHandle = iRSI(_Symbol, AnalysisTimeframe, 14, PRICE_CLOSE);
+        stochHandle = iStochastic(_Symbol, AnalysisTimeframe, 5, 3, 3, MODE_SMA, STO_LOWHIGH);
+    }
+    
+    ~CMarketAnalysis() {
+        if(maFastHandle != INVALID_HANDLE) IndicatorRelease(maFastHandle);
+        if(maSlowHandle != INVALID_HANDLE) IndicatorRelease(maSlowHandle);
+        if(rsiHandle != INVALID_HANDLE) IndicatorRelease(rsiHandle);
+        if(stochHandle != INVALID_HANDLE) IndicatorRelease(stochHandle);
+    }
+    
+    bool Initialize() {
+        if(maFastHandle == INVALID_HANDLE) {
+            Print("Erro ao inicializar MA Fast em CMarketAnalysis: ", GetLastError());
+            return false;
+        }
+        if(maSlowHandle == INVALID_HANDLE) {
+            Print("Erro ao inicializar MA Slow em CMarketAnalysis: ", GetLastError());
+            return false;
+        }
+        if(rsiHandle == INVALID_HANDLE) {
+            Print("Erro ao inicializar RSI em CMarketAnalysis: ", GetLastError());
+            return false;
+        }
+        if(stochHandle == INVALID_HANDLE) {
+            Print("Erro ao inicializar Stochastic em CMarketAnalysis: ", GetLastError());
+            return false;
+        }
+        return true;
+    }
+    
+    double GetTrendStrength() {
+        double maFast[], maSlow[];
+        ArraySetAsSeries(maFast, true);
+        ArraySetAsSeries(maSlow, true);
+        
+        if(CopyBuffer(maFastHandle, 0, 0, 2, maFast) <= 0 || CopyBuffer(maSlowHandle, 0, 0, 2, maSlow) <= 0) {
+            Print("Erro ao copiar buffers de MA em GetTrendStrength: ", GetLastError());
+            return 0.0;
+        }
+            
+        double trendStrength = (maFast[0] - maSlow[0]) / maSlow[0];
+        return trendStrength;
+    }
+    
+    double GetMarketMomentum() {
+        double rsi[], stochMain[], stochSignal[];
+        ArraySetAsSeries(rsi, true);
+        ArraySetAsSeries(stochMain, true);
+        ArraySetAsSeries(stochSignal, true);
+        
+        if(CopyBuffer(rsiHandle, 0, 0, 1, rsi) <= 0 || 
+           CopyBuffer(stochHandle, MAIN_LINE, 0, 1, stochMain) <= 0 || 
+           CopyBuffer(stochHandle, SIGNAL_LINE, 0, 1, stochSignal) <= 0) {
+            Print("Erro ao copiar buffers de RSI ou Stochastic em GetMarketMomentum: ", GetLastError());
+            return 0.0;
+        }
+            
+        double rsiWeight = 0.6;
+        double stochWeight = 0.4;
+        
+        double rsiMomentum = (rsi[0] - 50.0) / 50.0;
+        double stochMomentum = (stochMain[0] - stochSignal[0]) / 100.0;
+        
+        return rsiWeight * rsiMomentum + stochWeight * stochMomentum;
+    }
+    
+    bool IsVolatilityFavorable() {
+        double atr[];
+        ArraySetAsSeries(atr, true);
+        int atrHandle = iATR(_Symbol, AnalysisTimeframe, ATRPeriod);
+        
+        if(CopyBuffer(atrHandle, 0, 0, 2, atr) <= 0) {
+            Print("Erro ao copiar buffer de ATR em IsVolatilityFavorable: ", GetLastError());
+            IndicatorRelease(atrHandle);
+            return false;
+        }
+        IndicatorRelease(atrHandle);
+        // Ajuste mais rígido: ATR entre 50% e 150% da média de 20 períodos
+        double atrAvg[];
+        ArraySetAsSeries(atrAvg, true);
+        int atrAvgHandle = iATR(_Symbol, AnalysisTimeframe, 20);
+        if(CopyBuffer(atrAvgHandle, 0, 0, 1, atrAvg) > 0) {
+            IndicatorRelease(atrAvgHandle);
+            if(atr[0] < atrAvg[0] * 0.5 || atr[0] > atrAvg[0] * 1.5) {
+                Print("Volatilidade fora do intervalo aceitável: ATR=", atr[0], ", Avg=", atrAvg[0]);
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
+// Sistema de Gerenciamento de Risco
+class CRiskManager {
+private:
+    double maxRiskPercent;
+    double maxDrawdown;
+    int maxPositions;
+    double accountBalance;
+    double currentDrawdown;
+    
+public:
+    CRiskManager() {
+        maxRiskPercent = RiskPercent;
+        maxDrawdown = 10.0;
+        maxPositions = MaxPositions;
+        accountBalance = AccountInfoDouble(ACCOUNT_BALANCE);
+        currentDrawdown = 0.0;
+    }
+    
+    bool CanOpenPosition() {
+        if(PositionsTotal() >= maxPositions) {
+            Print("Limite de posições atingido: ", PositionsTotal());
+            return false;
+        }
+            
+        double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+        currentDrawdown = (accountBalance - equity) / accountBalance * 100.0;
+        
+        if(currentDrawdown > maxDrawdown) {
+            Print("Drawdown máximo excedido: ", currentDrawdown, "%");
+            return false;
+        }
+            
+        return true;
+    }
+    
+    double GetPositionSize(double stopLoss) {
+        if(!UseAutoLotSize) return InitialLot;
+            
+        double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+        double riskAmount = equity * maxRiskPercent / 100.0;
+        
+        double tickSize = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+        double tickValue = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+        double lotStep = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP);
+        
+        if(tickSize == 0 || tickValue == 0 || lotStep == 0) {
+            Print("Erro nos parâmetros de símbolo para cálculo de lote: ", GetLastError());
+            return InitialLot;
+        }
+            
+        double lotSize = riskAmount / (stopLoss * tickValue / tickSize);
+        lotSize = MathFloor(lotSize / lotStep) * lotStep;
+        
+        double minLot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
+        double maxLot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX);
+        
+        return MathMax(MathMin(lotSize, maxLot), minLot);
+    }
+    
+    void UpdateAccountBalance() {
+        accountBalance = MathMax(accountBalance, AccountInfoDouble(ACCOUNT_BALANCE));
+    }
+    
+    double GetCurrentDrawdown() {
+        double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+        currentDrawdown = (accountBalance - equity) / accountBalance * 100.0;
+        return currentDrawdown;
+    }
+};
+
+// Sistema de Análise Multi-Timeframe
+class CMultiTimeframeAnalysis {
+private:
+    ENUM_TIMEFRAMES timeframes[3];
+    double weights[3];
+    int maHandles[3];
+    int rsiHandles[3];
+    
+public:
+    CMultiTimeframeAnalysis() {
+        timeframes[0] = PERIOD_M15;
+        timeframes[1] = AnalysisTimeframe;
+        timeframes[2] = PERIOD_D1;
+        
+        weights[0] = 0.2;
+        weights[1] = 0.5;
+        weights[2] = 0.3;
+        
+        for(int i = 0; i < 3; i++) {
+            maHandles[i] = iMA(_Symbol, timeframes[i], 20, 0, MODE_EMA, PRICE_CLOSE);
+            rsiHandles[i] = iRSI(_Symbol, timeframes[i], 14, PRICE_CLOSE);
+        }
+    }
+    
+    ~CMultiTimeframeAnalysis() {
+        for(int i = 0; i < 3; i++) {
+            if(maHandles[i] != INVALID_HANDLE) IndicatorRelease(maHandles[i]);
+            if(rsiHandles[i] != INVALID_HANDLE) IndicatorRelease(rsiHandles[i]);
+        }
+    }
+    
+    bool Initialize() {
+        bool success = true;
+        for(int i = 0; i < 3; i++) {
+            if(maHandles[i] == INVALID_HANDLE) {
+                Print("Erro ao inicializar MA em CMultiTimeframeAnalysis para ", EnumToString(timeframes[i]), ": ", GetLastError());
+                success = false;
+            }
+            if(rsiHandles[i] == INVALID_HANDLE) {
+                Print("Erro ao inicializar RSI em CMultiTimeframeAnalysis para ", EnumToString(timeframes[i]), ": ", GetLastError());
+                success = false;
+            }
+        }
+        return success;
+    }
+    
+    double GetMultiTimeframeTrend() {
+        double trend = 0.0;
+        double totalWeight = 0.0;
+        for(int i = 0; i < 3; i++) {
+            double tfTrend = CalculateTrendForTimeframe(i);
+            if(tfTrend != 0.0) {
+                trend += weights[i] * tfTrend;
+                totalWeight += weights[i];
+            }
+            Print("Timeframe ", EnumToString(timeframes[i]), " Trend: ", tfTrend);
+        }
+        return totalWeight > 0 ? trend / totalWeight : 0.0;
+    }
+    
+    double GetMultiTimeframeMomentum() {
+        double momentum = 0.0;
+        double totalWeight = 0.0;
+        for(int i = 0; i < 3; i++) {
+            double tfMomentum = CalculateMomentumForTimeframe(i);
+            if(tfMomentum != 0.0) {
+                momentum += weights[i] * tfMomentum;
+                totalWeight += weights[i];
+            }
+            Print("Timeframe ", EnumToString(timeframes[i]), " Momentum: ", tfMomentum);
+        }
+        return totalWeight > 0 ? momentum / totalWeight : 0.0;
+    }
+    
+private:
+    double CalculateTrendForTimeframe(int index) {
+        if(maHandles[index] == INVALID_HANDLE) {
+            Print("Erro: Handle de MA inválido para ", EnumToString(timeframes[index]));
+            return 0.0;
+        }
+        
+        double ma[];
+        ArraySetAsSeries(ma, true);
+        
+        if(CopyBuffer(maHandles[index], 0, 0, 2, ma) <= 0) {
+            Print("Erro ao copiar buffer de MA para ", EnumToString(timeframes[index]), ": ", GetLastError());
+            return 0.0;
+        }
+        
+        double close = iClose(_Symbol, timeframes[index], 0);
+        double trend = (close - ma[0]) / ma[0];
+        return trend;
+    }
+    
+    double CalculateMomentumForTimeframe(int index) {
+        if(rsiHandles[index] == INVALID_HANDLE) {
+            Print("Erro: Handle de RSI inválido para ", EnumToString(timeframes[index]));
+            return 0.0;
+        }
+        
+        double rsi[];
+        ArraySetAsSeries(rsi, true);
+        
+        if(CopyBuffer(rsiHandles[index], 0, 0, 1, rsi) <= 0) {
+            Print("Erro ao copiar buffer de RSI para ", EnumToString(timeframes[index]), ": ", GetLastError());
+            return 0.0;
+        }
+        
+        double momentum = (rsi[0] - 50.0) / 50.0;
+        return momentum;
+    }
+};
+
+// Variáveis globais
+CTrade trade;
+CQuantumVisionSystem* Vision = NULL;
+CMarketHearingSystem* Hearing = NULL;
+CMarketTouchSystem* Touch = NULL;
+CRiskSmellingSystem* Smell = NULL;
+CMarketTasteSystem* Taste = NULL;
+CSensoryIntegration* SensorySystem = NULL;
+CMarketAnalysis* Market = NULL;
+CRiskManager* Risk = NULL;
+CMultiTimeframeAnalysis* MTF = NULL;
+
+double volumeForce = 0.0, gravForce = 0.0, sphereEnergy = 0.0, POC = 0.0;
+double sphereEnergyLast = 0.0, monthlyHigh = 0.0, monthlyLow = 0.0, weeklyHigh = 0.0, weeklyLow = 0.0;
+datetime lastTime = 0, lastResetTime = 0;
+int plotCounter = 0, rotationFactor = 0;
+double ATR41[], ATR20[], ATRW1[], ATRM1[];
+int atr41Handle, atr20Handle, atrW1Handle, atrM1Handle;
+
+// Parâmetros de entrada
+input group "Configurações Gerais"
+input double InitialLot = 0.1;              // Volume inicial
+input int MaxPositions = 5;                 // Número máximo de posições
+input bool UseAutoLotSize = true;           // Usar tamanho automático do lote
+input double RiskPercent = 1.0;             // Porcentagem de risco por operação
+
+input group "Configurações de Timeframe"
+input ENUM_TIMEFRAMES AnalysisTimeframe = PERIOD_H4;  // Timeframe principal
+input bool UseMultiTimeframe = true;                  // Usar múltiplos timeframes
+input int FastTimeframe = 15;                         // Timeframe rápido (minutos)
+input int SlowTimeframe = 1440;                       // Timeframe lento (minutos, D1 = 1440)
+
+input group "Configurações de Sensibilidade"
+input double MinimumConfidence = 0.25;      // Confiança mínima
+input double CoherenceThreshold = 0.5;      // Limiar de coerência
+input int AnalysisDepth = 100;              // Profundidade da análise
+
+input group "Stop Loss e Take Profit"
+input double StopLossPoints = 100;          // Stop Loss em pontos
+input double TakeProfitPoints = 200;        // Take Profit em pontos
+input bool UseATRStops = true;              // Usar ATR para stops
+input int ATRPeriod = 14;                   // Período do ATR
+input double ATRMultiplier = 2.0;           // Multiplicador do ATR
+
+input group "Configurações Apollo11"
+input string resetInterval = "D1";          // Intervalo de reset Rotation Factor
+
+// Funções auxiliares
+ENUM_TIMEFRAMES StringToPeriod(string timeframeStr) {
+   if(timeframeStr == "D1") return PERIOD_D1;
+   if(timeframeStr == "H4") return PERIOD_H4;
+   if(timeframeStr == "H1") return PERIOD_H1;
+   if(timeframeStr == "M15") return PERIOD_M15;
+   if(timeframeStr == "M5") return PERIOD_M5;
+   if(timeframeStr == "M1") return PERIOD_M1;
+   return PERIOD_CURRENT;
+}
+
+// Funções do Apollo11
+void UpdateMarketData() {
+   long volumeArray[];
+   ArraySetAsSeries(volumeArray, true);
+   if(CopyTickVolume(_Symbol, 0, 0, 10, volumeArray) > 0) {
+      double volumeAvg = 0;
+      for(int i = 0; i < 10; i++) volumeAvg += (double)volumeArray[i];
+      volumeAvg /= 10.0;
+      double currentVolume = (double)volumeArray[0];
+      volumeForce = currentVolume / volumeAvg;
+      Print("volumeForce atualizado: ", volumeForce);
+   } else {
+      Print("Erro ao copiar volume de ticks em UpdateMarketData: ", GetLastError());
+   }
+}
+
+void CalculatePhysics() {
+   gravForce = volumeForce * (rotationFactor != 0 ? MathAbs(rotationFactor) * 1000 : 1000);
+   sphereEnergy = volumeForce * 2.0;
+   POC = iClose(_Symbol, PERIOD_CURRENT, 1);
+   Print("Physics: gravForce=", gravForce, " sphereEnergy=", sphereEnergy);
+}
+
+void UpdateRotationFactor() {
+   datetime currentResetTime = iTime(_Symbol, StringToPeriod(resetInterval), 0);
+   if(currentResetTime == 0) {
+      Print("Erro ao obter tempo para reset em UpdateRotationFactor: ", GetLastError());
+      return;
+   }
+   bool reset = currentResetTime != lastResetTime;
+   lastResetTime = currentResetTime;
+
+   double high = iHigh(_Symbol, PERIOD_CURRENT, 0);
+   double low = iLow(_Symbol, PERIOD_CURRENT, 0);
+   double highPrev = iHigh(_Symbol, PERIOD_CURRENT, 1);
+   double lowPrev = iLow(_Symbol, PERIOD_CURRENT, 1);
+
+   int one = (high > highPrev && low > lowPrev) ? 2 : 0;
+   int two = (high < highPrev && low < lowPrev) ? -2 : 0;
+   int three = (high > highPrev && low < lowPrev) ? 0 : 0;
+   int four = (high < highPrev && low > lowPrev) ? 0 : 0;
+   int five = (high == highPrev && low > lowPrev) ? 1 : 0;
+   int six = (high > highPrev && low == lowPrev) ? 1 : 0;
+   int seven = (high < highPrev && low == lowPrev) ? -1 : 0;
+   int eight = (high == highPrev && low < lowPrev) ? -1 : 0;
+
+   if (reset) rotationFactor = one + two + three + four + five + six + seven + eight;
+   else rotationFactor += one + two + three + four + five + six + seven + eight;
+
+   Print("Rotation Factor atualizado: ", rotationFactor);
+}
+
+void CalculateMonthlyChannel() {
+   monthlyHigh = iHigh(_Symbol, PERIOD_MN1, 1);
+   monthlyLow = iLow(_Symbol, PERIOD_MN1, 1);
+}
+
+void CalculateWeeklyChannel() {
+   weeklyHigh = iHigh(_Symbol, PERIOD_W1, 1);
+   weeklyLow = iLow(_Symbol, PERIOD_W1, 1);
+}
+
+void TraceReferenceLines(double pocLevel) {
+   double range = ATRW1[0];
+   string nameTop = "GravChannel_Top_" + DoubleToString(pocLevel, 5);
+   string nameBottom = "GravChannel_Bottom_" + DoubleToString(pocLevel, 5);
+   if (ObjectFind(0, nameTop) < 0) {
+      ObjectCreate(0, nameTop, OBJ_HLINE, 0, 0, weeklyHigh);
+      ObjectCreate(0, nameBottom, OBJ_HLINE, 0, 0, weeklyLow);
+      ObjectSetInteger(0, nameTop, OBJPROP_COLOR, clrYellow);
+      ObjectSetInteger(0, nameBottom, OBJPROP_COLOR, clrYellow);
+      ObjectSetInteger(0, nameTop, OBJPROP_STYLE, STYLE_DASH);
+      ObjectSetInteger(0, nameBottom, OBJPROP_STYLE, STYLE_DASH);
+      string label = "POC_" + DoubleToString(pocLevel, 5);
+      ObjectCreate(0, label, OBJ_TEXT, 0, TimeCurrent(), pocLevel);
+      ObjectSetString(0, label, OBJPROP_TEXT, "POC: " + DoubleToString(pocLevel, 5));
+      ObjectSetInteger(0, label, OBJPROP_COLOR, clrYellow);
+      ObjectSetInteger(0, label, OBJPROP_FONTSIZE, 8);
+      Print("Canal Gravitacional: ", pocLevel);
+   }
+}
+
+void PlotSphereEnergy(double energy) {
+   if (TimeCurrent() != lastTime) {
+      string name = "SphereEnergy_" + TimeToString(TimeCurrent());
+      ObjectCreate(0, name, OBJ_TREND, 0, lastTime, sphereEnergyLast, TimeCurrent(), energy);
+      ObjectSetInteger(0, name, OBJPROP_COLOR, clrBlue);
+      string label = "Energy_" + TimeToString(TimeCurrent());
+      ObjectCreate(0, label, OBJ_TEXT, 0, TimeCurrent(), energy);
+      ObjectSetString(0, label, OBJPROP_TEXT, "Energia: " + DoubleToString(energy, 2));
+      ObjectSetInteger(0, label, OBJPROP_COLOR, clrBlue);
+      ObjectSetInteger(0, label, OBJPROP_FONTSIZE, 8);
+      lastTime = TimeCurrent();
+      sphereEnergyLast = energy;
+      Print("Energia plotada: ", energy);
+   }
+}
+
+void PlotGravitationalPulse() {
+   if (gravForce > 500) {
+      string name = "GravPulse_" + TimeToString(TimeCurrent());
+      if (ObjectFind(0, name) < 0) {
+         ObjectCreate(0, name, OBJ_VLINE, 0, TimeCurrent(), 0);
+         ObjectSetInteger(0, name, OBJPROP_COLOR, clrRed);  // Corrigido aqui
+         string label = "Pulse_" + TimeToString(TimeCurrent());
+         ObjectCreate(0, label, OBJ_TEXT, 0, TimeCurrent(), iHigh(_Symbol, PERIOD_CURRENT, 0));
+         ObjectSetString(0, label, OBJPROP_TEXT, "Força: " + DoubleToString(gravForce / 1000, 2) + "G");
+         ObjectSetInteger(0, label, OBJPROP_COLOR, clrRed);
+         ObjectSetInteger(0, label, OBJPROP_FONTSIZE, 8);
+         Print("Pulso Gravitacional: ", gravForce);
+      }
+   }
+}
+
+// Inicialização
+int OnInit() {
+    Print("Iniciando OnInit...");
+    
+    Vision = new CQuantumVisionSystem();
+    if(Vision == NULL) {
+        Print("Erro: Falha ao criar CQuantumVisionSystem");
+        return INIT_FAILED;
+    }
+    
+    Hearing = new CMarketHearingSystem();
+    if(Hearing == NULL) {
+        Print("Erro: Falha ao criar CMarketHearingSystem");
+        return INIT_FAILED;
+    }
+    
+    Touch = new CMarketTouchSystem();
+    if(Touch == NULL) {
+        Print("Erro: Falha ao criar CMarketTouchSystem");
+        return INIT_FAILED;
+    }
+    
+    Smell = new CRiskSmellingSystem();
+    if(Smell == NULL) {
+        Print("Erro: Falha ao criar CRiskSmellingSystem");
+        return INIT_FAILED;
+    }
+    
+    Taste = new CMarketTasteSystem();
+    if(Taste == NULL) {
+        Print("Erro: Falha ao criar CMarketTasteSystem");
+        return INIT_FAILED;
+    }
+    
+    SensorySystem = new CSensoryIntegration();
+    if(SensorySystem == NULL) {
+        Print("Erro: Falha ao criar CSensoryIntegration");
+        return INIT_FAILED;
+    }
+    
+    Market = new CMarketAnalysis();
+    if(Market == NULL) {
+        Print("Erro: Falha ao criar CMarketAnalysis");
+        return INIT_FAILED;
+    }
+    
+    Risk = new CRiskManager();
+    if(Risk == NULL) {
+        Print("Erro: Falha ao criar CRiskManager");
+        return INIT_FAILED;
+    }
+    
+    MTF = new CMultiTimeframeAnalysis();
+    if(MTF == NULL) {
+        Print("Erro: Falha ao criar CMultiTimeframeAnalysis");
+        return INIT_FAILED;
+    }
+    
+    atr41Handle = iATR(_Symbol, PERIOD_CURRENT, 41);
+    atr20Handle = iATR(_Symbol, PERIOD_CURRENT, 20);
+    atrW1Handle = iATR(_Symbol, PERIOD_W1, 41);
+    atrM1Handle = iATR(_Symbol, PERIOD_M1, 41);
+
+    ArraySetAsSeries(ATR41, true);
+    ArraySetAsSeries(ATR20, true);
+    ArraySetAsSeries(ATRW1, true);
+    ArraySetAsSeries(ATRM1, true);
+
+    if(atr41Handle == INVALID_HANDLE || atr20Handle == INVALID_HANDLE || atrW1Handle == INVALID_HANDLE || atrM1Handle == INVALID_HANDLE) {
+        Print("Erro ao inicializar indicadores ATR: atr41=", atr41Handle, ", atr20=", atr20Handle, ", atrW1=", atrW1Handle, ", atrM1=", atrM1Handle);
+        return INIT_FAILED;
+    }
+    
+    if(!Vision.Initialize()) {
+        Print("Erro na inicialização do Vision");
+        return INIT_FAILED;
+    }
+    if(!Hearing.Initialize()) {
+        Print("Erro na inicialização do Hearing");
+        return INIT_FAILED;
+    }
+    if(!Touch.Initialize()) {
+        Print("Erro na inicialização do Touch");
+        return INIT_FAILED;
+    }
+    if(!Smell.Initialize()) {
+        Print("Erro na inicialização do Smell");
+        return INIT_FAILED;
+    }
+    if(!Taste.Initialize()) {
+        Print("Erro na inicialização do Taste");
+        return INIT_FAILED;
+    }
+    if(!Market.Initialize()) {
+        Print("Erro na inicialização do Market");
+        return INIT_FAILED;
+    }
+    if(!MTF.Initialize()) {
+        Print("Erro na inicialização do MTF - Continuando com funcionalidade limitada");
+    }
+    
+    trade.SetExpertMagicNumber(123456);
+    CalculateMonthlyChannel();
+    CalculateWeeklyChannel();
+    Print("Inicialização concluída com sucesso");
+    return INIT_SUCCEEDED;
+}
+
+// Finalização
+void OnDeinit(const int reason) {
+    if(Vision != NULL) { delete Vision; Vision = NULL; }
+    if(Hearing != NULL) { delete Hearing; Hearing = NULL; }
+    if(Touch != NULL) { delete Touch; Touch = NULL; }
+    if(Smell != NULL) { delete Smell; Smell = NULL; }
+    if(Taste != NULL) { delete Taste; Taste = NULL; }
+    if(SensorySystem != NULL) { delete SensorySystem; SensorySystem = NULL; }
+    if(Market != NULL) { delete Market; Market = NULL; }
+    if(Risk != NULL) { delete Risk; Risk = NULL; }
+    if(MTF != NULL) { delete MTF; MTF = NULL; }
+    if(atr41Handle != INVALID_HANDLE) IndicatorRelease(atr41Handle);
+    if(atr20Handle != INVALID_HANDLE) IndicatorRelease(atr20Handle);
+    if(atrW1Handle != INVALID_HANDLE) IndicatorRelease(atrW1Handle);
+    if(atrM1Handle != INVALID_HANDLE) IndicatorRelease(atrM1Handle);
+    ObjectsDeleteAll(0, "GravChannel_");
+    ObjectsDeleteAll(0, "SphereEnergy_");
+    ObjectsDeleteAll(0, "GravPulse_");
+    Print("Apollo11 finalizado - Motivo: ", reason);
+}
+
+// Funções de cálculo de lote e stops
+double CalculateLotSize(double stopLoss) {
+    if(!UseAutoLotSize) return InitialLot;
+    
+    double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+    double tickSize = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+    double tickValue = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+    double lotStep = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP);
+    
+    if(tickSize == 0 || tickValue == 0 || lotStep == 0) {
+        Print("Erro nos parâmetros de símbolo para cálculo de lote: ", GetLastError());
+        return InitialLot;
+    }
+    
+    double riskAmount = equity * RiskPercent / 100.0;
+    double lotSize = riskAmount / (stopLoss * tickValue / tickSize);
+    lotSize = MathFloor(lotSize / lotStep) * lotStep;
+    
+    double minLot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
+    double maxLot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX);
+    
+    return MathMax(MathMin(lotSize, maxLot), minLot);
+}
+
+void CalculateStops(double &sl, double &tp) {
+    if(UseATRStops) {
+        double atr[];
+        ArraySetAsSeries(atr, true);
+        int atrHandle = iATR(_Symbol, AnalysisTimeframe, ATRPeriod);
+        
+        if(CopyBuffer(atrHandle, 0, 0, 1, atr) > 0) {
+            double atrValue = atr[0];
+            sl = atrValue * ATRMultiplier;
+            tp = atrValue * ATRMultiplier * 2;
+            IndicatorRelease(atrHandle);
+            return;
+        }
+        Print("Erro ao copiar buffer de ATR em CalculateStops: ", GetLastError());
+        IndicatorRelease(atrHandle);
+    }
+    
+    sl = StopLossPoints * _Point;
+    tp = TakeProfitPoints * _Point;
+}
+
+// Condições de entrada
+bool CheckEntryConditions(IntegratedSensoryData &perception) {
+    if(perception.overallPerception < MinimumConfidence) {
+        Print("Confiança geral insuficiente: ", perception.overallPerception);
+        return false;
+    }
+    if(perception.sensoryCoherence < CoherenceThreshold) {
+        Print("Coerência sensorial insuficiente: ", perception.sensoryCoherence);
+        return false;
+    }
+    if(!Risk.CanOpenPosition()) {
+        Print("Não pode abrir posição: limite de posições ou drawdown atingido");
+        return false;
+    }
+    if(!Market.IsVolatilityFavorable()) {
+        Print("Volatilidade não favorável");
+        return false;
+    }
+    
+    double momentum = Market.GetMarketMomentum();
+    double trendStrength = Market.GetTrendStrength();
+    
+    if(UseMultiTimeframe && MTF != NULL) {
+        if(MTF.Initialize()) {
+            double mtfTrend = MTF.GetMultiTimeframeTrend();
+            double mtfMomentum = MTF.GetMultiTimeframeMomentum();
+            trendStrength = 0.7 * trendStrength + 0.3 * mtfTrend;
+            momentum = 0.7 * momentum + 0.3 * mtfMomentum;
+        } else {
+            Print("MTF não inicializado, usando apenas análise do timeframe principal");
+        }
+    }
+    
+    perception.marketStrength = momentum;
+    perception.trendStrength = trendStrength;
+    
+    if(perception.gravForce > 500) perception.marketStrength *= 1.2;
+    
+    Print("Condições de entrada: Trend=", trendStrength, ", Momentum=", momentum);
+    return true;
+}
+
+// Função principal de tick
+void OnTick() {
+    static datetime lastBar;
+    datetime currentBar = iTime(_Symbol, AnalysisTimeframe, 0);
+    if(currentBar == lastBar) return;
+    lastBar = currentBar;
+
+    if(CopyBuffer(atr41Handle, 0, 0, 1, ATR41) < 0 || CopyBuffer(atr20Handle, 0, 0, 1, ATR20) < 0 || 
+       CopyBuffer(atrW1Handle, 0, 0, 1, ATRW1) < 0 || CopyBuffer(atrM1Handle, 0, 0, 1, ATRM1) < 0) {
+        Print("Erro ao copiar buffers ATR em OnTick: ", GetLastError());
+        return;
+    }
+
+    UpdateMarketData();
+    CalculatePhysics();
+    UpdateRotationFactor();
+
+    plotCounter++;
+    if(plotCounter % 5 == 0) {
+        double poc = POC;
+        TraceReferenceLines(poc);
+        PlotSphereEnergy(sphereEnergy);
+        PlotGravitationalPulse();
+    }
+
+    if(Vision != NULL) Vision.Process();
+    if(Hearing != NULL) Hearing.Process();
+    if(Touch != NULL) Touch.Process();
+    if(Smell != NULL) Smell.Process();
+    if(Taste != NULL) Taste.Process();
+    
+    if(SensorySystem != NULL) {
+        SensorySystem.ProcessSensoryInput(Vision, Hearing, Touch, Smell, Taste);
+        IntegratedSensoryData perception = SensorySystem.GetCurrentPerception();
+        
+        if(CheckEntryConditions(perception)) {
+            double sl, tp;
+            CalculateStops(sl, tp);
+            double lotSize = CalculateLotSize(sl);
+            
+            if(perception.trendStrength > 0) OpenLongPosition(lotSize, sl, tp);
+            else if(perception.trendStrength < 0) OpenShortPosition(lotSize, sl, tp);
+        }
+    }
+    
+    ManagePositions();
+}
+
+// Funções de abertura de posição
+void OpenLongPosition(double lotSize, double sl, double tp) {
+    double ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+    double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+    double riskAmount = equity * RiskPercent / 100.0;
+    double potentialLoss = lotSize * sl * SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE) / SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+    
+    if(potentialLoss > riskAmount * 2) {  // Limite de perda por trade
+        Print("Risco por trade excedido: PotentialLoss=", potentialLoss, ", MaxRisk=", riskAmount * 2);
+        return;
+    }
+    
+    if(trade.Buy(lotSize, _Symbol, ask, ask - sl, ask + tp)) {
+        Print("Posição comprada aberta - Volume: ", lotSize, " SL: ", DoubleToString(ask - sl, _Digits), " TP: ", DoubleToString(ask + tp, _Digits));
+    } else {
+        Print("Erro ao abrir posição comprada: ", GetLastError());
+    }
+}
+
+void OpenShortPosition(double lotSize, double sl, double tp) {
+    double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+    double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+    double riskAmount = equity * RiskPercent / 100.0;
+    double potentialLoss = lotSize * sl * SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE) / SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+    
+    if(potentialLoss > riskAmount * 2) {  // Limite de perda por trade
+        Print("Risco por trade excedido: PotentialLoss=", potentialLoss, ", MaxRisk=", riskAmount * 2);
+        return;
+    }
+    
+    if(trade.Sell(lotSize, _Symbol, bid, bid + sl, bid - tp)) {
+        Print("Posição vendida aberta - Volume: ", lotSize, " SL: ", DoubleToString(bid + sl, _Digits), " TP: ", DoubleToString(bid - tp, _Digits));
+    } else {
+        Print("Erro ao abrir posição vendida: ", GetLastError());
+    }
+}
+
+// Gerenciamento de posições
+void ManagePositions() {
+    double currentDrawdown = Risk.GetCurrentDrawdown();
+    if(currentDrawdown > 10.0) {
+        for(int i = PositionsTotal() - 1; i >= 0; i--) {
+            ulong ticket = PositionGetTicket(i);
+            if(ticket > 0 && PositionSelectByTicket(ticket)) {
+                trade.PositionClose(ticket);
+                Print("Posição fechada por drawdown excessivo: Ticket=", ticket, ", Drawdown=", currentDrawdown);
+            }
+        }
+        return;
+    }
+    
+    for(int i = PositionsTotal() - 1; i >= 0; i--) {
+        ulong ticket = PositionGetTicket(i);
+        if(ticket <= 0) continue;
+        
+        if(!PositionSelectByTicket(ticket)) continue;
+        
+        double positionProfit = PositionGetDouble(POSITION_PROFIT);
+        
+        Risk.UpdateAccountBalance();
+        
+        if(UseMultiTimeframe && MTF != NULL) {
+            if(MTF.Initialize()) {
+                double mtfTrend = MTF.GetMultiTimeframeTrend();
+                double mtfMomentum = MTF.GetMultiTimeframeMomentum();
+                
+                bool isLong = PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY;
+                
+                if((isLong && mtfTrend < -0.01) || (!isLong && mtfTrend > 0.01)) {
+                    trade.PositionClose(ticket);
+                    Print("Posição fechada por mudança de tendência: Ticket=", ticket, ", mtfTrend=", mtfTrend);
+                    continue;
+                }
+                
+                if((isLong && mtfMomentum < -0.5) || (!isLong && mtfMomentum > 0.5)) {
+                    trade.PositionClose(ticket);
+                    Print("Posição fechada por perda de momentum: Ticket=", ticket, ", mtfMomentum=", mtfMomentum);
+                    continue;
+                }
+            }
+        }
+    }
+}

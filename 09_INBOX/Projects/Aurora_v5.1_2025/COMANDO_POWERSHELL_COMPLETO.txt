@@ -1,0 +1,25 @@
+================================================================================
+COMANDO COMPLETO PARA POWERSHELL
+================================================================================
+
+1. Abra o PowerShell
+
+2. Execute estes comandos (copie e cole):
+
+cd C:\Users\Lenovo\Projects\Aurora
+python AURORA_FINAL_COMPLETO_100.py --beta
+
+================================================================================
+COMANDO ÚNICO (copie tudo de uma vez):
+================================================================================
+
+cd C:\Users\Lenovo\Projects\Aurora; python AURORA_FINAL_COMPLETO_100.py --beta
+
+================================================================================
+OU EXECUTE DIRETO:
+================================================================================
+
+python C:\Users\Lenovo\Projects\Aurora\AURORA_FINAL_COMPLETO_100.py --beta
+
+================================================================================
+

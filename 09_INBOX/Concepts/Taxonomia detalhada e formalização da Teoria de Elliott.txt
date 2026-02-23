@@ -1,0 +1,420 @@
+Taxonomia detalhada e formalização da Teoria de Elliott (conceitos, regras e medidas).
+
+Plano científico e protocolos de teste (o que testar, como testar, métricas, datasets e validações).
+
+Scaffold Python (elliott_module.py) — um módulo auditable e extensível inspirado no formato DALL: classes para taxonomia, detector de ondas (stubs para substituir por implementações reais), agregador de evidências, laudo e backtester. Código pronto para salvar e usar localmente.
+
+Vou direto ao ponto — técnico e aplicável. Tudo em português.
+
+1 — Taxonomia detalhada (Elliott, formalizada)
+1.1 Conceitos básicos (formal)
+
+Onda (Wave): um segmento de movimento de preço caracterizado por direção (up/down), início t0, fim t1, magnitude Δp e duração Δt.
+
+Estrutura fractal: cada onda pode conter sub-ondas (níveis): Primária → Secundária → Terciária → ... (infinitamente recursiva em teoria).
+
+Classes:
+
+Impulsive (I): movimento direcional principal, composto tipicamente por 5 sub-ondas (1–5) numa direção.
+
+Corrective (C): movimento de correção, tipicamente composto por 3 sub-ondas (A–B–C), variantes: zigzag, flat, triangle, complex corrections.
+
+Grau (Degree): rótulo de escala (Ex.: Grand Supercycle, Supercycle, Cycle, Primary, Intermediate, Minor, Minute, Minuette). Cada grau é um nível no fractal.
+
+Relações de medida: Fibonacci ratios (0.382, 0.5, 0.618, 1.0, 1.272, 1.618, 2.618, ...), usados para estimar extensão e targets entre sub-ondas.
+
+1.2 Regras operacionais (padrões que definem validação)
+
+Regra do Impulse:
+
+Impulse dividido em 5 sub-ondas com padrões 1–2–3–4–5.
+
+W3 não é a menor entre 1,3,5.
+
+W2 não recua mais que 100% de W1 (geralmente < 61.8% como expectativa).
+
+W4 não invade a região de W1 (não sobrepor) — regra de não-sobreposição para ondas impulsivas (em mercados clássicos).
+
+Regra do Corrective:
+
+Zigzag: A (impulse), B (correção parcial), C (impulse) com extensão comum C ≈ 1.0–1.618 × A.
+
+Flat: A ~ B ~ C (B pode exceder A em flat expandida).
+
+Triangle: 5 sub-ondas laterais (A–B–C–D–E).
+
+Validação por Fibonacci:
+
+Medir amplitudes (Δp) de sub-ondas e testar se relações caem próximo de ratios-chave (usar tolerância).
+
+1.3 Medidas e features extraíveis (para detecção e scoring)
+
+Amplitude relativa: amp = (p_end - p_start) / p_start.
+
+Duração relativa: dur = (t_end - t_start) / avg_window.
+
+Shape features: skewness do retorno intra-onda, kurtosis, peak-to-trough slope.
+
+Zigzagness: número de reversões locais (peaks/troughs) dentro da onda.
+
+Fibonacci fit error: mínima diferença absoluta entre medidas observadas e múltiplos/ratios Fibonacci (normalizado).
+
+Confidence score: combinação ponderada (regra adherence, fib fit, shape stability) -> 0..1.
+
+1.4 Representação formal (dados)
+
+Cada Wave estruturado como:
+
+{
+  "id": "wave_20251110_001",
+  "degree": "Primary",
+  "type": "impulse" | "corrective",
+  "start_idx": 12345,
+  "end_idx": 12401,
+  "start_ts": "2025-11-10T...",
+  "end_ts": "...",
+  "amplitude": 0.035,
+  "duration": 56,
+  "subwaves": [ ... ],
+  "features": { "fib_ratios": {...}, "skew": 0.12, ... },
+  "confidence": 0.72,
+  "source": "detector_v1"
+}
+2 — Plano científico e protocolos de teste (auditáveis)
+2.1 Objetivos testáveis (hipóteses refutáveis)
+
+H1 (Regime detection): Vetores latentes de ondas (features) distinguem regimes de mercado (trend vs mean-reversion) com estatística superior a baseline.
+
+H2 (Edge para risco): VaR estimado por cenários conditionais em torno de ondas (p.ex., usando ondas como condicionantes) melhora cobertura ex-post comparado a métodos clássicos.
+
+H3 (Predictive power): Certas configurações de onda (p.ex. validação alta de impulso primário com fib fit forte) têm probabilidade condicional significativamente maior de produzir movimentos directionais nos próximos H barras do que aleatório.
+
+2.2 Experimentos (passo a passo)
+Experimento A — Detecção & Validação de Regras
+
+Dataset: preço OHLC intradiário/daily de múltiplos ativos (S&P500, EURUSD, BTC-USD) por 5–10 anos.
+
+Pipeline:
+
+Detectar extremos (peaks/troughs) com algoritmo robusto (turning points, prominence).
+
+Segmentar ondas (peak→next trough as candidate) e agrupar em potenciais estruturas 5/3.
+
+Calcular features e rule adherence (impulse rules).
+
+Score waves; avaliar precisão (manual labeling on sample) e métricas clássicas: Precision/Recall, F1 de detecção de impulse vs corrective.
+
+Output: taxa de acerto comparada a anotação humana (subset), análise de confusões.
+
+Experimento B — Predictive Test (refutável)
+
+Para cada onda detectada com confidence >= c:
+
+Compute P(move > X) in horizon H (e.g., 1,5,10 dias) conditional on wave type/degree.
+
+Baseline: unconditional probability of same magnitude move.
+
+Statistical test: permutation test or logistic regression; compute p-values and effect size (odds ratio).
+
+Reject H0 if conditional probability > baseline with p<0.05 and effect size meaningful.
+
+Experimento C — Risk Backtest
+
+Integrate with VaR framework: condition scenario generation on wave states (e.g., starting from end of wave with specific confidence).
+
+Backtest VaR coverage (Kupiec/Christoffersen) vs baseline (GARCH, Historical).
+
+Evaluate economic metrics (drawdown, margin utilization) as in pivot B earlier.
+
+2.3 Datasets & ferramentas
+
+Data sources: yfinance, AlphaVantage, Polygon.io, Crypto exchanges (Binance).
+
+Annotation: create a human-annotated corpus of waves (sample windows across assets) to use as gold standard.
+
+Libraries: numpy, pandas, scipy, scikit-learn, tsfresh (features), ruptures (change point detection), scipy.signal.find_peaks.
+
+2.4 Métricas de avaliação
+
+Detection: Precision, Recall, F1 for wave type and degree classification.
+
+Predictive: AUC/ROC for logistic predicting move sign/magnitude; p-values via permutation.
+
+Risk: Kupiec POF, Christoffersen independence, ES backtesting (Acerbi-Szekely).
+
+Economic: Sharpe of strategy that uses signals for position sizing; drawdown reduction when using risk overlay.
+
+2.5 Reprodutibilidade e auditoria
+
+Cada run gera audit.json contendo: seed, package versions, data hashes (SHA256), parameters, model checkpoints, results CSVs, laudo.
+
+Use rolling walk-forward splits, preserve random seeds and save latents.
+
+3 — Scaffold Python (elliott_module.py)
+
+Abaixo um módulo inicial no estilo do dall_module.py — contém: classes de taxonomia, detecção básica (peaks/troughs), classificador de ondas (heurístico), EvidenceAggregator e LaudoGenerator. É um scaffold — detectores são stubs/heurísticos que você pode substituir por implementações mais complexas (ML, CNNs, transformers). O módulo inclui funções de auditoria e saída estruturada.
+
+Copie o conteúdo abaixo para um arquivo elliott_module.py no seu ambiente e rode localmente / adapte.
+
+# elliott_module.py
+"""
+Scaffold para Teoria de Elliott: detecção, taxonomia, agregação de evidências e laudo.
+Não executa trading nem faz claims de previsão — é um framework de pesquisa auditável.
+"""
+
+import numpy as np
+import pandas as pd
+import json, time, hashlib, uuid, platform, socket
+
+# -----------------------
+# Data classes / taxonomy
+# -----------------------
+class Wave:
+    def __init__(self, id, degree, wtype, start_idx, end_idx, start_ts=None, end_ts=None, amplitude=None, duration=None, subwaves=None, features=None, confidence=0.0, source=None):
+        self.id = id
+        self.degree = degree
+        self.type = wtype  # 'impulse' or 'corrective' or other
+        self.start_idx = start_idx
+        self.end_idx = end_idx
+        self.start_ts = start_ts
+        self.end_ts = end_ts
+        self.amplitude = amplitude
+        self.duration = duration
+        self.subwaves = subwaves or []
+        self.features = features or {}
+        self.confidence = float(confidence)
+        self.source = source
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "degree": self.degree,
+            "type": self.type,
+            "start_idx": int(self.start_idx),
+            "end_idx": int(self.end_idx),
+            "start_ts": str(self.start_ts),
+            "end_ts": str(self.end_ts),
+            "amplitude": float(self.amplitude) if self.amplitude is not None else None,
+            "duration": int(self.duration) if self.duration is not None else None,
+            "subwaves": [s.to_dict() for s in self.subwaves],
+            "features": self.features,
+            "confidence": self.confidence,
+            "source": self.source
+        }
+
+class WaveTaxonomy:
+    """Definitions of degrees, typical patterns and Fibonacci expectations."""
+    FIBS = [0.236, 0.382, 0.5, 0.618, 1.0, 1.272, 1.618, 2.618]
+    DEGREES = ["GrandSupercycle", "Supercycle", "Cycle", "Primary", "Intermediate", "Minor", "Minute", "Minuette"]
+
+# -----------------------
+# Utilities / Audit
+# -----------------------
+def sha256_of_file(path):
+    import hashlib
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(8192), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+def record_env(seed=12345):
+    import importlib
+    env = {
+        "run_id": time.strftime("%Y%m%dT%H%M%S") + "-" + str(uuid.uuid4())[:8],
+        "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "seed": seed,
+        "host": socket.gethostname(),
+        "platform": platform.platform(),
+        "pkg_versions": {p: getattr(importlib.import_module(p), "__version__", "n/a") for p in ("numpy","pandas")}
+    }
+    return env
+
+# -----------------------
+# Detection heuristics (starter)
+# -----------------------
+def find_turning_points(series, prominence=0.0):
+    """
+    Simple wrapper using scipy.signal.find_peaks if available.
+    Returns indices of peaks and troughs (local maxima and minima).
+    """
+    try:
+        from scipy.signal import find_peaks
+    except Exception:
+        # fallback: naive method
+        peaks, troughs = [], []
+        arr = series.values if isinstance(series, pd.Series) else np.asarray(series)
+        for i in range(1, len(arr)-1):
+            if arr[i] > arr[i-1] and arr[i] > arr[i+1]:
+                peaks.append(i)
+            if arr[i] < arr[i-1] and arr[i] < arr[i+1]:
+                troughs.append(i)
+        return sorted(peaks), sorted(troughs)
+    # use find_peaks for peaks; invert series for troughs
+    peaks, _ = find_peaks(series.values, prominence=prominence)
+    troughs, _ = find_peaks(-series.values, prominence=prominence)
+    return list(peaks), list(troughs)
+
+def build_candidate_waves_from_extrema(peaks, troughs, prices_indexed):
+    """
+    Build simple candidate waves as sequences peak->trough->peak etc.
+    Returns list of Wave objects (degree 'Intermediate' by default).
+    """
+    extrema = sorted([(i, 'peak') for i in peaks] + [(i, 'trough') for i in troughs], key=lambda x: x[0])
+    waves = []
+    for j in range(len(extrema)-1):
+        i0, t0 = extrema[j]
+        i1, t1 = extrema[j+1]
+        amp = (prices_indexed[i1] - prices_indexed[i0]) / prices_indexed[i0] if prices_indexed[i0] != 0 else 0.0
+        wtype = 'impulse' if amp > 0 else 'corrective'
+        w = Wave(id=f"w_{i0}_{i1}", degree="Intermediate", wtype=wtype, start_idx=i0, end_idx=i1, amplitude=amp, duration=(i1-i0), source="extrema_heuristic")
+        waves.append(w)
+    return waves
+
+# -----------------------
+# Wave classifier / scorer
+# -----------------------
+def fib_fit_error(amplitude, reference_amp):
+    """Normalized error to nearest Fibonacci multiple of reference_amp."""
+    if reference_amp == 0:
+        return 1.0
+    ratios = WaveTaxonomy.FIBS
+    errors = [abs(amplitude / reference_amp - r) for r in ratios]
+    return float(min(errors))
+
+def score_wave_by_rules(wave, context=None):
+    """
+    Heuristic scoring:
+      - If amplitude is large and duration short => impulse-like (higher confidence)
+      - If fib_fit_error small against neighbor amplitude => higher confidence
+    """
+    amp = abs(wave.amplitude or 0.0)
+    dur = wave.duration or 1
+    score = 0.0
+    # amplitude/duration heuristic
+    score += min(1.0, amp * 10)  # scale
+    # duration penalty
+    score *= (1.0 / (1.0 + np.log1p(dur)))
+    # fib fit if context provided
+    if context and "reference_amp" in context:
+        ferr = fib_fit_error(amp, context["reference_amp"])
+        score *= max(0.0, 1.0 - ferr)  # reduce score with error
+    wave.confidence = float(score)
+    return wave
+
+# -----------------------
+# Evidence aggregator & Laudo
+# -----------------------
+class EvidenceAggregator:
+    def __init__(self):
+        self.evidence = []  # list of dicts
+
+    def add(self, source, claim, support_score):
+        self.evidence.append({"source": source, "claim": claim, "score": float(support_score)})
+
+    def aggregate(self):
+        # simple aggregation: mean score per claim
+        from collections import defaultdict
+        agg = defaultdict(list)
+        for e in self.evidence:
+            agg[e["claim"]].append(e["score"])
+        return {k: float(np.mean(v)) for k,v in agg.items()}
+
+class LaudoGenerator:
+    def __init__(self, author="elliott_module"):
+        self.author = author
+
+    def generate(self, context):
+        """
+        context: {
+          date: timestamp,
+          summary: str,
+          waves: [Wave],
+          metrics: {...},
+          conclusion: str
+        }
+        """
+        lines = []
+        lines.append(f"Laudo – Elliott Research ({self.author})")
+        lines.append(f"Data: {context.get('date')}")
+        lines.append(f"Resumo: {context.get('summary')}")
+        lines.append("")
+        lines.append("Waves summary (top 5 by confidence):")
+        waves = sorted(context.get("waves", []), key=lambda w: w.confidence, reverse=True)[:5]
+        for w in waves:
+            lines.append(f"- {w.id} | type:{w.type} | amp:{w.amplitude:.4f} | dur:{w.duration} | conf:{w.confidence:.2f}")
+        lines.append("")
+        lines.append("Métricas:")
+        for k,v in (context.get("metrics") or {}).items():
+            lines.append(f"- {k}: {v}")
+        lines.append("")
+        lines.append("Conclusão:")
+        lines.append(context.get("conclusion", "Nenhuma conclusão formal."))
+        return "\n".join(lines)
+
+# -----------------------
+# Simple pipeline / orchestrator
+# -----------------------
+class ElliottModule:
+    def __init__(self, name="ElliottModule"):
+        self.name = name
+        self.aggregator = EvidenceAggregator()
+        self.laudo = LaudoGenerator(author=name)
+        self.registered_waves = []
+
+    def detect_waves(self, price_series, prominence=0.0):
+        peaks, troughs = find_turning_points(price_series, prominence=prominence)
+        waves = build_candidate_waves_from_extrema(peaks, troughs, price_series.values)
+        # compute local context reference_amp as mean amplitude of neighbors
+        for i,w in enumerate(waves):
+            ref = abs(waves[i-1].amplitude) if i>0 else abs(w.amplitude)
+            score_wave_by_rules(w, context={"reference_amp": ref})
+        self.registered_waves = waves
+        return waves
+
+    def aggregate_and_report(self):
+        agg = self.aggregator.aggregate()
+        context = {"date": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "summary": f"Report for {self.name}", "waves": self.registered_waves, "metrics": agg, "conclusion": "Ver relatório detalhado."}
+        return self.laudo.generate(context)
+
+    def save_waves(self, path):
+        data = [w.to_dict() for w in self.registered_waves]
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+
+# -----------------------
+# Quick demo (not executed here)
+# -----------------------
+def demo_usage():
+    import yfinance as yf
+    df = yf.download("^GSPC", start="2020-01-01", end="2025-01-01")
+    pm = ElliottModule("demo")
+    waves = pm.detect_waves(df['Close'], prominence=0.01)
+    laudo = pm.aggregate_and_report()
+    print(laudo)
+    pm.save_waves("waves_demo.json")
+
+# End of elliott_module.py
+4 — Plano de entregáveis imediatos (o que eu posso gerar agora)
+
+Sem rodar nada no seu ambiente, eu posso entregar agora (copiar/colar):
+
+elliott_module.py (arquivo completo — o código acima já é um scaffold; posso transformá-lo em arquivo para download).
+
+elliott_wave_audit_test.py: script auditable para rodar detecção em um ativo, salvar waves.json, audit.json, e laudo.txt.
+
+elliott_regime_analysis.py: pipeline para extrair latentes de waves e executar clustering/regime tests (KMeans/HDBSCAN), com plots e métricas (ANOVA, MI).
+
+elliott_var_overlay.py: exemplo de como condicionar um gerador de cenários (ex.: bootstrap, diffusion) ao estado de wave para calcular VaR/ES condicional.
+
+Se quiser que eu gere os arquivos prontos para download agora (como fiz pelo DALL scripts), diga “gere os arquivos” — eu criarei elliott_module.py e pelo menos um script de auditoria (elliott_wave_audit_test.py) e te darei links para download. Vou incorporar as mesmas salvaguardas de auditoria (data hashes, seed, versions).
+
+5 — Recomendações práticas e advertências (honestidade científica)
+
+Elliott é interpretativa e fractal — muitas ocasiões exigirão supervisão humana (labeling) para construir um gold standard. Tenha annotators e regras claras.
+
+Evitar claims de predição direta — este framework deve inicialmente ser focado em regime/estrutura e risk overlay (como fizemos com DALL pivot). Somente após testes rigorosos (p<0.05, economic relevância) considerar uso para sinalização.
+
+Crie um dataset anotado — amostras manualmente marcadas (even modest size ~200 windows) são essenciais para treinar/validar detectores automatizados.
+
+Explore métodos híbridos — combine heurísticas clássicas + ML (CNN on raw price bars or transformer on returns) para detectar padrões com maior robustez.

@@ -1,0 +1,426 @@
+2025.09.19 21:16:55.458	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] SPDR_DOW action=SELL
+2025.09.19 21:16:56.643	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.09, tp: 1763.64) [invalid stops]
+2025.09.19 21:17:20.138	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.88, tp: 1763.64) [invalid stops]
+2025.09.19 21:17:22.103	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789007 SPDR_DOW (sl: 463.48, tp: 462.35) [no changes]
+2025.09.19 21:17:44.046	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] BostonSci action=SELL
+2025.09.19 21:17:44.648	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] iSharePHLX action=BUY
+2025.09.19 21:17:45.185	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] MarvellTec action=BUY
+2025.09.19 21:17:45.709	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] PepsiCo action=SELL
+2025.09.19 21:17:46.470	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] AirBnb action=BUY
+2025.09.19 21:17:47.443	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Apple action=SELL
+2025.09.19 21:17:48.120	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] WellsFargo action=SELL
+2025.09.19 21:17:49.233	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.68, tp: 1763.64) [invalid stops]
+2025.09.19 21:17:50.501	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788973 AlphabetA (sl: 254.74, tp: 255.66) [no changes]
+2025.09.19 21:18:09.285	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] UnitedAir action=SELL
+2025.09.19 21:18:10.636	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.79, tp: 1763.64) [invalid stops]
+2025.09.19 21:18:34.820	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.68, tp: 1763.64) [invalid stops]
+2025.09.19 21:18:36.511	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789004 EnergySPDR (sl: 88.46, tp: 88.95) [no changes]
+2025.09.19 21:18:59.180	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Weibo action=SELL
+2025.09.19 21:18:59.719	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Fortinet action=BUY
+2025.09.19 21:19:00.120	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] LamResearc action=SELL
+2025.09.19 21:19:01.508	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.59, tp: 1763.64) [invalid stops]
+2025.09.19 21:19:24.220	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Starbucks action=BUY
+2025.09.19 21:19:24.630	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] 3M action=SELL
+2025.09.19 21:19:25.659	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Freeport action=SELL
+2025.09.19 21:19:26.773	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.48, tp: 1763.64) [invalid stops]
+2025.09.19 21:19:49.701	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Trip.com action=BUY
+2025.09.19 21:19:50.114	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] UPS action=BUY
+2025.09.19 21:19:51.225	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.48, tp: 1763.64) [invalid stops]
+2025.09.19 21:20:14.309	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Lyft action=BUY
+2025.09.19 21:20:15.145	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Sunrun action=SELL
+2025.09.19 21:20:16.249	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.29, tp: 1763.64) [invalid stops]
+2025.09.19 21:20:17.238	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788860 iShareRuss (sl: 243.30, tp: 242.16) [no changes]
+2025.09.19 21:20:19.009	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789056 Apple (sl: 246.13, tp: 244.49) [no changes]
+2025.09.19 21:20:39.280	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] CVSHealth action=BUY
+2025.09.19 21:20:40.370	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] ROKU action=BUY
+2025.09.19 21:20:40.893	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Chevron action=SELL
+2025.09.19 21:20:42.302	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788516 EURGBP (sl: 0.87240, tp: 0.87180) [no changes]
+2025.09.19 21:20:42.738	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.48, tp: 1763.64) [invalid stops]
+2025.09.19 21:20:44.014	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788973 AlphabetA (sl: 254.91, tp: 255.66) [no changes]
+2025.09.19 21:21:04.904	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] EA action=BUY
+2025.09.19 21:21:06.262	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.38, tp: 1763.64) [invalid stops]
+2025.09.19 21:21:29.941	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.38, tp: 1763.64) [invalid stops]
+2025.09.19 21:21:54.321	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Xpeng action=BUY
+2025.09.19 21:21:55.165	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Moderna action=BUY
+2025.09.19 21:21:55.814	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] PennNation action=SELL
+2025.09.19 21:21:56.909	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.48, tp: 1763.64) [invalid stops]
+2025.09.19 21:21:59.466	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789056 Apple (sl: 246.13, tp: 244.49) [no changes]
+2025.09.19 21:22:19.360	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] SeagateTec action=BUY
+2025.09.19 21:22:19.965	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Wayfair action=SELL
+2025.09.19 21:22:20.685	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] EBAY action=BUY
+2025.09.19 21:22:21.134	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] GM action=SELL
+2025.09.19 21:22:21.960	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788162 USDCHF (sl: 0.79520, tp: 0.79603) [no changes]
+2025.09.19 21:22:22.515	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788516 EURGBP (sl: 0.87240, tp: 0.87180) [no changes]
+2025.09.19 21:22:22.841	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.48, tp: 1763.64) [invalid stops]
+2025.09.19 21:22:44.915	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788516 EURGBP (sl: 0.87240, tp: 0.87180) [no changes]
+2025.09.19 21:22:45.241	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.48, tp: 1763.64) [invalid stops]
+2025.09.19 21:22:50.369	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789510 Wayfair (sl: 89.90, tp: 88.63) [no changes]
+2025.09.19 21:23:09.851	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.68, tp: 1763.64) [invalid stops]
+2025.09.19 21:23:35.851	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] WesternDig action=SELL
+2025.09.19 21:23:36.377	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] IBM action=SELL
+2025.09.19 21:23:36.869	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Johnson&J action=BUY
+2025.09.19 21:23:37.452	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] NVIDIA action=SELL
+2025.09.19 21:23:37.810	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788162 USDCHF (sl: 0.79520, tp: 0.79603) [no changes]
+2025.09.19 21:23:38.709	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.88, tp: 1763.64) [invalid stops]
+2025.09.19 21:23:40.467	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789004 EnergySPDR (sl: 88.46, tp: 88.95) [no changes]
+2025.09.19 21:23:41.014	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789051 MarvellTec (sl: 73.47, tp: 74.08) [no changes]
+2025.09.19 21:23:43.994	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789513 EBAY (sl: 90.69, tp: 91.19) [no changes]
+2025.09.19 21:23:59.146	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Zoom action=BUY
+2025.09.19 21:24:00.815	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.88, tp: 1763.64) [invalid stops]
+2025.09.19 21:24:24.971	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.88, tp: 1763.64) [invalid stops]
+2025.09.19 21:24:25.221	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788646 EURCNH (sl: 8.36592, tp: 8.36026) [no changes]
+2025.09.19 21:24:25.437	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788650 USDDKK (sl: 6.35127, tp: 6.35550) [no changes]
+2025.09.19 21:24:49.624	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] AbbVie action=BUY
+2025.09.19 21:24:51.504	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.79, tp: 1763.64) [invalid stops]
+2025.09.19 21:24:51.753	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788646 EURCNH (sl: 8.36592, tp: 8.36026) [no changes]
+2025.09.19 21:24:51.984	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788650 USDDKK (sl: 6.35127, tp: 6.35550) [no changes]
+2025.09.19 21:25:14.627	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Netflix action=BUY
+2025.09.19 21:25:15.225	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] UBER action=BUY
+2025.09.19 21:25:15.642	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Verizon action=BUY
+2025.09.19 21:25:17.041	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.92, tp: 1763.64) [invalid stops]
+2025.09.19 21:25:22.024	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789459 PennNation (sl: 19.08, tp: 18.90) [no changes]
+2025.09.19 21:25:39.399	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Delta action=SELL
+2025.09.19 21:25:40.780	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.92, tp: 1763.64) [invalid stops]
+2025.09.19 21:25:45.554	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789451 Xpeng (sl: 21.66, tp: 21.86) [no changes]
+2025.09.19 21:25:47.188	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789954 UBER (sl: 97.73, tp: 98.87) [no changes]
+2025.09.19 21:26:03.868	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Lyft action=BUY
+2025.09.19 21:26:04.525	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] CarnivalUS action=SELL
+2025.09.19 21:26:05.455	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.92, tp: 1763.64) [invalid stops]
+2025.09.19 21:26:05.954	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788650 USDDKK (sl: 6.35168, tp: 6.35550) [no changes]
+2025.09.19 21:26:07.076	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789004 EnergySPDR (sl: 88.46, tp: 88.95) [no changes]
+2025.09.19 21:26:10.123	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789459 PennNation (sl: 19.07, tp: 18.90) [no changes]
+2025.09.19 21:26:29.874	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Ferrari action=BUY
+2025.09.19 21:26:30.388	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Omnicom action=BUY
+2025.09.19 21:26:30.904	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Tapestry action=SELL
+2025.09.19 21:26:31.928	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Johnson&J action=BUY
+2025.09.19 21:26:32.444	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Raytheon action=SELL
+2025.09.19 21:26:33.515	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.02, tp: 1763.64) [invalid stops]
+2025.09.19 21:26:35.130	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789004 EnergySPDR (sl: 88.46, tp: 88.95) [no changes]
+2025.09.19 21:26:35.908	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789053 PepsiCo (sl: 141.95, tp: 141.37) [no changes]
+2025.09.19 21:26:37.956	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789451 Xpeng (sl: 21.67, tp: 21.86) [no changes]
+2025.09.19 21:26:38.281	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789459 PennNation (sl: 19.07, tp: 18.90) [no changes]
+2025.09.19 21:26:55.722	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.02, tp: 1763.64) [invalid stops]
+2025.09.19 21:27:00.523	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789459 PennNation (sl: 19.07, tp: 18.90) [no changes]
+2025.09.19 21:27:01.389	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789901 AbbVie (sl: 222.32, tp: 223.45) [no changes]
+2025.09.19 21:27:19.947	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788516 EURGBP (sl: 0.87240, tp: 0.87180) [no changes]
+2025.09.19 21:27:20.272	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.12, tp: 1763.64) [invalid stops]
+2025.09.19 21:27:20.750	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788650 USDDKK (sl: 6.35184, tp: 6.35550) [no changes]
+2025.09.19 21:27:24.559	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789459 PennNation (sl: 19.07, tp: 18.90) [no changes]
+2025.09.19 21:27:25.207	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789901 AbbVie (sl: 222.32, tp: 223.45) [no changes]
+2025.09.19 21:27:46.643	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.92, tp: 1763.64) [invalid stops]
+2025.09.19 21:27:50.869	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789459 PennNation (sl: 19.07, tp: 18.90) [no changes]
+2025.09.19 21:27:52.229	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790015 CarnivalUS (sl: 30.53, tp: 30.25) [no changes]
+2025.09.19 21:27:52.338	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790033 Ferrari (sl: 477.62, tp: 481.03) [no changes]
+2025.09.19 21:28:10.426	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Twilio action=BUY
+2025.09.19 21:28:10.947	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Viasat action=BUY
+2025.09.19 21:28:12.914	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] MGMResorts action=SELL
+2025.09.19 21:28:13.060	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788162 USDCHF (sl: 0.79521, tp: 0.79603) [no changes]
+2025.09.19 21:28:13.961	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788516 EURGBP (sl: 0.87239, tp: 0.87180) [no changes]
+2025.09.19 21:28:14.178	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.82, tp: 1763.64) [invalid stops]
+2025.09.19 21:28:15.746	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789004 EnergySPDR (sl: 88.51, tp: 88.95) [no changes]
+2025.09.19 21:28:35.377	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Salesforce action=BUY
+2025.09.19 21:28:36.066	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] ZimmerHold action=BUY
+2025.09.19 21:28:36.453	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] SPDR_SP500 action=BUY
+2025.09.19 21:28:36.831	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] SPDR_DOW action=BUY
+2025.09.19 21:28:37.081	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788162 USDCHF (sl: 0.79521, tp: 0.79603) [no changes]
+2025.09.19 21:28:37.606	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788516 EURGBP (sl: 0.87239, tp: 0.87180) [no changes]
+2025.09.19 21:28:37.823	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.82, tp: 1763.64) [invalid stops]
+2025.09.19 21:28:40.914	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789203 UPS (sl: 84.26, tp: 84.67) [no changes]
+2025.09.19 21:28:41.022	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789257 Sunrun (sl: 16.39, tp: 15.99) [no changes]
+2025.09.19 21:28:43.273	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790015 CarnivalUS (sl: 30.53, tp: 30.25) [no changes]
+2025.09.19 21:28:44.219	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790254 Viasat (sl: 30.10, tp: 30.69) [no changes]
+2025.09.19 21:29:00.555	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Robinhood action=BUY
+2025.09.19 21:29:01.036	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788516 EURGBP (sl: 0.87239, tp: 0.87180) [no changes]
+2025.09.19 21:29:01.255	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.72, tp: 1763.64) [invalid stops]
+2025.09.19 21:29:04.545	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789257 Sunrun (sl: 16.39, tp: 15.99) [no changes]
+2025.09.19 21:29:26.128	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Costco action=SELL
+2025.09.19 21:29:26.837	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] MetLife action=BUY
+2025.09.19 21:29:27.217	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Motorola action=BUY
+2025.09.19 21:29:28.337	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Johnson&J action=BUY
+2025.09.19 21:29:29.315	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.72, tp: 1763.64) [invalid stops]
+2025.09.19 21:29:31.797	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789129 Weibo (sl: 12.62, tp: 12.54) [no changes]
+2025.09.19 21:29:34.601	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790015 CarnivalUS (sl: 30.53, tp: 30.25) [no changes]
+2025.09.19 21:29:50.585	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Halliburtn action=BUY
+2025.09.19 21:29:51.814	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] EA action=BUY
+2025.09.19 21:29:52.355	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] US500 action=BUY
+2025.09.19 21:29:53.115	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.62, tp: 1763.64) [invalid stops]
+2025.09.19 21:29:55.424	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789129 Weibo (sl: 12.62, tp: 12.54) [no changes]
+2025.09.19 21:30:01.427	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790389 Motorola (sl: 476.78, tp: 478.56) [no changes]
+2025.09.19 21:30:15.603	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Trip.com action=BUY
+2025.09.19 21:30:15.984	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] PowerQQQ action=BUY
+2025.09.19 21:30:16.382	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] GER40 action=BUY
+2025.09.19 21:30:17.198	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.42, tp: 1763.64) [invalid stops]
+2025.09.19 21:30:19.790	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789129 Weibo (sl: 12.62, tp: 12.54) [no changes]
+2025.09.19 21:30:40.671	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] AbbVie action=BUY
+2025.09.19 21:30:42.128	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] JD.com action=SELL
+2025.09.19 21:30:43.056	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.52, tp: 1763.64) [invalid stops]
+2025.09.19 21:30:46.835	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789459 PennNation (sl: 19.07, tp: 18.90) [no changes]
+2025.09.19 21:30:52.037	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790500 PowerQQQ (sl: 598.54, tp: 599.78) [no changes]
+2025.09.19 21:31:05.136	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Schlumberg action=BUY
+2025.09.19 21:31:05.803	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] AlphabetA action=BUY
+2025.09.19 21:31:06.225	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] AlphabetC action=BUY
+2025.09.19 21:31:07.208	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Verizon action=BUY
+2025.09.19 21:31:07.802	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] WellsFargo action=BUY
+2025.09.19 21:31:08.630	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.62, tp: 1763.64) [invalid stops]
+2025.09.19 21:31:12.179	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789459 PennNation (sl: 19.07, tp: 18.90) [no changes]
+2025.09.19 21:31:12.983	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789977 Delta (sl: 59.78, tp: 59.41) [no changes]
+2025.09.19 21:31:31.238	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Salesforce action=BUY
+2025.09.19 21:31:32.134	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] SPDR_SP500 action=BUY
+2025.09.19 21:31:33.622	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788516 EURGBP (sl: 0.87238, tp: 0.87180) [no changes]
+2025.09.19 21:31:33.840	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.72, tp: 1763.64) [invalid stops]
+2025.09.19 21:31:40.259	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790694 Schlumberg (sl: 34.28, tp: 34.66) [no changes]
+2025.09.19 21:31:40.723	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790724 WellsFargo (sl: 84.46, tp: 84.93) [no changes]
+2025.09.19 21:31:55.558	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Weibo action=SELL
+2025.09.19 21:31:56.093	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Albemarle action=BUY
+2025.09.19 21:31:56.820	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.82, tp: 1763.64) [invalid stops]
+2025.09.19 21:31:58.537	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789056 Apple (sl: 246.07, tp: 244.49) [no changes]
+2025.09.19 21:32:03.841	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790775 SPDR_SP500 (sl: 663.20, tp: 664.49) [no changes]
+2025.09.19 21:32:20.592	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] ARKInnov action=BUY
+2025.09.19 21:32:20.999	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] BostonSci action=SELL
+2025.09.19 21:32:22.125	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] LamResearc action=SELL
+2025.09.19 21:32:22.984	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] NXPSemi action=BUY
+2025.09.19 21:32:23.633	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Travelers action=BUY
+2025.09.19 21:32:24.364	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Citigroup action=BUY
+2025.09.19 21:32:24.864	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Johnson&J action=SELL
+2025.09.19 21:32:25.583	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Tesla action=BUY
+2025.09.19 21:32:26.159	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.72, tp: 1763.64) [invalid stops]
+2025.09.19 21:32:29.232	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789459 PennNation (sl: 19.06, tp: 18.90) [no changes]
+2025.09.19 21:32:32.444	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790694 Schlumberg (sl: 34.29, tp: 34.66) [no changes]
+2025.09.19 21:32:32.835	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790719 Verizon (sl: 43.63, tp: 43.77) [no changes]
+2025.09.19 21:32:45.363	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Halliburtn action=BUY
+2025.09.19 21:32:46.301	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Oracle action=SELL
+2025.09.19 21:32:46.680	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] US100 action=BUY
+2025.09.19 21:32:47.363	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.82, tp: 1763.64) [invalid stops]
+2025.09.19 21:32:50.340	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789459 PennNation (sl: 19.06, tp: 18.90) [no changes]
+2025.09.19 21:32:53.322	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790556 AbbVie (sl: 222.41, tp: 223.42) [no changes]
+2025.09.19 21:33:10.103	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Amex action=BUY
+2025.09.19 21:33:12.178	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.92, tp: 1763.64) [invalid stops]
+2025.09.19 21:33:18.755	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790694 Schlumberg (sl: 34.32, tp: 34.66) [no changes]
+2025.09.19 21:33:19.237	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790719 Verizon (sl: 43.64, tp: 43.77) [no changes]
+2025.09.19 21:33:19.515	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790775 SPDR_SP500 (sl: 663.28, tp: 664.49) [no changes]
+2025.09.19 21:33:19.839	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790945 ARKInnov (sl: 84.66, tp: 85.32) [no changes]
+2025.09.19 21:33:36.076	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Robinhood action=BUY
+2025.09.19 21:33:37.338	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Marriott action=BUY
+2025.09.19 21:33:37.894	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.12, tp: 1763.64) [invalid stops]
+2025.09.19 21:33:44.282	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790719 Verizon (sl: 43.64, tp: 43.77) [no changes]
+2025.09.19 21:34:00.506	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Square action=SELL
+2025.09.19 21:34:01.059	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] 3M action=SELL
+2025.09.19 21:34:01.724	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Exxon action=SELL
+2025.09.19 21:34:03.079	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.12, tp: 1763.64) [invalid stops]
+2025.09.19 21:34:26.245	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Baidu action=SELL
+2025.09.19 21:34:26.824	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] SPDR_Oil action=SELL
+2025.09.19 21:34:27.299	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] SPDR_DOW action=BUY
+2025.09.19 21:34:28.439	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.22, tp: 1763.64) [invalid stops]
+2025.09.19 21:34:32.218	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789977 Delta (sl: 59.69, tp: 59.41) [no changes]
+2025.09.19 21:34:34.694	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790719 Verizon (sl: 43.64, tp: 43.77) [no changes]
+2025.09.19 21:34:50.413	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] MarathonPG action=SELL
+2025.09.19 21:34:50.937	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Vipshop action=SELL
+2025.09.19 21:34:51.510	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.02, tp: 1763.64) [invalid stops]
+2025.09.19 21:34:55.287	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790033 Ferrari (sl: 477.84, tp: 481.03) [no changes]
+2025.09.19 21:34:56.963	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790561 JD.com (sl: 35.39, tp: 35.22) [no changes]
+2025.09.19 21:35:17.248	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] PaloAlto action=BUY
+2025.09.19 21:35:17.626	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Pinterest action=BUY
+2025.09.19 21:35:18.060	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Snowflake action=SELL
+2025.09.19 21:35:18.458	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Starbucks action=BUY
+2025.09.19 21:35:19.522	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] JPMorgan action=BUY
+2025.09.19 21:35:20.255	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Pfizer action=BUY
+2025.09.19 21:35:20.696	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.03, tp: 1763.64) [invalid stops]
+2025.09.19 21:35:24.388	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790033 Ferrari (sl: 477.84, tp: 481.03) [no changes]
+2025.09.19 21:35:26.286	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790711 AlphabetC (sl: 255.73, tp: 256.46) [no changes]
+2025.09.19 21:35:28.609	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791053 Square (sl: 77.03, tp: 76.39) [no changes]
+2025.09.19 21:35:29.262	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791176 MarathonPG (sl: 18.45, tp: 18.07) [no changes]
+2025.09.19 21:35:29.370	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791177 Vipshop (sl: 18.46, tp: 18.29) [no changes]
+2025.09.19 21:35:41.020	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] BakerHughe action=BUY
+2025.09.19 21:35:42.127	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] US30 action=BUY
+2025.09.19 21:35:42.692	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.03, tp: 1763.64) [invalid stops]
+2025.09.19 21:35:45.875	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789977 Delta (sl: 59.66, tp: 59.41) [no changes]
+2025.09.19 21:35:47.930	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790561 JD.com (sl: 35.39, tp: 35.22) [no changes]
+2025.09.19 21:35:48.367	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790719 Verizon (sl: 43.64, tp: 43.77) [no changes]
+2025.09.19 21:35:49.028	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790947 BostonSci (sl: 97.74, tp: 97.20) [no changes]
+2025.09.19 21:35:50.703	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791129 SPDR_Oil (sl: 130.39, tp: 129.34) [no changes]
+2025.09.19 21:35:51.029	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791177 Vipshop (sl: 18.46, tp: 18.29) [no changes]
+2025.09.19 21:36:05.435	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] UnitedAir action=SELL
+2025.09.19 21:36:06.573	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] XAUUSD action=SELL
+2025.09.19 21:36:07.135	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.83, tp: 1763.64) [invalid stops]
+2025.09.19 21:36:07.707	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788860 iShareRuss (sl: 243.28, tp: 242.16) [no changes]
+2025.09.19 21:36:11.823	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790389 Motorola (sl: 477.01, tp: 478.56) [no changes]
+2025.09.19 21:36:12.843	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790711 AlphabetC (sl: 255.73, tp: 256.46) [no changes]
+2025.09.19 21:36:12.950	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790719 Verizon (sl: 43.64, tp: 43.77) [no changes]
+2025.09.19 21:36:16.440	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791277 Pfizer (sl: 24.01, tp: 24.16) [no changes]
+2025.09.19 21:36:30.187	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: market sell 10.00 KornitDig sl: 14.81 tp: 14.48 [rejected]
+2025.09.19 21:36:30.187	Prometheus_Bridge (EURUSD,M15)	[EXEC][FAIL] KornitDig action=SELL err=4756
+2025.09.19 21:36:30.215	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: market sell 10.00 KornitDig [rejected]
+2025.09.19 21:36:31.011	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] AbbVie action=BUY
+2025.09.19 21:36:31.561	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Amgen action=SELL
+2025.09.19 21:36:32.585	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] ConocoPhil action=SELL
+2025.09.19 21:36:33.622	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.73, tp: 1763.64) [invalid stops]
+2025.09.19 21:36:39.391	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790719 Verizon (sl: 43.64, tp: 43.77) [no changes]
+2025.09.19 21:36:41.301	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791053 Square (sl: 77.01, tp: 76.39) [no changes]
+2025.09.19 21:36:41.411	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791055 3M (sl: 156.96, tp: 156.00) [no changes]
+2025.09.19 21:36:42.203	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791268 PaloAlto (sl: 208.09, tp: 209.21) [no changes]
+2025.09.19 21:36:55.518	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Textron action=BUY
+2025.09.19 21:36:56.424	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Berkshire action=BUY
+2025.09.19 21:36:57.054	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Citigroup action=BUY
+2025.09.19 21:36:57.559	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Johnson&J action=SELL
+2025.09.19 21:36:57.562	Prometheus_Bridge (EURUSD,M15)	[RISK][BLOCK] Margin level too low. symbol=Meta
+2025.09.19 21:36:58.084	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.93, tp: 1763.64) [invalid stops]
+2025.09.19 21:36:58.817	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788892 MorganStan (sl: 160.77, tp: 160.06) [no changes]
+2025.09.19 21:37:00.531	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789507 SeagateTec (sl: 220.81, tp: 222.44) [no changes]
+2025.09.19 21:37:02.924	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790561 JD.com (sl: 35.37, tp: 35.22) [no changes]
+2025.09.19 21:37:03.485	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790724 WellsFargo (sl: 84.52, tp: 84.93) [no changes]
+2025.09.19 21:37:07.487	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791351 Amgen (sl: 284.89, tp: 282.25) [no changes]
+2025.09.19 21:37:07.612	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791352 ConocoPhil (sl: 91.83, tp: 91.19) [no changes]
+2025.09.19 21:37:20.134	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] GE action=BUY
+2025.09.19 21:37:20.142	Prometheus_Bridge (EURUSD,M15)	[RISK][BLOCK] Margin level too low. symbol=P&G
+2025.09.19 21:37:20.682	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.23, tp: 1763.64) [invalid stops]
+2025.09.19 21:37:26.440	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790947 BostonSci (sl: 97.72, tp: 97.20) [no changes]
+2025.09.19 21:37:44.798	Prometheus_Bridge (EURUSD,M15)	[RISK][BLOCK] Margin level too low. symbol=ETHUSD
+2025.09.19 21:37:45.324	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.43, tp: 1763.64) [invalid stops]
+2025.09.19 21:37:51.031	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790947 BostonSci (sl: 97.72, tp: 97.20) [no changes]
+2025.09.19 21:38:09.944	Prometheus_Bridge (EURUSD,M15)	[RISK][BLOCK] Margin level too low. symbol=BMS
+2025.09.19 21:38:10.466	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.43, tp: 1763.64) [invalid stops]
+2025.09.19 21:38:15.211	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790719 Verizon (sl: 43.64, tp: 43.77) [no changes]
+2025.09.19 21:38:15.871	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790947 BostonSci (sl: 97.72, tp: 97.20) [no changes]
+2025.09.19 21:38:17.704	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791176 MarathonPG (sl: 18.43, tp: 18.07) [no changes]
+2025.09.19 21:38:34.866	Prometheus_Bridge (EURUSD,M15)	[RISK][BLOCK] Margin level too low. symbol=UnitedHeal
+2025.09.19 21:38:35.348	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.33, tp: 1763.64) [invalid stops]
+2025.09.19 21:38:42.464	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791176 MarathonPG (sl: 18.43, tp: 18.07) [no changes]
+2025.09.19 21:39:00.479	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Draftkings action=SELL
+2025.09.19 21:39:01.704	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.23, tp: 1763.64) [invalid stops]
+2025.09.19 21:39:03.133	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88789130 Fortinet (sl: 83.99, tp: 84.30) [no changes]
+2025.09.19 21:39:08.801	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791176 MarathonPG (sl: 18.43, tp: 18.07) [no changes]
+2025.09.19 21:39:26.021	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Amgen action=SELL
+2025.09.19 21:39:26.550	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] CVSHealth action=SELL
+2025.09.19 21:39:28.075	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] KraftHeinz action=BUY
+2025.09.19 21:39:28.697	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] MetLife action=BUY
+2025.09.19 21:39:29.074	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.13, tp: 1763.64) [invalid stops]
+2025.09.19 21:39:33.424	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790711 AlphabetC (sl: 256.06, tp: 256.46) [frozen]
+2025.09.19 21:39:50.166	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] PepsiCo action=BUY
+2025.09.19 21:39:50.577	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] SolarEdge action=SELL
+2025.09.19 21:39:51.161	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Valero action=SELL
+2025.09.19 21:39:51.963	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] WesternDig action=BUY
+2025.09.19 21:39:52.595	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] AirBnb action=BUY
+2025.09.19 21:39:52.967	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] AlphabetA action=BUY
+2025.09.19 21:39:53.321	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] AlphabetC action=BUY
+2025.09.19 21:39:54.220	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] IBM action=BUY
+2025.09.19 21:39:55.081	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] QUALCOMM action=SELL
+2025.09.19 21:39:55.084	Prometheus_Bridge (EURUSD,M15)	[RISK][BLOCK] Margin level too low. symbol=UnitedHeal
+2025.09.19 21:39:55.363	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.13, tp: 1763.64) [invalid stops]
+2025.09.19 21:40:01.628	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791058 Exxon (sl: 113.28, tp: 112.73) [no changes]
+2025.09.19 21:40:02.189	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791271 Pinterest (sl: 35.72, tp: 35.97) [no changes]
+2025.09.19 21:40:02.732	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791302 BakerHughe (sl: 47.07, tp: 47.38) [no changes]
+2025.09.19 21:40:04.322	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791550 CVSHealth (sl: 75.70, tp: 75.10) [no changes]
+2025.09.19 21:40:04.571	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791553 MetLife (sl: 79.19, tp: 79.67) [no changes]
+2025.09.19 21:40:15.165	Prometheus_Bridge (EURUSD,M15)	[RISK][BLOCK] Margin level too low. symbol=ETHJPY
+2025.09.19 21:40:15.459	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.11, tp: 1763.64) [invalid stops]
+2025.09.19 21:40:21.827	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791058 Exxon (sl: 113.28, tp: 112.73) [no changes]
+2025.09.19 21:40:22.370	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791271 Pinterest (sl: 35.72, tp: 35.97) [no changes]
+2025.09.19 21:40:40.976	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.91, tp: 1763.64) [invalid stops]
+2025.09.19 21:40:44.001	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790254 Viasat (sl: 30.20, tp: 30.69) [no changes]
+2025.09.19 21:40:47.171	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791058 Exxon (sl: 113.28, tp: 112.73) [no changes]
+2025.09.19 21:40:47.747	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791271 Pinterest (sl: 35.72, tp: 35.97) [no changes]
+2025.09.19 21:41:05.964	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Comcast action=BUY
+2025.09.19 21:41:06.345	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] D.R.Horton action=SELL
+2025.09.19 21:41:07.104	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Etsy action=BUY
+2025.09.19 21:41:07.478	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Honeywell action=SELL
+2025.09.19 21:41:07.486	Prometheus_Bridge (EURUSD,M15)	[RISK][BLOCK] Margin level too low. symbol=Kohls
+2025.09.19 21:41:07.765	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.11, tp: 1763.64) [invalid stops]
+2025.09.19 21:41:14.797	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791277 Pfizer (sl: 24.02, tp: 24.16) [no changes]
+2025.09.19 21:41:14.908	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791302 BakerHughe (sl: 47.11, tp: 47.38) [no changes]
+2025.09.19 21:41:29.614	Prometheus_Bridge (EURUSD,M15)	[RISK][BLOCK] Margin level too low. symbol=UnitedHeal
+2025.09.19 21:41:29.889	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.11, tp: 1763.64) [invalid stops]
+2025.09.19 21:41:36.709	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791277 Pfizer (sl: 24.02, tp: 24.16) [no changes]
+2025.09.19 21:41:38.249	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791552 KraftHeinz (sl: 26.43, tp: 26.57) [no changes]
+2025.09.19 21:41:55.496	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Trip.com action=SELL
+2025.09.19 21:41:56.727	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.11, tp: 1763.64) [invalid stops]
+2025.09.19 21:42:02.384	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791058 Exxon (sl: 113.26, tp: 112.73) [no changes]
+2025.09.19 21:42:03.333	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791277 Pfizer (sl: 24.02, tp: 24.16) [no changes]
+2025.09.19 21:42:06.088	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791738 Comcast (sl: 31.51, tp: 31.66) [no changes]
+2025.09.19 21:42:21.271	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Fortinet action=BUY
+2025.09.19 21:42:21.659	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] iSharePHLX action=BUY
+2025.09.19 21:42:22.043	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.01, tp: 1763.64) [invalid stops]
+2025.09.19 21:42:27.814	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791132 SPDR_DOW (sl: 462.68, tp: 463.89) [no changes]
+2025.09.19 21:42:31.490	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791738 Comcast (sl: 31.51, tp: 31.66) [no changes]
+2025.09.19 21:42:31.925	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791800 Trip.com (sl: 78.41, tp: 77.85) [no changes]
+2025.09.19 21:42:45.572	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] SeagateTec action=BUY
+2025.09.19 21:42:45.947	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Square action=SELL
+2025.09.19 21:42:46.878	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] CocaCola action=BUY
+2025.09.19 21:42:48.380	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] WaltDisney action=BUY
+2025.09.19 21:42:49.303	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Freeport action=SELL
+2025.09.19 21:42:49.553	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.01, tp: 1763.64) [invalid stops]
+2025.09.19 21:42:55.788	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791277 Pfizer (sl: 24.03, tp: 24.16) [no changes]
+2025.09.19 21:42:57.457	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791552 KraftHeinz (sl: 26.45, tp: 26.57) [no changes]
+2025.09.19 21:43:11.134	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] FedEx action=SELL
+2025.09.19 21:43:11.528	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] EsteeLaud action=BUY
+2025.09.19 21:43:12.292	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Labcorp action=BUY
+2025.09.19 21:43:12.300	Prometheus_Bridge (EURUSD,M15)	[RISK][BLOCK] Margin level too low. symbol=Baidu
+2025.09.19 21:43:12.528	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.11, tp: 1763.64) [invalid stops]
+2025.09.19 21:43:16.130	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790773 Salesforce (sl: 245.91, tp: 246.86) [no changes]
+2025.09.19 21:43:18.208	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791176 MarathonPG (sl: 18.42, tp: 18.07) [no changes]
+2025.09.19 21:43:18.658	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791277 Pfizer (sl: 24.03, tp: 24.16) [no changes]
+2025.09.19 21:43:36.341	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.91, tp: 1763.64) [invalid stops]
+2025.09.19 21:43:38.676	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790254 Viasat (sl: 30.20, tp: 30.69) [no changes]
+2025.09.19 21:43:39.674	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790694 Schlumberg (sl: 34.39, tp: 34.66) [no changes]
+2025.09.19 21:43:42.395	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791277 Pfizer (sl: 24.03, tp: 24.16) [no changes]
+2025.09.19 21:43:45.192	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791738 Comcast (sl: 31.51, tp: 31.66) [no changes]
+2025.09.19 21:44:00.372	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] CVSHealth action=SELL
+2025.09.19 21:44:01.031	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Constellat action=SELL
+2025.09.19 21:44:01.996	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] NXPSemi action=BUY
+2025.09.19 21:44:01.997	Prometheus_Bridge (EURUSD,M15)	[RISK][BLOCK] Margin level too low. symbol=ONEOK
+2025.09.19 21:44:02.286	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.91, tp: 1763.64) [invalid stops]
+2025.09.19 21:44:04.471	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790040 Raytheon (sl: 158.27, tp: 157.61) [no changes]
+2025.09.19 21:44:07.718	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791176 MarathonPG (sl: 18.40, tp: 18.07) [no changes]
+2025.09.19 21:44:26.045	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] UnitedHeal action=SELL
+2025.09.19 21:44:26.047	Prometheus_Bridge (EURUSD,M15)	[RISK][BLOCK] Margin level too low. symbol=VISA
+2025.09.19 21:44:26.371	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.81, tp: 1763.64) [invalid stops]
+2025.09.19 21:44:28.987	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790260 MGMResorts (sl: 35.88, tp: 35.56) [no changes]
+2025.09.19 21:44:31.877	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791271 Pinterest (sl: 35.72, tp: 35.97) [no changes]
+2025.09.19 21:44:32.435	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791325 UnitedAir (sl: 105.84, tp: 105.01) [no changes]
+2025.09.19 21:44:51.067	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] GER40 action=BUY
+2025.09.19 21:44:51.462	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] XAUUSD action=SELL
+2025.09.19 21:44:51.690	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788521 EURJPY (sl: 173.846, tp: 173.751) [no changes]
+2025.09.19 21:44:51.813	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.91, tp: 1763.64) [invalid stops]
+2025.09.19 21:44:53.953	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790254 Viasat (sl: 30.20, tp: 30.69) [no changes]
+2025.09.19 21:44:54.061	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790260 MGMResorts (sl: 35.88, tp: 35.56) [no changes]
+2025.09.19 21:44:57.101	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791277 Pfizer (sl: 24.04, tp: 24.16) [no changes]
+2025.09.19 21:45:15.002	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] LucidGroup action=BUY
+2025.09.19 21:45:15.884	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Amgen action=SELL
+2025.09.19 21:45:16.296	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] BostonSci action=SELL
+2025.09.19 21:45:16.781	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] CVSHealth action=SELL
+2025.09.19 21:45:17.318	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Cloudflare action=BUY
+2025.09.19 21:45:18.237	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.98, tp: 1763.64) [invalid stops]
+2025.09.19 21:45:23.510	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791277 Pfizer (sl: 24.04, tp: 24.16) [no changes]
+2025.09.19 21:45:27.118	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791941 Square (sl: 77.19, tp: 76.65) [no changes]
+2025.09.19 21:45:40.511	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] ROKU action=BUY
+2025.09.19 21:45:40.942	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Shopify action=SELL
+2025.09.19 21:45:42.554	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] VISA action=BUY
+2025.09.19 21:45:43.063	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] WellsFargo action=BUY
+2025.09.19 21:45:43.845	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] DXCTech action=SELL
+2025.09.19 21:45:44.082	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.98, tp: 1763.64) [invalid stops]
+2025.09.19 21:45:48.847	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791277 Pfizer (sl: 24.04, tp: 24.16) [no changes]
+2025.09.19 21:46:05.952	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] EA action=SELL
+2025.09.19 21:46:06.343	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] SpiritAero action=BUY
+2025.09.19 21:46:06.862	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Delta action=SELL
+2025.09.19 21:46:08.127	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1758.98, tp: 1763.64) [invalid stops]
+2025.09.19 21:46:18.177	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88792305 DXCTech (sl: 13.93, tp: 13.70) [no changes]
+2025.09.19 21:46:31.338	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.18, tp: 1763.64) [invalid stops]
+2025.09.19 21:46:35.427	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791274 Starbucks (sl: 84.80, tp: 85.08) [no changes]
+2025.09.19 21:46:38.344	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791746 Etsy (sl: 64.52, tp: 65.37) [no changes]
+2025.09.19 21:46:38.673	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791918 Fortinet (sl: 84.06, tp: 84.77) [no changes]
+2025.09.19 21:46:45.289	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88792305 DXCTech (sl: 13.93, tp: 13.70) [no changes]
+2025.09.19 21:46:55.403	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] CVSHealth action=SELL
+2025.09.19 21:46:56.143	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] D.R.Horton action=SELL
+2025.09.19 21:46:57.553	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] Tapestry action=SELL
+2025.09.19 21:46:57.959	Prometheus_Bridge (EURUSD,M15)	[EXEC][OK] TexasInstr action=SELL
+2025.09.19 21:46:57.968	Prometheus_Bridge (EURUSD,M15)	[RISK][BLOCK] Margin level too low. symbol=Valero
+2025.09.19 21:46:58.206	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.18, tp: 1763.64) [invalid stops]
+2025.09.19 21:47:02.254	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791274 Starbucks (sl: 84.80, tp: 85.08) [no changes]
+2025.09.19 21:47:07.098	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88792255 LucidGroup (sl: 20.95, tp: 21.16) [no changes]
+2025.09.19 21:47:08.139	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88792305 DXCTech (sl: 13.93, tp: 13.70) [no changes]
+2025.09.19 21:47:08.246	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88792332 EA (sl: 173.60, tp: 172.27) [no changes]
+2025.09.19 21:47:21.720	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88788595 CAD60 (sl: 1759.28, tp: 1763.64) [invalid stops]
+2025.09.19 21:47:22.587	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88790014 Lyft (sl: 22.49, tp: 22.71) [no changes]
+2025.09.19 21:47:26.130	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791302 BakerHughe (sl: 47.16, tp: 47.38) [no changes]
+2025.09.19 21:47:29.419	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88791977 EsteeLaud (sl: 87.22, tp: 87.75) [no changes]
+2025.09.19 21:47:31.155	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88792305 DXCTech (sl: 13.93, tp: 13.70) [no changes]
+2025.09.19 21:47:31.264	Prometheus_Bridge (EURUSD,M15)	CTrade::OrderSend: modify position #88792332 EA (sl: 173.60, tp: 172.27) [no changes]

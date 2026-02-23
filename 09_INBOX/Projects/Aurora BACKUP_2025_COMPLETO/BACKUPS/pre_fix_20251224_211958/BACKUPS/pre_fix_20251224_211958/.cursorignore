@@ -1,0 +1,114 @@
+# ============================================
+# .cursorignore - AURORA NCNT System
+# Otimização de Indexação do Cursor
+# Gerado: 2025-12-05
+# ============================================
+
+# Backups e temporários
+backup_*/
+*.bak
+*.tmp
+*.temp
+*.log
+*.old
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+venv/
+env/
+ENV/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Sistema Operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Dados e cache
+*.db
+*.sqlite
+*.sqlite3
+data/
+cache/
+.cache/
+*.pickle
+*.pkl
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Testes e cobertura
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Documentação gerada
+docs/_build/
+docs/.doctrees/
+
+# Arquivos de configuração local
+.env.local
+.env.*.local
+config.local.*
+*.local.yaml
+*.local.yml
+
+# Arquivos de deploy
+deploy/
+*.deploy
+*.deployment
+
+# Arquivos grandes e binários
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.dmg
+*.iso
+
+# Arquivos de dados históricos
+historical_data/
+backtest_results/
+*.csv
+*.xlsx
+*.xls
+
+# Arquivos de configuração sensíveis (manter estrutura, ignorar conteúdo)
+# config/env/production.yaml
+# config/env/staging.yaml
+

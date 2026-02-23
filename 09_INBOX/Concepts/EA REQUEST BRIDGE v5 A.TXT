@@ -1,0 +1,626 @@
+"""
+EA REQUEST BRIDGE v5 - SISTEMA NERVOSO DE ALTA FREQUÊNCIA
+Arquitetura Institucional com Padrão Bancário
+Baseado em: ZMQ + WebSocket + Blockchain + HFT
+"""
+
+import asyncio
+import os
+import json
+import time
+import logging
+from pathlib import Path
+from datetime import datetime, timedelta
+from typing import Dict, Any, Optional, List, Tuple
+from dataclasses import dataclass, asdict
+from enum import Enum
+import hashlib
+import hmac
+import secrets
+import base64
+from concurrent.futures import ThreadPoolExecutor
+
+import zmq
+import websockets
+import numpy as np
+import pandas as pd
+from scipy.stats import norm, zscore
+import pydantic
+from pydantic import BaseModel, Field, ValidationError, validator
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+
+# Configuração de logging institucional
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s | %(levelname)-8s | %(name)-30s | %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S.%f'
+)
+logger = logging.getLogger("EA_BRIDGE_v5_HFT")
+
+# =============================================================================
+# MODELOS MATEMÁTICOS AVANÇADOS - PADRÃO BANCÁRIO
+# =============================================================================
+
+class MarketDataSchema(BaseModel):
+    """Schema Pydantic com validação estatística rigorosa"""
+    symbol: str = Field(min_length=1, max_length=20, pattern=r'^[A-Z0-9]+$')
+    timestamp: float = Field(gt=0)
+    bid: float = Field(gt=0)
+    ask: float = Field(gt=0)
+    volume: float = Field(ge=0)
+    spread: float = Field(ge=0)
+    
+    @validator('ask')
+    def ask_gt_bid(cls, v, values):
+        if 'bid' in values and v <= values['bid']:
+            raise ValueError('ask must be greater than bid')
+        return v
+    
+    @validator('spread')
+    def validate_spread(cls, v, values):
+        if 'bid' in values and v > values['bid'] * 0.1:  # Spread máximo 10%
+            raise ValueError(f'Spread excessive: {v}')
+        return v
+    
+    @validator('timestamp')
+    def validate_timestamp(cls, v):
+        current_time = time.time()
+        if abs(v - current_time) > 300:  # 5 minutos de tolerância
+            raise ValueError(f'Timestamp drift too large: {v}')
+        return v
+
+class TradingSignalV5(BaseModel):
+    """Sinal de trading com validação institucional"""
+    action: str = Field(pattern=r'^(BUY|SELL|HOLD|CANCEL)$')
+    confidence: float = Field(ge=0.0, le=1.0)
+    size: float = Field(gt=0.0, le=1.0)  # Fração do capital
+    stop_loss: float = Field(gt=0.0)
+    take_profit: float = Field(gt=0.0)
+    validity_window: float = Field(gt=0.0, le=300)  # Máximo 5 minutos
+    signal_id: str = Field(min_length=1)
+    
+    @validator('take_profit')
+    def tp_gt_sl(cls, v, values):
+        if 'stop_loss' in values and v <= values['stop_loss']:
+            raise ValueError('Take profit must be greater than stop loss')
+        return v
+
+# =============================================================================
+# SISTEMA DE DETECÇÃO DE ANOMALIAS - PADRÃO HFT
+# =============================================================================
+
+class AnomalyDetector:
+    """Detector de anomalias baseado em machine learning estatístico"""
+    
+    def __init__(self, window_size: int = 100):
+        self.window_size = window_size
+        self.price_history = {}
+        self.volatility_threshold = 3.0  # 3 desvios padrão
+        
+    def update_model(self, symbol: str, bid: float, ask: float) -> None:
+        """Atualiza modelo com novos dados"""
+        if symbol not in self.price_history:
+            self.price_history[symbol] = []
+        
+        prices = self.price_history[symbol]
+        mid_price = (bid + ask) / 2
+        prices.append(mid_price)
+        
+        # Mantém apenas window_size mais recentes
+        if len(prices) > self.window_size:
+            prices.pop(0)
+    
+    def detect_anomalies(self, symbol: str, bid: float, ask: float) -> List[str]:
+        """Detecta anomalias usando estatística robusta"""
+        anomalies = []
+        mid_price = (bid + ask) / 2
+        spread = ask - bid
+        
+        if symbol not in self.price_history or len(self.price_history[symbol]) < 10:
+            return ["INSUFFICIENT_DATA"]
+        
+        prices = self.price_history[symbol]
+        
+        # Detecção de outlier estatístico
+        if len(prices) >= 10:
+            returns = np.diff(np.log(prices + 1e-10))
+            if len(returns) > 0:
+                z_scores = zscore(returns)
+                if len(z_scores) > 0 and abs(z_scores[-1]) > self.volatility_threshold:
+                    anomalies.append("PRICE_VOLATILITY_ANOMALY")
+        
+        # Detecção de spread anormal
+        avg_spread = np.mean([prices[i+1] - prices[i] for i in range(len(prices)-1)]) if len(prices) > 1 else spread
+        if spread > avg_spread * 5:  # Spread 5x maior que média
+            anomalies.append("SPREAD_ANOMALY")
+        
+        # Detecção de gap de preço
+        if len(prices) > 0:
+            last_price = prices[-1]
+            price_change = abs(mid_price - last_price) / last_price
+            if price_change > 0.05:  # Mudança > 5%
+                anomalies.append("PRICE_GAP_ANOMALY")
+        
+        return anomalies
+
+# =============================================================================
+# CIRCUIT BREAKER AVANÇADO - PADRÃO MERCADO FINANCEIRO
+# =============================================================================
+
+class CircuitBreakerState(Enum):
+    CLOSED = "CLOSED"      # Operação normal
+    HALF_OPEN = "HALF_OPEN" # Testando recuperação
+    OPEN = "OPEN"          # Circuito aberto - falha
+
+class AdvancedCircuitBreaker:
+    """Circuit breaker com backoff exponencial e estado"""
+    
+    def __init__(self, failure_threshold: int = 5, timeout: int = 60):
+        self.failure_threshold = failure_threshold
+        self.timeout = timeout
+        self.failure_count = 0
+        self.last_failure_time = 0
+        self.state = CircuitBreakerState.CLOSED
+        self.success_count = 0
+        self.success_threshold = 3
+    
+    def record_success(self) -> None:
+        """Registra sucesso e gerencia estado"""
+        self.success_count += 1
+        self.failure_count = 0
+        
+        if self.state == CircuitBreakerState.HALF_OPEN:
+            if self.success_count >= self.success_threshold:
+                self.state = CircuitBreakerState.CLOSED
+                self.success_count = 0
+                logger.info("Circuit breaker reset to CLOSED")
+    
+    def record_failure(self) -> None:
+        """Registra falha e gerencia estado"""
+        self.failure_count += 1
+        self.last_failure_time = time.time()
+        self.success_count = 0
+        
+        if self.failure_count >= self.failure_threshold:
+            self.state = CircuitBreakerState.OPEN
+            logger.warning(f"Circuit breaker OPENED after {self.failure_count} failures")
+    
+    def can_attempt(self) -> bool:
+        """Verifica se pode fazer tentativa"""
+        current_time = time.time()
+        
+        if self.state == CircuitBreakerState.CLOSED:
+            return True
+        
+        elif self.state == CircuitBreakerState.OPEN:
+            if current_time - self.last_failure_time >= self.timeout:
+                self.state = CircuitBreakerState.HALF_OPEN
+                logger.info("Circuit breaker transitioned to HALF_OPEN")
+                return True
+            return False
+        
+        elif self.state == CircuitBreakerState.HALF_OPEN:
+            return True
+        
+        return False
+
+# =============================================================================
+# SISTEMA DE AUDITORIA BLOCKCHAIN
+# =============================================================================
+
+class BlockchainAudit:
+    """Sistema de auditoria baseado em blockchain simplificado"""
+    
+    def __init__(self, audit_file: Path):
+        self.audit_file = audit_file
+        self.chain = self._load_chain()
+    
+    def _load_chain(self) -> List[Dict]:
+        """Carrega cadeia existente ou cria nova"""
+        try:
+            if self.audit_file.exists():
+                with open(self.audit_file, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+        except Exception as e:
+            logger.error(f"Failed to load audit chain: {e}")
+        return []
+    
+    def _calculate_hash(self, block: Dict) -> str:
+        """Calcula hash SHA3-256 do bloco"""
+        block_string = json.dumps(block, sort_keys=True).encode()
+        return hashlib.sha3_256(block_string).hexdigest()
+    
+    def add_transaction(self, transaction_type: str, data: Dict) -> None:
+        """Adiciona transação ao blockchain de auditoria"""
+        block = {
+            'timestamp': time.time(),
+            'type': transaction_type,
+            'data': data,
+            'previous_hash': self.chain[-1]['hash'] if self.chain else '0',
+            'nonce': secrets.randbelow(1000000)
+        }
+        
+        block['hash'] = self._calculate_hash(block)
+        self.chain.append(block)
+        
+        # Persiste imediatamente
+        self._persist_chain()
+    
+    def _persist_chain(self) -> None:
+        """Persiste cadeia no arquivo"""
+        try:
+            temp_file = self.audit_file.with_suffix('.tmp')
+            with open(temp_file, 'w', encoding='utf-8') as f:
+                json.dump(self.chain, f, indent=2)
+            temp_file.replace(self.audit_file)
+        except Exception as e:
+            logger.error(f"Failed to persist audit chain: {e}")
+    
+    def verify_integrity(self) -> bool:
+        """Verifica integridade do blockchain"""
+        for i in range(1, len(self.chain)):
+            current_block = self.chain[i]
+            previous_block = self.chain[i-1]
+            
+            if current_block['previous_hash'] != previous_block['hash']:
+                return False
+            
+            if current_block['hash'] != self._calculate_hash(current_block):
+                return False
+        
+        return True
+
+# =============================================================================
+# ARQUITETURA PRINCIPAL v5 - HFT READY
+# =============================================================================
+
+@dataclass
+class HFTMetrics:
+    """Métricas de alta frequência"""
+    requests_processed: int = 0
+    requests_failed: int = 0
+    avg_processing_time_ms: float = 0.0
+    min_processing_time_ms: float = float('inf')
+    max_processing_time_ms: float = 0.0
+    throughput_rps: float = 0.0
+    anomaly_detections: int = 0
+    circuit_breaker_trips: int = 0
+    last_update: float = 0.0
+
+class HFTBridgeV5:
+    """
+    Bridge de alta frequência com padrão institucional
+    Suporta ZMQ + WebSocket + Validação Estatística + Blockchain
+    """
+    
+    def __init__(self):
+        self.files_dir = self._find_mt5_files_dir()
+        self.port = int(os.environ.get("ZMQ_PORT", "5555"))
+        self.websocket_url = os.environ.get("WS_URL", "ws://localhost:8765")
+        
+        # Sistemas especializados
+        self.anomaly_detector = AnomalyDetector()
+        self.circuit_breaker = AdvancedCircuitBreaker()
+        self.audit_system = BlockchainAudit(self.files_dir / "audit_chain.json")
+        self.metrics = HFTMetrics()
+        
+        # Configuração de performance
+        self.max_concurrent_requests = int(os.environ.get("MAX_CONCURRENT", "10"))
+        self.target_latency_ms = float(os.environ.get("TARGET_LATENCY", "50.0"))
+        
+        # Conexões
+        self.zmq_context = zmq.Context()
+        self.zmq_socket = None
+        self.websocket = None
+        self._initialize_connections()
+        
+        # Thread pool para processamento paralelo
+        self.thread_pool = ThreadPoolExecutor(max_workers=self.max_concurrent_requests)
+        
+        logger.info("HFTBridgeV5 inicializado - Padrão Institucional HFT")
+    
+    def _initialize_connections(self):
+        """Inicializa conexões ZMQ e WebSocket"""
+        # ZMQ para comunicação de alta velocidade
+        self.zmq_socket = self.zmq_context.socket(zmq.REQ)
+        self.zmq_socket.setsockopt(zmq.RCVTIMEO, 2000)  # 2s timeout HFT
+        self.zmq_socket.setsockopt(zmq.SNDTIMEO, 2000)  # 2s timeout HFT
+        self.zmq_socket.setsockopt(zmq.LINGER, 0)
+        self.zmq_socket.connect(f"tcp://127.0.0.1:{self.port}")
+        
+        # WebSocket para fallback e métricas
+        # Será conectado assincronamente
+    
+    def _find_mt5_files_dir(self) -> Path:
+        """Encontra diretório com múltiplos fallbacks"""
+        candidates = [
+            os.environ.get("MT5_FILES_DIR"),
+            Path.home() / "AppData" / "Roaming" / "MetaQuotes" / "Terminal" / "Common" / "Files",
+            Path.home() / "AppData" / "Roaming" / "MetaQuotes" / "Terminal" / "D0E8209F77C8CF37AD8BF550E51FF075" / "MQL5" / "Files",
+            Path(__file__).resolve().parents[2] / "MQL5" / "Files",
+            Path.cwd() / "MT5_Files"
+        ]
+        
+        for candidate in candidates:
+            if candidate:
+                path = Path(candidate)
+                try:
+                    path.mkdir(parents=True, exist_ok=True)
+                    if os.access(path, os.W_OK):
+                        return path
+                except Exception:
+                    continue
+        
+        raise RuntimeError("Não foi possível encontrar diretório de arquivos válido")
+    
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=1, max=10),
+        retry=retry_if_exception_type((zmq.ZMQError, IOError))
+    )
+    def _send_zmq_request(self, encrypted_data: str) -> str:
+        """Envia requisição ZMQ com retry automático"""
+        if not self.circuit_breaker.can_attempt():
+            raise zmq.ZMQError("Circuit breaker open")
+        
+        try:
+            self.zmq_socket.send_string(encrypted_data)
+            response = self.zmq_socket.recv_string()
+            self.circuit_breaker.record_success()
+            return response
+        except Exception as e:
+            self.circuit_breaker.record_failure()
+            logger.error(f"ZMQ request failed: {e}")
+            raise
+    
+    def _validate_market_data_advanced(self, data: Dict) -> Tuple[bool, List[str]]:
+        """Validação avançada com detecção de anomalias"""
+        try:
+            # Validação schema básica
+            MarketDataSchema(**data)
+            
+            # Detecção de anomalias estatísticas
+            anomalies = self.anomaly_detector.detect_anomalies(
+                data['symbol'], data['bid'], data['ask']
+            )
+            
+            # Atualiza modelo com dados válidos
+            self.anomaly_detector.update_model(data['symbol'], data['bid'], data['ask'])
+            
+            if anomalies:
+                self.metrics.anomaly_detections += 1
+                return False, anomalies
+            
+            return True, []
+            
+        except ValidationError as e:
+            return False, [f"VALIDATION_ERROR: {str(e)}"]
+        except Exception as e:
+            return False, [f"SYSTEM_ERROR: {str(e)}"]
+    
+    async def process_request_hft(self, request_path: Path) -> bool:
+        """Processamento de alta frequência com validação completa"""
+        processing_start = time.perf_counter()
+        
+        try:
+            # Leitura atômica
+            temp_path = request_path.with_suffix('.processing')
+            request_path.rename(temp_path)
+            
+            content = temp_path.read_text(encoding='utf-8').strip()
+            if not content:
+                temp_path.unlink()
+                return False
+            
+            # Parse e validação
+            try:
+                market_data = json.loads(content)
+            except json.JSONDecodeError as e:
+                logger.error(f"JSON decode error: {e}")
+                temp_path.unlink()
+                return False
+            
+            # Validação avançada
+            is_valid, validation_errors = self._validate_market_data_advanced(market_data)
+            if not is_valid:
+                logger.warning(f"Data validation failed: {validation_errors}")
+                
+                # Auditoria de dados inválidos
+                self.audit_system.add_transaction("INVALID_DATA", {
+                    "symbol": market_data.get('symbol', 'UNKNOWN'),
+                    "errors": validation_errors,
+                    "original_data": market_data
+                })
+                
+                temp_path.unlink()
+                return False
+            
+            # Auditoria de requisição válida
+            self.audit_system.add_transaction("MARKET_REQUEST", {
+                "symbol": market_data['symbol'],
+                "bid": market_data['bid'],
+                "ask": market_data['ask'],
+                "timestamp": market_data['timestamp']
+            })
+            
+            # Processamento ZMQ
+            encrypted_request = base64.b64encode(json.dumps(market_data).encode()).decode()
+            
+            loop = asyncio.get_event_loop()
+            response = await loop.run_in_executor(
+                self.thread_pool, 
+                self._send_zmq_request, 
+                encrypted_request
+            )
+            
+            # Processamento da resposta
+            try:
+                response_data = json.loads(base64.b64decode(response).decode())
+                signal = TradingSignalV5(**response_data)
+            except (json.JSONDecodeError, ValidationError) as e:
+                logger.error(f"Response validation failed: {e}")
+                return False
+            
+            # Escrita atômica da resposta
+            symbol = market_data['symbol']
+            response_path = self.files_dir / f"AIResponse.{symbol}.json"
+            temp_response_path = response_path.with_suffix('.tmp')
+            
+            temp_response_path.write_text(signal.json(), encoding='utf-8')
+            temp_response_path.replace(response_path)
+            
+            # Auditoria da resposta
+            self.audit_system.add_transaction("TRADING_SIGNAL", {
+                "symbol": symbol,
+                "action": signal.action,
+                "confidence": signal.confidence,
+                "signal_id": signal.signal_id
+            })
+            
+            # Atualização de métricas
+            processing_time = (time.perf_counter() - processing_start) * 1000
+            self._update_metrics(processing_time, success=True)
+            
+            temp_path.unlink()
+            return True
+            
+        except Exception as e:
+            logger.error(f"HFT processing failed: {e}")
+            self._update_metrics(0, success=False)
+            
+            # Restaura arquivo em caso de erro
+            if temp_path.exists():
+                try:
+                    temp_path.rename(request_path)
+                except Exception:
+                    pass
+            return False
+    
+    def _update_metrics(self, processing_time: float, success: bool):
+        """Atualiza métricas de performance"""
+        current_time = time.time()
+        time_since_update = current_time - self.metrics.last_update
+        
+        if success:
+            self.metrics.requests_processed += 1
+            self.metrics.avg_processing_time_ms = (
+                0.95 * self.metrics.avg_processing_time_ms + 0.05 * processing_time
+            )
+            self.metrics.min_processing_time_ms = min(
+                self.metrics.min_processing_time_ms, processing_time
+            )
+            self.metrics.max_processing_time_ms = max(
+                self.metrics.max_processing_time_ms, processing_time
+            )
+        else:
+            self.metrics.requests_failed += 1
+        
+        # Calcula throughput
+        if time_since_update >= 1.0:  # Atualiza a cada segundo
+            self.metrics.throughput_rps = self.metrics.requests_processed / time_since_update
+            self.metrics.requests_processed = 0
+            self.metrics.last_update = current_time
+        
+        if self.circuit_breaker.state == CircuitBreakerState.OPEN:
+            self.metrics.circuit_breaker_trips += 1
+    
+    async def _websocket_fallback(self):
+        """Conexão WebSocket para fallback e métricas"""
+        try:
+            async with websockets.connect(self.websocket_url) as websocket:
+                self.websocket = websocket
+                logger.info("WebSocket connection established")
+                
+                while True:
+                    # Heartbeat via WebSocket
+                    await websocket.send(json.dumps({
+                        "type": "heartbeat",
+                        "timestamp": time.time(),
+                        "metrics": asdict(self.metrics)
+                    }))
+                    await asyncio.sleep(5)
+                    
+        except Exception as e:
+            logger.warning(f"WebSocket connection failed: {e}")
+            self.websocket = None
+    
+    async def _monitoring_loop(self):
+        """Loop de monitoramento e reporting"""
+        while True:
+            # Verifica integridade do blockchain
+            if not self.audit_system.verify_integrity():
+                logger.error("Audit blockchain integrity compromised!")
+            
+            # Log de métricas
+            if self.metrics.requests_processed > 0 or self.metrics.requests_failed > 0:
+                logger.info(
+                    f"Metrics: {self.metrics.requests_processed} processed, "
+                    f"{self.metrics.requests_failed} failed, "
+                    f"Avg time: {self.metrics.avg_processing_time_ms:.2f}ms, "
+                    f"Throughput: {self.metrics.throughput_rps:.1f}rps"
+                )
+            
+            await asyncio.sleep(1)
+    
+    async def run(self):
+        """Loop principal de alta frequência"""
+        logger.info("Iniciando HFTBridgeV5 - Modo Alta Frequência")
+        
+        # Inicia tarefas em paralelo
+        websocket_task = asyncio.create_task(self._websocket_fallback())
+        monitoring_task = asyncio.create_task(self._monitoring_loop())
+        
+        last_scan = 0
+        scan_interval = 0.01  # 10ms para HFT
+        
+        try:
+            while True:
+                current_time = time.time()
+                
+                if current_time - last_scan >= scan_interval:
+                    # Processamento em lote de requisições pendentes
+                    pending_requests = list(self.files_dir.glob("AIRequest.*.json"))
+                    
+                    # Processa até max_concurrent_requests simultaneamente
+                    batch = pending_requests[:self.max_concurrent_requests]
+                    if batch:
+                        tasks = [self.process_request_hft(req_path) for req_path in batch]
+                        await asyncio.gather(*tasks, return_exceptions=True)
+                    
+                    last_scan = current_time
+                
+                await asyncio.sleep(0.001)  # 1ms sleep para evitar CPU excessiva
+                
+        except KeyboardInterrupt:
+            logger.info("Interrupção recebida - Encerrando HFTBridgeV5")
+        except Exception as e:
+            logger.critical(f"Falha crítica no HFTBridgeV5: {e}")
+            raise
+        finally:
+            # Cleanup gracioso
+            websocket_task.cancel()
+            monitoring_task.cancel()
+            self.shutdown()
+    
+    def shutdown(self):
+        """Desligamento gracioso"""
+        if self.thread_pool:
+            self.thread_pool.shutdown(wait=True)
+        if self.zmq_socket:
+            self.zmq_socket.close()
+        if self.zmq_context:
+            self.zmq_context.term()
+        logger.info("HFTBridgeV5 encerrado graciosamente")
+
+async def main():
+    """Função principal assíncrona"""
+    bridge = HFTBridgeV5()
+    
+    try:
+        await bridge.run()
+    except Exception as e:
+        logger.critical(f"Falha na inicialização do HFTBridgeV5: {e}")
+        raise
+
+if __name__ == "__main__":
+    asyncio.run(main())

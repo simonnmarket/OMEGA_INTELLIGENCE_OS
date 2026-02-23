@@ -1,0 +1,98 @@
+
+Theodora/
+├── -Backup/               -> Cópias de segurança automáticas (ex: .mqh, .mq5, .set)
+├── Experts/               -> Arquivo principal .mq5 do EA
+├── Include/               -> Todos os módulos .mqh (bibliotecas)
+├── Indicators/            -> Painéis, visuais e UI
+├── Libraries/             -> Bibliotecas externas (ex: ALGLIB, JSON, D3.js)
+├── Presets/               -> Arquivos .set por ativo/timeframe
+├── Resources/             -> Ícones, sons, imagens, arquivos auxiliares
+├── Scripts/               -> Scripts MQL5 para tarefas pontuais
+└── Tests/                 -> Testes unitários e de integração
+
+Include/
+├── Analysis/              -> Análise técnica e estatística
+├── Compliance/            -> Regras de horário, notícias, pausas
+├── Config/                -> Configurações e inputs
+├── Core/                  -> Núcleo do sistema (brain, blockchain, force)
+├── Data/                  -> Leitura e processamento de dados de mercado
+├── DecisionEngine/        -> Motor de decisão quântica (Heisenberg, Bohr, Planck)
+├── Detection/             -> Detecção de padrões/eventos
+├── Execution/             -> Primitivos de execução
+├── ExecutionLogic/        -> Lógica de execução, gerenciamento de ordens
+├── Integration/           -> Conexão com APIs, nuvem, Telegram, Alibaba
+├── Intelligence/          -> IA, redes neurais, aprendizado quântico
+├── Math/                  -> Matemática aplicada (ex: Alglib/)
+├── Neural/                -> Núcleos neurais
+├── Optimization/          -> Otimização e parâmetros
+├── Quantum/               -> Componentes quânticos
+├── Risk/                  -> Gestão de risco institucional
+├── Security/              -> Firewall quântico, blindagem SHA3, safe mode
+├── Signals/               -> Enumerações e sinais
+├── Templates/             -> Modelos reutilizáveis
+└── Utils/                 -> Funções auxiliares puras (sem efeitos colaterais)
+
+Conteúdo mínimo (exemplos, apenas blueprint):
+Theodora/
+└── Experts/
+    └── TheodoraEA.mq5             -> Expert Advisor principal
+
+Theodora/Include/
+├── DecisionEngine/
+│   └── QuantumDecisionEngine.mqh
+├── ExecutionLogic/
+│   └── TradeExecutor.mqh
+├── Intelligence/
+│   └── QuantumLearning.mqh
+├── Risk/
+│   └── RiskProfile.mqh
+├── Security/
+│   └── QuantumFirewall.mqh
+├── Signals/
+│   └── TradeSignalEnum.mqh
+└── Utils/
+    └── LoggerInstitutional.mqh
+
+Nota: Este arquivo descreve a arquitetura alvo (blueprint) alinhada ao sidebar atual. Não cria pastas/arquivos no disco.
+
+
+Mapeamento Sidebar → Blueprint (rastreamento)
+- Raiz do projeto
+  - _Backup → -Backup (mesma finalidade; nome mantido conforme blueprint)
+  - Experts → Experts
+  - Include → Include
+  - Indicators → Indicators
+  - Libraries → Libraries
+  - Presets → Presets
+  - Resources → Resources
+  - Scripts → Scripts
+  - Tests → Tests
+
+- Include/ (subpastas)
+  - Analysis → Analysis
+  - Compliance → Compliance
+  - Config → Config
+  - Core → Core
+  - Data → Data
+  - DecisionEngine → DecisionEngine
+  - Detection → Detection
+  - Execution → Execution
+  - ExecutionLogic → ExecutionLogic
+  - Integration → Integration
+  - Intelligence → Intelligence
+  - Math/Alglib → Math (subpasta Alglib)
+  - Neural → Neural
+  - Optimization → Optimization
+  - Quantum → Quantum
+  - Risk → Risk
+  - Security → Security
+  - Signals → Signals
+  - Templates → Templates
+  - Utils → Utils
+  - (Visuals do projeto está sob Indicators/Visuals, não em Include)
+
+- Arquivos existentes relevantes
+  - Experts/TheodoraEA.mq5 → mapeado no exemplo mínimo (EA principal)
+  - Indicators/Visuals/*.mq5 (painéis) → cobertos por raiz Indicators do blueprint
+  - Scripts/Tools/*.mq5 → cobertos por raiz Scripts do blueprint
+

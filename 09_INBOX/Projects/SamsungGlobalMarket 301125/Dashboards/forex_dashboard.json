@@ -1,0 +1,52 @@
+{
+  "id": null,
+  "uid": "forex_market_v1",
+  "title": "Forex Market Monitoring",
+  "timezone": "browser",
+  "schemaVersion": 30,
+  "version": 1,
+  "refresh": "10s",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "Mid Price over Time",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "forex_price{instrument=\"$instrument\"}",
+          "legendFormat": "{{instrument}}",
+          "refId": "A"
+        }
+      ],
+      "id": 1
+    },
+    {
+      "type": "graph",
+      "title": "Spread over Time",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "forex_spread{instrument=\"$instrument\"}",
+          "legendFormat": "{{instrument}}",
+          "refId": "B"
+        }
+      ],
+      "id": 2
+    }
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "instrument",
+        "type": "query",
+        "datasource": "Prometheus",
+        "query": "label_values(forex_price, instrument)",
+        "multi": true,
+        "includeAll": true,
+        "refresh": 1,
+        "sort": 1
+      }
+    ]
+  }
+}
+

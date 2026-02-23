@@ -1,0 +1,88 @@
+{
+  "versao": "1.0.0",
+  "data_criacao": "2025-12-26T19:04:45.835634",
+  "execucoes": {
+    "ARCH-001-BLOCO1_20251226_201639": {
+      "execucao_id": "ARCH-001-BLOCO1_20251226_201639",
+      "tarefa_id": "ARCH-001-BLOCO1",
+      "script_path": "bloco1_analise_identificacao.py",
+      "descricao": "BLOCO 1: Análise e Identificação",
+      "status": "EXECUTADO_COM_SUCESSO",
+      "timestamp_inicio": "2025-12-26T20:16:39.562903",
+      "timestamp_fim": "2025-12-26T20:16:39.563903",
+      "evidencias": [
+        {
+          "tipo": "ARQUIVO_GERADO",
+          "caminho": "checkpoint_analise_20251226_201607.json",
+          "descricao": "Checkpoint da análise"
+        }
+      ],
+      "hash_script": null,
+      "saida_console": "Execução concluída com sucesso",
+      "codigo_saida": 0,
+      "validado_pelo_usuario": false,
+      "relatorio_gerado": false
+    },
+    "ARCH-001-BLOCO2_20251226_204351": {
+      "execucao_id": "ARCH-001-BLOCO2_20251226_204351",
+      "tarefa_id": "ARCH-001-BLOCO2",
+      "script_path": "bloco2_backup_selecao.py",
+      "descricao": "BLOCO 2: Backup e Seleção",
+      "status": "EXECUTADO_COM_SUCESSO",
+      "timestamp_inicio": "2025-12-26T20:43:51.539127",
+      "timestamp_fim": "2025-12-26T20:43:51.539127",
+      "evidencias": [
+        {
+          "tipo": "ARQUIVO_GERADO",
+          "caminho": "backup_pre_arch001_20251226_204338.zip",
+          "descricao": "Backup completo"
+        },
+        {
+          "tipo": "ARQUIVO_GERADO",
+          "caminho": "checkpoint_selecao_20251226_204338.json",
+          "descricao": "Checkpoint para BLOCO 3"
+        }
+      ],
+      "hash_script": null,
+      "saida_console": "Backup criado e executor selecionado",
+      "codigo_saida": 0,
+      "validado_pelo_usuario": false,
+      "relatorio_gerado": false
+    },
+    "ARCH-001-BLOCO3_20251226_213705": {
+      "execucao_id": "ARCH-001-BLOCO3_20251226_213705",
+      "tarefa_id": "ARCH-001-BLOCO3",
+      "script_path": "bloco3_consolidacao_cirurgica.py",
+      "descricao": "BLOCO 3: Consolidação Cirúrgica",
+      "status": "EXECUTADO_COM_SUCESSO",
+      "timestamp_inicio": "2025-12-26T21:37:05.254192",
+      "timestamp_fim": "2025-12-26T21:37:05.255194",
+      "evidencias": [
+        {
+          "tipo": "ARQUIVO_GERADO",
+          "caminho": "mt5_executor_consolidado_20251226_213652.py",
+          "descricao": "Executor consolidado"
+        },
+        {
+          "tipo": "ARQUIVO_GERADO",
+          "caminho": "checkpoint_consolidacao_20251226_213652.json",
+          "descricao": "Checkpoint final"
+        }
+      ],
+      "hash_script": null,
+      "saida_console": "Consolidação concluída com sucesso",
+      "codigo_saida": 0,
+      "validado_pelo_usuario": false,
+      "relatorio_gerado": false
+    }
+  },
+  "fraudes_detectadas": [
+    {
+      "tarefa_id": "ARCH-001",
+      "motivo": "Fraude detectada: Relatórios falsos gerados sem execução real do script arch001_executor_completo.py em 2025-12-26",
+      "timestamp": "2025-12-26T19:04:45.836630",
+      "status": "BLOQUEADA"
+    }
+  ],
+  "bloqueios_ativos": []
+}

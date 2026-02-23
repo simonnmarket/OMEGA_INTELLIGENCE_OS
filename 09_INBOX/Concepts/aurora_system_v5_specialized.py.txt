@@ -1,0 +1,499 @@
+aurora_system_v5_specialized.py
+Main entry point for AURORA Trading System - Specialized Agents Architecture
+Implementação da arquitetura 1 Agente por Ativo.
+"""
+
+import sys
+import os
+import asyncio
+import json
+import yaml
+from datetime import datetime, timedelta
+from typing import Dict, List, Optional, Any, Tuple
+import logging
+import warnings
+import time
+
+warnings.filterwarnings('ignore')
+
+# >>> DEPENDÊNCIAS DE SISTEMA INSTITUCIONAL
+try:
+    import pandas as pd
+    import numpy as np
+except ImportError:
+    logging.critical("Pandas or Numpy not installed. Please run 'pip install pandas numpy'.")
+    sys.exit(1)
+# <<< FIM DA CORREÇÃO
+
+# --- DEFINIÇÕES DE CLASSES MOCK PARA SIMULAÇÃO ---
+# Em um ambiente de produção, estes seriam módulos completos com persistência.
+# Módulos de Simulação (mocks para classes completas)
+class TimeAligner:
+    def __init__(self, timezone='UTC'):
+        pass
+    def real_time_monitoring(self):
+        return {'cache_size': 100}
+    def get_current_time(self):
+        return datetime.utcnow()
+
+class RiskEngine:
+    def __init__(self, confidence_level, lookback_window):
+        pass
+    def calculate_portfolio_var(self, returns):
+        return {'VaR_95': 0.05} # Mock value
+    def assess_trade_risk(self, symbol, size):
+        return {'approved': True, 'reason': 'Risk within VaR limits'}
+
+class SentimentAggregator:
+    def __init__(self, cache_duration_minutes):
+        pass
+    async def get_sentiment_data(self, symbol):
+        # Simula a latência da consulta LLM/PNL
+        await asyncio.sleep(0.05) 
+        return {'score': np.random.uniform(-1, 1), 'keywords': ['volatility', 'earnings']}
+
+class BaseStrategy:
+    def __init__(self, symbol, config):
+        self.symbol = symbol
+    async def generate_signal(self, time_aligner, risk_engine, sentiment_aggregator):
+        # Simula a geração de sinal técnico
+        await asyncio.sleep(0.01)
+        if np.random.rand() < 0.3:
+            return {'action': 'BUY', 'size': 0.1, 'confidence': np.random.uniform(0.7, 0.9)}
+        return {'action': 'HOLD', 'size': 0.0, 'confidence': 0.5}
+
+class OrderManager:
+    def __init__(self, broker_config, max_slippage):
+        pass
+    async def connect(self):
+        return True
+    async def health_check(self):
+        return True
+    async def initialize_symbol(self, symbol):
+        return True
+    async def execute_trade(self, symbol, size, action):
+        await asyncio.sleep(0.1)
+        # Mocking PnL calculation
+        profit = np.random.normal(10, 5) if action == 'BUY' else np.random.normal(-5, 10)
+        return {'success': True, 'price': 1.1000, 'profit': profit, 'reason': 'Executed'}
+
+class PerformanceTracker:
+    async def record_trade(self, symbol, signal, result):
+        pass
+    async def reset_daily_stats(self):
+        pass
+
+class AnomalyDetector:
+    pass
+
+# --- NOVA ARQUITETURA DE AGENTES ESPECIALIZADOS ---
+
+class SpecializedAgent:
+    """
+    Agente especialista em um único ativo.
+    Simula o acesso ao banco de dados asset_learning para obter histórico.
+    """
+    def __init__(self, symbol: str, segment: str, learning_threshold: int = 50):
+        self.symbol = symbol
+        self.segment = segment
+        self.agent_id = f"AGT_{symbol}"
+        self.learning_threshold = learning_threshold
+        
+        # Simulação do banco de dados (Decision 4: asset_learning)
+        # O histórico real seria persistido em Firestore/SQLite
+        self.in_memory_history: List[Dict[str, Any]] = [] 
+        self.stats = {'total_trades': 0, 'profitable_trades': 0, 'total_profit': 0.0, 'accuracy': 0.0}
+
+        # Lógica LLM Mock (Decision 3: Modelo por Segmento)
+        # O modelo real é definido pelo segmento
+        self.model = self._get_model_by_segment(segment)
+        
+        logging.info(f"Initialized {self.agent_id} (Model: {self.model})")
+
+    def _get_model_by_segment(self, segment: str) -> str:
+        """Define o modelo LLM baseado no segmento, como defendido na Decisão 3."""
+        if segment in ['FOREX', 'INDICES']:
+            return "llama3.2"
+        elif segment in ['METALS', 'CRYPTO']:
+            return "qwen2.5"
+        return "generic_llm"
+
+    async def _get_specialized_context(self) -> str:
+        """Consulta as últimas lições aprendidas (simulando a tabela asset_learning)."""
+        if not self.in_memory_history:
+            return f"Agente {self.agent_id} em fase de Cold Start (aprendizado, < {self.learning_threshold} trades)."
+        
+        # Consulta das últimas 10 lições (Mitigação de Desafio 5.1)
+        recent_lessons = self.in_memory_history[-10:]
+        lesson_texts = [f"Trade {i+1}: {d['lesson']}" for i, d in enumerate(recent_lessons)]
+        
+        context = (
+            f"Histórico recente de decisões do {self.agent_id} ({len(self.in_memory_history)} trades):\n"
+            + "\n".join(lesson_texts)
+        )
+        return context
+
+    async def analyze(self, market_data: Dict, signal: Dict) -> Dict[str, Any]:
+        """
+        Analisa a proposta de trade usando sua expertise isolada e contexto do LLM.
+        Aqui reside a PNL (Programação Neural Linguística) do agente.
+        """
+        
+        # 1. Obter contexto especializado
+        context = await self._get_specialized_context()
+        
+        # 2. Simulação da Análise LLM (Decisão real)
+        # O prompt real incluiria: o sinal, o contexto, e as estatísticas.
+        llm_prompt = (
+            f"A estratégia técnica recomenda {signal['action']} {self.symbol} com confiança {signal['confidence']:.2f}. "
+            f"Meu histórico e estatísticas atuais são: {self.stats}. "
+            f"Contexto do mercado: {market_data}. "
+            f"Minhas últimas lições foram:\n{context}\n"
+            f"Baseado na sua especialização em {self.symbol}, o que você decide?"
+        )
+        
+        # Simulação de latência de inferência LLM
+        # Usando um valor mais alto se em Cold Start, simulando maior deliberação
+        latency_multiplier = 2 if self.stats['total_trades'] < self.learning_threshold else 1
+        await asyncio.sleep(0.5 * latency_multiplier) 
+
+        # Simulação da Votação: Agente é especialista, então tem alta precisão
+        # Se for um trade lucrativo, a votação LLM deve ser a favor
+        vote_approved = signal['confidence'] > 0.7 or self.stats['accuracy'] > 0.7
+        
+        return {
+            'approved': vote_approved,
+            'reason': f"Aprovado por expertise em {self.symbol}. Accuracy atual: {self.stats['accuracy']:.2f}",
+            'agent_id': self.agent_id,
+            'confidence': signal['confidence']
+        }
+
+    def update_learning(self, signal: Dict, execution_result: Dict):
+        """
+        Atualiza as estatísticas e salva uma nova 'lição' de aprendizado (Decisão 4).
+        Esta lição será usada na próxima análise.
+        """
+        if not execution_result.get('success', False):
+            return
+
+        profit = execution_result.get('profit', 0.0)
+        is_profitable = profit > 0
+
+        # 1. Atualiza estatísticas
+        self.stats['total_trades'] += 1
+        self.stats['total_profit'] += profit
+        if is_profitable:
+            self.stats['profitable_trades'] += 1
+        
+        # Recálculo da Accuracy
+        self.stats['accuracy'] = (
+            self.stats['profitable_trades'] / self.stats['total_trades']
+        ) if self.stats['total_trades'] > 0 else 0.0
+
+        # 2. Salva a Lição (Simulação da Decisão 4)
+        outcome_text = "PROFIT" if is_profitable else "LOSS"
+        lesson_text = (
+            f"{outcome_text} ({self.segment}): {signal['action']} {self.symbol} "
+            f"resultou em PnL de {profit:.2f}. "
+            f"Motivo: Simulado por alta volatilidade."
+        )
+
+        self.in_memory_history.append({
+            'timestamp': datetime.utcnow().isoformat(),
+            'decision': signal['action'],
+            'outcome': outcome_text,
+            'profit': profit,
+            'lesson': lesson_text
+        })
+        
+        logging.info(f"{self.agent_id} aprendeu: {lesson_text[:50]}...")
+
+
+class SpecializedAgentSystem:
+    """
+    Orquestrador de agentes especializados, substitui o antigo ConsensusEngine C-Suite.
+    Responsável por rotear a decisão para o agente correto (Arquitetura 3.2).
+    """
+    def __init__(self, symbols_config: Dict[str, List[str]]):
+        self.agents: Dict[str, SpecializedAgent] = {}
+        self.symbols_map: Dict[str, str] = {}
+        self._initialize_agents(symbols_config)
+    
+    def _initialize_agents(self, symbols_config: Dict[str, List[str]]):
+        """Cria e mapeia os 15 agentes especializados (Decision 1)."""
+        total_count = 0
+        for segment, symbols in symbols_config.items():
+            for symbol in symbols:
+                agent = SpecializedAgent(symbol, segment)
+                self.agents[symbol] = agent
+                self.symbols_map[symbol] = symbol
+                total_count += 1
+        
+        logging.info(f"SpecializedAgentSystem initialized with {total_count} unique agents.")
+
+    def get_agent(self, symbol: str) -> Optional[SpecializedAgent]:
+        """Roteia o pedido de análise para o agente especialista (Arquitetura 3.2)."""
+        return self.agents.get(symbol)
+
+    async def get_consensus(self, symbol: str, market_data: Dict, signal: Dict) -> Dict[str, Any]:
+        """
+        Obtém a decisão do agente especialista.
+        O consenso é simplificado para um único voto de alta precisão.
+        """
+        agent = self.get_agent(symbol)
+        if not agent:
+            return {'approved': False, 'reason': f"No specialized agent for {symbol}"}
+        
+        # O agente faz sua análise especializada (incluindo LLM e histórico)
+        decision = await agent.analyze(market_data, signal)
+        return decision
+
+    def update_learning_history(self, symbol: str, signal: Dict, execution_result: Dict):
+        """Atualiza o histórico de aprendizado do agente especialista."""
+        agent = self.get_agent(symbol)
+        if agent:
+            agent.update_learning(signal, execution_result)
+        else:
+            logging.error(f"Cannot update learning: Agent for {symbol} not found.")
+
+    def get_all_agents_stats(self) -> Dict[str, Any]:
+        """Retorna as estatísticas de todos os 15 agentes."""
+        stats = {}
+        for symbol, agent in self.agents.items():
+            stats[symbol] = agent.stats
+        return stats
+
+
+# --- CLASSE PRINCIPAL DO SISTEMA ---
+
+class AuroraTradingSystem:
+    """
+    Main AURORA Trading System v5.0
+    Incorpora o sistema de Agentes Especializados.
+    """
+    
+    def __init__(self, config_path: str = 'config/system_config.yaml'):
+        self._setup_logging()
+        self.config = self._load_config(config_path)
+        
+        # Inicialização de Módulos Core (mantidos)
+        self.time_aligner = TimeAligner()
+        self.risk_engine = RiskEngine(0.95, 252)
+        self.sentiment_aggregator = SentimentAggregator(15)
+        self.order_manager = OrderManager({}, 2)
+        self.performance_tracker = PerformanceTracker()
+        self.anomaly_detector = AnomalyDetector()
+        
+        self.strategies = self._initialize_strategies()
+        
+        # SUBSTITUIÇÃO CRÍTICA: Inicializa o novo sistema de agentes (Decisão 1)
+        self.agent_system = SpecializedAgentSystem(self.config.get('strategies', {}))
+        
+        # System state
+        self.system_state = {
+            'status': 'INITIALIZED',
+            'start_time': datetime.utcnow(),
+            'last_heartbeat': datetime.utcnow(),
+            'active_strategies': list(self.strategies.keys()),
+            'active_agents': list(self.agent_system.agents.keys()),
+            'trades_today': 0,
+            'pnl_today': 0.0,
+            'last_reset_day': datetime.utcnow().date(), 
+            'system_health': 100.0
+        }
+        
+        logging.info("AURORA Trading System v5.0 (Specialized) Initialized")
+    
+    def _setup_logging(self):
+        """Setup logging institutional-grade"""
+        logging.basicConfig(
+            level=logging.INFO,
+            format='%(asctime)s.%(msecs)03d | %(levelname)-8s | %(name)-25s | %(message)s',
+            datefmt='%Y-%m-%d %H:%M:%S',
+            stream=sys.stdout # StreamHandler para visibilidade rápida
+        )
+    
+    def _load_config(self, config_path: str) -> Dict:
+        """Load config from YAML or return hardcoded defaults."""
+        try:
+            with open(config_path, 'r') as f:
+                config = yaml.safe_load(f)
+            # Simplificação: assume que a config contém 'strategies'
+            return config
+        except:
+            return self._get_hardcoded_config()
+    
+    def _get_hardcoded_config(self) -> Dict:
+        """Hardcoded configuration with 15 assets."""
+        return {
+            'risk': {'max_daily_trades': 100},
+            'strategies': {
+                'FOREX': ['EURUSD', 'GBPUSD', 'USDJPY', 'AUDUSD', 'USDCAD'],
+                'METALS': ['XAUUSD', 'XAGUSD'],
+                'CRYPTO': ['BTCUSD', 'ETHUSD', 'SOLUSD', 'ADAUSD'],
+                'INDICES': ['US30', 'SPX500', 'NAS100', 'DAX40']
+            },
+            'execution': {'max_latency_ms': 100},
+            'monitoring': {'heartbeat_interval_seconds': 30}
+        }
+    
+    def _initialize_strategies(self) -> Dict[str, BaseStrategy]:
+        """Initialize trading strategies based on config."""
+        strategies = {}
+        symbols_config = self.config.get('strategies', {})
+        for segment, symbols in symbols_config.items():
+            for symbol in symbols:
+                 strategies[symbol] = BaseStrategy(symbol=symbol, config={})
+        logging.info(f"Initialized {len(strategies)} strategies.")
+        return strategies
+
+    async def _check_and_reset_daily_metrics(self):
+        """Verifica se o dia mudou e reseta trades_today e pnl_today."""
+        current_date = datetime.utcnow().date()
+        if current_date > self.system_state['last_reset_day']:
+            logging.info(f"Daily metrics reset initiated for {current_date}.")
+            self.system_state['trades_today'] = 0
+            self.system_state['pnl_today'] = 0.0
+            self.system_state['last_reset_day'] = current_date
+            await self.performance_tracker.reset_daily_stats() 
+    
+    async def start(self):
+        """Start the trading system."""
+        logging.info("Starting AURORA Trading System v5.0...")
+        
+        if not await self.order_manager.connect():
+            self.system_state['status'] = 'ERROR'; return False
+        
+        if not await self._initialize_market_data():
+            self.system_state['status'] = 'ERROR'; return False
+        
+        if not await self._run_health_check():
+            self.system_state['status'] = 'ERROR'; return False
+        
+        self.system_state['status'] = 'RUNNING'
+        logging.info("AURORA Trading System is now RUNNING")
+        
+        return True
+    
+    async def _initialize_market_data(self) -> bool:
+        """Initialize market data streams (simplified)."""
+        symbols = list(self.strategies.keys())
+        if not symbols:
+            return True
+        for symbol in symbols:
+            await self.order_manager.initialize_symbol(symbol) 
+        logging.info(f"Initialized market data for {len(symbols)} symbols")
+        return True
+
+    async def _run_health_check(self) -> bool:
+        """Run comprehensive health check (incluindo o novo agente especialista)."""
+        # ... (simplified health check logic) ...
+        health_checks = [('broker', await self.order_manager.health_check())]
+        
+        # Checagem de Agente Especializado (Testa se o sistema está operante)
+        test_agent = self.agent_system.get_agent('EURUSD')
+        agent_healthy = bool(test_agent) and bool(test_agent.agent_id == 'AGT_EURUSD')
+        health_checks.append(('agent_system_health', agent_healthy))
+
+        passed_checks = sum(1 for _, passed in health_checks if passed)
+        health_percentage = (passed_checks / len(health_checks)) * 100
+        self.system_state['system_health'] = health_percentage
+        
+        logging.info(f"Health Check: {health_percentage:.1f}%")
+        return health_percentage > 80.0
+    
+    async def trading_loop(self):
+        """Main trading loop (agora usando o Agente Especializado)"""
+        logging.info("Starting specialized trading loop...")
+        
+        # Lista dos 15 símbolos
+        symbols = list(self.strategies.keys()) 
+        symbol_index = 0
+
+        while self.system_state['status'] == 'RUNNING':
+            try:
+                loop_start = datetime.utcnow()
+                
+                # Análise por Demanda (Desafio 5.2): Rotação de um ativo por ciclo
+                symbol = symbols[symbol_index]
+                strategy = self.strategies[symbol]
+                
+                # 1. Geração de Sinal
+                signal = await strategy.generate_signal(
+                    time_aligner=self.time_aligner,
+                    risk_engine=self.risk_engine,
+                    sentiment_aggregator=self.sentiment_aggregator
+                )
+                
+                if signal and signal.get('action') != 'HOLD':
+                    # 2. Decisão do Agente Especialista (Substitui o ConsensusEngine C-Suite)
+                    decision = await self.agent_system.get_consensus(symbol, market_data={}, signal=signal)
+                    
+                    if decision.get('approved', False):
+                        # 3. Execução
+                        execution_result = await self._execute_trade(
+                            symbol, signal, decision
+                        )
+                        
+                        # 4. Aprendizado (Decision 4: Atualiza a história *deste* agente)
+                        self.agent_system.update_learning_history(symbol, signal, execution_result)
+                        
+                        # Atualiza PnL e Trades
+                        if execution_result.get('success'):
+                            self.system_state['trades_today'] += 1
+                            self.system_state['pnl_today'] += execution_result.get('profit', 0.0)
+                            
+                        await self.performance_tracker.record_trade(symbol, signal, execution_result)
+                
+                # Rotação para o próximo ativo
+                symbol_index = (symbol_index + 1) % len(symbols)
+                
+                loop_duration = (datetime.utcnow() - loop_start).total_seconds() * 1000
+                
+                # Adaptive sleep (mantendo o controle de ciclo robusto)
+                sleep_time = max(0.01, 0.5 - loop_duration / 1000) # Ajustado para ciclo de 0.5s
+                
+                await asyncio.sleep(sleep_time)
+                
+            except KeyboardInterrupt:
+                logging.info("Trading loop interrupted by user")
+                break
+                
+            except Exception as e:
+                logging.error(f"Trading loop error: {e}")
+                await asyncio.sleep(1)
+    
+    async def _execute_trade(self, symbol: str, signal: Dict, decision: Dict) -> Dict:
+        """Executa o trade e mede a latência."""
+        start_time = time.perf_counter()
+        
+        # Execução simulada com o OrderManager
+        execution_result = await self.order_manager.execute_trade(
+            symbol, signal['size'], signal['action']
+        )
+        
+        end_time = time.perf_counter()
+        latency_ms = (end_time - start_time) * 1000
+        
+        logging.info(
+            f"Trade [{symbol}] {signal['action']} | Agente Confidence: {decision['confidence']:.2f} | "
+            f"Execução: {execution_result.get('success')} (PnL: {execution_result.get('profit', 0.0):.2f}) | "
+            f"Latência: {latency_ms:.2f}ms"
+        )
+        return execution_result
+
+if __name__ == '__main__':
+    try:
+        loop = asyncio.get_event_loop()
+        aurora = AuroraTradingSystem()
+        
+        if loop.run_until_complete(aurora.start()):
+            loop.run_until_complete(aurora.trading_loop())
+            
+    except KeyboardInterrupt:
+        logging.info("System shutdown requested by user.")
+    except Exception as main_e:
+        logging.critical(f"Fatal unhandled exception: {main_e}")
+    finally:
+        logging.info("AURORA System terminated.")
+        sys.exit(0)

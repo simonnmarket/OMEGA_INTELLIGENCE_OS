@@ -1,0 +1,437 @@
+# ============================================================================
+# 🤖 SISTEMA DE AGENTES ESPECIALIZADOS (15+ Agentes)
+# ============================================================================
+
+class AutonomousAssetAgent:
+    """Agente especializado por ativo (AASA Architecture)"""
+    
+    def __init__(self, asset: str, config: Dict[str, Any]):
+        self.asset = asset.upper()
+        self.name = f"Agent_{self.asset}"
+        self.config = config
+        self.position = 0.0
+        self.performance_history = []
+        self.learning_enabled = True
+        self.is_active = True
+        self.last_heartbeat = datetime.now(timezone.utc)
+        
+        # Configurações específicas
+        self.execution_threshold = config.get("execution_threshold", 0.7)
+        self.max_position = config.get("max_position", 100000.0)
+        self.order_size = config.get("order_size", 1.0)
+        self.cycle_interval = config.get("cycle_interval_sec", 30)
+        
+        # Circuit breaker
+        self.failure_count = 0
+        self.circuit_tripped = False
+        self.circuit_trip_time = None
+        
+        logger.info(f"🤖 Agente criado: {self.name}", config=self.config)
+    
+    async def analyze(self, market_data: MarketData) -> AgentVote:
+        """Analisar dados de mercado e retornar voto"""
+        try:
+            self.last_heartbeat = datetime.now(timezone.utc)
+            
+            # Verificar circuit breaker
+            if self.circuit_tripped:
+                if self._should_reset_circuit():
+                    self._reset_circuit()
+                else:
+                    return AgentVote(
+                        agent_name=self.name,
+                        decision="NO_VOTE",
+                        confidence=0.0,
+                        reason="Circuit breaker ativo",
+                        technical_error=True
+                    )
+            
+            # Análise específica do ativo
+            analysis = await self._perform_analysis(market_data)
+            
+            # Aplicar regras de trading
+            decision = self._apply_trading_rules(analysis, market_data)
+            
+            # Registrar performance
+            self._record_analysis(analysis, decision)
+            
+            return decision
+            
+        except Exception as e:
+            logger.error(f"❌ {self.name} análise falhou", error=str(e))
+            self.failure_count += 1
+            
+            if self.failure_count >= 3:
+                self._trip_circuit()
+            
+            return AgentVote(
+                agent_name=self.name,
+                decision="NO_VOTE",
+                confidence=0.0,
+                reason=f"Erro de análise: {str(e)}",
+                technical_error=True
+            )
+    
+    async def _perform_analysis(self, market_data: MarketData) -> Dict[str, Any]:
+        """Realizar análise específica do ativo"""
+        # Base analysis - sobrescrever em classes especializadas
+        analysis = {
+            "trend": market_data.ma_signal,
+            "strength": abs(market_data.ma5 - market_data.ma20) if market_data.ma5 and market_data.ma20 else 0.0,
+            "volatility": market_data.volatility_24h,
+            "spread_ok": market_data.spread < 10.0,
+            "volume_ok": market_data.volume > 1000
+        }
+        
+        # Adicionar análise específica por ativo
+        if "XAU" in self.asset or "GOLD" in self.asset:
+            analysis["safe_haven"] = True
+            analysis["inflation_hedge"] = True
+        elif "BTC" in self.asset or "ETH" in self.asset:
+            analysis["crypto_volatility"] = market_data.volatility_24h > 2.0
+            analysis["market_cap_trend"] = "UP"  # Placeholder
+        
+        return analysis
+    
+    def _apply_trading_rules(self, analysis: Dict[str, Any], market_data: MarketData) -> AgentVote:
+        """Aplicar regras de trading para gerar decisão"""
+        
+        # REGRA 1: Spread alto = NO_VOTE
+        if not analysis.get("spread_ok", True):
+            return AgentVote(
+                agent_name=self.name,
+                decision="NO_VOTE",
+                confidence=0.3,
+                reason=f"Spread alto: {market_data.spread:.1f} pips"
+            )
+        
+        # REGRA 2: Volume baixo = HOLD
+        if not analysis.get("volume_ok", True):
+            return AgentVote(
+                agent_name=self.name,
+                decision="HOLD",
+                confidence=0.5,
+                reason="Volume insuficiente"
+            )
+        
+        # REGRA 3: Sinal técnico claro = BUY/SELL decisivo
+        trend = analysis.get("trend", "NEUTRAL")
+        strength = analysis.get("strength", 0.0)
+        
+        if trend == "BULLISH" and strength > 0.0005:
+            confidence = min(0.8 + (strength * 100), 0.95)
+            return AgentVote(
+                agent_name=self.name,
+                decision="BUY",
+                confidence=confidence,
+                reason=f"Trend bullish forte (força: {strength:.4f})",
+                weight=self.config.get("weight", 1.0)
+            )
+        
+        elif trend == "BEARISH" and strength > 0.0005:
+            confidence = min(0.8 + (strength * 100), 0.95)
+            return AgentVote(
+                agent_name=self.name,
+                decision="SELL",
+                confidence=confidence,
+                reason=f"Trend bearish forte (força: {strength:.4f})",
+                weight=self.config.get("weight", 1.0)
+            )
+        
+        # REGRA 4: Sem sinal claro = HOLD
+        return AgentVote(
+            agent_name=self.name,
+            decision="HOLD",
+            confidence=0.6,
+            reason="Mercado lateral/sem sinal claro",
+            weight=self.config.get("weight", 1.0)
+        )
+    
+    def _trip_circuit(self):
+        """Ativar circuit breaker"""
+        self.circuit_tripped = True
+        self.circuit_trip_time = datetime.now(timezone.utc)
+        logger.warning(f"🔌 Circuit breaker ativado para {self.name}")
+    
+    def _should_reset_circuit(self) -> bool:
+        """Verificar se circuit breaker deve ser resetado"""
+        if not self.circuit_tripped or not self.circuit_trip_time:
+            return True
+        
+        recovery_time = self.config.get("circuit_recovery_sec", 300)
+        time_elapsed = (datetime.now(timezone.utc) - self.circuit_trip_time).total_seconds()
+        
+        return time_elapsed >= recovery_time
+    
+    def _reset_circuit(self):
+        """Resetar circuit breaker"""
+        self.circuit_tripped = False
+        self.circuit_trip_time = None
+        self.failure_count = 0
+        logger.info(f"🔄 Circuit breaker resetado para {self.name}")
+    
+    def _record_analysis(self, analysis: Dict[str, Any], vote: AgentVote):
+        """Registrar análise para aprendizado futuro"""
+        record = {
+            "timestamp": datetime.now(timezone.utc),
+            "analysis": analysis,
+            "vote": vote.model_dump(),
+            "asset": self.asset
+        }
+        self.performance_history.append(record)
+        
+        # Manter histórico limitado
+        if len(self.performance_history) > 1000:
+            self.performance_history = self.performance_history[-1000:]
+    
+    def get_performance_metrics(self) -> Dict[str, Any]:
+        """Obter métricas de performance do agente"""
+        if not self.performance_history:
+            return {"accuracy": 0.5, "total_analyses": 0}
+        
+        # Calcular métricas básicas
+        decisions = [record["vote"]["decision"] for record in self.performance_history]
+        buy_count = decisions.count("BUY")
+        sell_count = decisions.count("SELL")
+        hold_count = decisions.count("HOLD")
+        total = len(decisions)
+        
+        return {
+            "total_analyses": total,
+            "buy_percentage": buy_count / total if total > 0 else 0,
+            "sell_percentage": sell_count / total if total > 0 else 0,
+            "hold_percentage": hold_count / total if total > 0 else 0,
+            "avg_confidence": np.mean([record["vote"]["confidence"] for record in self.performance_history]),
+            "active": self.is_active,
+            "failures": self.failure_count,
+            "circuit_tripped": self.circuit_tripped
+        }
+
+# ============================================================================
+# 🎯 AGENTES ESPECIALIZADOS POR ATIVO
+# ============================================================================
+
+class XAUUSDAgent(AutonomousAssetAgent):
+    """Agente especializado em Ouro (XAUUSD)"""
+    
+    async def _perform_analysis(self, market_data: MarketData) -> Dict[str, Any]:
+        analysis = await super()._perform_analysis(market_data)
+        
+        # Análise específica para Ouro
+        analysis["safe_haven_demand"] = market_data.volatility_24h > 1.5  # Alta volatilidade aumenta demanda
+        analysis["real_yield_sensitive"] = True
+        analysis["dollar_inverse"] = True
+        
+        # Adicionar fatores macro
+        analysis["inflation_hedge_strength"] = 0.8  # Placeholder para dados reais
+        analysis["geopolitical_risk"] = 0.3  # Placeholder
+        
+        return analysis
+    
+    def _apply_trading_rules(self, analysis: Dict[str, Any], market_data: MarketData) -> AgentVote:
+        # Regras específicas para Ouro
+        vote = super()._apply_trading_rules(analysis, market_data)
+        
+        # Aumentar confiança se múltiplos fatores positivos
+        positive_factors = sum([
+            analysis.get("safe_haven_demand", False),
+            analysis.get("inflation_hedge_strength", 0) > 0.5,
+            market_data.volatility_24h > 1.0
+        ])
+        
+        if positive_factors >= 2 and vote.decision in ["BUY", "SELL"]:
+            vote.confidence = min(vote.confidence * 1.2, 0.95)
+            vote.reason += " | Múltiplos fatores macro positivos"
+        
+        return vote
+
+class EURUSDAgent(AutonomousAssetAgent):
+    """Agente especializado em EURUSD"""
+    
+    async def _perform_analysis(self, market_data: MarketData) -> Dict[str, Any]:
+        analysis = await super()._perform_analysis(market_data)
+        
+        # Análise específica para EURUSD
+        analysis["major_pair"] = True
+        analysis["liquidity"] = "VERY_HIGH"
+        analysis["correlation_dxy"] = -0.9  # Correlação inversa com DXY
+        
+        # Fatores fundamentais
+        analysis["ecb_policy"] = "NEUTRAL"  # Placeholder
+        analysis["usd_strength"] = market_data.price < 1.1000  # EURUSD abaixo de 1.10 = USD forte
+        
+        return analysis
+
+class BTCUSDAgent(AutonomousAssetAgent):
+    """Agente especializado em Bitcoin"""
+    
+    async def _perform_analysis(self, market_data: MarketData) -> Dict[str, Any]:
+        analysis = await super()._perform_analysis(market_data)
+        
+        # Análise específica para Bitcoin
+        analysis["crypto_asset"] = True
+        analysis["volatility_class"] = "VERY_HIGH" if market_data.volatility_24h > 3.0 else "HIGH"
+        analysis["market_sentiment"] = self._assess_crypto_sentiment(market_data)
+        
+        # Fatores específicos
+        analysis["halving_cycle"] = self._check_halving_cycle()
+        analysis["adoption_trend"] = "UP"  # Placeholder
+        
+        return analysis
+    
+    def _assess_crypto_sentiment(self, market_data: MarketData) -> str:
+        """Avaliar sentimento do mercado crypto"""
+        if market_data.volatility_24h > 4.0:
+            return "FEAR"
+        elif market_data.volatility_24h < 1.5:
+            return "GREED"
+        else:
+            return "NEUTRAL"
+    
+    def _check_halving_cycle(self) -> str:
+        """Verificar ciclo de halving (simplificado)"""
+        # Em produção, buscar dados reais
+        return "POST_HALVING"  # Placeholder
+
+# ============================================================================
+# 👔 AGENTES C-LEVEL (Conselho Executivo)
+# ============================================================================
+
+class CEAgent(AutonomousAssetAgent):
+    """Chief Executive Officer - Visão estratégica geral"""
+    
+    def __init__(self, config: Dict[str, Any]):
+        super().__init__("CEO", config)
+        self.name = "CEO"
+        self.role = "Chief Executive Officer"
+        self.has_veto = True
+        self.weight = 1.0
+        
+    async def _perform_analysis(self, market_data: MarketData) -> Dict[str, Any]:
+        analysis = await super()._perform_analysis(market_data)
+        
+        # Visão macroeconômica
+        analysis["macro_trend"] = self._assess_macro_trend()
+        analysis["risk_appetite"] = self._assess_risk_appetite()
+        analysis["market_regime"] = self._identify_market_regime(market_data)
+        
+        # Fatores estratégicos
+        analysis["portfolio_alignment"] = True  # Placeholder
+        analysis["long_term_outlook"] = "BULLISH"  # Placeholder
+        
+        return analysis
+    
+    def _apply_trading_rules(self, analysis: Dict[str, Any], market_data: MarketData) -> AgentVote:
+        # CEO foca em alinhamento estratégico
+        vote = super()._apply_trading_rules(analysis, market_data)
+        
+        # Aplicar veto se contra tendência macro
+        if vote.decision in ["BUY", "SELL"]:
+            macro_trend = analysis.get("macro_trend", "NEUTRAL")
+            
+            if (vote.decision == "BUY" and macro_trend == "BEARISH") or \
+               (vote.decision == "SELL" and macro_trend == "BULLISH"):
+                vote.decision = "HOLD"
+                vote.confidence = 0.7
+                vote.reason = f"Veto CEO: Contra tendência macro ({macro_trend})"
+        
+        return vote
+    
+    def _assess_macro_trend(self) -> str:
+        """Avaliar tendência macroeconômica"""
+        # Em produção, integrar com dados macro
+        return "NEUTRAL"  # Placeholder
+    
+    def _assess_risk_appetite(self) -> str:
+        """Avaliar apetite a risco do mercado"""
+        return "MODERATE"  # Placeholder
+    
+    def _identify_market_regime(self, market_data: MarketData) -> str:
+        """Identificar regime de mercado"""
+        if market_data.volatility_24h > 2.0:
+            return "HIGH_VOLATILITY"
+        elif market_data.volatility_24h < 0.5:
+            return "LOW_VOLATILITY"
+        else:
+            return "NORMAL"
+
+class CKOAgent(AutonomousAssetAgent):
+    """Chief Knowledge Officer - Referência técnica (melhor performer)"""
+    
+    def __init__(self, config: Dict[str, Any]):
+        super().__init__("CKO", config)
+        self.name = "CKO"
+        self.role = "Chief Knowledge Officer"
+        self.has_veto = True
+        self.weight = 1.5  # Peso maior por bom desempenho
+        
+    async def _perform_analysis(self, market_data: MarketData) -> Dict[str, Any]:
+        analysis = await super()._perform_analysis(market_data)
+        
+        # Análise técnica avançada
+        analysis["technical_quality"] = self._assess_technical_quality(market_data)
+        analysis["pattern_recognition"] = self._identify_patterns(market_data)
+        analysis["momentum_strength"] = self._calculate_momentum(market_data)
+        
+        # Validações
+        analysis["signal_reliability"] = "HIGH" if analysis.get("strength", 0) > 0.001 else "LOW"
+        
+        return analysis
+    
+    def _apply_trading_rules(self, analysis: Dict[str, Any], market_data: MarketData) -> AgentVote:
+        # CKO é mais decisivo (referência do sistema)
+        
+        # REGRA CKO 1: Ignorar spread < 15 pips
+        if market_data.spread < 15.0:
+            analysis["spread_ok"] = True
+        
+        # REGRA CKO 2: Ser muito decisivo em sinais técnicos claros
+        trend = analysis.get("trend", "NEUTRAL")
+        strength = analysis.get("strength", 0.0)
+        technical_quality = analysis.get("technical_quality", "LOW")
+        
+        if trend != "NEUTRAL" and strength > 0.0003 and technical_quality == "HIGH":
+            decision = "BUY" if trend == "BULLISH" else "SELL"
+            confidence = min(0.85 + (strength * 200), 0.97)  # Mais confiante
+            
+            return AgentVote(
+                agent_name=self.name,
+                decision=decision,
+                confidence=confidence,
+                reason=f"Sinal técnico {trend} de alta qualidade (força: {strength:.4f})",
+                weight=self.weight
+            )
+        
+        # REGRA CKO 3: HOLD apenas em condições muito específicas
+        if trend == "NEUTRAL" or strength < 0.0001:
+            return AgentVote(
+                agent_name=self.name,
+                decision="HOLD",
+                confidence=0.8,
+                reason="Mercado lateral/sem direção clara",
+                weight=self.weight
+            )
+        
+        # Fallback para regras padrão
+        return super()._apply_trading_rules(analysis, market_data)
+    
+    def _assess_technical_quality(self, market_data: MarketData) -> str:
+        """Avaliar qualidade do sinal técnico"""
+        if market_data.ma5 and market_data.ma20:
+            diff = abs(market_data.ma5 - market_data.ma20)
+            if diff > 0.001:
+                return "HIGH"
+            elif diff > 0.0003:
+                return "MEDIUM"
+        return "LOW"
+    
+    def _identify_patterns(self, market_data: MarketData) -> List[str]:
+        """Identificar padrões técnicos"""
+        patterns = []
+        # Em produção, implementar detecção real de padrões
+        return patterns
+    
+    def _calculate_momentum(self, market_data: MarketData) -> float:
+        """Calcular momentum"""
+        # Placeholder - em produção usar indicadores reais
+        return 0.5

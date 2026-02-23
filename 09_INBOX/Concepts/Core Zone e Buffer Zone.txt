@@ -1,0 +1,187 @@
+Resumo da estrutura:
+
+Linha 1 – Core Zone (Inferior): onde começa o movimento.
+
+Linha 2 – Buffer Zone (Inferior): zona de observação/espera.
+
+Linha 3 – Core Zone (Intermediário): nova possibilidade de decisão.
+
+Linha 4 – Buffer Zone (Superior): novamente zona de incerteza.
+
+Linha 5 – Core Zone (Superior): zona crítica para novo ciclo ou reversão.
+
+O foguete (representando o preço ou um movimento relevante) atravessa essas camadas, e cada transição tem um significado tático.
+
+DIAGRAMA: Estrutura de Zonas com Movimento do Foguete
+
+[LINHA 5] ──────────────────────────────
+           CORE ZONE SUPERIOR
+           (Zona de Decisão)
+           - Possível início de novo ciclo ou reversão.
+           - Decisões são tomadas aqui.
+           
+[LINHA 4] ──────────────────────────────
+           BUFFER ZONE SUPERIOR
+           (Zona de Incerteza)
+           - Observação, sem decisões.
+           - Espera para ver o comportamento do foguete.
+
+[LINHA 3] ──────────────────────────────
+           CORE ZONE INTERMEDIÁRIA
+           (Zona de Decisão)
+           - Região de nova oportunidade.
+           - Possibilidade de redirecionamento.
+
+[LINHA 2] ──────────────────────────────
+           BUFFER ZONE INFERIOR
+           (Zona de Incerteza)
+           - Espera por confirmação de comportamento.
+           - Nenhuma ação tomada.
+
+[LINHA 1] ──────────────────────────────
+           CORE ZONE INFERIOR
+           (Ponto de Partida / Decisão)
+           - Foguete inicia o movimento de subida.
+           - Primeiras decisões tomadas aqui.
+
+                      ^
+                      |
+                  (ROCKET)
+                 [Fase de subida]
+                      |
+                      |
+
+
+Explicação visual e funcional:
+
+Zonas alternadas: Cada Core e Buffer são separados por linhas horizontais. No total, temos 5 linhas e 4 espaços (camadas).
+
+Movimento do foguete: Ele começa na base (Core Zone inferior), sobe em direção ao topo, passando pelas zonas.
+
+Cores sugeridas (para futura ilustração ou uso em app):
+
+Core Zones: Azul escuro ou verde (decisão, confiança).
+
+Buffer Zones: Amarelo ou cinza claro (incerteza, atenção).
+
+Foguete: Vermelho ou laranja (movimento ativo, energia).
+
+Setas verticais podem indicar:
+
+Fase de subida (bullish ou expansão).
+
+Futuro movimento de descida, que pode ser representado com setas invertidas depois.
+
+
+DIAGRAMA: Estrutura de Zonas com Movimento do Foguete
+
+[LINHA 5] ──────────────────────────────
+           CORE ZONE SUPERIOR
+           (Zona de Decisão)
+           - Possível início de novo ciclo ou reversão.
+           - Decisões são tomadas aqui.
+
+[LINHA 4] ──────────────────────────────
+           BUFFER ZONE SUPERIOR
+           (Zona de Incerteza)
+           - Observação, sem decisões.
+           - Espera para ver o comportamento do foguete.
+
+[LINHA 3] ──────────────────────────────
+           CORE ZONE INTERMEDIÁRIA
+           (Zona de Decisão)
+           - Região de nova oportunidade.
+           - Possibilidade de redirecionamento.
+
+[LINHA 2] ──────────────────────────────
+           BUFFER ZONE INFERIOR
+           (Zona de Incerteza)
+           - Espera por confirmação de comportamento.
+           - Nenhuma ação tomada.
+
+[LINHA 1] ──────────────────────────────
+           CORE ZONE INFERIOR
+           (Ponto de Partida / Decisão)
+           - Foguete inicia o movimento de subida.
+           - Primeiras decisões tomadas aqui.
+
+                      ^
+                      |
+                  (ROCKET)
+                 [Fase de subida]
+                      |
+                      |
+
+
+Sugestões de cores (caso utilize em software ou design gráfico):
+
+Core Zones: Azul escuro ou Verde (confiança e decisão).
+
+Buffer Zones: Amarelo ou Cinza claro (atenção e incerteza).
+
+Foguete: Vermelho ou Laranja (movimento e energia).
+
+
+transformar isso em um modelo de código para diferentes finalidades, como:
+
+Representação em terminal (ASCII/console)
+
+Renderização com HTML/CSS
+
+Modelo em Python (ex: para lógica de simulação ou visualização)
+
+Uso em JavaScript para interface web interativa
+
+Para começar, segue abaixo a versão em Python com estrutura de dados para simular e manipular o comportamento do foguete atravessando as zonas:
+
+Modelo em Python (Console Simulation)
+# Definição das zonas
+zones = [
+    {"linha": 1, "tipo": "CORE", "nome": "CORE ZONE INFERIOR", "acao": "Decisão inicial"},
+    {"linha": 2, "tipo": "BUFFER", "nome": "BUFFER ZONE INFERIOR", "acao": "Aguardar comportamento"},
+    {"linha": 3, "tipo": "CORE", "nome": "CORE ZONE INTERMEDIÁRIA", "acao": "Nova decisão possível"},
+    {"linha": 4, "tipo": "BUFFER", "nome": "BUFFER ZONE SUPERIOR", "acao": "Aguardar comportamento"},
+    {"linha": 5, "tipo": "CORE", "nome": "CORE ZONE SUPERIOR", "acao": "Novo ciclo ou reversão"}
+]
+
+# Estado do foguete
+rocket_position = 1
+
+def mostrar_zonas(posicao_foguete):
+    print("\n=== Estrutura de Zonas ===\n")
+    for zone in reversed(zones):
+        linha = zone["linha"]
+        marca_foguete = " <-- FOGUETE" if linha == posicao_foguete else ""
+        print(f"[LINHA {linha}] - {zone['nome']} ({zone['tipo']}){marca_foguete}")
+        print(f" Ação: {zone['acao']}\n")
+
+def mover_foguete():
+    global rocket_position
+    if rocket_position < 5:
+        rocket_position += 1
+        print("\nFoguete subiu uma camada!")
+    else:
+        print("\nFoguete já está no topo!")
+
+# Simulação simples
+mostrar_zonas(rocket_position)
+
+# Mover o foguete
+for _ in range(4):
+    input("Pressione Enter para subir...")
+    mover_foguete()
+    mostrar_zonas(rocket_position)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

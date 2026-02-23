@@ -1,0 +1,105 @@
+from datetime import date
+
+# Conteúdo do documento completo baseado na versão mais atualizada no canvas
+document_content = """NICER - Navegação Multi-Camadas
+
+1. Núcleo como Canal de Estabilidade
+
+Core Zone (Zona Central):
+Área onde o foguete sempre terá condições para ser abastecido. Nessas áreas o piloto pode fazer interferências, manobras e intervenções na nave. Esta zona representa o canal de estabilidade e tomada de decisões estratégicas, como compras ou vendas. São áreas onde houve estímulos e injeções de combustível, ou seja, onde o mercado demonstrou força e tendência. Ao estar em uma Core Zone, o painel da nave apresenta sinal verde, os motores estão bem aquecidos, e há forte tendência de continuidade do movimento (seja de alta ou baixa).
+
+Buffer Zone (Zona de Amortecimento):
+Zona onde a nave não possui sinal claro. O painel perde informações principais e a comunicação com os sistemas de controle se torna instável. Deve-se aguardar até que a nave saia dessa zona para retomar decisões com segurança. Caracteriza-se por ruído e instabilidade — zona comum para pullbacks e falsas reversões. Nenhuma decisão crítica deve ser tomada nesta fase.
+
+2. Subida: Física Quântica, Aerodinâmica e Termodinâmica
+
+Durante a subida:
+- O foguete se desloca com base na propulsão gerada por combustível injetado anteriormente (ex: semana anterior).
+- A trajetória segue lógica vertical: CORE → BUFFER → CORE → BUFFER → ...
+- Cada nova Core Zone representa uma nova zona de estabilidade com chance de confirmação de tendência e tomada de decisão.
+
+Teorias Aplicadas:
+- Inércia (1ª Lei de Newton): O foguete em movimento tende a permanecer em movimento, salvo interferência externa.
+- Gravidade: Atua contra o movimento. Força que precisa ser superada continuamente.
+- Impulso e Massa (2ª Lei de Newton): A força aplicada (impulso) depende diretamente da massa e da aceleração.
+- Efeito Doppler & Oscilações Quânticas: Pequenas variações de frequência nos sinais durante a travessia das zonas instáveis (Buffer).
+- Aerodinâmica: A resistência do meio (mercado) afeta a velocidade de subida.
+
+3. Descida: Lógica de Submarino (Imersão Controlada)
+
+Durante a descida:
+- O rompimento inverte a estrutura e a primeira linha se torna: BUFFER → CORE → BUFFER → CORE
+- A zona que antes era resistência agora se torna suporte.
+- O movimento descendente também segue os mesmos ciclos contínuos.
+
+Estratégia:
+- Operar com lógica inversa, respeitando a troca de função entre suporte e resistência.
+- Zonas CORE continuam sendo os únicos locais válidos para intervenção.
+- Zonas BUFFER requerem atenção redobrada, pois aumentam as chances de armadilhas e oscilações falsas.
+
+4. Blocos Verticais: Lógica Combinada
+
+Cada ciclo é formado por blocos verticais:
+- Core Zone
+- Buffer Zone
+- Core Zone
+- Buffer Zone
+
+Eles se repetem infinitamente, como camadas que o foguete rompe, independente de estar subindo ou descendo.
+
+Bloco (Exemplo):
+[CORE ZONE SUPERIOR]
+  ↓
+[BUFFER ZONE SUPERIOR]
+  ↓
+[CORE ZONE INTERMEDIÁRIA]
+  ↓
+[BUFFER ZONE INFERIOR]
+  ↓
+[CORE ZONE INFERIOR]
+
+5. Lógica Integrada: Sistema de Navegação Multi-Camadas
+
+Painel da Nave:
+- Exibe status com cor verde em Core Zones (motores estáveis, forte sinal)
+- Exibe status amarelo ou cinza em Buffer Zones (sinais fracos ou ausentes)
+
+Condições de Decisão:
+- Confirmar tendência em Core Zone
+- Evitar decisões em Buffer Zone
+- Aguardar confirmação ou reversão antes de agir
+
+Continuidade do Movimento:
+- O espaço é infinito: os ciclos não têm fim
+- A nave deve seguir alternando entre zonas, ganhando ou perdendo força a cada camada
+- As decisões devem sempre ser fundamentadas na estrutura de zonas
+
+6. Cálculo e Evolução: CalculateExhaustVelocity()
+
+Revisão da Função:
+A função CalculateExhaustVelocity() é responsável por determinar a velocidade de exaustão da nave com base na energia, impulso e resistência. Esta métrica define a capacidade do sistema de atravessar as zonas BUFFER e atingir a próxima CORE.
+
+Pontos Ajustados:
+- A equação foi revisada para aplicar corretamente a influência do atrito dinâmico (resistência de mercado)
+- Adicionado peso para o vetor de impulso contínuo baseado em tendência (momentum)
+
+Sugestões de Evolução:
+- Incluir sensores para medir o "arrasto emocional" do mercado (ex: notícias, sentimento)
+- Conectar diretamente com módulo de decisão de CMarketAnalyzer para realimentação de performance
+- Considerar aceleração temporal (time decay) como variável no cálculo final
+
+Próximos Passos:
+- Integrar a função CalculateExhaustVelocity() ao CMarketAnalyzer
+- Testar performance da navegação em condições de alta volatilidade
+- Criar relatório comparativo entre performance preditiva e zonas reais de entrada e saída
+
+---
+
+Documento atualizado em: """ + str(date.today())
+
+# Salvar como .txt
+file_path = "/mnt/data/NICER_Navegacao_Multi_Camadas_COMPLETO.txt"
+with open(file_path, "w", encoding="utf-8") as f:
+    f.write(document_content)
+
+file_path

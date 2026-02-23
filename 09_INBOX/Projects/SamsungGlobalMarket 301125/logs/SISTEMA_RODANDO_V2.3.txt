@@ -1,0 +1,20 @@
+PROMETHEUS V2.3 - SISTEMA EM EXECUÇÃO
+=====================================
+Data/Hora: 2025-11-26 17:52:00
+Versão: V2.3 (Gerenciamento Escalonado)
+Status: INICIANDO
+
+Funcionalidades Ativas:
+- Descoberta automática de ativos do Market Watch
+- Estratégia: MA20 > MA50 = BUY
+- Volume Inicial: 0.02 lotes
+- TP Parcial: 40 pips (fecha 50% = 0.01 lotes)
+- TP Final: 80 pips (volume restante)
+- Break-Even: 15 pips
+- Trailing Stop: 20 pips
+- Fechamento automático por reversão de sinal
+
+Log de Telemetria: prometheus_telemetry_v2.3.log
+
+Para parar o sistema: Pressione Ctrl+C no terminal ou feche a janela.
+

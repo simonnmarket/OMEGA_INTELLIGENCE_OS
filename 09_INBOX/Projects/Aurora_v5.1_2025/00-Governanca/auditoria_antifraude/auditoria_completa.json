@@ -1,0 +1,86 @@
+{
+  "versao": "1.0.0",
+  "data_criacao": "2025-12-26T23:58:16.568217",
+  "execucoes": {
+    "ARCH-001_20251226_235816": {
+      "execucao_id": "ARCH-001_20251226_235816",
+      "tarefa_id": "ARCH-001",
+      "script_path": "bloco4_integracao_final.py",
+      "descricao": "BLOCO 4: Integração Final",
+      "status": "VALIDADO_PELO_USUARIO",
+      "timestamp_inicio": "2025-12-26T23:58:16.577003",
+      "timestamp_fim": "2025-12-26T23:58:16.577003",
+      "evidencias": [
+        {
+          "tipo": "ARQUIVO_GERADO",
+          "arquivo": "checkpoint_final_arch001_20251226_230100.json"
+        }
+      ],
+      "hash_script": "1cc50f8ef2d89326",
+      "saida_console": "BLOCO 4 executado com sucesso",
+      "codigo_saida": 0,
+      "validado_pelo_usuario": true,
+      "relatorio_gerado": false
+    },
+    "ARCH-001_20251226_235937": {
+      "execucao_id": "ARCH-001_20251226_235937",
+      "tarefa_id": "ARCH-001",
+      "script_path": "bloco4_integracao_final.py",
+      "descricao": "ARCH-001: Consolidação MT5 - Execução completa dos 4 blocos",
+      "status": "VALIDADO_PELO_USUARIO",
+      "timestamp_inicio": "2025-12-26T23:59:37.812227",
+      "timestamp_fim": "2025-12-26T23:59:37.813226",
+      "evidencias": [
+        {
+          "tipo": "ARQUIVO_GERADO",
+          "caminho": "checkpoint_analise_20251226_201607.json",
+          "descricao": "Checkpoint BLOCO 1",
+          "hash": null,
+          "timestamp": "2025-12-26T23:59:37.813226"
+        },
+        {
+          "tipo": "ARQUIVO_GERADO",
+          "caminho": "checkpoint_selecao_20251226_204338.json",
+          "descricao": "Checkpoint BLOCO 2",
+          "hash": null,
+          "timestamp": "2025-12-26T23:59:37.813226"
+        },
+        {
+          "tipo": "ARQUIVO_GERADO",
+          "caminho": "checkpoint_consolidacao_20251226_213652.json",
+          "descricao": "Checkpoint BLOCO 3",
+          "hash": null,
+          "timestamp": "2025-12-26T23:59:37.813226"
+        },
+        {
+          "tipo": "ARQUIVO_GERADO",
+          "caminho": "checkpoint_final_arch001_20251226_230100.json",
+          "descricao": "Checkpoint BLOCO 4",
+          "hash": null,
+          "timestamp": "2025-12-26T23:59:37.813226"
+        },
+        {
+          "tipo": "ARQUIVO_GERADO",
+          "caminho": "ARCH001_EXECUTOR_FINAL_20251226_230100.py",
+          "descricao": "Executor final integrado",
+          "hash": null,
+          "timestamp": "2025-12-26T23:59:37.813226"
+        },
+        {
+          "tipo": "ARQUIVO_GERADO",
+          "caminho": "CERTIFICACAO_FINAL_ARCH001.md",
+          "descricao": "Certificação final",
+          "hash": null,
+          "timestamp": "2025-12-26T23:59:37.813226"
+        }
+      ],
+      "hash_script": "1cc50f8ef2d89326",
+      "saida_console": "ARCH-001 concluído com sucesso total. Sistema integrado e operacional.",
+      "codigo_saida": 0,
+      "validado_pelo_usuario": true,
+      "relatorio_gerado": false
+    }
+  },
+  "fraudes_detectadas": [],
+  "bloqueios_ativos": []
+}

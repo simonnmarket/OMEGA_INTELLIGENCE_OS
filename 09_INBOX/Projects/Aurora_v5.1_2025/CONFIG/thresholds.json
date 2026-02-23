@@ -1,0 +1,11 @@
+{
+  "sharpe_min": 1.5,
+  "profit_factor_min": 1.8,
+  "max_drawdown": 0.15,
+  "success_threshold": 0.70,
+  "win_rate_min": 0.60,
+  "max_position_size": 0.10,
+  "max_daily_loss": 0.05,
+  "max_concentration": 0.25
+}
+

@@ -1,0 +1,123 @@
+import os
+import json
+import time
+from pathlib import Path
+
+import zmq
+
+
+def find_mt5_files_dir() -> Path:
+    env = os.environ.get("MT5_FILES_DIR")
+    if env:
+        p = Path(env)
+        p.mkdir(parents=True, exist_ok=True)
+        return p
+    # Prefer MetaTrader Common Files folder
+    common = Path.home() / "AppData" / "Roaming" / "MetaQuotes" / "Terminal" / "Common" / "Files"
+    if common.exists():
+        common.mkdir(parents=True, exist_ok=True)
+        return common
+    # Fallback to project Files dir
+    proj_root = Path(__file__).resolve().parents[2]
+    files_dir = proj_root / "MQL5" / "Files"
+    files_dir.mkdir(parents=True, exist_ok=True)
+    return files_dir
+
+
+def main() -> None:
+    files_dir = find_mt5_files_dir()
+    port = int(os.environ.get("ZMQ_PORT", "5555"))
+
+    context = zmq.Context.instance()
+    socket = context.socket(zmq.REQ)
+    socket.connect(f"tcp://127.0.0.1:{port}")
+
+    print(f"[EA_BRIDGE] Watching: {files_dir}")
+    print(f"[EA_BRIDGE] ZMQ -> tcp://127.0.0.1:{port}")
+    last_hb = 0.0
+
+    # metrics accumulators
+    met_req = 0
+    met_resp = 0
+    met_timeouts = 0
+    met_rtt_ema_ms = 0.0
+
+    while True:
+        try:
+            # heartbeat a cada 5s
+            now_ts = time.time()
+            if now_ts - last_hb >= 5.0:
+                last_hb = now_ts
+                try:
+                    hb = {
+                        "component": "ea_req_bridge",
+                        "port": port,
+                        "timestamp": int(now_ts),
+                    }
+                    (files_dir / "EA_Bridge_Heartbeat.json").write_text(
+                        json.dumps(hb, ensure_ascii=False), encoding="utf-8"
+                    )
+                    # write metrics
+                    metrics = {
+                        "requests": met_req,
+                        "responses": met_resp,
+                        "timeouts_total": met_timeouts,
+                        "rtt_ms": round(met_rtt_ema_ms, 3),
+                    }
+                    (files_dir / "Bridge_Metrics.json").write_text(
+                        json.dumps(metrics, ensure_ascii=False), encoding="utf-8"
+                    )
+                except Exception:
+                    pass
+            # Scan for per-symbol requests
+            for req_path in files_dir.glob("AIRequest.*.json"):
+                try:
+                    text = req_path.read_text(encoding="utf-8")
+                    if not text.strip():
+                        continue
+                    t0 = time.perf_counter()
+                    met_req += 1
+                    socket.send_string(text)
+                    resp = socket.recv_string()
+                    t1 = time.perf_counter()
+
+                    # RTT ema
+                    rtt = (t1 - t0) * 1000.0
+                    if met_rtt_ema_ms <= 0.0:
+                        met_rtt_ema_ms = rtt
+                    else:
+                        met_rtt_ema_ms = 0.9 * met_rtt_ema_ms + 0.1 * rtt
+
+                    met_resp += 1
+
+                    # Determine symbol to write response file
+                    try:
+                        payload = json.loads(text)
+                        sym = payload.get("symbol", "UNKNOWN")
+                    except Exception:
+                        sym = "UNKNOWN"
+
+                    (files_dir / f"AIResponse.{sym}.json").write_text(
+                        resp, encoding="utf-8"
+                    )
+
+                    # Optional: remove request to avoid reprocessing
+                    try:
+                        req_path.unlink(missing_ok=True)
+                    except Exception:
+                        pass
+                except Exception as exc:
+                    print(f"[EA_BRIDGE][WARN] {req_path.name}: {exc}")
+                    met_timeouts += 1
+            time.sleep(0.2)
+        except KeyboardInterrupt:
+            break
+        except Exception as exc:
+            print(f"[EA_BRIDGE][ERROR] {exc}")
+            time.sleep(0.5)
+
+
+if __name__ == "__main__":
+    main()
+
+

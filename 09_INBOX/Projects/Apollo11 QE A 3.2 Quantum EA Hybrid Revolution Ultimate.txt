@@ -1,0 +1,173 @@
+//+------------------------------------------------------------------+
+//| Apollo11 QE A 3.2 - Quantum EA Hybrid - Revolution Ultimate      |
+//| & Commander                                            |
+//+------------------------------------------------------------------+
+#property copyright "Apollo11 Quantum EA Hybrid"
+#property version   "3.2"
+#property strict
+
+input double LotsRiskPercent = 1.0;        // % do saldo a arriscar por trade
+input double ATR_Multiplier = 1.5;         // Fator do ATR para SL
+input int    ATR_Period = 14;
+input int    RSI_Period = 14;
+input int    RSI_Overbought = 70;
+input int    RSI_Oversold = 30;
+input ENUM_TIMEFRAMES TrendTF = PERIOD_H4;
+input int    FastEMA = 9;
+input int    SlowEMA = 21;
+input double BreakEvenPips = 20;
+input double TrailStartPips = 15;
+input double TrailStepPips = 5;
+input int    Slippage = 3;
+input double MaxSpread = 15;
+input int    MagicNumber = 11032025;
+input string TradeStart = "09:00";
+input string TradeEnd = "18:00";
+
+//--- Globals
+double atrCurrent;
+double riskLot;
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                   |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+   return(INIT_SUCCEEDED);
+}
+
+//+------------------------------------------------------------------+
+//| Expert tick function                                             |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+   if(!IsTradeAllowed() || !IsInTradingTime()) return;
+
+   if(MarketInfo(_Symbol, MODE_SPREAD) > MaxSpread) return;
+
+   atrCurrent = iATR(_Symbol, PERIOD_H1, ATR_Period, 0);
+   riskLot = CalculateLotSize();
+
+   bool isTrendUp = iMA(_Symbol, TrendTF, FastEMA, 0, MODE_EMA, PRICE_CLOSE, 0) >
+                    iMA(_Symbol, TrendTF, SlowEMA, 0, MODE_EMA, PRICE_CLOSE, 0);
+
+   bool isTrendDown = !isTrendUp;
+
+   double rsi = iRSI(_Symbol, PERIOD_H1, RSI_Period, PRICE_CLOSE, 0);
+
+   //--- BUY CONDITIONS
+   if(isTrendUp && rsi < RSI_Oversold && PositionSelect(_Symbol) == false)
+   {
+      double sl = NormalizeDouble(Bid - ATR_Multiplier * atrCurrent, _Digits);
+      double tp = NormalizeDouble(Bid + ATR_Multiplier * 2 * atrCurrent, _Digits);
+      tradeBuy(_Symbol, riskLot, sl, tp);
+   }
+
+   //--- SELL CONDITIONS
+   if(isTrendDown && rsi > RSI_Overbought && PositionSelect(_Symbol) == false)
+   {
+      double sl = NormalizeDouble(Ask + ATR_Multiplier * atrCurrent, _Digits);
+      double tp = NormalizeDouble(Ask - ATR_Multiplier * 2 * atrCurrent, _Digits);
+      tradeSell(_Symbol, riskLot, sl, tp);
+   }
+
+   ManageOpenPositions();
+}
+
+//+------------------------------------------------------------------+
+//| Lógica de trailing stop e break-even                             |
+//+------------------------------------------------------------------+
+void ManageOpenPositions()
+{
+   if(!PositionSelect(_Symbol)) return;
+
+   double openPrice = PositionGetDouble(POSITION_PRICE_OPEN);
+   double currentPrice = SymbolInfoDouble(_Symbol, PositionGetInteger(POSITION_TYPE)==POSITION_TYPE_BUY ? SYMBOL_BID : SYMBOL_ASK);
+   double profitPips = (currentPrice - openPrice) / _Point;
+
+   // Break Even
+   if(profitPips >= BreakEvenPips/_Point)
+   {
+      double newSL = openPrice;
+      tradeModify(PositionGetInteger(POSITION_TICKET), newSL);
+   }
+
+   // Trailing Stop
+   if(profitPips >= TrailStartPips/_Point)
+   {
+      double newSL;
+      if(PositionGetInteger(POSITION_TYPE)==POSITION_TYPE_BUY)
+         newSL = currentPrice - TrailStepPips*_Point;
+      else
+         newSL = currentPrice + TrailStepPips*_Point;
+
+      tradeModify(PositionGetInteger(POSITION_TICKET), NormalizeDouble(newSL, _Digits));
+   }
+}
+
+//+------------------------------------------------------------------+
+//| Cálculo de lote baseado em risco                                 |
+//+------------------------------------------------------------------+
+double CalculateLotSize()
+{
+   double risk = AccountBalance() * (LotsRiskPercent/100.0);
+   double slPips = ATR_Multiplier * atrCurrent;
+   double pipValue = MarketInfo(_Symbol, MODE_TICKVALUE);
+   double lot = risk / (slPips * pipValue);
+   return NormalizeDouble(lot, 2);
+}
+
+//+------------------------------------------------------------------+
+//| Operações de compra/venda                                        |
+//+------------------------------------------------------------------+
+void tradeBuy(string symbol, double lot, double sl, double tp)
+{
+   MqlTradeRequest request = {0};
+   MqlTradeResult result = {0};
+   request.action = TRADE_ACTION_DEAL;
+   request.symbol = symbol;
+   request.volume = lot;
+   request.type = ORDER_TYPE_BUY;
+   request.price = SymbolInfoDouble(symbol, SYMBOL_ASK);
+   request.sl = sl;
+   request.tp = tp;
+   request.deviation = Slippage;
+   request.magic = MagicNumber;
+   OrderSend(request, result);
+}
+
+void tradeSell(string symbol, double lot, double sl, double tp)
+{
+   MqlTradeRequest request = {0};
+   MqlTradeResult result = {0};
+   request.action = TRADE_ACTION_DEAL;
+   request.symbol = symbol;
+   request.volume = lot;
+   request.type = ORDER_TYPE_SELL;
+   request.price = SymbolInfoDouble(symbol, SYMBOL_BID);
+   request.sl = sl;
+   request.tp = tp;
+   request.deviation = Slippage;
+   request.magic = MagicNumber;
+   OrderSend(request, result);
+}
+
+void tradeModify(ulong ticket, double newSL)
+{
+   MqlTradeRequest request = {0};
+   MqlTradeResult result = {0};
+   request.action = TRADE_ACTION_SLTP;
+   request.position = ticket;
+   request.sl = newSL;
+   OrderSend(request, result);
+}
+
+//+------------------------------------------------------------------+
+//| Controle de horário de operação                                  |
+//+------------------------------------------------------------------+
+bool IsInTradingTime()
+{
+   datetime now = TimeCurrent();
+   string nowStr = TimeToString(now, TIME_MINUTES);
+   return (nowStr >= TradeStart && nowStr <= TradeEnd);
+}

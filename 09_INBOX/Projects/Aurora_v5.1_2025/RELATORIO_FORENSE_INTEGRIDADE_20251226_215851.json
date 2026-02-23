@@ -1,0 +1,193 @@
+{
+  "metadata": {
+    "teste": "INTEGRIDADE_ABSOLUTA_BLOCO3",
+    "timestamp": "2025-12-26T21:58:51.642537",
+    "protocolo": "ANTI_MANIPULACAO",
+    "nivel": "VERIFICACAO_CIRURGICA"
+  },
+  "testes_criticos": [
+    {
+      "teste": "ARQUIVO_OBRIGATORIO_RELATÓRIO_ORIGINAL_DO_BLOCO_3",
+      "arquivo": "RELATORIO_CONSOLIDACAO_20251226_213652.md",
+      "status": "APROVADO",
+      "tamanho_bytes": 1139,
+      "hash_sha256": "778d4488f8a011272d81431091b5962e408965ff1c033a6c605e165606e336a4",
+      "timestamp_modificacao": "2025-12-26T21:36:53.358076",
+      "timestamp": "2025-12-26T21:58:51.643548"
+    },
+    {
+      "teste": "ARQUIVO_OBRIGATORIO_CHECKPOINT_DO_BLOCO_3",
+      "arquivo": "checkpoint_consolidacao_20251226_213652.json",
+      "status": "APROVADO",
+      "tamanho_bytes": 2725,
+      "hash_sha256": "44a945b3dee64dd6ff313446e94b86bf150e2967690fb41e831183003d017ef7",
+      "timestamp_modificacao": "2025-12-26T21:36:53.360116",
+      "timestamp": "2025-12-26T21:58:51.644600"
+    },
+    {
+      "teste": "ARQUIVO_OBRIGATORIO_EXECUTOR_CONSOLIDADO",
+      "arquivo": "mt5_executor_consolidado_20251226_213652.py",
+      "status": "APROVADO",
+      "tamanho_bytes": 11225,
+      "hash_sha256": "e593ac0e66f3c7506b1ee870d3075e1e49efb664ca3eaae547070dba39427f3b",
+      "timestamp_modificacao": "2025-12-26T21:36:53.199338",
+      "timestamp": "2025-12-26T21:58:51.644600"
+    },
+    {
+      "teste": "ARQUIVO_OBRIGATORIO_BACKUP_ORIGINAL_DO_BLOCO_2",
+      "arquivo": "backup_pre_arch001_20251226_204338.zip",
+      "status": "APROVADO",
+      "tamanho_bytes": 54130,
+      "hash_sha256": "fefcb074bad89b3a5b03c8c18fa264ed2bd54e1c1a09da18bd74fb582f41709d",
+      "timestamp_modificacao": "2025-12-26T20:43:38.213518",
+      "timestamp": "2025-12-26T21:58:51.645548"
+    }
+  ],
+  "verificacoes_etapas": [
+    {
+      "etapa": "1/8 - Validação de Integridade do Backup",
+      "status": "NAO_CONFIRMADO",
+      "detalhes": "Nenhum detalhe disponível",
+      "timestamp": "2025-12-26T21:58:51.645548"
+    },
+    {
+      "etapa": "2/8 - Análise do Executor Principal",
+      "status": "NAO_CONFIRMADO",
+      "detalhes": "Nenhum detalhe disponível",
+      "timestamp": "2025-12-26T21:58:51.645548"
+    },
+    {
+      "etapa": "3/8 - Identificação de Duplicatas",
+      "status": "NAO_CONFIRMADO",
+      "detalhes": "Nenhum detalhe disponível",
+      "timestamp": "2025-12-26T21:58:51.645548"
+    },
+    {
+      "etapa": "4/8 - Remoção Cirúrgica",
+      "status": "NAO_CONFIRMADO",
+      "detalhes": "Nenhum detalhe disponível",
+      "timestamp": "2025-12-26T21:58:51.646547"
+    },
+    {
+      "etapa": "5/8 - Consolidação de Código",
+      "status": "NAO_CONFIRMADO",
+      "detalhes": "Nenhum detalhe disponível",
+      "timestamp": "2025-12-26T21:58:51.646547"
+    },
+    {
+      "etapa": "6/8 - Validação Pós-Consolidação",
+      "status": "NAO_CONFIRMADO",
+      "detalhes": "Nenhum detalhe disponível",
+      "timestamp": "2025-12-26T21:58:51.646547"
+    },
+    {
+      "etapa": "7/8 - Relatório de Consolidação",
+      "status": "NAO_CONFIRMADO",
+      "detalhes": "Nenhum detalhe disponível",
+      "timestamp": "2025-12-26T21:58:51.646547"
+    },
+    {
+      "etapa": "8/8 - Checkpoint Final",
+      "status": "CONFIRMADO",
+      "detalhes": "Checkpoint final gerado",
+      "timestamp": "2025-12-26T21:58:51.646547"
+    }
+  ],
+  "analise_forense": [
+    {
+      "analise": "CONTEÚDO DO RELATÓRIO",
+      "status": "COMPROMETIDO",
+      "evidencia": "Faltando: Lista de arquivos gerados, Nome do checkpoint, Nome do backup",
+      "elementos_faltantes": [
+        "Lista de arquivos gerados"
+      ],
+      "dados_faltantes": [
+        "Nome do checkpoint",
+        "Nome do backup"
+      ],
+      "timestamp": "2025-12-26T21:58:51.649555"
+    },
+    {
+      "analise": "CHECKPOINT DE CONSOLIDAÇÃO",
+      "status": "INTEGRO",
+      "estrutura_completa": true,
+      "dados_consistentes": true,
+      "tamanho_bytes": 2725,
+      "hash_sha256": "44a945b3dee64dd6ff313446e94b86bf150e2967690fb41e831183003d017ef7",
+      "timestamp": "2025-12-26T21:58:51.650554"
+    },
+    {
+      "analise": "EXECUTOR CONSOLIDADO",
+      "status": "INTEGRO",
+      "sintaxe_valida": true,
+      "linhas": 309,
+      "funcoes": 8,
+      "classes": 1,
+      "tamanho_bytes": 11225,
+      "hash_sha256": "e593ac0e66f3c7506b1ee870d3075e1e49efb664ca3eaae547070dba39427f3b",
+      "timestamp": "2025-12-26T21:58:51.809580"
+    },
+    {
+      "analise": "BACKUP ORIGINAL",
+      "status": "SUSPEITO",
+      "tamanho_mb": 0.05162239074707031,
+      "hash_calculado": "fefcb074bad89b3a5b03c8c18fa264ed2bd54e1c1a09da18bd74fb582f41709d",
+      "hash_relatorio": null,
+      "hash_correspondente": null,
+      "timestamp": "2025-12-26T21:58:51.811584"
+    }
+  ],
+  "alertas_manipulacao": [
+    {
+      "verificacao": "COERÊNCIA DE TIMESTAMPS",
+      "status": "APROVADO",
+      "detalhes": "Todos os timestamps são de 2025-12-26",
+      "timestamps": [
+        [
+          "RELATÓRIO",
+          "2025-12-26T21:36:53.358076"
+        ],
+        [
+          "CHECKPOINT",
+          "2025-12-26T21:36:53.360116"
+        ],
+        [
+          "EXECUTOR",
+          "2025-12-26T21:36:53.199338"
+        ],
+        [
+          "BACKUP",
+          "2025-12-26T20:43:38.213518"
+        ]
+      ],
+      "timestamp": "2025-12-26T21:58:51.813177"
+    },
+    {
+      "verificacao": "CORRESPONDÊNCIA DE HASHES",
+      "status": "APROVADO",
+      "detalhes": "Todos os hashes são válidos",
+      "timestamp": "2025-12-26T21:58:51.815217"
+    },
+    {
+      "verificacao": "CONSISTÊNCIA LÓGICA",
+      "status": "APROVADO",
+      "detalhes": "Todas as verificações lógicas passaram",
+      "timestamp": "2025-12-26T21:58:51.815217"
+    },
+    {
+      "verificacao": "DETECÇÃO DE ALTERAÇÕES SUSPEITAS",
+      "status": "APROVADO",
+      "detalhes": "Nenhuma alteração suspeita detectada",
+      "timestamp": "2025-12-26T21:58:51.815217"
+    }
+  ],
+  "conclusao": {
+    "status_geral": "COMPROMETIDO",
+    "nivel_confianca": "BAIXO",
+    "criticos_aprovados": true,
+    "etapas_confirmadas": "1/8",
+    "analises_integras": false,
+    "alertas_manipulacao": false,
+    "timestamp": "2025-12-26T21:58:51.816636"
+  }
+}

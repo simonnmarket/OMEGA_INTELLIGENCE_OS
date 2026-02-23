@@ -1,0 +1,35 @@
+class ExecutiveDashboard:
+    """Painel de controle executivo em tempo real"""
+    
+    def __init__(self):
+        self.real_time_metrics = {
+            'portfolio_value': 0,
+            'daily_pnl': 0,
+            'var': 0,
+            'sharpe_ratio': 0,
+            'drawdown': 0
+        }
+        self.risk_metrics = {
+            'value_at_risk': 0,
+            'expected_shortfall': 0,
+            'stress_test_results': {},
+            'liquidity_metrics': {}
+        }
+        self.performance_metrics = {
+            'win_rate': 0,
+            'profit_factor': 0,
+            'average_trade': 0,
+            'commission_costs': 0
+        }
+    
+    def update_dashboard(self, real_time_data):
+        """Atualização em tempo real do dashboard executivo"""
+        self.real_time_metrics = self.calculate_real_time_metrics(real_time_data)
+        self.risk_metrics = self.calculate_risk_metrics(real_time_data)
+        self.performance_metrics = self.calculate_performance_metrics(real_time_data)
+        
+        return {
+            'executive_summary': self.generate_executive_summary(),
+            'alerts': self.generate_alerts(),
+            'recommendations': self.generate_recommendations()
+        }

@@ -1,0 +1,53 @@
+========================================
+PROMETHEUS V1.0 MVPO - SISTEMA EM EXECUÇÃO
+========================================
+
+Data/Hora de Início: 26 de Novembro de 2025
+Status: 🟢 RODANDO EM BACKGROUND
+
+========================================
+O QUE ESTÁ ACONTECENDO:
+========================================
+
+1. ✅ Sistema iniciado
+2. 🔄 Conectando ao MetaTrader 5...
+3. 🔍 Descobrindo todos os ativos do Market Watch...
+4. 📊 Analisando cada ativo (MA5 vs MA20)
+5. 🎯 Executando ordens BUY quando detectado sinal
+6. ⏳ Aguardando 5 minutos entre ciclos
+
+========================================
+COMO MONITORAR:
+========================================
+
+O sistema está rodando em background. Para ver os logs:
+
+1. Abra um novo terminal/PowerShell
+2. Navegue até a pasta:
+   cd C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia
+
+3. Execute:
+   python prometheus_v1.0_mvpo.py
+
+   (Isso mostrará a saída em tempo real)
+
+OU
+
+Execute o arquivo .BAT:
+   INICIAR_PROMETHEUS_V1.0.bat
+
+========================================
+PARA PARAR O SISTEMA:
+========================================
+
+No terminal onde está rodando, pressione:
+   Ctrl + C
+
+OU
+
+Feche o terminal/PowerShell
+
+========================================
+STATUS: 🟢 OPERACIONAL
+========================================
+

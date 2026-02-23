@@ -1,0 +1,43 @@
+#property copyright "Quantum Sensory Trading System"
+#property link      "https://www.quantumsensory.com"
+#property version   "4.0"
+
+#include "../../Core/BaseInterfaces.mqh"
+
+class CInstitutionalAnalyzer : public IInsightCategory {
+private:
+    double confidence;
+    bool isValid;
+    
+public:
+    CInstitutionalAnalyzer() : confidence(0.0), isValid(false) {}
+    
+    bool Update() override {
+        // Implement institutional analysis update logic
+        confidence = 0.5; // Example value
+        return true;
+    }
+    
+    bool Validate() override {
+        isValid = true;
+        return true;
+    }
+    
+    double GetInsightScore() override {
+        return confidence;
+    }
+    
+    bool GetSignals(InsightSignal &signals[]) override {
+        ArrayResize(signals, 1);
+        signals[0].categoryName = "Institutional";
+        signals[0].signalName = "Institutional Flow";
+        signals[0].strength = confidence;
+        signals[0].confidence = confidence;
+        signals[0].timestamp = TimeCurrent();
+        signals[0].description = "Institutional analysis signal";
+        signals[0].isValid = isValid;
+        signals[0].priority = 1;
+        signals[0].impact = confidence;
+        return true;
+    }
+};

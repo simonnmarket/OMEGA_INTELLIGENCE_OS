@@ -1,0 +1,55 @@
+{
+  "metadata": {
+    "projeto": "AURORA v5.1 ARCH-001",
+    "versao": "1.0.0",
+    "data_integracao": "2025-12-26T22:58:37.185024",
+    "nivel": "EXCELENCIA_MAXIMA",
+    "status": "INTEGRADO"
+  },
+  "blocos": {
+    "bloco1": {
+      "status": "INTEGRADO",
+      "checkpoint": "checkpoint_analise_20251226_201607.json",
+      "timestamp": "2025-12-26T20:16:07.764208",
+      "hash": "91f89a7a21beffbf..."
+    },
+    "bloco2": {
+      "status": "INTEGRADO",
+      "checkpoint": "checkpoint_selecao_20251226_204338.json",
+      "timestamp": "2025-12-26T20:43:38.126422",
+      "hash": "23aada814481e53f..."
+    },
+    "bloco3": {
+      "status": "INTEGRADO",
+      "checkpoint": "checkpoint_consolidacao_20251226_213652.json",
+      "timestamp": "2025-12-26T21:36:52.731666",
+      "hash": "44a945b3dee64dd6..."
+    }
+  },
+  "arquivos_principais": {
+    "executor": {
+      "arquivo": "mt5_executor_consolidado_20251226_213652.py",
+      "tamanho_kb": 10.9619140625,
+      "hash": "e593ac0e66f3c750...",
+      "status": "VALIDADO"
+    },
+    "backup": {
+      "arquivo": "backup_pre_arch001_20251226_204338.zip",
+      "tamanho_mb": 0.05162239074707031,
+      "arquivos_contidos": 17,
+      "status": "VALIDADO"
+    }
+  },
+  "configuracoes_sistema": {
+    "ambiente_python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "diretorio_base": "C:\\Users\\Lenovo\\Projects\\Aurora",
+    "sistema_operacional": "nt",
+    "timestamp_integracao": "20251226_225836"
+  },
+  "validacoes": {
+    "checkpoints_validados": 3,
+    "executor_validado": true,
+    "backup_validado": true,
+    "protocolo_antifraude": true
+  }
+}

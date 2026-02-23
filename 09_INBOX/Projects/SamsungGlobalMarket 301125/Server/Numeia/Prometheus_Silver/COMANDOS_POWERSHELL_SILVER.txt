@@ -1,0 +1,55 @@
+============================================================
+COMANDOS POWERSHELL - PROMETHEUS SILVER V2.3
+============================================================
+
+CAMINHO COMPLETO DO ARQUIVO:
+C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia\Prometheus_Silver\prometheus_silver_v2.3.py
+
+============================================================
+COMANDO COMPLETO (COPIE E COLE NO POWERSHELL):
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia\Prometheus_Silver"
+python prometheus_silver_v2.3.py
+
+============================================================
+OU EM UMA ÚNICA LINHA (COPIE TUDO):
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia\Prometheus_Silver"; python prometheus_silver_v2.3.py
+
+============================================================
+OU USE O SCRIPT POWERSHELL (MAIS FÁCIL):
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia\Prometheus_Silver"
+.\EXECUTAR_SILVER.ps1
+
+============================================================
+VERIFICAR HORÁRIO DE TRADING ANTES DE EXECUTAR:
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia\Prometheus_Silver"
+python verificar_horario_trading_xag.py
+
+============================================================
+ANALISAR PERFORMANCE DO SISTEMA SILVER:
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia\Prometheus_Silver"
+python analise_performance_silver.py
+
+============================================================
+VERIFICAR SE ESTÁ NA PASTA CORRETA:
+============================================================
+
+pwd
+
+============================================================
+LISTAR ARQUIVOS DA PASTA:
+============================================================
+
+dir
+
+============================================================
+

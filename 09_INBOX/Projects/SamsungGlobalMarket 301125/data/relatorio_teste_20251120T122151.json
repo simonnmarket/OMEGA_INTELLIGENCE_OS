@@ -1,0 +1,72 @@
+{
+    "timestamp": "2025-11-20T12:21:51.419543",
+    "status": "SUCESSO",
+    "detalhes": {
+        "db": {
+            "status": "OK",
+            "arquivo": "openmymind.db"
+        },
+        "tweets": {
+            "status": "OK",
+            "registros": 0,
+            "coletados": false
+        },
+        "orderbook": {
+            "status": "OK",
+            "coletado": true,
+            "dados": {
+                "ts": "2025-11-20 12:21:51.141068",
+                "exchange": "binance",
+                "symbol": "BTC/USDT",
+                "bid": 91847.99,
+                "bid_size": 4.53924,
+                "ask": 91848.0,
+                "ask_size": 0.35871,
+                "bid_depth_top10": 7.066930000000003,
+                "ask_depth_top10": 0.70507
+            }
+        },
+        "onchain": {
+            "status": "OK",
+            "registros": 0,
+            "coletados": false
+        },
+        "whale_alert": {
+            "status": "OK",
+            "registros": 0,
+            "coletados": false
+        },
+        "validacao": {
+            "status": "OK",
+            "eventos_validados": 0,
+            "exemplos": []
+        },
+        "persistencia": {
+            "status": "OK",
+            "sinais_persistidos": 0,
+            "total_validados": 0
+        },
+        "backtest": {
+            "status": "SKIP",
+            "razao": "Nenhum evento validado"
+        },
+        "neural": {
+            "status": "OK",
+            "predictions_shape": "(1, 1)",
+            "risk_params": {
+                "max_position_size": "(1,)",
+                "stop_loss": "(1,)",
+                "take_profit": "(1,)"
+            },
+            "batch_size": 0
+        },
+        "resumo": {
+            "total_etapas": 9,
+            "sucesso": true,
+            "erros_encontrados": 0,
+            "erros": []
+        }
+    },
+    "versao": "1.0",
+    "teste": "OpenMyMind Project 007 - Teste Completo"
+}

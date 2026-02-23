@@ -1,0 +1,45 @@
+{
+  "test_id": "aurora_test_20251221_001830",
+  "test_mode": "NO_STOPS_VALIDATION",
+  "simulation_mode": false,
+  "start_time": "2025-12-21T00:18:18.339643",
+  "end_time": "2025-12-21T00:18:30.192846",
+  "summary": {
+    "duration_seconds": 11.853203,
+    "duration_minutes": 0.19755338333333333,
+    "cycles_completed": 2,
+    "signals_generated": 0,
+    "orders_executed": 0,
+    "orders_failed": 0,
+    "success_rate": 0.0,
+    "errors_count": 0,
+    "uptime_percent": 100.0,
+    "timestamp": "2025-12-21T00:18:30.192846"
+  },
+  "test_symbols": [
+    "BTCUSD",
+    "ETHUSD",
+    "BNBUSD",
+    "SOLUSD"
+  ],
+  "system_components_validated": [
+    "MT5 Connection",
+    "Strategy Engine",
+    "Signal Generation",
+    "Order Execution",
+    "Monitoring System"
+  ],
+  "issues_identified": [
+    "Stops disabled (Hantec limitation)",
+    "Volume fixed at minimum (0.01)",
+    "Limited to 4 test symbols"
+  ],
+  "recommendations": [
+    "Implement stop workaround after validation",
+    "Add dynamic volume calculation",
+    "Expand symbol coverage",
+    "Add risk management without stops"
+  ],
+  "validation_result": "FAIL",
+  "notes": "System functional but requires stop-loss workaround for Hantec"
+}

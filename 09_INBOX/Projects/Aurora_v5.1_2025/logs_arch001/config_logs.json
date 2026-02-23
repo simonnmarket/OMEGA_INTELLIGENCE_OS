@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "sistema": "ARCH-001 Logs Centralizados",
+    "data_criacao": "2025-12-26T23:01:01.019449",
+    "diretorio": "logs_arch001"
+  },
+  "configuracoes": {
+    "nivel_log": "INFO",
+    "rotacao_diaria": true,
+    "tamanho_maximo_mb": 10,
+    "retencao_dias": 30
+  }
+}

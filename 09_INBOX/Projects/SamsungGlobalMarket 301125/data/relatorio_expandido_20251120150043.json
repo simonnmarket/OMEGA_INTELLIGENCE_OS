@@ -1,0 +1,23 @@
+{
+  "timestamp_inicio": "2025-11-20T15:00:28.535693",
+  "coleta_reddit": {
+    "status": "sucesso",
+    "registros": 300,
+    "subreddits": [
+      "CryptoCurrency",
+      "Bitcoin",
+      "ethereum"
+    ]
+  },
+  "coleta_telegram_discord": {
+    "status": "sucesso",
+    "registros": 2
+  },
+  "validacao_cruzada": {
+    "status": "sucesso",
+    "eventos_validados": 0,
+    "eventos": []
+  },
+  "status": "concluido",
+  "timestamp_termino": "2025-11-20T15:00:43.574485"
+}

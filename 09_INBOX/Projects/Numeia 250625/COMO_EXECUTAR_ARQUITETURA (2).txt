@@ -1,0 +1,69 @@
+================================================================================
+                    COMO EXECUTAR O SISTEMA DE ARQUITETURA VISUAL
+================================================================================
+
+🚀 INSTRUÇÕES SIMPLES
+=====================
+
+1️⃣ ABRA O METATRADER 5
+   - Inicie o MetaTrader 5
+   - Abra qualquer gráfico
+
+2️⃣ VÁ PARA NAVEGADOR > SCRIPTS
+   - No painel esquerdo, clique em "Navegador"
+   - Expanda a pasta "Scripts"
+   - Procure pela pasta "Numeia"
+
+3️⃣ EXECUTE O ARQUIVO
+   - Dentro da pasta "Numeia", você verá:
+     * ArquiteturaVisual.mq5
+     * EXECUTAR_ARQUITETURA.mq5
+   - Clique duas vezes em "ArquiteturaVisual.mq5"
+
+4️⃣ VISUALIZE O PAINEL
+   - O painel aparecerá no gráfico
+   - Você verá o status de todos os módulos
+   - Cores indicam o status:
+     * VERDE = OK
+     * LARANJA = WARNING
+     * VERMELHO = ERROR
+     * AMARELO = PENDING
+
+📁 LOCALIZAÇÃO DOS ARQUIVOS
+===========================
+
+Arquivo principal: D:\Cursor\Numeia\Numeia\ArquiteturaVisual.mq5
+
+No MetaTrader 5: MQL5\Scripts\Numeia\ArquiteturaVisual.mq5
+
+🔧 SE NÃO ENCONTRAR
+==================
+
+1. Verifique se o MetaTrader 5 está atualizado
+2. Reinicie o MetaTrader 5
+3. Execute primeiro o EXECUTAR_ARQUITETURA.mq5
+4. Verifique se os arquivos estão na pasta correta
+
+📞 SUPORTE
+==========
+
+Se ainda não conseguir localizar:
+1. Execute EXECUTAR_ARQUITETURA.mq5 primeiro
+2. Verifique os logs no terminal
+3. Confirme se todos os arquivos estão presentes
+
+🎯 RESULTADO ESPERADO
+=====================
+
+Após executar, você verá um painel azul escuro com:
+- Título: "🏗️ ARQUITETURA VISUAL - EA NUMEIA"
+- Estatísticas dos módulos
+- Lista de módulos com status colorido
+- Alertas automáticos
+
+✅ SUCESSO!
+===========
+
+Se o painel aparecer no gráfico, o sistema está funcionando perfeitamente!
+
+================================================================================ 

@@ -1,0 +1,381 @@
+//+------------------------------------------------------------------+
+//|                                              GravitationalSphereSkylabEA.mq5 |
+//|                                  Copyright 2024, Your Name Here     |
+//|                                             https://www.yoursite.com |
+//| Version 2.19 - Reintroduced minimal visualizations (channel lines only) with debug logs to eliminate type conversion warning |
+//+------------------------------------------------------------------+
+#property copyright "Copyright 2024"
+#property link      "https://www.yoursite.com"
+#property version   "2.19"
+#property strict
+
+// Input Parameters
+input double SphereSensitivity = 1.5;             // Sphere Sensitivity
+input int ChannelPeriodWeekly = 100;              // Weekly Channel Period
+input int ChannelPeriodDaily = 20;                // Daily Channel Period
+input ENUM_TIMEFRAMES ExecutionTimeframe = PERIOD_M15; // Execution Timeframe
+input bool ShowVisuals = true;                    // Show Visual Elements
+input color CenterColor = clrGreen;               // POC Line Color
+input color SphereColor = clrYellow;              // Channel Lines Color
+input double VolumeThreshold = 1.5;               // Volume Force Threshold
+
+// Global Variables
+double CenterValueWeekly, CenterValueDaily;
+double UpperSphereWeekly, LowerSphereWeekly;
+double UpperSphereDaily, LowerSphereDaily;
+double VolumeForce, GravForce, PriceImpact, ChannelDensity, SphereEnergy;
+datetime LastAlertTime = 0;
+datetime MarketOpen, MarketClose;
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                    |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+   Print("Inicializando EA - Versão 2.19");
+   // Set market open (Monday 00:00) and close (Friday 23:59)
+   MqlDateTime dt;
+   TimeToStruct(TimeCurrent(), dt);
+   int days_to_monday = dt.day_of_week == 0 ? 6 : dt.day_of_week - 1;
+   MarketOpen = TimeCurrent() - days_to_monday * 86400 - dt.hour * 3600 - dt.min * 60;
+   MarketClose = MarketOpen + 5 * 86400 - 1;
+   
+   // Create objects for visualization
+   if(ShowVisuals)
+   {
+      // Weekly Channel
+      if(!ObjectCreate(0, "CenterLineWeekly", OBJ_TREND, 0, 0, 0))
+         Print("Erro ao criar CenterLineWeekly: ", GetLastError());
+      ObjectSetInteger(0, "CenterLineWeekly", OBJPROP_COLOR, CenterColor);
+      ObjectSetInteger(0, "CenterLineWeekly", OBJPROP_STYLE, STYLE_SOLID);
+      ObjectSetInteger(0, "CenterLineWeekly", OBJPROP_WIDTH, 2);
+      ObjectSetInteger(0, "CenterLineWeekly", OBJPROP_RAY_RIGHT, true);
+      
+      if(!ObjectCreate(0, "UpperSphereWeekly", OBJ_TREND, 0, 0, 0))
+         Print("Erro ao criar UpperSphereWeekly: ", GetLastError());
+      ObjectSetInteger(0, "UpperSphereWeekly", OBJPROP_COLOR, SphereColor);
+      ObjectSetInteger(0, "UpperSphereWeekly", OBJPROP_STYLE, STYLE_DASH);
+      ObjectSetInteger(0, "UpperSphereWeekly", OBJPROP_WIDTH, 1);
+      ObjectSetInteger(0, "UpperSphereWeekly", OBJPROP_RAY_RIGHT, true);
+      
+      if(!ObjectCreate(0, "LowerSphereWeekly", OBJ_TREND, 0, 0, 0))
+         Print("Erro ao criar LowerSphereWeekly: ", GetLastError());
+      ObjectSetInteger(0, "LowerSphereWeekly", OBJPROP_COLOR, SphereColor);
+      ObjectSetInteger(0, "LowerSphereWeekly", OBJPROP_STYLE, STYLE_DASH);
+      ObjectSetInteger(0, "LowerSphereWeekly", OBJPROP_WIDTH, 1);
+      ObjectSetInteger(0, "LowerSphereWeekly", OBJPROP_RAY_RIGHT, true);
+      
+      // Daily Channel
+      if(!ObjectCreate(0, "CenterLineDaily", OBJ_TREND, 0, 0, 0))
+         Print("Erro ao criar CenterLineDaily: ", GetLastError());
+      ObjectSetInteger(0, "CenterLineDaily", OBJPROP_COLOR, CenterColor);
+      ObjectSetInteger(0, "CenterLineDaily", OBJPROP_STYLE, STYLE_SOLID);
+      ObjectSetInteger(0, "CenterLineDaily", OBJPROP_WIDTH, 1);
+      ObjectSetInteger(0, "CenterLineDaily", OBJPROP_RAY_RIGHT, true);
+      
+      if(!ObjectCreate(0, "UpperSphereDaily", OBJ_TREND, 0, 0, 0))
+         Print("Erro ao criar UpperSphereDaily: ", GetLastError());
+      ObjectSetInteger(0, "UpperSphereDaily", OBJPROP_COLOR, SphereColor);
+      ObjectSetInteger(0, "UpperSphereDaily", OBJPROP_STYLE, STYLE_DOT);
+      ObjectSetInteger(0, "UpperSphereDaily", OBJPROP_WIDTH, 1);
+      ObjectSetInteger(0, "UpperSphereDaily", OBJPROP_RAY_RIGHT, true);
+      
+      if(!ObjectCreate(0, "LowerSphereDaily", OBJ_TREND, 0, 0, 0))
+         Print("Erro ao criar LowerSphereDaily: ", GetLastError());
+      ObjectSetInteger(0, "LowerSphereDaily", OBJPROP_COLOR, SphereColor);
+      ObjectSetInteger(0, "LowerSphereDaily", OBJPROP_STYLE, STYLE_DOT);
+      ObjectSetInteger(0, "LowerSphereDaily", OBJPROP_WIDTH, 1);
+      ObjectSetInteger(0, "LowerSphereDaily", OBJPROP_RAY_RIGHT, true);
+   }
+   
+   Print("Inicialização concluída com sucesso");
+   return(INIT_SUCCEEDED);
+}
+
+//+------------------------------------------------------------------+
+//| Expert deinitialization function                                  |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason)
+{
+   if(ShowVisuals)
+   {
+      ObjectDelete(0, "CenterLineWeekly");
+      ObjectDelete(0, "UpperSphereWeekly");
+      ObjectDelete(0, "LowerSphereWeekly");
+      ObjectDelete(0, "CenterLineDaily");
+      ObjectDelete(0, "UpperSphereDaily");
+      ObjectDelete(0, "LowerSphereDaily");
+   }
+   Print("Deinicialização concluída");
+}
+
+//+------------------------------------------------------------------+
+//| Expert tick function                                              |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+   // Check if within market hours
+   if(TimeCurrent() < MarketOpen || TimeCurrent() > MarketClose) return;
+   
+   // Calculate values
+   CalculateValues();
+   
+   // Update visuals
+   if(ShowVisuals)
+   {
+      UpdateVisuals();
+   }
+   
+   // Check for signals
+   CheckSignals();
+}
+
+//+------------------------------------------------------------------+
+//| Calculate values                                                  |
+//+------------------------------------------------------------------+
+void CalculateValues()
+{
+   // Weekly Channel (based on previous week)
+   MqlRates ratesWeekly[];
+   ArraySetAsSeries(ratesWeekly, true);
+   int copiedWeekly = CopyRates(_Symbol, PERIOD_W1, 1, ChannelPeriodWeekly, ratesWeekly);
+   if(copiedWeekly > 0)
+   {
+      double vwapWeekly = CalculateVWAP(ratesWeekly);
+      double atrWeekly = CalculateATR(ratesWeekly);
+      double slopeWeekly = CalculateLinearRegressionSlope(ratesWeekly);
+      CenterValueWeekly = vwapWeekly;
+      UpperSphereWeekly = vwapWeekly + (atrWeekly * SphereSensitivity);
+      LowerSphereWeekly = vwapWeekly - (atrWeekly * SphereSensitivity);
+   }
+   
+   // Daily Channel
+   MqlRates ratesDaily[];
+   ArraySetAsSeries(ratesDaily, true);
+   int copiedDaily = CopyRates(_Symbol, PERIOD_D1, 0, ChannelPeriodDaily, ratesDaily);
+   if(copiedDaily > 0)
+   {
+      double vwapDaily = CalculateVWAP(ratesDaily);
+      double atrDaily = CalculateATR(ratesDaily);
+      double slopeDaily = CalculateLinearRegressionSlope(ratesDaily);
+      CenterValueDaily = vwapDaily;
+      UpperSphereDaily = vwapDaily + (atrDaily * SphereSensitivity);
+      LowerSphereDaily = vwapDaily - (atrDaily * SphereSensitivity);
+   }
+   
+   // Execution Timeframe
+   MqlRates ratesExecution[];
+   ArraySetAsSeries(ratesExecution, true);
+   int copiedExecution = CopyRates(_Symbol, ExecutionTimeframe, 0, ChannelPeriodDaily, ratesExecution);
+   if(copiedExecution > 0)
+   {
+      VolumeForce = CalculateVolumeForce(ratesExecution);
+      GravForce = CalculateGravForce(ratesExecution);
+      PriceImpact = CalculatePriceImpact(ratesExecution);
+      ChannelDensity = CalculateChannelDensity(ratesExecution);
+      SphereEnergy = VolumeForce * ChannelDensity;
+   }
+}
+
+//+------------------------------------------------------------------+
+//| Update visuals                                                    |
+//+------------------------------------------------------------------+
+void UpdateVisuals()
+{
+   Print("Executando UpdateVisuals - Versão 2.19");
+   datetime time[];
+   ArraySetAsSeries(time, true);
+   if(CopyTime(_Symbol, ExecutionTimeframe, 0, 2, time) < 2)
+   {
+      Print("Erro: Falha ao copiar tempos");
+      return;
+   }
+   
+   // Update Weekly Channel
+   ObjectSetDouble(0, "CenterLineWeekly", OBJPROP_PRICE, 0, CenterValueWeekly);
+   ObjectSetInteger(0, "CenterLineWeekly", OBJPROP_TIME, 0, time[1]);
+   ObjectSetDouble(0, "CenterLineWeekly", OBJPROP_PRICE, 1, CenterValueWeekly);
+   ObjectSetInteger(0, "CenterLineWeekly", OBJPROP_TIME, 1, time[0]);
+   
+   ObjectSetDouble(0, "UpperSphereWeekly", OBJPROP_PRICE, 0, UpperSphereWeekly);
+   ObjectSetInteger(0, "UpperSphereWeekly", OBJPROP_TIME, 0, time[1]);
+   ObjectSetDouble(0, "UpperSphereWeekly", OBJPROP_PRICE, 1, UpperSphereWeekly);
+   ObjectSetInteger(0, "UpperSphereWeekly", OBJPROP_TIME, 1, time[0]);
+   
+   ObjectSetDouble(0, "LowerSphereWeekly", OBJPROP_PRICE, 0, LowerSphereWeekly);
+   ObjectSetInteger(0, "LowerSphereWeekly", OBJPROP_TIME, 0, time[1]);
+   ObjectSetDouble(0, "LowerSphereWeekly", OBJPROP_PRICE, 1, LowerSphereWeekly);
+   ObjectSetInteger(0, "LowerSphereWeekly", OBJPROP_TIME, 1, time[0]);
+   
+   // Update Daily Channel
+   ObjectSetDouble(0, "CenterLineDaily", OBJPROP_PRICE, 0, CenterValueDaily);
+   ObjectSetInteger(0, "CenterLineDaily", OBJPROP_TIME, 0, time[1]);
+   ObjectSetDouble(0, "CenterLineDaily", OBJPROP_PRICE, 1, CenterValueDaily);
+   ObjectSetInteger(0, "CenterLineDaily", OBJPROP_TIME, 1, time[0]);
+   
+   ObjectSetDouble(0, "UpperSphereDaily", OBJPROP_PRICE, 0, UpperSphereDaily);
+   ObjectSetInteger(0, "UpperSphereDaily", OBJPROP_TIME, 0, time[1]);
+   ObjectSetDouble(0, "UpperSphereDaily", OBJPROP_PRICE, 1, UpperSphereDaily);
+   ObjectSetInteger(0, "UpperSphereDaily", OBJPROP_TIME, 1, time[0]);
+   
+   ObjectSetDouble(0, "LowerSphereDaily", OBJPROP_PRICE, 0, LowerSphereDaily);
+   ObjectSetInteger(0, "LowerSphereDaily", OBJPROP_TIME, 0, time[1]);
+   ObjectSetDouble(0, "LowerSphereDaily", OBJPROP_PRICE, 1, LowerSphereDaily);
+   ObjectSetInteger(0, "LowerSphereDaily", OBJPROP_TIME, 1, time[0]);
+   
+   Print("UpdateVisuals concluído com sucesso");
+}
+
+//+------------------------------------------------------------------+
+//| Check for signals                                                 |
+//+------------------------------------------------------------------+
+void CheckSignals()
+{
+   double current_price = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+   datetime current_time = TimeCurrent();
+   
+   // Check for breakout or speculation
+   if(current_price > UpperSphereDaily && VolumeForce > VolumeThreshold)
+   {
+      if(current_time - LastAlertTime >= 60)
+      {
+         Alert("Compra: Breakout institucional no canal diário, VolumeForce=", DoubleToString(VolumeForce, 2));
+         LastAlertTime = current_time;
+      }
+   }
+   else if(current_price < LowerSphereDaily && VolumeForce > VolumeThreshold)
+   {
+      if(current_time - LastAlertTime >= 60)
+      {
+         Alert("Venda: Breakout institucional no canal diário, VolumeForce=", DoubleToString(VolumeForce, 2));
+         LastAlertTime = current_time;
+      }
+   }
+   else if((current_price > UpperSphereDaily || current_price < LowerSphereDaily) && VolumeForce < VolumeThreshold)
+   {
+      if(current_time - LastAlertTime >= 60)
+      {
+         Alert("Especulação: Possível caça a stop-loss, VolumeForce=", DoubleToString(VolumeForce, 2));
+         LastAlertTime = current_time;
+      }
+   }
+}
+
+//+------------------------------------------------------------------+
+//| Calculate VWAP                                                    |
+//+------------------------------------------------------------------+
+double CalculateVWAP(const MqlRates &rates[])
+{
+   double sum_price_volume = 0.0;
+   double sum_volume = 0.0;
+   for(int i = 0; i < ArraySize(rates); i++)
+   {
+      double typical_price = (rates[i].high + rates[i].low + rates[i].close) / 3;
+      sum_price_volume += typical_price * (double)rates[i].tick_volume; // Conversão explícita; segura
+      sum_volume += (double)rates[i].tick_volume; // Conversão explícita; segura
+   }
+   return sum_volume > 0 ? sum_price_volume / sum_volume : 0;
+}
+
+//+------------------------------------------------------------------+
+//| Calculate ATR                                                     |
+//+------------------------------------------------------------------+
+double CalculateATR(const MqlRates &rates[])
+{
+   double sum = 0;
+   int count = ArraySize(rates);
+   
+   for(int i = 1; i < count; i++)
+   {
+      double tr = MathMax(rates[i].high - rates[i].low, 
+                         MathMax(MathAbs(rates[i].high - rates[i-1].close), 
+                                MathAbs(rates[i].low - rates[i-1].close)));
+      sum += tr;
+   }
+   
+   return count > 1 ? sum / (count - 1) : 0;
+}
+
+//+------------------------------------------------------------------+
+//| Calculate Linear Regression Slope                                 |
+//+------------------------------------------------------------------+
+double CalculateLinearRegressionSlope(const MqlRates &rates[])
+{
+   int count = ArraySize(rates);
+   if(count < 2) return 0;
+   
+   double sum_x = 0, sum_y = 0, sum_xy = 0, sum_xx = 0;
+   for(int i = 0; i < count; i++)
+   {
+      double x = i;
+      double y = rates[i].close;
+      sum_x += x;
+      sum_y += y;
+      sum_xy += x * y;
+      sum_xx += x * x;
+   }
+   
+   double slope = (count * sum_xy - sum_x * sum_y) / (count * sum_xx - sum_x * sum_x);
+   return slope;
+}
+
+//+------------------------------------------------------------------+
+//| Calculate Volume Force                                            |
+//+------------------------------------------------------------------+
+double CalculateVolumeForce(const MqlRates &rates[])
+{
+   int count = ArraySize(rates);
+   if(count < 2) return 0;
+   
+   long avg_volume = 0;
+   for(int i = 0; i < count; i++)
+   {
+      avg_volume += rates[i].tick_volume;
+   }
+   double avg_volume_double = (double)avg_volume / count;
+   
+   return (double)rates[0].tick_volume / avg_volume_double; // Conversão explícita; segura
+}
+
+//+------------------------------------------------------------------+
+//| Calculate Grav Force                                              |
+//+------------------------------------------------------------------+
+double CalculateGravForce(const MqlRates &rates[])
+{
+   int count = ArraySize(rates);
+   if(count < 2) return 0;
+   
+   double momentum = rates[0].close - rates[count-1].close;
+   return momentum / count;
+}
+
+//+------------------------------------------------------------------+
+//| Calculate Price Impact                                            |
+//+------------------------------------------------------------------+
+double CalculatePriceImpact(const MqlRates &rates[])
+{
+   int count = ArraySize(rates);
+   if(count < 2) return 0;
+   
+   double price_change = MathAbs(rates[0].close - rates[1].close);
+   double volume = (double)rates[0].tick_volume; // Conversão explícita; segura
+   return volume > 0 ? price_change / volume : 0;
+}
+
+//+------------------------------------------------------------------+
+//| Calculate Channel Density                                         |
+//+------------------------------------------------------------------+
+double CalculateChannelDensity(const MqlRates &rates[])
+{
+   int count = ArraySize(rates);
+   if(count < 2) return 0;
+   
+   double range = 0;
+   for(int i = 0; i < count; i++)
+   {
+      range += rates[i].high - rates[i].low;
+   }
+   range /= count;
+   
+   return 1.0 / (range + 1e-10);
+}

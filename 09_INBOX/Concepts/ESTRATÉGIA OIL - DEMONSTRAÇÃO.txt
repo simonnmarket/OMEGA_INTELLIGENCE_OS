@@ -1,0 +1,38 @@
+🛢️ ESTRATÉGIA OIL - DEMONSTRAÇÃO
+==================================================
+📊 SINAIS GERADOS:
+  term_structure: -2.0000
+  inventory:
+    correlation: -0.0196
+    cycle_phase: ACCUMULATION
+    inflection_points: 49.0000
+    velocity: 0.5814
+  geopolitical: 25.9000
+  usd_hedge:
+    correlation: -0.0356
+    hedge_beta: -0.3267
+    hedge_ratio: 0.3267
+  seasonal:
+    seasonal_strength: 0.0000
+    trend_strength: 0.9979
+    current_seasonality: 0.0000
+  momentum:
+    momentum: 0.0365
+    force: -0.0231
+    energy_signal: 0.0000
+    acceleration: -0.0006
+  regime:
+    current_regime: 0
+    regime_confidence: 0.3857
+    regime_volatility: 0.0201
+    regime_return: 0.0010
+  volume_confirmation:
+    confirmation: 1
+    strength: 0.0201
+    price_trend: 1.0
+    volume_trend: 1.0
+
+🎯 DECISÃO FINAL:
+  Ação: BUY
+  Tamanho Posição: $500.00
+  Confiança: 62.5%

@@ -1,0 +1,115 @@
+{
+  "execucao_id": "aurora_etapa_a_20251220_001425",
+  "timestamp_inicio": "2025-12-20T00:14:25.285774",
+  "sistema": "Aurora v5.0",
+  "versao": "5.0.2",
+  "etapa": "A - Análise com Dados Reais",
+  "status_geral": "erro_excecao",
+  "validacoes": {
+    "Python 3.8+": {
+      "status": "sucesso",
+      "stdout": "Python 3.11.9\n",
+      "stderr": ""
+    },
+    "dependencia_yfinance": {
+      "status": "instalada",
+      "spec": "ModuleSpec(name='yfinance', loader=<_frozen_importlib_external.SourceFileLoader object at 0x0000018DB8F88590>, origin='C:\\\\Users\\\\Lenovo\\\\AppData\\\\Local\\\\Packages\\\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\\\LocalCache\\\\local-packages\\\\Python311\\\\site-packages\\\\yfinance\\\\__init__.py', submodule_search_locations=['C:\\\\Users\\\\Lenovo\\\\AppData\\\\Local\\\\Packages\\\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\\\LocalCache\\\\local-packages\\\\Python311\\\\site-packages\\\\yfinance'])"
+    },
+    "dependencia_pandas": {
+      "status": "instalada",
+      "spec": "ModuleSpec(name='pandas', loader=<_frozen_importlib_external.SourceFileLoader object at 0x0000018DBBCDE7D0>, origin='C:\\\\Users\\\\Lenovo\\\\AppData\\\\Local\\\\Packages\\\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\\\LocalCache\\\\local-packages\\\\Python311\\\\site-packages\\\\pandas\\\\__init__.py', submodule_search_locations=['C:\\\\Users\\\\Lenovo\\\\AppData\\\\Local\\\\Packages\\\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\\\LocalCache\\\\local-packages\\\\Python311\\\\site-packages\\\\pandas'])"
+    },
+    "dependencia_numpy": {
+      "status": "instalada",
+      "spec": "ModuleSpec(name='numpy', loader=<_frozen_importlib_external.SourceFileLoader object at 0x0000018DB8F87250>, origin='C:\\\\Users\\\\Lenovo\\\\AppData\\\\Local\\\\Packages\\\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\\\LocalCache\\\\local-packages\\\\Python311\\\\site-packages\\\\numpy\\\\__init__.py', submodule_search_locations=['C:\\\\Users\\\\Lenovo\\\\AppData\\\\Local\\\\Packages\\\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\\\LocalCache\\\\local-packages\\\\Python311\\\\site-packages\\\\numpy'])"
+    },
+    "dependencia_scipy": {
+      "status": "instalada",
+      "spec": "ModuleSpec(name='scipy', loader=<_frozen_importlib_external.SourceFileLoader object at 0x0000018DB8F88590>, origin='C:\\\\Users\\\\Lenovo\\\\AppData\\\\Local\\\\Packages\\\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\\\LocalCache\\\\local-packages\\\\Python311\\\\site-packages\\\\scipy\\\\__init__.py', submodule_search_locations=['C:\\\\Users\\\\Lenovo\\\\AppData\\\\Local\\\\Packages\\\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\\\LocalCache\\\\local-packages\\\\Python311\\\\site-packages\\\\scipy'])"
+    },
+    "modulo_aurora_etapa_a.py": {
+      "status": "operacional",
+      "caminho": "C:\\Users\\Lenovo\\Projects\\Aurora\\aurora_etapa_a.py",
+      "erro": null
+    },
+    "modulo_main_ncnt.py": {
+      "status": "operacional",
+      "caminho": "C:\\Users\\Lenovo\\Projects\\Aurora\\main_ncnt.py",
+      "erro": null
+    },
+    "modulo_ncnt_system_complete.py": {
+      "status": "operacional",
+      "caminho": "C:\\Users\\Lenovo\\Projects\\Aurora\\ncnt_system_complete.py",
+      "erro": null
+    },
+    "modulo_06-Monitoramento/feedbackloop_module.py": {
+      "status": "operacional",
+      "caminho": "C:\\Users\\Lenovo\\Projects\\Aurora\\06-Monitoramento\\feedbackloop_module.py",
+      "erro": null
+    },
+    "modulo_system_core/ncnt_orchestrator_complete.py": {
+      "status": "operacional",
+      "caminho": "C:\\Users\\Lenovo\\Projects\\Aurora\\system_core\\ncnt_orchestrator_complete.py",
+      "erro": null
+    },
+    "modulo_04-Infraestrutura/api/database.py": {
+      "status": "operacional",
+      "caminho": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\api\\database.py",
+      "erro": null
+    },
+    "modulo_04-Infraestrutura/api/main.py": {
+      "status": "operacional",
+      "caminho": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\api\\main.py",
+      "erro": null
+    },
+    "modulo_04-Infraestrutura/api/endpoints/strategies.py": {
+      "status": "operacional",
+      "caminho": "C:\\Users\\Lenovo\\Projects\\Aurora\\04-Infraestrutura\\api\\endpoints\\strategies.py",
+      "erro": null
+    },
+    "modulo_00-Governanca/tier1_risk_validator.py": {
+      "status": "operacional",
+      "caminho": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\tier1_risk_validator.py",
+      "erro": null
+    },
+    "modulo_00-Governanca/quantum_firewall.py": {
+      "status": "operacional",
+      "caminho": "C:\\Users\\Lenovo\\Projects\\Aurora\\00-Governanca\\quantum_firewall.py",
+      "erro": null
+    },
+    "modulo_01-Departamentos/AGENTS/CEO_Agent.py": {
+      "status": "operacional",
+      "caminho": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\AGENTS\\CEO_Agent.py",
+      "erro": null
+    },
+    "modulo_01-Departamentos/AGENTS/CFO_Agent.py": {
+      "status": "operacional",
+      "caminho": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\AGENTS\\CFO_Agent.py",
+      "erro": null
+    },
+    "modulo_01-Departamentos/AGENTS/CTO_Agent.py": {
+      "status": "operacional",
+      "caminho": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\AGENTS\\CTO_Agent.py",
+      "erro": null
+    },
+    "modulo_01-Departamentos/AGENTS/CKO_Agent.py": {
+      "status": "operacional",
+      "caminho": "C:\\Users\\Lenovo\\Projects\\Aurora\\01-Departamentos\\AGENTS\\CKO_Agent.py",
+      "erro": null
+    },
+    "teste_importacao": {
+      "status": "sucesso",
+      "stdout": "OK\n",
+      "stderr": ""
+    }
+  },
+  "metricas_mercado": {},
+  "analise_pontos_criticos": {},
+  "decisao_final": null,
+  "arquivos_gerados": [],
+  "erros": [
+    "Excecao: Single '}' encountered in format string"
+  ],
+  "timestamp_fim": "2025-12-20T00:14:29.406009",
+  "duracao_segundos": 4.120235204696655
+}

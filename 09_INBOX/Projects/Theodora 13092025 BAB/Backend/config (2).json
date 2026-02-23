@@ -1,0 +1,10 @@
+{
+  "mt5_account": 510057974,
+  "mt5_password": "Many2025!",
+  "mt5_server": "HantecMarkets-MT5",
+  "symbols": ["BTCUSD", "ETHUSD", "SOLUSD"],
+  "analysis_interval": 5,
+  "risk_per_trade": 1.0,
+  "max_positions": 5,
+  "default_lot_size": 0.1
+}

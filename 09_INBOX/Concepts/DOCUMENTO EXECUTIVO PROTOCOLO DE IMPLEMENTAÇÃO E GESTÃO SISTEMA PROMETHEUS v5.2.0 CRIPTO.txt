@@ -1,0 +1,352 @@
+DOCUMENTO EXECUTIVO: PROTOCOLO DE IMPLEMENTAÇÃO E GESTÃO - SISTEMA PROMETHEUS v5.2.0
+Data: 04/10/2025
+Status: IMPLEMENTAÇÃO IMEDIATA AUTORIZADA
+CEO & Gestor Operacional - Projeto Prometheus
+
+1. DECISÃO EXECUTIVA FINAL
+APROVO A IMPLEMENTAÇÃO DO SISTEMA PROMETHEUS v5.2.0 baseado na análise técnica cirúrgica realizada. O sistema está 99% alinhado com os objetivos de profitabilidade e será implementado conforme cronograma realista abaixo.
+
+DIRETRIZES EXECUTIVAS:
+
+Foco em BTC/ETH (Tier 1) com exposição conservadora
+
+Implementação faseada com validações rigorosas
+
+Monitoramento executivo contínuo
+
+Plano de contingência ativo
+
+2. PROTOCOLO DE IMPLEMENTAÇÃO FASEADA
+FASE 1: INFRAESTRUTURA 
+COMANDO PARA AGENT IA CURSOR: "EXECUTAR FASE 1 - INFRAESTRUTURA CRYPTO_CORE v5.2
+
+1. CRIAR ESTRUTURA COMPLETA:
+   ./crypto_core/
+   ├── assets/BTC/, ETH/, SOL/
+   ├── shared/cross_crypto_correlations/
+   ├── config/asset_tiers.json
+   └── logs/ (Snappy compression)
+
+2. CONFIGURAR AMBIENTE:
+   - Python 3.10 + PyTorch 2.0
+   - Bibliotecas: pandas, numpy, scipy, scikit-learn
+   - FAISS para vector database
+   - Conexão corretora demo
+
+3. VALIDAÇÃO:
+   - Estrutura de diretórios confirmada
+   - Dependências instaladas
+   - Logs system operacional
+
+RELATÓRIO REQUERIDO: Status infraestrutura"
+
+
+FASE 2: CARREGAMENTO DE DADOS
+COMANDO PARA AGENT IA CURSOR: "EXECUTAR FASE 2 - CARREGAMENTO DADOS GRATUITOS
+
+1. DOWNLOAD DADOS:
+   - CryptoDataDownload: BTC/ETH/SOL tick data 2024-10-04
+   - Kaggle: dados on-chain (NUPL, MVRV, SOPR)
+   - Kraken CSV: order book snapshots
+
+2. PROCESSAMENTO:
+   - Limpeza dados (z-score, winsorize 1%)
+   - Normalização features
+   - Criação embeddings iniciais
+
+3. VALIDAÇÃO:
+   - 1M+ samples processados
+   - Outliers tratados
+   - Embeddings gerados (512D)
+
+RELATÓRIO REQUERIDO: Métricas dados carregados"
+
+FASE 3: TREINAMENTO MODELOS
+COMANDO PARA AGENT IA CURSOR: "EXECUTAR FASE 3 - TREINAMENTO MODELOS
+
+1. MODELO REGIME:
+   - HMM + EKF (3 estados: bull/markup/distribution)
+   - Viterbi path para identificação
+   - Probabilidade markup >0.7
+
+2. EMBEDDINGS:
+   - SentenceTransformer MiniLM
+   - FAISS index (cosine similarity, threshold 0.06)
+   - Recall@K >83% validation
+
+3. RL POLICY:
+   - REINFORCE 200 epochs
+   - Dueling DQN (MSE <0.018)
+   - Gamma=0.98 para persistence cripto
+
+4. VALIDAÇÃO:
+   - HMM log-likelihood > -1.5
+   - FAISS recall >83%
+   - RL convergence stable
+
+RELATÓRIO REQUERIDO: Métricas treinamento"
+
+FASE 4: SISTEMA DE FILTROS
+COMANDO PARA AGENT IA CURSOR: "EXECUTAR FASE 4 - CONFIGURAÇÃO FILTROS RL
+
+1. FILTROS DINÂMICOS:
+   - Pesos Bayesiano (Dirichlet α=1)
+   - Threshold 0.70
+   - Componentes: regime, liquidez, técnico, correlação, ético
+
+2. HAWKES PROCESS:
+   - λ(t) = 0.1 + 0.45∑e^{-0.5Δt}
+   - Calibração MLE dados 2025
+   - Slippage prediction
+
+3. HJB CONTROL:
+   - Implementação LBFGS
+   - Bounds: size [0, 0.02], hold_time [900, 7200]
+   - Success rate >95%
+
+4. VALIDAÇÃO:
+   - 100 trades simulados
+   - Filtros consistentes
+   - HJB convergence
+
+RELATÓRIO REQUERIDO: Performance filtros"
+
+FASE 5: DEPLOYMENT OPERACIONAL
+COMANDO PARA AGENT IA CURSOR: "EXECUTAR FASE 5 - DEPLOYMENT SISTEMA
+
+1. CONFIGURAÇÃO OPERACIONAL:
+   - Capital: 0.5% ($50)
+   - Ativos: BTC/ETH Tier 1
+   - SOL Tier 2 (0.4% se corr<0.85)
+
+2. CONTROLES RISCO:
+   - Stop-loss: 1.2% dinâmico
+   - Drawdown alert: 0.9%
+   - Kill switch: DD >1.5%
+
+3. MONITORAMENTO:
+   - Alertas win rate <52%
+   - Hawkes λ >2μ
+   - HJB success rate
+
+4. PLANO B:
+   - Kelly estática f=0.02
+   - Ativação automática se performance inferior
+
+RELATÓRIO REQUERIDO: Status operacional"
+
+3. PROTOCOLO DE MONITORAMENTO EXECUTIVO
+RELATÓRIOS OBRIGATÓRIOS:
+
+RELATÓRIO HORÁRIO (Primeiras horas):
+- Trades executados
+- Performance (Win rate, PnL)
+- Drawdown atual
+- Alertas ativos
+
+RELATÓRIO 2 HORAS:
+- Métricas RL (Q-values, policy updates)
+- Estado regimes de mercado
+- Performance filtros
+- Problemas identificados
+
+RELATÓRIO 12 HORAS:
+- Análise estatística completa
+- Comparação vs baseline
+- Recomendações ajustes
+- Decisões executivas
+
+MÉTRICAS DE SUCESSO
+SUCCESS_CRITERIA_24H = {
+    'sistema_estavel': True,
+    'trades_executados': '6-10',
+    'win_rate': '>52%',
+    'sharpe_ratio': '>1.0',
+    'drawdown_max': '<1.2%',
+    'alertas_criticos': '0',
+    'hjb_success_rate': '>95%'
+}
+
+GATILHOS DECISÓRIOS EXECUTIVOS:
+GATILHO VERDE (Expansão):
+- Win rate >58% por 24h
+- Sharpe >1.2
+- DD <0.8%
+- AÇÃO: Aumentar capital para 1%
+
+GATILHO AMARELO (Revisão):
+- Win rate <52% por 12h
+- DD >1.0%
+- 2 trades negativos consecutivos
+- AÇÃO: Revisão estratégica imediata
+
+GATILHO VERMELHO (Parada):
+- DD >1.5%
+- 3 trades negativos consecutivos
+- Falha sistema crítica
+- AÇÃO: Parada total e análise executive
+
+4. PROTOCOLO DE CONTINGÊNCIA
+PLANO B - KELLY ESTÁTICA:
+
+def contingency_plan_b():
+    """Ativação automática se RL underperform"""
+    return {
+        'position_sizing': 0.02,  # 2% fixo
+        'strategy': 'mean_reversion_basic',
+        'stop_loss': 1.5,
+        'take_profit': 2.0,
+        'activation_condition': 'win_rate <50% por 6h'
+    }
+
+
+PROCEDIMENTOS EMERGÊNCIA:
+FALHA SISTEMA:
+1. Parada imediata de operações
+2. Ativação modo sandbox
+3. Notificação executiva
+4. Análise root cause
+
+FALHA DADOS:
+1. Usar dados cacheados
+2. Reduzir frequência trading
+3. Alertar gestão
+4. Recuperação automática
+
+FALHA CONEXÃO:
+1. Tentativas reconexão (3x)
+2. Modo offline com estratégias simples
+3. Sincronização pós-reconexão
+
+
+5. COMANDOS EXECUTIVOS FINAIS
+
+COMANDO EXECUTIVO 1: "INICIAR IMPLEMENTAÇÃO PROMETHEUS v5.2.0 - TODAS FASES"
+
+COMANDO EXECUTIVO 2: "ESTABELECER PROTOCOLO DE RELATÓRIOS HORÁRIOS"
+
+COMANDO EXECUTIVO 3: "ATIVAR MONITORAMENTO EXECUTIVO CONTÍNUO"
+
+COMANDO EXECUTIVO 4: "CONFIRMAR PLANO DE CONTINGÊNCIA ATIVO"
+
+COMANDO EXECUTIVO 5: "AUTORIZAR CAPITAL INICIAL $50 - MODO CONSERVADOR"
+
+ASSINATURA EXECUTIVA
+DECISÃO: IMPLEMENTAÇÃO AUTORIZADA
+
+O sistema Prometheus v5.2.0 representa a evolução final para profitabilidade sustentável em criptoativos, com fundamentação científica sólida e controles de risco robustos.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,50 @@
+Sendo assim vamos criar um fluxo de processo para este processo, vamos trabalhar cada processo dentro de cada modulo que a criacao e estuturacao vai seguir nossa referencia.
+
+REFRENCIA The Goldman Sachs BANK
+
+* Eu sei que eu nao sou, nao tenho o mesmo capital de investimento. Meu investimento nao chega na cada dos EUR 10000.00 na minha conta real. Porem vamos operar em uma conta demo de EUR 3500.00 que nos dara margem para estar e gerar o operacional final. Apos o operacional se comprovar ativo entao prosseguiremos para conta real.
+
+Em nosso cenario e realidade nos temos para aplicacao do projeto.
+
+1. Plataforma Meta Trader 5 > Local onde sera executado as ordens geradas pelo sistema em Python ou outra versao.
+2. Plataforma Cursor > Local onde o sistema e executado armazenado e recebe as intrucoes e ferramentas para todas as melhorias ligadas ao processo do sistema.
+3. IA Agents > AIC - Agente de Implementação e Controle > CURSOR, responsavel pela execucao das instrucoes recebidas.
+
+
+Exemplo: The Goldman Sachs BANK
+
+Bank: o que temos de mais importante dentro da instuicao BANK> ORGANIZACAO INSTITUICAO > ESTRUTURA ORGANIZACIONAL > ESTRUTURA ORGANICA ENTRE OUTRAS.
+
+**Vamos trabalhar de forma independente de cada estrutura e modulos e blocos, aprovando e conectando as decioes operacoes internas e externa ate forma um ecossistema completo.
+
+Eu quero que voce me apresente agora um projeto que possa ser desenvolvido em pyhton com o nome de nosso projeto: 
+
+
+
+* NUCLEO CENTRAL NEURO TRANSMISSOR ( NCNT )  > INPUT / OUTPUT
+
+1. Responsavel por receber toda as transmissoes do SISTEMA NERVOSO NEURO TRANSMISSOR
+2. Configuracao padrao > INPUT / OUTPUT
+
+***NEURO TRANSMISSOR > INPUT / OUTPUT configuracao aprovada e automatica ( NCNT )
+
+Estrategias > FOREX > METALS > CRYPTO > INDICES 
+
+Entao voce pode criar algo visual em python que descreva a estrutura e que seja como uma engrenagem conectando a todos os modulos ate a a conclusao das operacoes e relatorios das operacoes abertas e fechadas como o banco para analise de outros agentes. Voce tem a capacidade para me surpreender com esta tarefa?
+
+
+antes de prosseguir quero deixar claro minha ideia, vamos ter nossa estrutura:
+
+Porem exemplo no modulo de estrategias:
+
+INPUT > FORMATO PADRAO DE TRANSMISSAO ESTRATEGIA (NOME ESTRATEGIA GOLDSHARE) > OUTPUT > NUCLEO CENTRAL NEURO TRANSMISSOR ( NCNT ) > EXECUSAO
+
+1. NOVA ESTRATEGIA
+2. NOVA ESTRATEGIA
+3. NOVA ESTRATEGIA
+4. NOVA ESTRATEGIA
+
+Neste formato eu posso testar varias estrategias mas todas ela tem que seguir um padrao de conexao para OUTPUT, podem ter varias variaveis diferentes mas devera conter um bloco padrao ja configurado de transmissao de dados padrao. Isso nos possibilita fazer varios teste sem ter que ficar configurando padroes de conexao, isso tambem seria valido para todos os modulos seja RISK ou qualquer outro sempre as conexoes estariam inclusas. Agora vou te apresentar um modelo e voce me fala se dentro deste modelo podemos ja comecar a preencher com as informacoes que temos, mas que fica CLARO tudo e modulo, para poder ser expansivo e trabalhar ou corrigir sem que tenha necessidade de parar o sistema, cada modulo independente. O que voce acha? Posso te apresentar a estrutura?
+
+
+

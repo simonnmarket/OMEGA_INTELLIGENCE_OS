@@ -1,0 +1,682 @@
+"""
+GOLDMAN_NUMEA_ELLIOTT_SYSTEM v4.1 - ENTERPRISE GRADE IMPROVED
+Standards: PEP8, SOLID, DDD, Observability-First, 12-Factor App
+SHA3-256: [auto-generated]
+"""
+
+# ============================================================================
+# DOMAIN LAYER - VALIDATED ENTITIES
+# ============================================================================
+
+from pydantic import BaseModel, Field, validator, ConfigDict
+from typing import Dict, List, Literal, Optional
+from enum import Enum
+import hashlib
+from datetime import datetime
+from decimal import Decimal
+
+class MarketRegime(Enum):
+    TRENDING_BULL = "TRENDING_BULL"
+    TRENDING_BEAR = "TRENDING_BEAR"
+    RANGING = "RANGING"
+    HIGH_VOLATILITY = "HIGH_VOLATILITY"
+    LOW_VOLATILITY = "LOW_VOLATILITY"
+
+class ElliottWave(BaseModel):
+    """Validated Elliott Wave entity with integrity checks"""
+    model_config = ConfigDict(frozen=True)
+    
+    points: List[float] = Field(..., min_items=6, max_items=12)
+    wave_type: Literal["IMPULSIVE_UP", "IMPULSIVE_DOWN", "CORRECTIVE"]
+    confidence: float = Field(..., ge=0.0, le=1.0)
+    fib_ratios: Dict[str, float]
+    wave_id: str = Field(default_factory=lambda: hashlib.sha3_256(
+        f"{datetime.now().isoformat()}".encode()
+    ).hexdigest()[:16])
+    
+    @validator('points')
+    def validate_price_points(cls, v):
+        if any(price <= 0 for price in v):
+            raise ValueError('All price points must be positive')
+        return v
+    
+    @validator('fib_ratios')
+    def validate_fib_ratios(cls, v):
+        required_ratios = {'0.382', '0.5', '0.618', '1.0', '1.618'}
+        if not all(r in v for r in required_ratios):
+            raise ValueError(f'Missing required Fibonacci ratios: {required_ratios}')
+        return v
+
+class TradingSignal(BaseModel):
+    """Validated trading signal with business rules"""
+    model_config = ConfigDict(frozen=True)
+    
+    symbol: str = Field(..., pattern=r'^[A-Z]{1,6}(USD|EUR|JPY)?$')
+    action: Literal['BUY', 'SELL', 'HOLD']
+    entry: Decimal = Field(..., gt=0)
+    stop_loss: Decimal = Field(..., gt=0)
+    take_profit: Decimal = Field(..., gt=0)
+    confidence: float = Field(..., ge=0.0, le=1.0)
+    position_size: float = Field(..., gt=0, le=1000000)
+    rr_ratio: float = Field(..., ge=1.0)
+    regime: MarketRegime
+    signal_id: str = Field(default_factory=lambda: hashlib.sha3_256(
+        f"{datetime.now().isoformat()}".encode()
+    ).hexdigest()[:16])
+    
+    @validator('take_profit')
+    def validate_tp_gt_sl(cls, v, values):
+        if 'action' in values and 'stop_loss' in values:
+            if values['action'] == 'BUY' and v <= values['stop_loss']:
+                raise ValueError('Take profit must be greater than stop loss for BUY')
+            elif values['action'] == 'SELL' and v >= values['stop_loss']:
+                raise ValueError('Take profit must be less than stop loss for SELL')
+        return v
+    
+    @property
+    def risk_amount(self) -> Decimal:
+        """Calculates monetary risk per trade"""
+        return abs(self.entry - self.stop_loss) * Decimal(str(self.position_size))
+    
+    @property
+    def reward_amount(self) -> Decimal:
+        """Calculates potential reward"""
+        return abs(self.take_profit - self.entry) * Decimal(str(self.position_size))
+
+# ============================================================================
+# APPLICATION LAYER - VALIDATED SERVICES
+# ============================================================================
+
+from abc import ABC, abstractmethod
+from typing import Optional
+import numpy as np
+from scipy import signal
+import structlog
+from prometheus_client import Counter, Histogram, Gauge
+import asyncio
+from tenacity import retry, stop_after_attempt, wait_exponential
+
+logger = structlog.get_logger(__name__)
+
+# Metrics
+ANALYSIS_COUNTER = Counter('elliott_analysis_total', 'Total analyses performed')
+CONFIDENCE_HISTOGRAM = Histogram('elliott_confidence', 'Confidence distribution')
+LATENCY_HISTOGRAM = Histogram('elliott_analysis_latency_seconds', 'Analysis latency')
+ACTIVE_ANALYSES = Gauge('elliott_active_analyses', 'Currently active analyses')
+
+class SwingDetectionError(Exception):
+    """Custom exception for swing detection failures"""
+    pass
+
+class InsufficientDataError(Exception):
+    """Exception for insufficient data"""
+    pass
+
+class SwingDetectorPort(ABC):
+    @abstractmethod
+    async def detect_swings(self, highs: np.ndarray, lows: np.ndarray, 
+                          closes: np.ndarray) -> Optional[np.ndarray]:
+        """Detect swing points asynchronously"""
+        pass
+
+class RiskEnginePort(ABC):
+    @abstractmethod
+    async def calculate_position_size(self, confidence: float, volatility: float,
+                                    rr_ratio: float, portfolio_value: float) -> float:
+        """Calculate position size asynchronously"""
+        pass
+
+class TimeSeriesPort(ABC):
+    """Port for time series operations"""
+    @abstractmethod
+    async def rolling_mean(self, series: np.ndarray, window: int) -> np.ndarray:
+        pass
+    
+    @abstractmethod
+    async def exponential_moving_average(self, series: np.ndarray, span: int) -> np.ndarray:
+        pass
+
+class ZigZagDetector(SwingDetectorPort):
+    """Production-grade ZigZag detector with observability"""
+    
+    def __init__(self, time_series: TimeSeriesPort, config: dict = None):
+        self.time_series = time_series
+        self.config = config or {
+            'min_retracement': 0.02,
+            'atr_period': 14,
+            'peak_order': 5,
+            'dynamic_threshold_multiplier': 1.5,
+            'max_swings': 12
+        }
+        self.logger = logger.bind(detector='zigzag')
+        
+        # Metrics
+        self.detection_counter = Counter('zigzag_detections_total', 'Total swing detections')
+        self.swing_count_histogram = Histogram('zigzag_swings_detected', 'Number of swings detected')
+    
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=4, max=10)
+    )
+    async def detect_swings(self, highs: np.ndarray, lows: np.ndarray, 
+                          closes: np.ndarray) -> Optional[np.ndarray]:
+        """Async vectorized swing detection with error handling"""
+        self.detection_counter.inc()
+        
+        try:
+            # Validation
+            if len(highs) < 50:
+                self.logger.warning("Insufficient data for swing detection", 
+                                  data_points=len(highs))
+                raise InsufficientDataError("Need at least 50 data points")
+            
+            # Async ATR calculation
+            atr = await self._compute_atr_async(highs, lows, closes)
+            
+            if atr is None or len(atr) == 0:
+                self.logger.error("ATR calculation failed")
+                return None
+            
+            # Dynamic threshold
+            threshold = np.maximum(
+                self.config['min_retracement'],
+                atr * self.config['dynamic_threshold_multiplier']
+            )
+            
+            # Vectorized peak detection
+            with self.logger.bind(operation='peak_detection'):
+                high_peaks = signal.argrelextrema(
+                    highs, np.greater, order=self.config['peak_order']
+                )[0]
+                low_peaks = signal.argrelextrema(
+                    lows, np.less, order=self.config['peak_order']
+                )[0]
+            
+            # Filter with dynamic threshold
+            if len(high_peaks) > 0 and len(low_peaks) > 0:
+                high_values = highs[high_peaks]
+                low_values = lows[low_peaks]
+                
+                # Apply threshold filtering
+                valid_indices = self._apply_threshold_filtering(
+                    high_peaks, low_peaks, high_values, low_values, threshold
+                )
+                
+                swings = np.sort(np.concatenate([
+                    high_values[valid_indices['highs']],
+                    low_values[valid_indices['lows']]
+                ]))[-self.config['max_swings']:]
+                
+                self.swing_count_histogram.observe(len(swings))
+                self.logger.info("Swings detected successfully", 
+                               swing_count=len(swings))
+                
+                return swings
+            
+            return np.array([])
+            
+        except Exception as e:
+            self.logger.error("Swing detection failed", 
+                            error=str(e), exc_info=True)
+            raise SwingDetectionError(f"Swing detection failed: {e}") from e
+    
+    async def _compute_atr_async(self, highs: np.ndarray, lows: np.ndarray, 
+                               closes: np.ndarray) -> Optional[np.ndarray]:
+        """Async ATR calculation"""
+        try:
+            # True Range calculation (vectorized)
+            high_low = highs[1:] - lows[1:]
+            high_close_prev = np.abs(highs[1:] - closes[:-1])
+            low_close_prev = np.abs(lows[1:] - closes[:-1])
+            
+            true_range = np.maximum.reduce([high_low, high_close_prev, low_close_prev])
+            
+            # Async rolling mean
+            atr_values = await self.time_series.rolling_mean(
+                true_range, self.config['atr_period']
+            )
+            
+            # Normalize by close prices
+            atr_normalized = atr_values / closes[1:len(atr_values) + 1]
+            
+            return np.concatenate([np.array([np.nan]), atr_normalized])
+            
+        except Exception as e:
+            self.logger.error("ATR calculation failed", error=str(e))
+            return None
+
+# ============================================================================
+# ELLIOTT WAVE SERVICE WITH FULL OBSERVABILITY
+# ============================================================================
+
+class ElliottWaveService:
+    """Production Elliott Wave Service with metrics, logging, and resilience"""
+    
+    def __init__(self, swing_detector: SwingDetectorPort, 
+                 risk_engine: RiskEnginePort,
+                 time_series: TimeSeriesPort,
+                 config: dict = None):
+        self.swing_detector = swing_detector
+        self.risk_engine = risk_engine
+        self.time_series = time_series
+        self.config = config or {
+            'min_confidence': 0.75,
+            'min_swings': 6,
+            'max_analysis_latency_ms': 1000,
+            'enable_fib_validation': True
+        }
+        
+        self.logger = logger.bind(service='elliott_wave')
+        
+        # Service-specific metrics
+        self.wave_detection_counter = Counter(
+            'elliott_wave_detections_total', 
+            'Total Elliott waves detected'
+        )
+        self.analysis_latency = Histogram(
+            'elliott_analysis_latency_seconds',
+            'Analysis pipeline latency'
+        )
+        self.pipeline_stage_duration = Histogram(
+            'elliott_pipeline_stage_duration_seconds',
+            'Duration per pipeline stage',
+            ['stage']
+        )
+    
+    async def analyze_async(self, symbol: str, ohlcv: dict) -> Optional[TradingSignal]:
+        """
+        Async analysis pipeline with full observability
+        """
+        analysis_id = hashlib.sha3_256(
+            f"{symbol}{datetime.now().isoformat()}".encode()
+        ).hexdigest()[:8]
+        
+        with self.logger.bind(
+            analysis_id=analysis_id,
+            symbol=symbol,
+            rows=len(ohlcv.get('close', []))
+        ):
+            ACTIVE_ANALYSES.inc()
+            ANALYSIS_COUNTER.inc()
+            start_time = datetime.now()
+            
+            try:
+                # Stage 1: Data validation
+                with self.pipeline_stage_duration.labels(stage='validation').time():
+                    if not await self._validate_ohlcv_async(ohlcv):
+                        self.logger.warning("OHLCV validation failed")
+                        return None
+                
+                # Stage 2: Swing detection
+                with self.pipeline_stage_duration.labels(stage='swing_detection').time():
+                    swings = await self.swing_detector.detect_swings(
+                        np.array(ohlcv['high']),
+                        np.array(ohlcv['low']),
+                        np.array(ohlcv['close'])
+                    )
+                    
+                    if swings is None or len(swings) < self.config['min_swings']:
+                        self.logger.info("Insufficient swings detected", 
+                                       swing_count=len(swings) if swings else 0)
+                        return None
+                
+                # Stage 3: Elliott wave detection
+                with self.pipeline_stage_duration.labels(stage='wave_detection').time():
+                    wave = await self._detect_elliott_wave_async(swings[-self.config['min_swings']:])
+                    
+                    if not wave or wave.confidence < self.config['min_confidence']:
+                        self.logger.info("Low confidence wave detected",
+                                       confidence=wave.confidence if wave else 0)
+                        return None
+                    
+                    self.wave_detection_counter.inc()
+                    CONFIDENCE_HISTOGRAM.observe(wave.confidence)
+                
+                # Stage 4: Signal generation
+                with self.pipeline_stage_duration.labels(stage='signal_generation').time():
+                    signal = await self._generate_signal_async(symbol, wave, ohlcv)
+                    
+                    if signal:
+                        self.logger.info("Signal generated successfully",
+                                       action=signal.action,
+                                       confidence=signal.confidence,
+                                       rr_ratio=signal.rr_ratio)
+                    
+                    return signal
+                    
+            except InsufficientDataError as e:
+                self.logger.warning("Analysis skipped: insufficient data", error=str(e))
+                return None
+            except SwingDetectionError as e:
+                self.logger.error("Swing detection failed", error=str(e))
+                return None
+            except Exception as e:
+                self.logger.error("Critical analysis error", error=str(e), exc_info=True)
+                raise
+            finally:
+                latency = (datetime.now() - start_time).total_seconds()
+                self.analysis_latency.observe(latency)
+                LATENCY_HISTOGRAM.observe(latency)
+                ACTIVE_ANALYSES.dec()
+                
+                if latency * 1000 > self.config['max_analysis_latency_ms']:
+                    self.logger.warning("Analysis exceeded latency threshold",
+                                      latency_ms=latency * 1000)
+    
+    async def _validate_ohlcv_async(self, ohlcv: dict) -> bool:
+        """Async OHLCV validation"""
+        required_keys = {'open', 'high', 'low', 'close', 'volume'}
+        
+        if not all(key in ohlcv for key in required_keys):
+            return False
+        
+        # Check data length consistency
+        lengths = {len(ohlcv[key]) for key in required_keys}
+        if len(lengths) > 1:
+            return False
+        
+        # Check for NaN values
+        for key in required_keys:
+            if np.any(np.isnan(ohlcv[key])):
+                return False
+        
+        # Minimum data requirement
+        if len(ohlcv['close']) < 50:
+            return False
+        
+        return True
+    
+    async def _detect_elliott_wave_async(self, points: np.ndarray) -> Optional[ElliottWave]:
+        """Async Elliott wave detection with validation"""
+        try:
+            # Calculate all rules asynchronously
+            rules = await self._validate_elliott_rules_async(points)
+            
+            # Weighted scoring
+            weights = {
+                'wave2_retrace': 0.25,
+                'wave3_longest': 0.30,
+                'wave4_no_overlap': 0.20,
+                'fib_extension': 0.15,
+                'channel_conformity': 0.10
+            }
+            
+            score = sum(rules[rule] * weights.get(rule, 0.1) 
+                       for rule in rules if rule in weights)
+            
+            if score < self.config['min_confidence']:
+                return None
+            
+            # Determine wave type
+            if points[-1] > points[0]:
+                wave_type = "IMPULSIVE_UP"
+            elif points[-1] < points[0]:
+                wave_type = "IMPULSIVE_DOWN"
+            else:
+                wave_type = "CORRECTIVE"
+            
+            # Calculate Fibonacci ratios
+            fib_ratios = await self._compute_fib_ratios_async(points)
+            
+            return ElliottWave(
+                points=points.tolist(),
+                wave_type=wave_type,
+                confidence=float(score),
+                fib_ratios=fib_ratios
+            )
+            
+        except Exception as e:
+            self.logger.error("Elliott wave detection failed", error=str(e))
+            return None
+
+# ============================================================================
+# RISK ENGINE WITH MONTE CARLO SIMULATION
+# ============================================================================
+
+import numpy as np
+from scipy.stats import norm
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
+
+class GoldmanRiskEngine(RiskEnginePort):
+    """Production risk engine with Monte Carlo VaR and Kelly Criterion"""
+    
+    def __init__(self, config: dict = None):
+        self.config = config or {
+            'max_risk_per_trade': 0.02,  # 2% max risk
+            'monte_carlo_simulations': 10000,
+            'confidence_level': 0.999,  # 99.9% VaR
+            'kelly_fraction': 0.5,  # Half-Kelly
+            'min_position_size': 0.001,  # Minimum position
+            'max_position_size': 0.1  # 10% max position
+        }
+        
+        self.logger = logger.bind(engine='goldman_risk')
+        self.executor = ThreadPoolExecutor(max_workers=4)
+        
+        # Metrics
+        self.var_calculations = Counter('risk_var_calculations_total', 'VaR calculations')
+        self.position_calculations = Counter('risk_position_calculations_total', 'Position size calculations')
+        self.risk_score_gauge = Gauge('risk_score_current', 'Current risk score')
+    
+    async def calculate_position_size(self, confidence: float, volatility: float,
+                                    rr_ratio: float, portfolio_value: float) -> float:
+        """
+        Async position size calculation with Monte Carlo VaR
+        """
+        self.position_calculations.inc()
+        
+        try:
+            # Run Monte Carlo VaR asynchronously
+            var_999, expected_shortfall = await self._monte_carlo_var_async(
+                confidence, volatility
+            )
+            
+            # Calculate Kelly fraction
+            kelly_pct = await self._calculate_kelly_fraction_async(
+                confidence, rr_ratio
+            )
+            
+            # Apply risk limits
+            risk_adjusted_size = self._apply_risk_limits(
+                kelly_pct, var_999, portfolio_value
+            )
+            
+            # Update metrics
+            self.risk_score_gauge.set(risk_adjusted_size / portfolio_value)
+            
+            self.logger.info("Position size calculated",
+                           kelly_pct=kelly_pct,
+                           var_999=var_999,
+                           final_size=risk_adjusted_size)
+            
+            return risk_adjusted_size
+            
+        except Exception as e:
+            self.logger.error("Position size calculation failed", error=str(e))
+            # Fallback to conservative size
+            return portfolio_value * self.config['min_position_size']
+    
+    async def _monte_carlo_var_async(self, confidence: float, vol: float) -> tuple:
+        """Async Monte Carlo VaR simulation"""
+        self.var_calculations.inc()
+        
+        try:
+            # Run simulation in thread pool
+            loop = asyncio.get_event_loop()
+            result = await loop.run_in_executor(
+                self.executor,
+                self._run_monte_carlo_simulation,
+                confidence, vol
+            )
+            
+            return result
+            
+        except Exception as e:
+            self.logger.error("Monte Carlo VaR failed", error=str(e))
+            # Fallback to parametric VaR
+            return self._parametric_var(confidence, vol), 0.0
+    
+    def _run_monte_carlo_simulation(self, confidence: float, vol: float) -> tuple:
+        """CPU-intensive Monte Carlo simulation"""
+        n_sims = self.config['monte_carlo_simulations']
+        
+        # Generate random returns
+        returns = np.random.normal(
+            confidence * 0.01 - vol/2,  # Adjusted expected return
+            vol,
+            n_sims
+        )
+        
+        # Calculate VaR and Expected Shortfall
+        var_percentile = (1 - self.config['confidence_level']) * 100
+        var = np.percentile(returns, var_percentile)
+        
+        # Conditional VaR (Expected Shortfall)
+        losses_below_var = returns[returns < var]
+        expected_shortfall = np.mean(losses_below_var) if len(losses_below_var) > 0 else var
+        
+        return float(var), float(expected_shortfall)
+    
+    async def _calculate_kelly_fraction_async(self, win_prob: float, rr_ratio: float) -> float:
+        """Async Kelly Criterion calculation"""
+        # Kelly formula: f* = (bp - q) / b
+        # where b = reward/risk ratio, p = win probability, q = 1-p
+        if win_prob <= 0 or rr_ratio <= 1:
+            return self.config['min_position_size']
+        
+        b = rr_ratio - 1  # Net odds
+        p = win_prob
+        q = 1 - p
+        
+        kelly = (b * p - q) / b
+        
+        # Apply fractional Kelly
+        fractional_kelly = kelly * self.config['kelly_fraction']
+        
+        return max(self.config['min_position_size'], 
+                  min(fractional_kelly, self.config['max_position_size']))
+
+# ============================================================================
+# CONFIGURATION MANAGEMENT (12-Factor App)
+# ============================================================================
+
+from pydantic_settings import BaseSettings
+from typing import Optional
+
+class ElliottSystemConfig(BaseSettings):
+    """12-Factor App configuration for Elliott System"""
+    
+    # Environment
+    environment: str = "development"
+    log_level: str = "INFO"
+    
+    # Detection parameters
+    min_retracement: float = 0.02
+    atr_period: int = 14
+    min_confidence: float = 0.75
+    min_swings: int = 6
+    
+    # Risk parameters
+    max_risk_per_trade: float = 0.02
+    monte_carlo_simulations: int = 10000
+    kelly_fraction: float = 0.5
+    
+    # Performance
+    max_concurrent_analyses: int = 10
+    analysis_timeout_seconds: int = 5
+    
+    # Monitoring
+    metrics_port: int = 9090
+    enable_prometheus: bool = True
+    
+    class Config:
+        env_file = ".env"
+        env_prefix = "ELLIOTT_"
+
+# ============================================================================
+# FACTORY PATTERN FOR DEPENDENCY INJECTION
+# ============================================================================
+
+class ElliottSystemFactory:
+    """Factory for creating fully configured system instances"""
+    
+    @staticmethod
+    def create_production_system(config: Optional[ElliottSystemConfig] = None):
+        """Create production-ready system instance"""
+        config = config or ElliottSystemConfig()
+        
+        # Create components
+        time_series = PandasTimeSeriesAdapter()
+        swing_detector = ZigZagDetector(time_series, config.dict())
+        risk_engine = GoldmanRiskEngine(config.dict())
+        
+        # Create service
+        service = ElliottWaveService(
+            swing_detector=swing_detector,
+            risk_engine=risk_engine,
+            time_series=time_series,
+            config=config.dict()
+        )
+        
+        return service
+    
+    @staticmethod
+    def create_test_system():
+        """Create system for testing with mocks"""
+        from unittest.mock import Mock
+        
+        swing_detector = Mock(spec=SwingDetectorPort)
+        risk_engine = Mock(spec=RiskEnginePort)
+        time_series = Mock(spec=TimeSeriesPort)
+        
+        return ElliottWaveService(
+            swing_detector=swing_detector,
+            risk_engine=risk_engine,
+            time_series=time_series
+        )
+
+# ============================================================================
+# MAIN ENTRY POINT WITH ERROR HANDLING
+# ============================================================================
+
+async def main():
+    """Main entry point with production-grade error handling"""
+    import signal
+    import sys
+    
+    # Setup signal handlers for graceful shutdown
+    loop = asyncio.get_event_loop()
+    
+    for sig in (signal.SIGTERM, signal.SIGINT):
+        loop.add_signal_handler(sig, lambda: asyncio.create_task(shutdown()))
+    
+    try:
+        # Create system
+        config = ElliottSystemConfig()
+        system = ElliottSystemFactory.create_production_system(config)
+        
+        # Start metrics server if enabled
+        if config.enable_prometheus:
+            from prometheus_client import start_http_server
+            start_http_server(config.metrics_port)
+            logger.info(f"Metrics server started on port {config.metrics_port}")
+        
+        # Main processing loop
+        await process_trading_signals(system)
+        
+    except KeyboardInterrupt:
+        logger.info("Shutdown requested by user")
+    except Exception as e:
+        logger.critical("System crashed", error=str(e), exc_info=True)
+        sys.exit(1)
+
+async def shutdown():
+    """Graceful shutdown procedure"""
+    logger.info("Initiating graceful shutdown...")
+    # Cleanup resources
+    await asyncio.sleep(1)
+    logger.info("Shutdown complete")
+
+if __name__ == "__main__":
+    asyncio.run(main())

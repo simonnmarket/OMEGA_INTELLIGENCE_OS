@@ -1,0 +1,46 @@
+============================================================
+COMPARAÇÃO RÁPIDA - SAMSUNG vs SILVER
+============================================================
+
+SAMSUNG GLOBAL MARKET
+------------------------------------------------------------
+Caminho: C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia\
+Arquivo: prometheus_v2.3_gerenciamento_escalonado.py
+Magic: 99991
+Log: prometheus_telemetry_v2.3.log
+Símbolos: Todos do Market Watch
+Timeframe: M15
+Volume: 0.02 lotes
+
+SILVER GMARKET
+------------------------------------------------------------
+Caminho: C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver\
+Arquivo: silver_system_v3.0_escalonado.py
+Magic: 99992
+Log: silver_telemetry_v3.0.log
+Símbolos: XAGUSD, XAGAUD, XAGEUR, XAGGBP (apenas prata)
+Timeframe: M1
+Volume: 0.10 - 50.00 lotes (escalonado)
+
+============================================================
+DIFERENÇAS PRINCIPAIS
+============================================================
+
+1. Magic Numbers: 99991 vs 99992 (isolados)
+2. Diretórios: Completamente separados
+3. Símbolos: Todos vs Apenas XAG
+4. Timeframe: M15 vs M1
+5. Volume: Fixo vs Escalonado
+6. SL/TP: Diferentes valores
+
+============================================================
+PROTEÇÕES
+============================================================
+
+✅ Magic Numbers diferentes = Ordens nunca se misturam
+✅ Diretórios separados = Arquivos nunca se confundem
+✅ Nomes diferentes = Fácil identificar
+✅ Logs separados = Análise independente
+
+============================================================
+

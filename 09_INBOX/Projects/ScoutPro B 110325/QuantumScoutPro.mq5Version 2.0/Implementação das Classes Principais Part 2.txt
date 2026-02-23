@@ -1,0 +1,156 @@
+//+------------------------------------------------------------------+
+//| Classe Principal do Sistema                                        |
+//+------------------------------------------------------------------+
+class CQuantumScout {
+private:
+    // Estruturas de Performance
+    struct PerformanceMetrics {
+        int totalTrades;
+        int winTrades;
+        int lossTrades;
+        double profitFactor;
+        double winRate;
+        double averageWin;
+        double averageLoss;
+        double maxDrawdown;
+        double sharpeRatio;
+        datetime lastUpdate;
+    };
+    
+    // Estruturas de Análise
+    struct AnalysisResult {
+        bool trendValid;
+        bool volumeValid;
+        bool priceValid;
+        bool flowValid;
+        double confidence;
+        string analysis;
+    };
+    
+    // Estruturas de Risco
+    struct RiskMetrics {
+        double currentRisk;
+        double maxRisk;
+        double exposure;
+        double heatLevel;
+        bool isValid;
+    };
+    
+    // Métricas e Estados
+    PerformanceMetrics performance;
+    AnalysisResult analysis;
+    RiskMetrics risk;
+    
+    // Contadores e Limites
+    int dailyTrades;
+    int consecutiveLosses;
+    double currentDrawdown;
+    
+public:
+    // Construtor
+    CQuantumScout() {
+        InitializeMetrics();
+    }
+    
+    // Destrutor
+    ~CQuantumScout() {
+        Cleanup();
+    }
+    
+    // Inicialização
+    bool Initialize() {
+        // Inicializar indicadores
+        if(!InitializeIndicators()) {
+            Print("Erro ao inicializar indicadores!");
+            return false;
+        }
+        
+        // Configurar trade
+        ConfigureTrade();
+        
+        // Inicializar métricas
+        InitializeMetrics();
+        
+        return true;
+    }
+    
+    // Processamento principal
+    void ProcessTick() {
+        if(!ValidateMarket()) return;
+        
+        // Atualizar dados
+        UpdateMarketData();
+        
+        // Analisar mercado
+        if(AnalyzeMarket()) {
+            // Gerar sinais
+            if(GenerateSignals()) {
+                // Executar trades
+                ExecuteTrades();
+            }
+        }
+        
+        // Gerenciar posições
+        ManagePositions();
+        
+        // Atualizar métricas
+        UpdateMetrics();
+    }
+    
+private:
+    // Inicialização de indicadores
+    bool InitializeIndicators() {
+        // Média Móvel
+        maHandle = iMA(_Symbol, PERIOD_CURRENT, 20, 0, MODE_EMA, PRICE_CLOSE);
+        
+        // Volume
+        volumeHandle = iVolumes(_Symbol, PERIOD_CURRENT, VOLUME_TICK);
+        
+        // ATR
+        atrHandle = iATR(_Symbol, PERIOD_CURRENT, 14);
+        
+        // Verificar handles
+        if(maHandle == INVALID_HANDLE || 
+           volumeHandle == INVALID_HANDLE || 
+           atrHandle == INVALID_HANDLE) {
+            return false;
+        }
+        
+        // Configurar buffers
+        ArraySetAsSeries(maBuffer, true);
+        ArraySetAsSeries(volumeBuffer, true);
+        ArraySetAsSeries(atrBuffer, true);
+        
+        return true;
+    }
+    
+    // Configuração do objeto trade
+    void ConfigureTrade() {
+        trade.SetDeviationInPoints(10);
+        trade.SetTypeFilling(ORDER_FILLING_FOK);
+        trade.SetMarginMode();
+        trade.LogLevel(LOG_LEVEL_ERRORS);
+    }
+    
+    // Inicialização de métricas
+    void InitializeMetrics() {
+        // Performance
+        performance.totalTrades = 0;
+        performance.winTrades = 0;
+        performance.lossTrades = 0;
+        performance.profitFactor = 0;
+        performance.winRate = 0;
+        performance.maxDrawdown = 0;
+        performance.lastUpdate = TimeCurrent();
+        
+        // Risco
+        risk.maxRisk = RiskPercent;
+        risk.currentRisk = 0;
+        risk.exposure = 0;
+        risk.isValid = true;
+        
+        // Contadores
+        dailyTrades = 0;
+        consecutiveLosses = 0;
+        currentDrawdown = 0;
+    }

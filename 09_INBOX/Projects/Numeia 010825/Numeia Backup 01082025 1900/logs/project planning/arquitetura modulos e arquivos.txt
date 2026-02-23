@@ -1,0 +1,254 @@
+====================== ARQUITETURA ESTRUTURAL MODULOS E ARQUIVOS - PROJETO NUMEIA ======================
+CLASSIFICAÇÃO: TIER-0 | PROTOCOLO: ALPHA-OMEGA | STATUS: HOMOLOGADO
+DATA: 2025-07-30 | VERSÃO: v7.0 | AGENTE: Claude Sonnet 4
+
+Numeia/
+│
+├── agents/                       # Agentes inteligentes operacionais
+│   └── agent_alpha.py            # Quantum Dependency Scanner v7.0 (TIER-0++)
+│
+├── auditor/                      # Módulos de auditoria, verificação e autocorreção
+│   ├── audit_validator.mq5
+│   ├── live_monitor.mq5
+│   └── Protocolo de Prevenção de Erros (v1.1).txt
+│
+├── config/                       # Configurações iniciais e chaves globais
+│
+├── core/                         # Núcleo central de controle da EA
+│   ├── core_brain_manager.mqh
+│   ├── force_maxima.mqh
+│   └── quantum_blockchain.mqh
+│
+├── docs/                         # Documentação técnica, guias e manifestos
+│
+├── GovernanceManifest.txt/       # Documento de estrutura e diretrizes (imutável)
+│   └── GovernanceManifest.txt
+│
+├── include/                      # Diretório principal de includes
+│   │
+│   ├── analysis/                 # Módulos de análise técnica/quantitativa
+│   │   ├── correlation_matrix.mqh
+│   │   ├── dependency_graph.mqh
+│   │   ├── market_regime_detector.mqh
+│   │   ├── multi_timeframe_validator.mqh
+│   │   ├── neural_dependency_graph.mqh
+│   │   ├── quantum_darkpool.mqh
+│   │   ├── quantum_hft_detector.mqh
+│   │   ├── quantum_liquidity_matrix.mqh
+│   │   └── quantum_order_book.mqh
+│   │
+│   ├── audit/                    # Auditoria e integridade
+│   │   ├── audit_history.json
+│   │   ├── audit_nomenclature_validator.mqh
+│   │   ├── AuditIntegrityPanel.mq5
+│   │   ├── compliancechecker.mqh
+│   │   ├── core_history.json
+│   │   └── CoreIntegrityPanel.mq5
+│   │
+│   ├── compliance/               # Conformidade institucional
+│   │   └── quantum_compliance.mqh
+│   │
+│   ├── data/                     # Dados de mercado e processamento
+│   │   └── quantum_market_data.mqh
+│   │
+│   ├── decisionengine/           # Estratégias, roteadores, validações
+│   │   └── decision_router.mqh
+│   │
+│   ├── detection/                # Detecção de padrões e sinais
+│   │   └── quantum_pattern_scanner.mqh
+│   │
+│   ├── executionlogic/           # Execução de ordens, trailing stops
+│   │   ├── safe_mode_manager.mqh
+│   │   └── trade_executor.mqh
+│   │
+│   ├── integration/              # Integrações externas e comunicação com APIs
+│   │   └── quantum_data_feed.mqh
+│   │
+│   ├── intelligence/             # IA, previsão, linguagem natural, aprendizagem
+│   │   ├── anomaly_detector_ai.mqh
+│   │   ├── ml_duplicate_detector.mqh
+│   │   ├── neural_signal_processor.mqh
+│   │   ├── quantum_adaptive_learning.mqh
+│   │   ├── quantum_learning.mqh
+│   │   └── thaler_bias_engine.mqh
+│   │
+│   ├── modules/                  # Componentes modulares expansíveis
+│   │   └── quantum_var_calculator.mqh
+│   │
+│   ├── neural/                   # Redes neurais e processamento neural
+│   │   ├── NeuroNet.mqh
+│   │   ├── quantum_neural_filter.mqh
+│   │   └── quantum_neural_net.mqh
+│   │
+│   ├── optimization/             # Otimização e algoritmos genéticos
+│   │   └── GeneticOptimizer.mqh
+│   │
+│   ├── quantum/                  # Processamento quântico e simulação
+│   │   ├── quantum_annealing_simulator.mqh
+│   │   ├── quantum_behavior_controller.mqh
+│   │   ├── hardware_accelerator.mqh
+│   │   ├── quantum_cache_manager.mqh
+│   │   ├── quantum_data_processor.mqh
+│   │   ├── quantum_entanglement_simulator.mqh
+│   │   ├── quantum_entanglement.mqh
+│   │   ├── quantum_finance_framework.mqh
+│   │   ├── quantum_gate_system.mqh
+│   │   ├── quantum_genetic_algorithm.mqh
+│   │   ├── quantum_memory_cell.mqh
+│   │   ├── quantum_neural_bridge.mqh
+│   │   ├── quantum_neural_core.mqh
+│   │   ├── quantum_noise_filter.mqh
+│   │   ├── quantum_optimizer.mqh
+│   │   ├── quantum_processor.mqh
+│   │   ├── quantum_state_manager.mqh
+│   │   └── quantum_wavelet_transform.mqh
+│   │
+│   ├── risk/                     # Gestão de risco e métricas
+│   │   ├── risk_metrics.mqh
+│   │   └── risk_profile.mqh
+│   │
+│   ├── security/                 # Segurança e proteção institucional
+│   │   ├── crisis_protocol.mqh
+│   │   ├── quantumfirewall.mqh
+│   │   ├── security_integrity_validator.mqh
+│   │   └── sha3_library.mqh
+│   │
+│   ├── tools/                    # Ferramentas específicas de apoio (debug, scan)
+│   │   ├── audit_engine.mq5
+│   │   ├── core_audit_engine.mq5
+│   │   └── include_audit_engine.mq5
+│   │
+│   ├── types/                    # Tipos base, enums, structs globais
+│   │   ├── audit_issue_enum.mqh
+│   │   ├── system_enums.mqh
+│   │   └── trade_signal_enum.mqh
+│   │
+│   └── visuals/                  # Painéis, indicadores visuais e HUDs
+│       ├── auditstatuspanel.mq5
+│       ├── decision_panel.mq5
+│       └── quantum_decision_panel.mq5
+│
+├── logs/                         # Diretório de logs operacionais e institucionais
+│   ├── audit report/
+│   │   ├── AUDIT_AUDITSTATUSPANEL_2025-07-21.log
+│   │   ├── AUDIT_CORE_BRAIN_MANAGER_2025-07-18.log
+│   │   ├── AUDIT_CORRELATION_MATRIX_2025-07-18.log
+│   │   ├── AUDIT_DECISION_PANEL_2025-07-21.log
+│   │   ├── AUDIT_DECISION_ROUTER_2025-07-18.log
+│   │   ├── AUDIT_INTEGRACAO_TIER0_2025-07-18.log
+│   │   ├── AUDIT_MARKET_REGIME_DETECTOR_2025-07-18.log
+│   │   ├── AUDIT_MODULAR_ID_POLICY.log
+│   │   ├── AUDIT_MULTI_TIMEFRAME_VALIDATOR_2025-07-18.log
+│   │   ├── AUDIT_NUMEIEA_2025-07-18.log
+│   │   ├── AUDIT_QUANTUM_DECISION_PANEL_2025-07-21.log
+│   │   ├── AUDIT_QUANTUMFIREWALL_2025-07-21.log
+│   │   ├── AUDIT_RISK_PROFILE_2025-07-21.log
+│   │   ├── AUDIT_SAFE_MODE_MANAGER_2025-07-18.log
+│   │   ├── AUDIT_THALER_BIAS_ENGINE_2025-07-18.log
+│   │   ├── AUDIT_TRADE_EXECUTOR_2025-07-21.log
+│   │   ├── AUDIT_TRADE_EXECUTOR_BLINDAGEM_2025-07-21.log
+│   │   ├── AUDIT_TRADE_EXECUTOR_v1.0.log
+│   │   ├── AUDIT_TRADE_SIGNAL_ENUM_2025-07-21.log
+│   │   ├── AUDITORIA COMPLETA DO PROJETO NUMEIA - RELATÓRIO TIER-0.txt
+│   │   ├── AUDITORIA_COMPLETA_PROJETO_2025-07-21.log
+│   │   ├── AUDITORIA_NEURAL_COMPLETA_2025-07-21.log
+│   │   └── FALHA_REINCIDENTE_SISTEMA_AUDITORIA_2025-07-21.log
+│   │
+│   ├── audit workflow/
+│   │   ├── Modelo de Auditoria por Arquivo Modelo Estruturado e Oficial.txt
+│   │   ├── Modelo de Relatório Individual por Arquivo.txt
+│   │   └── protocolo audit exclusiva includes.txt
+│   │
+│   ├── audit_history.json/
+│   │   └── audit_history.json
+│   │
+│   ├── audit_ml_system/
+│   │   ├── error_pattern_analyzer.mqh
+│   │   ├── intelligent_auditor.mqh
+│   │   ├── ml_error_registration.mqh
+│   │   └── [+2 files (2 *.log) & 0 dirs]
+│   │
+│   ├── audit_models/
+│   │   ├── blindagem/
+│   │   │   └── protocolo_blindagem_institucional.md
+│   │   ├── CRITERIOS_PADROES_AUDITORIA_INSTITUCIONAL.md
+│   │   ├── INDICE_RAPIDO_RESPONSABILIDADES.md
+│   │   ├── ml_system/
+│   │   │   └── protocolo_ml_auditoria.md
+│   │   └── README_AUDIT_MODELS.md
+│   │
+│   ├── AUDITORIA_COMPLETA_PROJETO_NUMEIA_2025-07-21.log
+│   ├── AUDITORIA_CORRIGIDA_NOMENCLATURA_2025-07-21.log
+│   ├── AUDITORIA_ENTRELAÇAMENTO_DADOS_2025-07-21.log
+│   ├── AUDITORIA_INSTITUCIONAL_COMPLETA_2025-07-21.log
+│   │
+│   ├── blindagem/
+│   │   ├── CAMADAS DE BLINDAGEM E INTEGRAÇÃO INSTITUCIONAL.txt
+│   │   └── CHECKLIST DE BLINDAGEM PARA PROJETOS CRÍTICOS.txt
+│   │
+│   ├── consolidated_reports/
+│   │   ├── AUDITORIA_COMPLETA_DEPENDENCIAS_2025-07-20.txt
+│   │   ├── RELATORIO_CONSOLIDADO_PENDENCIAS_2025-07-21.log
+│   │   └── RELATORIO_CORRELATION_MATRIX_ATUALIZADO_2025-07-20.txt
+│   │
+│   ├── critical_corrections/
+│   │   └── CORRECAO_CRITICA_AUDITORIA_2025-07-21.log
+│   │
+│   ├── dashboard/
+│   │   ├── DASHBOARD_PROJETO_NUMEIA_REALTIME_BACKUP.txt
+│   │   └── DASHBOARD_PROJETO_NUMEIA_REALTIME.txt
+│   │
+│   ├── includes_audit/
+│   │   ├── AUDITORIA_INCLUDES_BACKUP.txt
+│   │   ├── AUDITORIA_INCLUDES_COMPLETA_2025-07-20.txt
+│   │   ├── AUDITORIA_INCLUDES_REALTIME.txt
+│   │   └── [+1 files (1 *.txt) & 0 dirs]
+│   │
+│   ├── integration_validation/
+│   │   ├── VALIDACAO_INTEGRACAO_FINAL_2025-07-20.txt
+│   │   ├── VALIDACAO_INTEGRACAO_SECURITY_CORE_2025-07-21.log
+│   │   └── VERIFICACAO_CONFLITOS_INCLUDES_2025-07-21.log
+│   │
+│   ├── project planning/
+│   │   ├── arquitetura modulos e arquivos.txt
+│   │   ├── DASHBOARD_PROJETO_NUMEIA_REALTIME.txt
+│   │   ├── DETALHES_TECNICOS_ARQUIVOS.txt
+│   │   └── [+2 files (2 *.txt) & 0 dirs]
+│   │
+│   ├── realtime_reports/
+│   │   ├── ANALISE_DEPENDENCIAS_NUMEIAEA_COMPLETA.txt
+│   │   ├── CORRECOES_APLICADAS_NUMEIAEA.txt
+│   │   ├── CORRECOES_PROBLEMAS_CRITICOS.txt
+│   │   └── [+12 files (11 *.txt, 1 *.md) & 0 dirs]
+│   │
+│   ├── RELATORIO_CONFORMIDADE_INSTITUCIONAL_2025-07-21.log
+│   ├── RELATORIO_CONSOLIDADO_ATUALIZADO_2025-07-21.log
+│   ├── RELATORIO_CORRECOES_CRITICAS_QA_2025-07-21.log
+│   ├── RELATORIO_FALHA_AUDITORIA_INSUFICIENTE_2025-07-21.log
+│   ├── RELATORIO_FALHA_CRITICA_DUPLICACAO_2025-07-21.log
+│   ├── RELATORIO_INTEGRACAO_AUDIT_HISTORY_2025-07-21.log
+│   ├── RELATORIO_INTEGRACAO_NOVOS_ARQUIVOS_2025-07-21.log
+│   │
+│   └── security_operations/
+│       ├── BLINDAGEM_SHA3_APLICADA_2025-07-21.log
+│       └── CRIACAO_PASTA_SECURITY_2025-07-21.log
+│
+├── NumeiaEA.mq5                  # Arquivo principal .mq5 da EA
+│
+├── scripts/                      # Scripts auxiliares, testes e execução offline
+│
+├── setup_metatrader_structure.ps1
+│
+├── utils/                        # Ferramentas auxiliares e scripts utilitários
+│   ├── anti_reincidence_system.mqh
+│   ├── log_panel.mqh
+│   ├── logger_institutional.mqh
+│   └── timestamp_formatter.mqh
+│
+└── web/                          # Interface web e dashboard
+    ├── dashboard.html            # Quantum Grid Network v7.0 (TIER-0++)
+    └── dependencies.json         # Dados de dependências gerados pelo Agent_Alpha
+
+================================================================================
+STATUS: ARQUITETURA ATUALIZADA E HOMOLOGADA | DATA: 2025-07-30 | VERSÃO: v7.0
+================================================================================

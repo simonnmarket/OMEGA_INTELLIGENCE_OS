@@ -1,0 +1,43 @@
+{
+    "EMERGENCY_MODE_ENABLED": true,
+    "MAX_PARALLEL_WORKERS": 10,
+    "EXECUTION_CYCLE_SECONDS": 15,
+    "MAX_LATENCY_MS_P95": 300,
+    "MAX_FAILURE_RATE": 0.03,
+    "ROLLBACK_WINDOW_SECONDS": 600,
+    "NOTIFICATION_WEBHOOK_URL": null,
+    "TRADING_SYMBOLS": [
+        "XAUUSD",
+        "BTCUSD",
+        "ETHUSD",
+        "EURUSD",
+        "GBPUSD",
+        "USDJPY"
+    ],
+    "ORDER_VOLUME": 0.02,
+    "MAX_ORDER_ATTEMPTS": 3,
+    "MAPeriodFast": 20,
+    "MAPeriodSlow": 50,
+    "RISK_PARAMETERS": {
+        "max_daily_drawdown": 0.02,
+        "max_position_size_pct": 0.1,
+        "kelly_fraction": 0.25,
+        "correlation_threshold": 0.7,
+        "max_sector_exposure": 0.3
+    },
+    "MAX_SPREAD_PIPS": {
+        "EURUSD": 10,
+        "GBPUSD": 12,
+        "USDJPY": 15,
+        "XAUUSD": 40,
+        "US500": 50,
+        "BTCUSD": 2000,
+        "ETHUSD": 1500,
+        "default": 10
+    },
+    "MONITORING": {
+        "prometheus_port": 8000,
+        "health_check_interval": 60,
+        "order_timeout_seconds": 10
+    }
+}

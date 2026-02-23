@@ -1,0 +1,136 @@
+    // Validação de mercado
+    bool ValidateMarket() {
+        // Verificar horário de mercado
+        if(!IsMarketOpen()) return false;
+        
+        // Verificar spread
+        if(IsHighSpread()) return false;
+        
+        // Verificar volume
+        if(!HasSufficientVolume()) return false;
+        
+        // Verificar limites diários
+        if(!CheckDailyLimits()) return false;
+        
+        return true;
+    }
+    
+    // Atualização de dados de mercado
+    void UpdateMarketData() {
+        // Atualizar preços
+        marketData.open = iOpen(_Symbol, PERIOD_CURRENT, 0);
+        marketData.high = iHigh(_Symbol, PERIOD_CURRENT, 0);
+        marketData.low = iLow(_Symbol, PERIOD_CURRENT, 0);
+        marketData.close = iClose(_Symbol, PERIOD_CURRENT, 0);
+        
+        // Atualizar indicadores
+        CopyBuffer(maHandle, 0, 0, 3, maBuffer);
+        CopyBuffer(volumeHandle, 0, 0, 3, volumeBuffer);
+        CopyBuffer(atrHandle, 0, 0, 3, atrBuffer);
+        
+        // Atualizar volume
+        marketData.volume = volumeBuffer[0];
+        marketData.volumeMA = CalculateVolumeMA();
+        marketData.volumeDelta = CalculateVolumeDelta();
+        
+        // Atualizar tendência
+        marketData.trend = CalculateTrend();
+        marketData.momentum = CalculateMomentum();
+        marketData.volatility = atrBuffer[0];
+        
+        // Atualizar Market Profile se ativado
+        if(UseMarketProfile) {
+            UpdateMarketProfile();
+        }
+        
+        // Atualizar Order Flow se ativado
+        if(UseOrderFlow) {
+            UpdateOrderFlow();
+        }
+        
+        // Atualizar estado
+        UpdateMarketCondition();
+        
+        marketData.lastUpdate = TimeCurrent();
+        marketData.isValid = true;
+    }
+    
+    // Análise de mercado
+    bool AnalyzeMarket() {
+        if(!marketData.isValid) return false;
+        
+        // Resetar análise
+        analysis.trendValid = false;
+        analysis.volumeValid = false;
+        analysis.priceValid = false;
+        analysis.flowValid = false;
+        analysis.confidence = 0;
+        
+        // Análise de tendência
+        if(AnalyzeTrend()) {
+            analysis.trendValid = true;
+            analysis.confidence += 0.25;
+        }
+        
+        // Análise de volume
+        if(AnalyzeVolume()) {
+            analysis.volumeValid = true;
+            analysis.confidence += 0.25;
+        }
+        
+        // Análise de preço
+        if(AnalyzePrice()) {
+            analysis.priceValid = true;
+            analysis.confidence += 0.25;
+        }
+        
+        // Análise de fluxo
+        if(UseOrderFlow && AnalyzeFlow()) {
+            analysis.flowValid = true;
+            analysis.confidence += 0.25;
+        }
+        
+        return (analysis.confidence >= 0.75);
+    }
+    
+    // Geração de sinais
+    bool GenerateSignals() {
+        // Resetar setup
+        setup.signal = SIGNAL_NONE;
+        setup.isValid = false;
+        
+        // Verificar condição de mercado
+        switch(marketData.condition) {
+            case CONDITION_TRENDING:
+                return GenerateTrendSignal();
+                
+            case CONDITION_RANGING:
+                return GenerateRangeSignal();
+                
+            case CONDITION_VOLATILE:
+                return GenerateVolatileSignal();
+                
+            default:
+                return false;
+        }
+    }
+    
+    // Execução de trades
+    void ExecuteTrades() {
+        if(!setup.isValid) return;
+        if(!ValidateRisk()) return;
+        
+        // Calcular volume
+        setup.volume = CalculatePosition();
+        
+        // Executar ordem
+        switch(setup.signal) {
+            case SIGNAL_BUY:
+                ExecuteBuy();
+                break;
+                
+            case SIGNAL_SELL:
+                ExecuteSell();
+                break;
+        }
+    }

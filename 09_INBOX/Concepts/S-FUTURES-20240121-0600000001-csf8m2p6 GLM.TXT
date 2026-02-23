@@ -1,0 +1,102 @@
+# NUMEIA_TRADING_SYSTEM_v2.0_INTEGRATED.py
+# ... (código anterior da arquitetura principal) ...
+
+# ==================== ESTRATÉGIA INTEGRADA: GOLDEN STRATEGY FUTURES ====================
+
+class GoldenStrategyFutures:
+    """
+    ESTRATÉGIA GOLDEN STRATEGY FUTURES - VERSÃO SINTETIZADA PELO CONSELHO
+    Integrada com os módulos Petrov, Rossi, Tanaka, Leblanc, e Mestres do Mercado.
+    """
+    def __init__(self, petrov_engine, rossi_kelly, tanaka_gnc, leblanc_crypto, market_masters):
+        self.strategy_id = "S-FUTURES-20240121-0600000001-csf8m2p6"
+        self.petrov_engine = petrov_engine
+        self.rossi_kelly = rossi_kelly
+        self.tanaka_gnc = tanaka_gnc
+        self.leblanc_crypto = leblanc_crypto
+        self.market_masters = market_masters
+        
+        # Parâmetros validados pelo conselho
+        self.params = {
+            'zscore_threshold': Decimal('1.8'),
+            'min_roll_yield': Decimal('0.004'),
+            'min_liquidity_score': Decimal('0.70'),
+            'max_position_size': 50
+        }
+
+    async def analyze(self, market_data: Dict) -> List[TradingSignalEnhanced]:
+        """Ponto de entrada principal da estratégia."""
+        signals = []
+        
+        # 1. Análise Quântica de Volume (Petrov)
+        quantum_analysis = self.petrov_engine.analyze_superposition(
+            market_data['price'], market_data['volume']
+        )
+        
+        # 2. Varredura de Oportunidades de Calendar Spread
+        spreads = await self._scan_calendar_spreads(market_data)
+        
+        for spread in spreads:
+            # 3. Filtros de Qualidade (Mestres do Mercado)
+            if not self._apply_master_filters(spread):
+                continue
+
+            # 4. Cálculo de Retorno Esperado e Risco
+            expected_return = self._calculate_expected_return(spread)
+            
+            # 5. Dimensionamento de Posição (Rossi - Kelly)
+            kelly_fraction = self.rossi_kelly.calculate_kelly_fraction(
+                win_rate=Decimal('0.72'), # Win rate da estratégia
+                avg_win=Decimal('0.015'),
+                avg_loss=Decimal('0.008')
+            )
+            
+            # 6. Validação de Precisão (Tanaka)
+            gap_risk = self.tanaka_gnc.calculate_gap_probability(spread.spread_price)
+            
+            # 7. Criação do Sinal Enriquecido
+            signal = TradingSignalEnhanced(
+                strategy_id=self.strategy_id,
+                asset=f"CALENDAR_{spread.front_contract}_{spread.back_contract}",
+                action='BUY' if spread.z_score < 0 else 'SELL',
+                confidence=Decimal(str(min(spread.quantum_confidence, 0.95))),
+                risk_score=Decimal(str(max(gap_risk, 0.05))),
+                timestamp=int(time.time() * 1e6),
+                petrov_quantum_state=quantum_analysis,
+                rossi_kelly_fraction=kelly_fraction,
+                tanaka_gap_probability=gap_risk,
+                leblanc_3d_signature=self.leblanc_crypto.create_3d_signature(
+                    spread.spread_price, spread.volume, time.time()
+                ),
+                minervini_sepa_score=self.market_masters.get_sepa_score(spread),
+                douglas_probabilistic_frame="Mean reversion with defined risk",
+                williams_seasonal_bias=self.market_masters.get_seasonal_bias(spread.asset_class),
+                raschke_pattern_id=self.market_masters.get_short_term_pattern(spread)
+            )
+            signals.append(signal)
+            
+        return signals
+
+    # ... (métodos auxiliares da estratégia, como _scan_calendar_spreads, _apply_master_filters, etc.) ...
+
+# ==================== ATUALIZAÇÃO DO SISTEMA PRINCIPAL ====================
+
+class NumeiaTradingSystem:
+    def __init__(self):
+        # ... (inicialização dos módulos do conselho) ...
+        self.golden_strategy_futures = GoldenStrategyFutures(
+            self.petrov_engine, self.rossi_kelly, self.tanaka_gnc, 
+            self.leblanc_crypto, self.market_masters
+        )
+        self.strategies = [self.golden_strategy_futures] # Adicionada à lista de estratégias
+
+    async def run_trading_cycle(self, market_data: Dict):
+        """Ciclo de trading atualizado para incluir a nova estratégia."""
+        # ... (lógica de coleta de dados) ...
+        
+        all_signals = []
+        for strategy in self.strategies:
+            signals = await strategy.analyze(market_data)
+            all_signals.extend(signals)
+            
+        # ... (restante do ciclo: validação ontológica, execução, etc.) ...

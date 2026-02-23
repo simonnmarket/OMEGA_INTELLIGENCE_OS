@@ -1,0 +1,1570 @@
+//+------------------------------------------------------------------+
+//|                                              EA_RaioX_Universal.mq5 |
+//|                                  Copyright 2024, RaioX Trading      |
+//|                                             https://raiox.com.br   |
+//+------------------------------------------------------------------+
+#property copyright "Copyright 2024, RaioX Trading"
+#property link      "https://raiox.com.br"
+#property version   "4.00"
+#property strict
+
+// Inclusão de bibliotecas necessárias
+#include <Trade/Trade.mqh>
+#include <Trade/SymbolInfo.mqh>
+#include <Trade/PositionInfo.mqh>
+#include <Trade/OrderInfo.mqh>
+#include <Trade/AccountInfo.mqh>
+
+// Forward declaration
+class CRaioX;
+
+// Variável global
+CRaioX* g_raioX = NULL;
+
+// --- Variáveis Globais do Apollo11 ---
+double volumeForce = 0.0, Ve = 0.0, Cd = 0.0, a = 0.0, gravForce = 0.0, sphereEnergy = 0.0, POC = 0.0;
+double sphereEnergyLast = 0.0, monthlyHigh = 0.0, monthlyLow = 0.0, weeklyHigh = 0.0, weeklyLow = 0.0;
+datetime lastTime = 0, lastTradeTime = 0;
+double ATR41[], ATR20[], ATRW1[], ATRM1[];
+int atr41Handle, atr20Handle, atrW1Handle, atrM1Handle;
+int plotCounter = 0, orderCount = 0;
+int rotationFactor = 0;
+datetime lastResetTime = 0;
+ENUM_TIMEFRAMES tfArray[] = {PERIOD_D1, PERIOD_H4, PERIOD_H1, PERIOD_M3, PERIOD_M1};
+
+// --- Inputs do Apollo11 ---
+input string resetInterval = "D1"; // Intervalo de reset Rotation Factor
+input bool UseApollo11Physics = true; // Usar física do Apollo11
+input double MinGravitationalForce = 1000.0; // Força gravitacional mínima
+input double SphereEnergyMultiplier = 2.0; // Multiplicador de energia da esfera
+input double VolumeForceThreshold = 1.5; // Limiar de força do volume
+
+// Adicionar constantes no início do arquivo, após os inputs
+#define MinRotationFactor      30.0      // Fator de rotação mínimo para tsunami
+#define MinVolatility          0.1       // Volatilidade mínima para operar
+#define MinMADistance          0.5       // Distância mínima entre médias móveis
+#define MinSignalStrength      0.3       // Força mínima do sinal para operar
+#define TrailingStopATRMultiplier 2.0    // Multiplicador do ATR para trailing stop
+#define GravityMultiplier      2.0       // Multiplicador da força gravitacional
+#define Magic                  20240409  // Número mágico do EA
+
+// Adicionar constantes de segurança
+#define MAX_SPREAD_POINTS 100.0    // Spread máximo permitido em pontos
+#define MIN_ACCOUNT_BALANCE 100.0  // Saldo mínimo da conta
+#define MAX_DAILY_LOSS_PERCENT 5.0 // Perda diária máxima permitida
+#define MAX_OPEN_POSITIONS 5       // Número máximo de posições abertas
+
+//+------------------------------------------------------------------+
+//| Enums                                                              |
+//+------------------------------------------------------------------+
+enum ENUM_MARKET_CONDITION
+{
+    MARKET_NORMAL,        // Mercado normal
+    MARKET_TSUNAMI,       // Tsunami detectado
+    MARKET_CONSOLIDATION  // Mercado em consolidação
+};
+
+enum ENUM_NEWS_IMPORTANCE
+{
+    NEWS_IMPORTANCE_NONE,
+    NEWS_IMPORTANCE_LOW,
+    NEWS_IMPORTANCE_MEDIUM,
+    NEWS_IMPORTANCE_HIGH
+};
+
+// Parâmetros de entrada
+input double LotSize = 0.01;          // Tamanho inicial do lote
+input double MaxLotSize = 0.1;        // Tamanho máximo do lote
+input int MaxPositions = 5;           // Número máximo de posições
+input double RiskPercent = 1.0;       // Percentual de risco
+input double StopLoss = 30;           // Stop Loss em pontos
+input double TakeProfit = 60;         // Take Profit em pontos
+input bool UseTrailingStop = true;    // Usar trailing stop
+input int TrailingStart = 15;         // Início do trailing stop em pontos
+input int TrailingStep = 5;           // Step do trailing stop em pontos
+input int MaxSpread = 100;            // Spread máximo permitido
+input bool UseNewsFilter = false;     // Usar filtro de notícias
+input bool UseTrendFilter = true;     // Usar filtro de tendência
+input int TrendPeriod = 14;           // Período da média móvel
+input bool UseMultiTimeframe = true;  // Usar análise multi-timeframe
+input double MinimumConfidence = 0.4; // Confiança mínima para operar
+input double CoherenceThreshold = 0.5; // Limiar de coerência entre timeframes
+input double VolumeMinimo = 0.01;     // Volume Mínimo
+input double VolumeMaximo = 0.1;      // Volume Máximo
+input double TrendWeight = 0.3;        // Peso da tendência
+input double MomentumWeight = 0.25;    // Peso do momentum
+input double VolumeWeight = 0.25;      // Peso do volume
+input double VolatilityWeight = 0.2;   // Peso da volatilidade
+input double MinimumScore = 0.6;       // Pontuação mínima para operar
+input double ATRMultiplier = 1.5;      // Multiplicador do ATR para Stop Loss
+input double VolatilityFactor = 0.5;   // Fator de redução do lote em alta volatilidade
+input double MinStopLoss = 20;         // Stop Loss mínimo em pontos
+input double MaxStopLoss = 50;         // Stop Loss máximo em pontos
+input ENUM_TIMEFRAMES Timeframe1 = PERIOD_H1;    // Timeframe 1
+input ENUM_TIMEFRAMES Timeframe2 = PERIOD_H4;    // Timeframe 2
+input ENUM_TIMEFRAMES Timeframe3 = PERIOD_D1;    // Timeframe 3
+input double TimeframeWeight1 = 0.4;             // Peso Timeframe 1
+input double TimeframeWeight2 = 0.4;             // Peso Timeframe 2
+input double TimeframeWeight3 = 0.2;             // Peso Timeframe 3
+
+// Parâmetros para análise dinâmica de volume
+input int VolumePeriod = 20;          // Período para análise de volume
+input double VolumeThreshold = 0.5;    // Limiar de volume relativo à média
+
+// Parâmetros para controle dinâmico de volume
+input double VolumeMinimoPadrao = 500.0;    // Volume mínimo padrão
+input double VolumeMinimoNoturno = 200.0;    // Volume mínimo para período noturno
+input int HoraInicioNoturno = 22;            // Hora início período noturno
+input int HoraFimNoturno = 4;                // Hora fim período noturno
+input double BufferVolume = 0.7;             // Buffer de volume (70% do mínimo)
+
+// Parâmetros adicionais
+input double MaxDrawdown = 20.0;              // Drawdown máximo permitido (%)
+input double DailyProfitTarget = 5.0;         // Alvo de lucro diário (%)
+
+//+------------------------------------------------------------------+
+//| Parâmetros adicionais                                             |
+//+------------------------------------------------------------------+
+input bool TestMode = true;                // Modo de teste (não abre ordens reais)
+input bool ShowDebugInfo = true;           // Mostrar informações de debug
+input bool ShowGravitationalChannels = true; // Mostrar canais gravitacionais
+input int DebugUpdateInterval = 5;         // Intervalo de atualização do debug (segundos)
+input color ChannelColor = clrDodgerBlue;  // Cor dos canais gravitacionais
+input int ChannelWidth = 1;                // Largura das linhas dos canais
+
+//+------------------------------------------------------------------+
+//| Estruturas                                                         |
+//+------------------------------------------------------------------+
+struct MarketStats
+{
+    double avgVolume;
+    double avgSpread;
+    double avgVolatility;
+    double avgTrendStrength;
+    double avgMomentum;
+    
+    void Init()
+    {
+        avgVolume = 0;
+        avgSpread = 0;
+        avgVolatility = 0;
+        avgTrendStrength = 0;
+        avgMomentum = 0;
+    }
+};
+
+struct TradeScore
+{
+    double trendScore;
+    double momentumScore;
+    double volumeScore;
+    double volatilityScore;
+    double totalScore;
+    
+    void Init()
+    {
+        trendScore = 0;
+        momentumScore = 0;
+        volumeScore = 0;
+        volatilityScore = 0;
+        totalScore = 0;
+    }
+};
+
+struct TimeframeAnalysis
+{
+    ENUM_TIMEFRAMES timeframe;
+    double trend;
+    double momentum;
+    double volume;
+    double volatility;
+    
+    void Init()
+    {
+        trend = 0;
+        momentum = 0;
+        volume = 0;
+        volatility = 0;
+    }
+};
+
+struct PositionInfo
+{
+    ulong ticket;
+    bool isLong;
+    double openPrice;
+    double currentPrice;
+    double stopLoss;
+    double takeProfit;
+    datetime openTime;
+    double volume;
+    
+    void Init()
+    {
+        ticket = 0;
+        isLong = false;
+        openPrice = 0;
+        currentPrice = 0;
+        stopLoss = 0;
+        takeProfit = 0;
+        openTime = 0;
+        volume = 0;
+    }
+};
+
+struct NewsEvent
+{
+    datetime time;
+    string description;
+    ENUM_NEWS_IMPORTANCE importance;
+    
+    void Init()
+    {
+        time = 0;
+        description = "";
+        importance = NEWS_IMPORTANCE_NONE;
+    }
+};
+
+// Estrutura para estatísticas de mercado
+struct SMarketStats
+{
+    int totalTrades;        // Total de trades realizados
+    double totalProfit;     // Lucro/prejuízo total
+    int tsunamiCount;       // Número de tsunamis detectados
+    datetime lastUpdateTime;// Último horário de atualização
+};
+
+//+------------------------------------------------------------------+
+//| Classe para gerenciamento de logs                                  |
+//+------------------------------------------------------------------+
+class CLogger
+{
+private:
+    string m_prefix;  // Prefixo para as mensagens de log
+    
+public:
+    CLogger(string prefix = "")
+    {
+        m_prefix = prefix;
+    }
+    
+    void LogInfo(string message)
+    {
+        string formattedMessage = StringFormat("[%s][INFO] %s", m_prefix, message);
+        Print(formattedMessage);
+    }
+    
+    void LogWarning(string message)
+    {
+        string formattedMessage = StringFormat("[%s][WARN] %s", m_prefix, message);
+        Print(formattedMessage);
+    }
+    
+    void LogError(string message)
+    {
+        string formattedMessage = StringFormat("[%s][ERROR] %s", m_prefix, message);
+        Print(formattedMessage);
+    }
+    
+    void LogDebug(string message)
+    {
+        #ifdef DEBUG
+        string formattedMessage = StringFormat("[%s][DEBUG] %s", m_prefix, message);
+        Print(formattedMessage);
+        #endif
+    }
+};
+
+//+------------------------------------------------------------------+
+//| Classe para execução de ordens                                     |
+//+------------------------------------------------------------------+
+class CTradeExecutor
+{
+private:
+    string m_symbol;      // Símbolo para operar
+    int m_magic;         // Número mágico para identificar ordens
+    CLogger* m_logger;   // Objeto para logging
+    CTrade m_trade;      // Objeto para execução de trades
+    
+public:
+    CTradeExecutor(CLogger* logger)
+    {
+        m_logger = logger;
+    }
+    
+    bool Init(string symbol, int magic)
+    {
+        m_symbol = symbol;
+        m_magic = magic;
+        
+        // Configura objeto de trade
+        m_trade.SetExpertMagicNumber(magic);
+        m_trade.SetMarginMode();
+        m_trade.SetTypeFillingBySymbol(symbol);
+        m_trade.SetDeviationInPoints(10);
+        
+        if(m_logger != NULL)
+            m_logger.LogInfo("Trade executor inicializado");
+        return true;
+    }
+    
+    bool IsMarketOpen()
+    {
+        MqlDateTime dt;
+        TimeCurrent(dt);
+        
+        // Verifica se é fim de semana
+        if(dt.day_of_week == 0 || dt.day_of_week == 6)
+        {
+            return false;
+        }
+        
+        // Verifica horário de mercado
+        datetime time = TimeCurrent();
+        int hour = dt.hour;
+        
+        // Mercado fechado entre 22:00 e 00:00
+        if(hour >= 22)
+        {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    bool OpenPosition(bool isLong, double volume, double stopLoss, double takeProfit)
+    {
+        // Verifica volume
+        if(volume <= 0)
+        {
+            if(m_logger != NULL)
+                m_logger.LogError("Volume inválido");
+            return false;
+        }
+        
+        // Obtém preços
+        double price = isLong ? SymbolInfoDouble(m_symbol, SYMBOL_ASK) : SymbolInfoDouble(m_symbol, SYMBOL_BID);
+        
+        // Executa ordem
+        bool result = isLong ?
+            m_trade.Buy(volume, m_symbol, price, stopLoss, takeProfit) :
+            m_trade.Sell(volume, m_symbol, price, stopLoss, takeProfit);
+            
+        if(!result)
+        {
+            if(m_logger != NULL)
+                m_logger.LogError("Falha ao abrir posição: " + IntegerToString(m_trade.ResultRetcode()));
+            return false;
+        }
+        
+        string message = StringFormat("Posição aberta: %s, Volume: %.2f, SL: %.5f, TP: %.5f",
+            isLong ? "COMPRA" : "VENDA", volume, stopLoss, takeProfit);
+        if(m_logger != NULL)
+            m_logger.LogInfo(message);
+        
+        return true;
+    }
+    
+    bool ModifyPosition(ulong ticket, double stopLoss, double takeProfit)
+    {
+        // Seleciona posição
+        if(!PositionSelectByTicket(ticket))
+        {
+            if(m_logger != NULL)
+                m_logger.LogError("Posição não encontrada: " + IntegerToString(ticket));
+            return false;
+        }
+        
+        // Modifica posição
+        if(!m_trade.PositionModify(ticket, stopLoss, takeProfit))
+        {
+            if(m_logger != NULL)
+                m_logger.LogError("Falha ao modificar posição: " + IntegerToString(m_trade.ResultRetcode()));
+            return false;
+        }
+        
+        string message = StringFormat("Posição modificada: Ticket=%d, SL=%.5f, TP=%.5f",
+            ticket, stopLoss, takeProfit);
+        if(m_logger != NULL)
+            m_logger.LogInfo(message);
+        
+        return true;
+    }
+    
+    bool ClosePosition(ulong ticket)
+    {
+        // Seleciona posição
+        if(!PositionSelectByTicket(ticket))
+        {
+            if(m_logger != NULL)
+                m_logger.LogError("Posição não encontrada: " + IntegerToString(ticket));
+            return false;
+        }
+        
+        // Fecha posição
+        if(!m_trade.PositionClose(ticket))
+        {
+            if(m_logger != NULL)
+                m_logger.LogError("Falha ao fechar posição: " + IntegerToString(m_trade.ResultRetcode()));
+            return false;
+        }
+        
+        if(m_logger != NULL)
+            m_logger.LogInfo("Posição fechada: " + IntegerToString(ticket));
+        return true;
+    }
+};
+
+//+------------------------------------------------------------------+
+//| Classe para análise de mercado                                     |
+//+------------------------------------------------------------------+
+class CMarketAnalyzer
+{
+private:
+    string m_symbol;      // Símbolo para análise
+    int m_ma20Handle;    // Handle da média móvel de 20 períodos
+    int m_ma50Handle;    // Handle da média móvel de 50 períodos
+    int m_ma200Handle;   // Handle da média móvel de 200 períodos
+    int m_rsiHandle;     // Handle do RSI
+    int m_atrHandle;     // Handle do ATR
+    
+    // Buffers dos indicadores
+    double m_maBuffer20[];   // Buffer da média móvel de 20 períodos
+    double m_maBuffer50[];   // Buffer da média móvel de 50 períodos
+    double m_maBuffer200[];  // Buffer da média móvel de 200 períodos
+    double m_rsiBuffer[];    // Buffer do RSI
+    double m_atrBuffer[];    // Buffer do ATR
+    double m_volumeBuffer[]; // Buffer de volume
+    
+    CLogger* m_logger;   // Objeto para logging
+    
+public:
+    CMarketAnalyzer(CLogger* logger)
+    {
+        m_logger = logger;
+    }
+    
+    bool Init(string symbol)
+    {
+        m_symbol = symbol;
+        
+        // Inicializa handles dos indicadores
+        m_ma20Handle = iMA(symbol, PERIOD_CURRENT, 20, 0, MODE_SMA, PRICE_CLOSE);
+        m_ma50Handle = iMA(symbol, PERIOD_CURRENT, 50, 0, MODE_SMA, PRICE_CLOSE);
+        m_ma200Handle = iMA(symbol, PERIOD_CURRENT, 200, 0, MODE_SMA, PRICE_CLOSE);
+        m_rsiHandle = iRSI(symbol, PERIOD_CURRENT, 14, PRICE_CLOSE);
+        m_atrHandle = iATR(symbol, PERIOD_CURRENT, 14);
+        
+        // Verifica se os handles foram criados corretamente
+        if(m_ma20Handle == INVALID_HANDLE || 
+           m_ma50Handle == INVALID_HANDLE || 
+           m_ma200Handle == INVALID_HANDLE ||
+           m_rsiHandle == INVALID_HANDLE ||
+           m_atrHandle == INVALID_HANDLE)
+        {
+            if(m_logger != NULL)
+                m_logger.LogError("Falha ao criar handles dos indicadores");
+            return false;
+        }
+        
+        // Inicializa buffers
+        ArraySetAsSeries(m_maBuffer20, true);
+        ArraySetAsSeries(m_maBuffer50, true);
+        ArraySetAsSeries(m_maBuffer200, true);
+        ArraySetAsSeries(m_rsiBuffer, true);
+        ArraySetAsSeries(m_atrBuffer, true);
+        ArraySetAsSeries(m_volumeBuffer, true);
+        
+        if(m_logger != NULL)
+            m_logger.LogInfo("Market analyzer inicializado");
+        return true;
+    }
+    
+    void Update()
+    {
+        // Copia dados dos indicadores para os buffers
+        if(CopyBuffer(m_ma20Handle, 0, 0, 1000, m_maBuffer20) <= 0 ||
+           CopyBuffer(m_ma50Handle, 0, 0, 1000, m_maBuffer50) <= 0 ||
+           CopyBuffer(m_ma200Handle, 0, 0, 1000, m_maBuffer200) <= 0 ||
+           CopyBuffer(m_rsiHandle, 0, 0, 1000, m_rsiBuffer) <= 0 ||
+           CopyBuffer(m_atrHandle, 0, 0, 1000, m_atrBuffer) <= 0)
+        {
+            if(m_logger != NULL)
+                m_logger.LogError("Falha ao copiar dados dos indicadores");
+            return;
+        }
+        
+        // Copia dados de volume
+        long volumeBuffer[];
+        ArraySetAsSeries(volumeBuffer, true);
+        if(CopyTickVolume(m_symbol, PERIOD_CURRENT, 0, 1000, volumeBuffer) <= 0)
+        {
+            if(m_logger != NULL)
+                m_logger.LogError("Falha ao copiar dados de volume");
+            return;
+        }
+    }
+    
+    double GetTrend()
+    {
+        // Calcula tendência usando médias móveis
+        double ma20 = m_maBuffer20[0];
+        double ma50 = m_maBuffer50[0];
+        double ma200 = m_maBuffer200[0];
+        
+        // Verifica alinhamento das médias
+        if(ma20 > ma50 && ma50 > ma200)
+        {
+            return 1.0; // Tendência de alta
+        }
+        else if(ma20 < ma50 && ma50 < ma200)
+        {
+            return -1.0; // Tendência de baixa
+        }
+        
+        return 0.5; // Tendência lateral
+    }
+    
+    double GetStrength()
+    {
+        // Retorna valor do RSI
+        return m_rsiBuffer[0];
+    }
+    
+    double GetVolatility()
+    {
+        // Retorna valor do ATR
+        return m_atrBuffer[0];
+    }
+    
+    double GetATR()
+    {
+        // Retorna valor do ATR
+        return m_atrBuffer[0];
+    }
+    
+    double GetVolume()
+    {
+        // Calcula média de volume dos últimos 20 períodos
+        double avgVolume = 0;
+        for(int i = 0; i < 20; i++)
+        {
+            avgVolume += m_volumeBuffer[i];
+        }
+        avgVolume /= 20;
+        
+        return avgVolume;
+    }
+    
+    ~CMarketAnalyzer()
+    {
+        // Libera handles dos indicadores
+        if(m_ma20Handle != INVALID_HANDLE) IndicatorRelease(m_ma20Handle);
+        if(m_ma50Handle != INVALID_HANDLE) IndicatorRelease(m_ma50Handle);
+        if(m_ma200Handle != INVALID_HANDLE) IndicatorRelease(m_ma200Handle);
+        if(m_rsiHandle != INVALID_HANDLE) IndicatorRelease(m_rsiHandle);
+        if(m_atrHandle != INVALID_HANDLE) IndicatorRelease(m_atrHandle);
+    }
+};
+
+class CRiskManager
+{
+private:
+    double m_maxRiskPercent;
+    double m_maxDrawdown;
+    double m_initialBalance;
+    
+public:
+    CRiskManager(double maxRiskPercent = 1.0, double maxDrawdown = 20.0)
+    {
+        m_maxRiskPercent = maxRiskPercent;
+        m_maxDrawdown = maxDrawdown;
+        m_initialBalance = AccountInfoDouble(ACCOUNT_BALANCE);
+    }
+    
+    bool CheckRisk(double volume, double stopLoss)
+    {
+        double potentialLoss = volume * stopLoss * _Point;
+        double accountBalance = AccountInfoDouble(ACCOUNT_BALANCE);
+        double riskPercent = (potentialLoss / accountBalance) * 100;
+        
+        return (riskPercent <= m_maxRiskPercent);
+    }
+    
+    bool CheckDrawdown()
+    {
+        double currentBalance = AccountInfoDouble(ACCOUNT_BALANCE);
+        double drawdown = ((m_initialBalance - currentBalance) / m_initialBalance) * 100;
+        
+        return (drawdown <= m_maxDrawdown);
+    }
+    
+    double GetSafeVolume(double stopLoss)
+    {
+        double accountBalance = AccountInfoDouble(ACCOUNT_BALANCE);
+        double maxRiskAmount = accountBalance * (m_maxRiskPercent / 100);
+        double pointValue = SymbolInfoDouble(_Symbol, SYMBOL_POINT);
+        
+        return NormalizeDouble(maxRiskAmount / (stopLoss * pointValue), 2);
+    }
+};
+
+//+------------------------------------------------------------------+
+//| Classe Principal                                                   |
+//+------------------------------------------------------------------+
+class CRaioX
+{
+private:
+    // Membros para análise de mercado
+    double m_gravitationalForce;  // Força gravitacional atual
+    double m_rotationFactor;      // Fator de rotação atual
+    
+    // Handles dos indicadores
+    int m_ma20Handle;            // Handle da média móvel de 20 períodos
+    int m_ma50Handle;            // Handle da média móvel de 50 períodos
+    int m_ma200Handle;           // Handle da média móvel de 200 períodos
+    int m_rsiHandle;             // Handle do RSI
+    int m_atrHandle;             // Handle do ATR
+    
+    // Buffers dos indicadores
+    double m_maBuffer20[];       // Buffer da média móvel de 20 períodos
+    double m_maBuffer50[];       // Buffer da média móvel de 50 períodos
+    double m_maBuffer200[];      // Buffer da média móvel de 200 períodos
+    double m_rsiBuffer[];        // Buffer do RSI
+    double m_atrBuffer[];        // Buffer do ATR
+    double m_volumeBuffer[];     // Buffer de volume
+    double m_priceBuffer[];      // Buffer de preço
+    
+    // Objetos auxiliares
+    CLogger* m_logger;           // Objeto para logging
+    CTradeExecutor* m_tradeExecutor; // Objeto para execução de trades
+    
+    // Estatísticas
+    SMarketStats m_marketStats;  // Estatísticas de mercado
+    
+    CMarketAnalyzer* m_marketAnalyzer;   // Objeto para análise de mercado
+    
+    // Adicionar membros de segurança
+    double m_dailyProfit;          // Lucro/prejuízo diário
+    datetime m_lastDailyReset;     // Último reset diário
+    int m_openPositions;           // Número de posições abertas
+    
+    // Adicionar membros para proteção contra drawdown
+    double m_peakBalance;          // Saldo máximo atingido
+    double m_currentDrawdown;      // Drawdown atual
+    double m_maxAllowedDrawdown;   // Drawdown máximo permitido
+    
+    // Adicionar membros para proteção contra notícias
+    datetime m_lastNewsCheck;      // Última verificação de notícias
+    bool m_newsProtectionActive;   // Indica se proteção contra notícias está ativa
+    
+    // Métodos privados
+    bool InitializeBuffers();
+    void UpdateAnalysis();
+    ENUM_MARKET_CONDITION AnalyzeMarket();
+    void ExecuteTsunamiStrategy();
+    void ExecuteNormalStrategy();
+    void UpdatePositions();
+    double CalculateSignal();
+    double CalculatePositionSize();
+    double CalculateGravitationalForce();
+    double CalculateRotationFactor();
+    bool CheckSafetyConditions();
+    void UpdateDailyStats();
+    void UpdateDrawdownProtection();
+    bool CheckNewsProtection();
+    
+public:
+    CRaioX();
+    ~CRaioX();
+    
+    bool Init();
+    void OnTick();
+};
+
+CRaioX::CRaioX()
+{
+    // Inicializa membros
+    m_gravitationalForce = 0;
+    m_rotationFactor = 0;
+    
+    // Inicializa handles dos indicadores
+    m_ma20Handle = INVALID_HANDLE;
+    m_ma50Handle = INVALID_HANDLE;
+    m_ma200Handle = INVALID_HANDLE;
+    m_rsiHandle = INVALID_HANDLE;
+    m_atrHandle = INVALID_HANDLE;
+    
+    // Inicializa estatísticas
+    m_marketStats.totalTrades = 0;
+    m_marketStats.totalProfit = 0;
+    m_marketStats.tsunamiCount = 0;
+    m_marketStats.lastUpdateTime = 0;
+    
+    // Cria objetos auxiliares
+    m_logger = new CLogger("RaioX");
+    m_tradeExecutor = new CTradeExecutor(m_logger);
+    
+    m_marketAnalyzer = NULL;
+    
+    // Adicionar membros de segurança
+    m_dailyProfit = 0;
+    m_lastDailyReset = 0;
+    m_openPositions = 0;
+    
+    // Inicializa proteção contra drawdown
+    m_peakBalance = AccountInfoDouble(ACCOUNT_BALANCE);
+    m_currentDrawdown = 0;
+    m_maxAllowedDrawdown = MaxDrawdown;
+    
+    // Inicializa proteção contra notícias
+    m_lastNewsCheck = 0;
+    m_newsProtectionActive = false;
+    
+    m_logger.LogInfo("CRaioX construído com sucesso");
+}
+
+CRaioX::~CRaioX()
+{
+    // Libera handles dos indicadores
+    if(m_ma20Handle != INVALID_HANDLE) IndicatorRelease(m_ma20Handle);
+    if(m_ma50Handle != INVALID_HANDLE) IndicatorRelease(m_ma50Handle);
+    if(m_ma200Handle != INVALID_HANDLE) IndicatorRelease(m_ma200Handle);
+    if(m_rsiHandle != INVALID_HANDLE) IndicatorRelease(m_rsiHandle);
+    if(m_atrHandle != INVALID_HANDLE) IndicatorRelease(m_atrHandle);
+    
+    // Deleta objetos auxiliares
+    if(m_logger != NULL) delete m_logger;
+    if(m_tradeExecutor != NULL) delete m_tradeExecutor;
+    
+    if(m_marketAnalyzer != NULL) delete m_marketAnalyzer;
+    
+    // Log final
+    Print("CRaioX destruído com sucesso");
+}
+
+bool CRaioX::InitializeBuffers()
+{
+    // Inicializa buffers de preço e volume
+    ArraySetAsSeries(m_priceBuffer, true);
+    ArraySetAsSeries(m_volumeBuffer, true);
+    
+    // Redimensiona buffers
+    if(!ArrayResize(m_priceBuffer, 1000) || !ArrayResize(m_volumeBuffer, 1000))
+    {
+        m_logger.LogError("Falha ao redimensionar buffers");
+        return false;
+    }
+    
+    // Copia dados históricos
+    long volumeBuffer[];
+    ArraySetAsSeries(volumeBuffer, true);
+    ArrayResize(volumeBuffer, 1000);
+    
+    if(CopyTickVolume(_Symbol, PERIOD_CURRENT, 0, 1000, volumeBuffer) <= 0)
+    {
+        m_logger.LogError("Falha ao copiar dados de volume");
+        return false;
+    }
+    
+    // Copia dados para o buffer principal
+    for(int i = 0; i < 1000; i++)
+    {
+        m_volumeBuffer[i] = (double)volumeBuffer[i];
+    }
+    
+    m_logger.LogInfo("Buffers inicializados com sucesso");
+    return true;
+}
+
+double CRaioX::CalculateSignal()
+{
+    if(m_marketAnalyzer == NULL)
+        return 0.0;
+        
+    // Obtém indicadores técnicos
+    double trend = m_marketAnalyzer.GetTrend();
+    double strength = m_marketAnalyzer.GetStrength();
+    double volatility = m_marketAnalyzer.GetVolatility();
+    double volume = m_marketAnalyzer.GetVolume();
+    
+    // Calcula sinal baseado na física do mercado
+    double physicsSignal = m_gravitationalForce * m_rotationFactor / 100.0;
+    
+    // Calcula força do volume
+    double volumeSignal = (volume - VolumeMinimo) / (VolumeMaximo - VolumeMinimo);
+    volumeSignal = MathMax(MathMin(volumeSignal, 1.0), 0.0);
+    
+    // Combina sinais com pesos otimizados
+    double signal = (trend * TrendWeight) + 
+                   (physicsSignal * 0.3) + 
+                   (strength * MomentumWeight) + 
+                   (volumeSignal * VolumeWeight) + 
+                   (volatility * VolatilityWeight);
+    
+    // Normaliza sinal entre -1 e 1
+    signal = MathMax(MathMin(signal, 1.0), -1.0);
+    
+    // Log do sinal calculado
+    string message = StringFormat("Sinal calculado: %.4f (Trend: %.2f, Physics: %.2f, Strength: %.2f, Volume: %.2f, Volatility: %.2f)",
+        signal, trend, physicsSignal, strength, volumeSignal, volatility);
+    if(m_logger != NULL)
+        m_logger.LogInfo(message);
+    
+    return signal;
+}
+
+double CRaioX::CalculatePositionSize()
+{
+    // Obtém saldo da conta
+    double balance = AccountInfoDouble(ACCOUNT_BALANCE);
+    
+    // Calcula tamanho base da posição
+    double baseSize = balance * RiskPercent / 100.0;
+    
+    // Obtém indicadores para ajuste dinâmico
+    double volatility = m_marketAnalyzer.GetVolatility();
+    double trend = m_marketAnalyzer.GetTrend();
+    double volume = m_marketAnalyzer.GetVolume();
+    
+    // Ajusta tamanho baseado na volatilidade
+    double volatilityAdjustment = 1.0 - (volatility / 100.0);
+    volatilityAdjustment = MathMax(volatilityAdjustment, VolatilityFactor);
+    
+    // Ajusta tamanho baseado no volume
+    double volumeAdjustment = (volume - VolumeMinimo) / (VolumeMaximo - VolumeMinimo);
+    volumeAdjustment = MathMax(MathMin(volumeAdjustment, 1.0), 0.5);
+    
+    // Ajusta tamanho baseado na força gravitacional
+    double gravityAdjustment = 1.0;
+    if(m_gravitationalForce > MinGravitationalForce)
+    {
+        gravityAdjustment = 1.0 + (m_gravitationalForce / MinGravitationalForce) * 0.5;
+    }
+    
+    // Calcula tamanho final
+    double adjustedSize = baseSize * volatilityAdjustment * volumeAdjustment * gravityAdjustment;
+    
+    // Converte para lotes
+    double lotStep = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP);
+    double minLot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
+    double maxLot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX);
+    
+    double lots = NormalizeDouble(adjustedSize / (balance * lotStep), 2);
+    lots = MathMax(MathMin(lots, maxLot), minLot);
+    
+    // Log do cálculo do tamanho da posição
+    string message = StringFormat("Tamanho da posição calculado: %.2f (Base: %.2f, Vol: %.2f, VolAdj: %.2f, VolAdj: %.2f, GravityAdj: %.2f)",
+        lots, baseSize, volatility, volatilityAdjustment, volumeAdjustment, gravityAdjustment);
+    if(m_logger != NULL)
+        m_logger.LogInfo(message);
+    
+    return lots;
+}
+
+void CRaioX::ExecuteTsunamiStrategy()
+{
+    if(m_marketAnalyzer == NULL)
+    {
+        m_logger.LogError("Market analyzer não inicializado");
+        return;
+    }
+    
+    // Obtém indicadores técnicos
+    double trend = m_marketAnalyzer.GetTrend();
+    double strength = m_marketAnalyzer.GetStrength();
+    double volatility = m_marketAnalyzer.GetVolatility();
+    double volume = m_marketAnalyzer.GetVolume();
+    
+    // Verifica condições para tsunami
+    bool isTsunami = (m_gravitationalForce > MinGravitationalForce) && 
+                    (MathAbs(m_rotationFactor) > MinRotationFactor) &&
+                    (volatility > MinVolatility) &&
+                    (volume > VolumeMinimo);
+    
+    if(!isTsunami)
+    {
+        m_logger.LogInfo("Condições de tsunami não atendidas");
+        return;
+    }
+    
+    // Calcula tamanho da posição baseado na força do tsunami
+    double positionSize = CalculatePositionSize() * (m_gravitationalForce / MinGravitationalForce);
+    
+    // Determina direção baseado no trend e força gravitacional
+    bool isLong = (trend > 0 && m_rotationFactor > 0) || (trend < 0 && m_rotationFactor < 0);
+    
+    // Calcula níveis de stop loss e take profit
+    double atr = m_marketAnalyzer.GetATR();
+    double currentPrice = isLong ? SymbolInfoDouble(_Symbol, SYMBOL_ASK) : SymbolInfoDouble(_Symbol, SYMBOL_BID);
+    
+    // Ajusta stop loss e take profit baseado na volatilidade
+    double stopLossMultiplier = 1.5 + (volatility / 100.0);
+    double takeProfitMultiplier = 3.0 + (volatility / 100.0);
+    
+    double stopLoss = isLong ? 
+        currentPrice - (atr * stopLossMultiplier) : 
+        currentPrice + (atr * stopLossMultiplier);
+    
+    double takeProfit = isLong ? 
+        currentPrice + (atr * takeProfitMultiplier) : 
+        currentPrice - (atr * takeProfitMultiplier);
+    
+    // Log dos parâmetros da estratégia
+    string message = StringFormat(
+        "Executando estratégia de tsunami:\n" +
+        "Direção: %s\n" +
+        "Tamanho: %.2f\n" +
+        "Preço: %.5f\n" +
+        "SL: %.5f\n" +
+        "TP: %.5f\n" +
+        "GF: %.2f\n" +
+        "RF: %.2f\n" +
+        "Vol: %.2f",
+        isLong ? "COMPRA" : "VENDA",
+        positionSize,
+        currentPrice,
+        stopLoss,
+        takeProfit,
+        m_gravitationalForce,
+        m_rotationFactor,
+        volume
+    );
+    m_logger.LogInfo(message);
+    
+    // Executa ordem
+    if(!m_tradeExecutor.OpenPosition(isLong, positionSize, stopLoss, takeProfit))
+    {
+        m_logger.LogError("Falha ao executar estratégia de tsunami");
+    }
+    else
+    {
+        m_logger.LogInfo("Estratégia de tsunami executada com sucesso");
+    }
+}
+
+void CRaioX::ExecuteNormalStrategy()
+{
+    if(m_marketAnalyzer == NULL)
+    {
+        m_logger.LogError("Market analyzer não inicializado");
+        return;
+    }
+    
+    // Obtém indicadores técnicos
+    double trend = m_marketAnalyzer.GetTrend();
+    double strength = m_marketAnalyzer.GetStrength();
+    double volatility = m_marketAnalyzer.GetVolatility();
+    
+    // Calcula sinal de trading
+    double signal = CalculateSignal();
+    
+    // Verifica força do sinal
+    if(MathAbs(signal) < MinSignalStrength)
+    {
+        m_logger.LogInfo("Sinal muito fraco para executar estratégia normal");
+        return;
+    }
+    
+    // Determina direção baseado no sinal
+    bool isLong = signal > 0;
+    
+    // Calcula tamanho da posição
+    double positionSize = CalculatePositionSize();
+    
+    // Verifica se o tamanho da posição é válido
+    if(positionSize <= 0)
+    {
+        m_logger.LogError("Tamanho da posição inválido");
+        return;
+    }
+    
+    // Calcula níveis de stop loss e take profit
+    double atr = m_marketAnalyzer.GetATR();
+    double currentPrice = isLong ? SymbolInfoDouble(_Symbol, SYMBOL_ASK) : SymbolInfoDouble(_Symbol, SYMBOL_BID);
+    
+    // Verifica se os preços são válidos
+    if(currentPrice <= 0 || atr <= 0)
+    {
+        m_logger.LogError("Preços ou ATR inválidos");
+        return;
+    }
+    
+    double stopLoss = isLong ? currentPrice - (atr * 1.5) : currentPrice + (atr * 1.5);
+    double takeProfit = isLong ? currentPrice + (atr * 3) : currentPrice - (atr * 3);
+    
+    // Executa ordem
+    if(!m_tradeExecutor.OpenPosition(isLong, positionSize, stopLoss, takeProfit))
+    {
+        m_logger.LogError("Falha ao executar estratégia normal");
+    }
+    else
+    {
+        m_logger.LogInfo("Estratégia normal executada com sucesso");
+    }
+}
+
+ENUM_MARKET_CONDITION CRaioX::AnalyzeMarket()
+{
+    // Obtém dados atuais
+    double currentPrice = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+    double currentVolume = m_volumeBuffer[0];
+    
+    // Calcula médias de volume
+    double avgVolume = 0;
+    for(int i = 0; i < 20; i++)
+    {
+        avgVolume += m_volumeBuffer[i];
+    }
+    avgVolume /= 20;
+    
+    // Calcula força do volume
+    double localVolumeForce = currentVolume / avgVolume;
+    
+    // Verifica força gravitacional
+    if(m_gravitationalForce > MinGravitationalForce && localVolumeForce > VolumeForceThreshold)
+    {
+        // Verifica se o fator de rotação é significativo
+        if(MathAbs(m_rotationFactor) > MinRotationFactor)
+        {
+            // Verifica alinhamento das médias móveis
+            double ma20 = m_maBuffer20[0];
+            double ma50 = m_maBuffer50[0];
+            double ma200 = m_maBuffer200[0];
+            
+            // Verifica se as médias estão alinhadas
+            bool maAligned = (ma20 > ma50 && ma50 > ma200) || (ma20 < ma50 && ma50 < ma200);
+            
+            if(maAligned)
+            {
+                m_logger.LogInfo("Condições de tsunami detectadas: GF=" + DoubleToString(m_gravitationalForce, 2) + 
+                               ", RF=" + DoubleToString(m_rotationFactor, 2) + 
+                               ", VF=" + DoubleToString(localVolumeForce, 2));
+                return MARKET_TSUNAMI;
+            }
+        }
+    }
+    
+    // Verifica volatilidade
+    double atr = m_atrBuffer[0];
+    double normalizedATR = atr / currentPrice * 100.0;
+    
+    // Verifica RSI
+    double rsi = m_rsiBuffer[0];
+    
+    // Verifica médias móveis
+    double ma20 = m_maBuffer20[0];
+    double ma50 = m_maBuffer50[0];
+    double ma200 = m_maBuffer200[0];
+    
+    // Calcula distância entre médias
+    double distance1 = MathAbs(ma20 - ma50) / ma50 * 100.0;
+    double distance2 = MathAbs(ma50 - ma200) / ma200 * 100.0;
+    
+    // Verifica consolidação
+    if(normalizedATR < MinVolatility && 
+       distance1 < MinMADistance && 
+       distance2 < MinMADistance &&
+       rsi > 40 && rsi < 60)
+    {
+        m_logger.LogInfo("Mercado em consolidação: ATR=" + DoubleToString(normalizedATR, 2) + 
+                        "%, RSI=" + DoubleToString(rsi, 2));
+        return MARKET_CONSOLIDATION;
+    }
+    
+    // Condição normal de mercado
+    m_logger.LogInfo("Condição normal de mercado: ATR=" + DoubleToString(normalizedATR, 2) + 
+                    "%, RSI=" + DoubleToString(rsi, 2));
+    return MARKET_NORMAL;
+}
+
+void CRaioX::UpdateAnalysis()
+{
+    // Copia dados dos indicadores para os buffers
+    if(CopyBuffer(m_ma20Handle, 0, 0, 1000, m_maBuffer20) <= 0 ||
+       CopyBuffer(m_ma50Handle, 0, 0, 1000, m_maBuffer50) <= 0 ||
+       CopyBuffer(m_ma200Handle, 0, 0, 1000, m_maBuffer200) <= 0 ||
+       CopyBuffer(m_rsiHandle, 0, 0, 1000, m_rsiBuffer) <= 0 ||
+       CopyBuffer(m_atrHandle, 0, 0, 1000, m_atrBuffer) <= 0)
+    {
+        if(m_logger != NULL)
+            m_logger.LogError("Falha ao copiar dados dos indicadores");
+        return;
+    }
+    
+    // Inicializa e copia dados de volume de forma segura
+    long volumeBuffer[];
+    ArraySetAsSeries(volumeBuffer, true);
+    ArrayResize(volumeBuffer, 1000);
+    
+    if(CopyTickVolume(_Symbol, PERIOD_CURRENT, 0, 1000, volumeBuffer) <= 0)
+    {
+        if(m_logger != NULL)
+            m_logger.LogError("Falha ao copiar dados de volume");
+        return;
+    }
+    
+    // Garante que o buffer de volume está inicializado
+    if(ArraySize(m_volumeBuffer) != 1000)
+    {
+        ArrayResize(m_volumeBuffer, 1000);
+    }
+    
+    // Copia dados do volumeBuffer para m_volumeBuffer
+    for(int i = 0; i < 1000; i++)
+    {
+        m_volumeBuffer[i] = (double)volumeBuffer[i];
+    }
+    
+    // Atualiza força gravitacional
+    m_gravitationalForce = CalculateGravitationalForce();
+    
+    // Atualiza fator de rotação
+    m_rotationFactor = CalculateRotationFactor();
+    
+    // Log dos valores atualizados
+    string message = StringFormat("Análise atualizada: GF=%.2f, RF=%.2f", 
+        m_gravitationalForce, m_rotationFactor);
+    if(m_logger != NULL)
+        m_logger.LogInfo(message);
+}
+
+void CRaioX::UpdatePositions()
+{
+    // Obtém todas as posições abertas
+    for(int i = PositionsTotal() - 1; i >= 0; i--)
+    {
+        ulong ticket = PositionGetTicket(i);
+        if(ticket <= 0)
+        {
+            m_logger.LogError("Falha ao obter ticket da posição");
+            continue;
+        }
+        
+        // Verifica se a posição é do símbolo atual
+        if(PositionGetString(POSITION_SYMBOL) != _Symbol)
+        {
+            continue;
+        }
+        
+        // Obtém dados da posição
+        double openPrice = PositionGetDouble(POSITION_PRICE_OPEN);
+        double currentPrice = PositionGetDouble(POSITION_PRICE_CURRENT);
+        double stopLoss = PositionGetDouble(POSITION_SL);
+        double takeProfit = PositionGetDouble(POSITION_TP);
+        double profit = PositionGetDouble(POSITION_PROFIT);
+        bool isLong = PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY;
+        
+        // Verifica trailing stop
+        if(UseTrailingStop && profit > 0)
+        {
+            double atr = m_atrBuffer[0];
+            double newStopLoss = isLong ? 
+                currentPrice - (atr * TrailingStopATRMultiplier) :
+                currentPrice + (atr * TrailingStopATRMultiplier);
+                
+            // Verifica se o novo stop loss é melhor que o atual
+            if(isLong && newStopLoss > stopLoss)
+            {
+                m_tradeExecutor.ModifyPosition(ticket, newStopLoss, takeProfit);
+            }
+            else if(!isLong && newStopLoss < stopLoss)
+            {
+                m_tradeExecutor.ModifyPosition(ticket, newStopLoss, takeProfit);
+            }
+        }
+        
+        // Atualiza estatísticas
+        m_marketStats.totalProfit += profit;
+    }
+}
+
+double CRaioX::CalculateGravitationalForce()
+{
+    // Obtém dados de preço e volume
+    double currentPrice = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+    double currentVolume = m_volumeBuffer[0];
+    
+    // Calcula médias de volume em diferentes períodos
+    double avgVolume20 = 0, avgVolume50 = 0, avgVolume200 = 0;
+    for(int i = 0; i < 200; i++)
+    {
+        if(i < 20) avgVolume20 += m_volumeBuffer[i];
+        if(i < 50) avgVolume50 += m_volumeBuffer[i];
+        avgVolume200 += m_volumeBuffer[i];
+    }
+    avgVolume20 /= 20;
+    avgVolume50 /= 50;
+    avgVolume200 /= 200;
+    
+    // Calcula força do volume em diferentes períodos
+    double volumeForce20 = currentVolume / avgVolume20;
+    double volumeForce50 = currentVolume / avgVolume50;
+    double volumeForce200 = currentVolume / avgVolume200;
+    
+    // Calcula média ponderada da força do volume
+    double localVolumeForce = (volumeForce20 * 0.5) + (volumeForce50 * 0.3) + (volumeForce200 * 0.2);
+    
+    // Obtém dados de volatilidade
+    double atr = m_atrBuffer[0];
+    double normalizedATR = atr / currentPrice * 100.0;
+    
+    // Calcula força gravitacional baseada no volume e volatilidade
+    double gravityForce = localVolumeForce * normalizedATR * GravityMultiplier;
+    
+    // Aplica filtro de suavização
+    static double lastGravityForce = 0;
+    if(lastGravityForce == 0)
+    {
+        lastGravityForce = gravityForce;
+    }
+    else
+    {
+        gravityForce = (gravityForce * 0.3) + (lastGravityForce * 0.7);
+        lastGravityForce = gravityForce;
+    }
+    
+    // Normaliza entre 0 e 100
+    gravityForce = MathMin(MathMax(gravityForce, 0.0), 100.0);
+    
+    // Log do cálculo
+    string message = StringFormat("Força gravitacional calculada: %.2f (VF20: %.2f, VF50: %.2f, VF200: %.2f, ATR: %.2f%%)",
+        gravityForce, volumeForce20, volumeForce50, volumeForce200, normalizedATR);
+    if(m_logger != NULL)
+        m_logger.LogInfo(message);
+    
+    return gravityForce;
+}
+
+double CRaioX::CalculateRotationFactor()
+{
+    // Obtém dados das médias móveis
+    double ma20 = m_maBuffer20[0];
+    double ma50 = m_maBuffer50[0];
+    double ma200 = m_maBuffer200[0];
+    
+    // Calcula ângulos entre as médias
+    double angle1 = MathArctan((ma20 - ma50) / ma50) * 180.0 / M_PI;
+    double angle2 = MathArctan((ma50 - ma200) / ma200) * 180.0 / M_PI;
+    
+    // Calcula fator de rotação baseado nos ângulos
+    double rotationFactorValue = (angle1 + angle2) / 2.0;
+    
+    // Normaliza entre -100 e 100
+    rotationFactorValue = MathMin(MathMax(rotationFactorValue, -100.0), 100.0);
+    
+    return rotationFactorValue;
+}
+
+bool CRaioX::CheckSafetyConditions()
+{
+    // Verifica spread
+    double spread = SymbolInfoInteger(_Symbol, SYMBOL_SPREAD) * _Point;
+    if(spread > MAX_SPREAD_POINTS)
+    {
+        m_logger.LogWarning("Spread muito alto: " + DoubleToString(spread, 2));
+        return false;
+    }
+    
+    // Verifica saldo da conta
+    double balance = AccountInfoDouble(ACCOUNT_BALANCE);
+    if(balance < MIN_ACCOUNT_BALANCE)
+    {
+        m_logger.LogError("Saldo da conta muito baixo: " + DoubleToString(balance, 2));
+        return false;
+    }
+    
+    // Verifica perda diária
+    if(m_dailyProfit < -MAX_DAILY_LOSS_PERCENT)
+    {
+        m_logger.LogError("Perda diária excedida: " + DoubleToString(m_dailyProfit, 2) + "%");
+        return false;
+    }
+    
+    // Verifica número de posições
+    if(m_openPositions >= MAX_OPEN_POSITIONS)
+    {
+        m_logger.LogWarning("Número máximo de posições atingido: " + IntegerToString(m_openPositions));
+        return false;
+    }
+    
+    return true;
+}
+
+void CRaioX::UpdateDailyStats()
+{
+    MqlDateTime dt;
+    TimeCurrent(dt);
+    
+    // Reseta estatísticas diárias se necessário
+    MqlDateTime lastReset;
+    TimeToStruct(m_lastDailyReset, lastReset);
+    if(m_lastDailyReset == 0 || dt.day != lastReset.day)
+    {
+        m_dailyProfit = 0;
+        m_lastDailyReset = TimeCurrent();
+        m_logger.LogInfo("Estatísticas diárias resetadas");
+    }
+}
+
+void CRaioX::UpdateDrawdownProtection()
+{
+    double currentBalance = AccountInfoDouble(ACCOUNT_BALANCE);
+    
+    // Atualiza saldo máximo
+    if(currentBalance > m_peakBalance)
+    {
+        m_peakBalance = currentBalance;
+    }
+    
+    // Calcula drawdown atual
+    if(m_peakBalance > 0)
+    {
+        m_currentDrawdown = ((m_peakBalance - currentBalance) / m_peakBalance) * 100.0;
+        
+        // Verifica se drawdown excedeu o limite
+        if(m_currentDrawdown > m_maxAllowedDrawdown)
+        {
+            m_logger.LogError("Drawdown excessivo detectado: " + DoubleToString(m_currentDrawdown, 2) + "%");
+            
+            // Fecha todas as posições
+            for(int i = PositionsTotal() - 1; i >= 0; i--)
+            {
+                ulong ticket = PositionGetTicket(i);
+                if(ticket > 0)
+                {
+                    m_tradeExecutor.ClosePosition(ticket);
+                }
+            }
+        }
+    }
+}
+
+bool CRaioX::CheckNewsProtection()
+{
+    // Verifica se deve checar notícias
+    if(TimeCurrent() - m_lastNewsCheck < 300) // Verifica a cada 5 minutos
+        return true;
+            
+    m_lastNewsCheck = TimeCurrent();
+    
+    // Verifica se o filtro de notícias está ativo
+    if(!UseNewsFilter)
+    {
+        m_newsProtectionActive = false;
+        return true;
+    }
+    
+    // Verifica horário para proteção contra notícias importantes
+    MqlDateTime dt;
+    TimeCurrent(dt);
+    
+    // Lista de horários importantes (NFP, FOMC, etc.)
+    bool isImportantTime = false;
+    
+    // Verifica se é quarta-feira (FOMC)
+    if(dt.day_of_week == 3 && dt.hour >= 13 && dt.hour <= 15)
+    {
+        isImportantTime = true;
+    }
+    
+    // Verifica se é primeira sexta-feira do mês (NFP)
+    if(dt.day_of_week == 5 && dt.day <= 7 && dt.hour >= 7 && dt.hour <= 9)
+    {
+        isImportantTime = true;
+    }
+    
+    // Verifica se é dia de CPI
+    if(dt.day == 10 && dt.hour >= 7 && dt.hour <= 9)
+    {
+        isImportantTime = true;
+    }
+    
+    if(isImportantTime)
+    {
+        m_newsProtectionActive = true;
+        m_logger.LogWarning("Período de notícias importantes detectado");
+        return false;
+    }
+    
+    m_newsProtectionActive = false;
+    return true;
+}
+
+void CRaioX::OnTick()
+{
+    // Atualiza estatísticas diárias
+    UpdateDailyStats();
+    
+    // Verifica condições de segurança
+    if(!CheckSafetyConditions())
+    {
+        m_logger.LogWarning("Condições de segurança não atendidas - aguardando");
+        return;
+    }
+    
+    // Verifica se o mercado está aberto
+    if(!m_tradeExecutor.IsMarketOpen())
+    {
+        m_logger.LogInfo("Mercado fechado");
+        return;
+    }
+    
+    // Verifica proteção contra notícias
+    if(!CheckNewsProtection())
+    {
+        m_logger.LogInfo("Proteção contra notícias ativa - aguardando");
+        return;
+    }
+    
+    // Atualiza análise de mercado
+    UpdateAnalysis();
+    
+    // Verifica condições de mercado
+    ENUM_MARKET_CONDITION marketCondition = AnalyzeMarket();
+    
+    // Executa estratégia apropriada
+    switch(marketCondition)
+    {
+        case MARKET_TSUNAMI:
+            m_logger.LogInfo("Condição de tsunami detectada");
+            ExecuteTsunamiStrategy();
+            break;
+            
+        case MARKET_NORMAL:
+            m_logger.LogInfo("Condição normal de mercado");
+            ExecuteNormalStrategy();
+            break;
+            
+        case MARKET_CONSOLIDATION:
+            m_logger.LogInfo("Mercado em consolidação - aguardando");
+            break;
+            
+        default:
+            m_logger.LogWarning("Condição de mercado não reconhecida");
+            break;
+    }
+    
+    // Atualiza posições existentes
+    UpdatePositions();
+    
+    // Atualiza proteção contra drawdown
+    UpdateDrawdownProtection();
+}
+
+bool CRaioX::Init()
+{
+    // Verifica ambiente
+    if(!MQLInfoInteger(MQL_TRADE_ALLOWED))
+    {
+        if(m_logger != NULL)
+            m_logger.LogError("Trading não permitido");
+        return false;
+    }
+    
+    // Verifica símbolo
+    if(!SymbolSelect(_Symbol, true))
+    {
+        if(m_logger != NULL)
+            m_logger.LogError("Falha ao selecionar símbolo");
+        return false;
+    }
+    
+    // Inicializa market analyzer
+    if(m_marketAnalyzer == NULL)
+    {
+        m_marketAnalyzer = new CMarketAnalyzer(m_logger);
+    }
+    
+    if(!m_marketAnalyzer.Init(_Symbol))
+    {
+        if(m_logger != NULL)
+            m_logger.LogError("Falha ao inicializar market analyzer");
+        return false;
+    }
+    
+    // Inicializa buffers dos indicadores
+    if(!InitializeBuffers())
+    {
+        if(m_logger != NULL)
+            m_logger.LogError("Falha ao inicializar buffers");
+        return false;
+    }
+    
+    // Configura trade executor
+    if(!m_tradeExecutor.Init(_Symbol, Magic))
+    {
+        if(m_logger != NULL)
+            m_logger.LogError("Falha ao inicializar trade executor");
+        return false;
+    }
+    
+    // Log dos parâmetros
+    string params = StringFormat(
+        "EA inicializado com sucesso:\n" +
+        "Símbolo: %s\n" +
+        "Magic: %d\n" +
+        "Risk%%: %.2f\n" +
+        "UseTrailingStop: %s\n" +
+        "MinGravitationalForce: %.2f\n" +
+        "MinRotationFactor: %.2f",
+        _Symbol,
+        Magic,
+        RiskPercent,
+        UseTrailingStop ? "true" : "false",
+        MinGravitationalForce,
+        MinRotationFactor
+    );
+    if(m_logger != NULL)
+        m_logger.LogInfo(params);
+    
+    return true;
+}
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                     |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+    // Cria instância do EA
+    g_raioX = new CRaioX();
+    
+    // Inicializa o EA
+    if(!g_raioX.Init())
+    {
+        Print("Falha ao inicializar EA");
+        return INIT_FAILED;
+    }
+    
+    return INIT_SUCCEEDED;
+}
+
+//+------------------------------------------------------------------+
+//| Expert deinitialization function                                   |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason)
+{
+    // Deleta instância do EA
+    if(g_raioX != NULL)
+    {
+        delete g_raioX;
+        g_raioX = NULL;
+    }
+}
+
+//+------------------------------------------------------------------+
+//| Expert tick function                                              |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+    // Verifica se o EA está inicializado
+    if(g_raioX == NULL)
+    {
+        Print("EA não inicializado");
+        return;
+    }
+    
+    // Processa tick
+    g_raioX.OnTick();
+}

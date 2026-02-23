@@ -1,0 +1,39 @@
+{
+  "total_documented": 252,
+  "total_existing": 252,
+  "total_imported": 321,
+  "total_missing": 0,
+  "missing_list": [],
+  "by_category": {
+    "Governance": 28,
+    "Departments": 40,
+    "Processes": 16,
+    "Operations": 12,
+    "Infrastructure": 17,
+    "Documentation": 1,
+    "Monitoring": 7,
+    "Root": 114,
+    "Modules": 12,
+    "Core": 5
+  },
+  "report": {
+    "TOTAL_MODULES": 321,
+    "BY_STATUS": {
+      "BACKLOG": 321
+    },
+    "BY_SOURCE": {
+      "conceptual_list": 321
+    },
+    "TIMELINE": {
+      "first_import": null,
+      "last_activity": null,
+      "activity_last_30d": 0
+    },
+    "RISK_ANALYSIS": {
+      "high_risk_indicator": false,
+      "stagnation_warning": true,
+      "compliance_coverage": 0.0
+    }
+  },
+  "dry_run": false
+}

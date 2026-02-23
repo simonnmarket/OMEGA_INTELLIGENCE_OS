@@ -1,0 +1,1 @@
+# Template para criar nova estratégia

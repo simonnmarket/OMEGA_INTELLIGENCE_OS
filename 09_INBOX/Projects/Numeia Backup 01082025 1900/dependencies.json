@@ -1,0 +1,2787 @@
+{
+  "timestamp": "2025-07-31T17:40:57.627066",
+  "project": "Numeia",
+  "total_files": 80,
+  "total_dependencies": 370,
+  "files": [
+    {
+      "file": "NumeiaEA.mq5",
+      "size": 20999,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "include/quantum_finance_framework.mqh",
+        "risk_profile.mqh",
+        "executionlogic/trade_executor.mqh",
+        "types/trade_signal_enum.mqh",
+        "analysis/neural_dependency_graph.mqh",
+        "quantum/quantum_neural_bridge.mqh",
+        "visuals/quantum_decision_panel.mq5",
+        "core_brain_manager.mqh",
+        "audit/AuditIntegrityPanel.mq5",
+        "audit/CoreIntegrityPanel.mq5",
+        "analysis/dependency_graph.mqh",
+        "security/quantumfirewall.mqh",
+        "quantum_blockchain.mqh",
+        "intelligence/quantum_learning.mqh",
+        "security/crisis_protocol.mqh",
+        "anti_reincidence_system.mqh",
+        "security/security_integrity_validator.mqh",
+        "force_maxima.mqh",
+        "optimization/GeneticOptimizer.mqh",
+        "neural/NeuroNet.mqh"
+      ],
+      "lines": 537
+    },
+    {
+      "file": "logs\\audit_ml_system\\error_pattern_analyzer.mqh",
+      "size": 19562,
+      "includes": [
+        "utils/logger_institutional.mqh"
+      ],
+      "lines": 507
+    },
+    {
+      "file": "logs\\audit_ml_system\\intelligent_auditor.mqh",
+      "size": 21645,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "logs/audit_ml_system/error_pattern_analyzer.mqh"
+      ],
+      "lines": 552
+    },
+    {
+      "file": "logs\\audit_ml_system\\ml_error_registration.mqh",
+      "size": 13280,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "logs/audit_ml_system/error_pattern_analyzer.mqh"
+      ],
+      "lines": 256
+    },
+    {
+      "file": "core\\core_brain_manager.mqh",
+      "size": 10996,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "types/trade_signal_enum.mqh",
+        "quantum/quantum_processor.mqh",
+        "core/quantum_blockchain.mqh",
+        "analysis/dependency_graph.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh",
+        "Arrays\\ArrayObj.mqh"
+      ],
+      "lines": 315
+    },
+    {
+      "file": "core\\quantum_blockchain.mqh",
+      "size": 12873,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "security/sha3_library.mqh"
+      ],
+      "lines": 347
+    },
+    {
+      "file": "core\\force_maxima.mqh",
+      "size": 13992,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_processor.mqh",
+        "core/quantum_blockchain.mqh",
+        "analysis/audit_validator.mq5",
+        "types/trade_signal_enum.mqh",
+        "execution/trade_executor.mqh",
+        "CORE/core_brain_manager.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 405
+    },
+    {
+      "file": "utils\\logger_institutional.mqh",
+      "size": 5351,
+      "includes": [
+        "utils/timestamp_formatter.mqh",
+        "Files\\FileTxt.mqh",
+        "risk_profile.mqh",
+        "market_regime_detector.mqh",
+        "anomaly_detector_ai.mqh",
+        "log_panel.mqh"
+      ],
+      "lines": 162
+    },
+    {
+      "file": "utils\\anti_reincidence_system.mqh",
+      "size": 6747,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "core/quantum_blockchain.mqh",
+        "analysis/dependency_graph.mqh"
+      ],
+      "lines": 178
+    },
+    {
+      "file": "utils\\timestamp_formatter.mqh",
+      "size": 16568,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "core/quantum_blockchain.mqh",
+        "intelligence/quantum_learning.mqh",
+        "analysis/dependency_graph.mqh",
+        "Arrays\\ArrayObj.mqh"
+      ],
+      "lines": 440
+    },
+    {
+      "file": "utils\\log_panel.mqh",
+      "size": 14860,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "utils/timestamp_formatter.mqh",
+        "core/quantum_blockchain.mqh",
+        "intelligence/quantum_learning.mqh",
+        "Canvas/Canvas.mqh",
+        "Arrays\\ArrayObj.mqh"
+      ],
+      "lines": 392
+    },
+    {
+      "file": "auditor\\audit_validator.mq5",
+      "size": 23071,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "core/quantum_blockchain.mqh",
+        "analysis/dependency_graph.mqh",
+        "intelligence/quantum_learning.mqh",
+        "executionlogic/trade_executor.mqh",
+        "risk/risk_profile.mqh",
+        "decisionengine/quantum_processor.mqh",
+        "utils/timestamp_formatter.mqh",
+        "visuals/decision_panel.mq5",
+        "neural/NeuroNet.mqh",
+        "optimization/GeneticOptimizer.mqh",
+        "core/core_brain_manager.mqh"
+      ],
+      "lines": 623
+    },
+    {
+      "file": "auditor\\Agent_Omega.mqh",
+      "size": 2928,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "security/QuantumBlockchain.mqh",
+        "analysis/dependency_graph.mqh"
+      ],
+      "lines": 84
+    },
+    {
+      "file": "auditor\\Agent_Omega_v2.1.mqh",
+      "size": 9507,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "security/QuantumBlockchain.mqh",
+        "analysis/dependency_graph.mqh"
+      ],
+      "lines": 250
+    },
+    {
+      "file": "auditor\\Agent_Omega_v3.0.mqh",
+      "size": 13851,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "security/QuantumBlockchain.mqh",
+        "analysis/dependency_graph.mqh"
+      ],
+      "lines": 350
+    },
+    {
+      "file": "auditor\\live_monitor.mq5",
+      "size": 7379,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "types/audit_issue_enum.mqh",
+        "analysis/dependency_graph.mqh"
+      ],
+      "lines": 194
+    },
+    {
+      "file": "include\\executionlogic\\safe_mode_manager.mqh",
+      "size": 12423,
+      "includes": [
+        "Trade\\Trade.mqh",
+        "utils/logger_institutional.mqh",
+        "analysis/market_regime_detector.mqh",
+        "visuals/decision_panel.mq5"
+      ],
+      "lines": 365
+    },
+    {
+      "file": "include\\executionlogic\\trade_executor.mqh",
+      "size": 9280,
+      "includes": [
+        "Trade\\Trade.mqh",
+        "types/trade_signal_enum.mqh",
+        "utils/logger_institutional.mqh",
+        "risk/risk_profile.mqh",
+        "analysis/market_regime_detector.mqh",
+        "intelligence/anomaly_detector_ai.mqh"
+      ],
+      "lines": 301
+    },
+    {
+      "file": "include\\decisionengine\\decision_router.mqh",
+      "size": 4800,
+      "includes": [
+        "types/trade_signal_enum.mqh",
+        "intelligence/thaler_bias_engine.mqh",
+        "analysis/correlation_matrix.mqh",
+        "analysis/market_regime_detector.mqh",
+        "utils/logger_institutional.mqh"
+      ],
+      "lines": 127
+    },
+    {
+      "file": "include\\analysis\\multi_timeframe_validator.mqh",
+      "size": 6314,
+      "includes": [
+        "types/trade_signal_enum.mqh",
+        "analysis/correlation_matrix.mqh",
+        "utils/logger_institutional.mqh",
+        "analysis/market_regime_detector.mqh"
+      ],
+      "lines": 152
+    },
+    {
+      "file": "include\\analysis\\market_regime_detector.mqh",
+      "size": 9741,
+      "includes": [
+        "Math\\Alglib\\dataanalysis.mqh",
+        "Trade\\AccountInfo.mqh",
+        "GeneticOptimizer.mqh",
+        "utils/logger_institutional.mqh",
+        "risk/risk_profile.mqh",
+        "analysis/correlation_matrix.mqh",
+        "intelligence/thaler_bias_engine.mqh"
+      ],
+      "lines": 306
+    },
+    {
+      "file": "include\\analysis\\correlation_matrix.mqh",
+      "size": 14236,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "analysis/market_regime_detector.mqh",
+        "ChartObjects/ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 416
+    },
+    {
+      "file": "include\\analysis\\quantum_order_book.mqh",
+      "size": 15397,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_entanglement_simulator.mqh",
+        "quantum/quantum_pattern_scanner.mqh"
+      ],
+      "lines": 410
+    },
+    {
+      "file": "include\\analysis\\quantum_darkpool.mqh",
+      "size": 13359,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_entanglement_simulator.mqh",
+        "quantum/quantum_liquidity_matrix.mqh"
+      ],
+      "lines": 349
+    },
+    {
+      "file": "include\\analysis\\quantum_hft_detector.mqh",
+      "size": 13230,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_entanglement_simulator.mqh",
+        "quantum/quantum_pattern_scanner.mqh"
+      ],
+      "lines": 349
+    },
+    {
+      "file": "include\\analysis\\quantum_liquidity_matrix.mqh",
+      "size": 18010,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_entanglement.mqh",
+        "darkpool/dark_pool_connector.mqh",
+        "neural/quantum_neural_net.mqh",
+        "types/trade_signal_enum.mqh",
+        "quantum/quantum_orderbook.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 457
+    },
+    {
+      "file": "include\\analysis\\dependency_graph.mqh",
+      "size": 12390,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "security/quantumfirewall.mqh",
+        "types/trade_signal_enum.mqh",
+        "intelligence/quantum_learning.mqh",
+        "Arrays\\ArrayObj.mqh"
+      ],
+      "lines": 362
+    },
+    {
+      "file": "include\\analysis\\neural_dependency_graph.mqh",
+      "size": 3941,
+      "includes": [
+        "analysis/dependency_graph.mqh",
+        "NeuroNet.mqh"
+      ],
+      "lines": 103
+    },
+    {
+      "file": "include\\intelligence\\thaler_bias_engine.mqh",
+      "size": 8698,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "analysis/market_regime_detector.mqh",
+        "risk/risk_profile.mqh",
+        "types/trade_signal_enum.mqh",
+        "intelligence/thaler_bias_engine.mqh",
+        "visuals/quantum_decision_panel.mq5",
+        "Math\\Alglib\\mcpd.mqh",
+        "NeuroNet.mqh",
+        "DarkPoolScanner.mqh"
+      ],
+      "lines": 253
+    },
+    {
+      "file": "include\\intelligence\\neural_signal_processor.mqh",
+      "size": 20350,
+      "includes": [
+        "Utils/logger_institutional.mqh",
+        "Types/trade_signal_enum.mqh",
+        "Data/market_data_connector.mqh",
+        "Intelligence/anomaly_detector_ai.mqh",
+        "Risk/risk_profile.mqh"
+      ],
+      "lines": 543
+    },
+    {
+      "file": "include\\intelligence\\anomaly_detector_ai.mqh",
+      "size": 25545,
+      "includes": [
+        "Utils/logger_institutional.mqh",
+        "Types/trade_signal_enum.mqh",
+        "Data/market_data_connector.mqh",
+        "Quantum/quantum_entropy_calculator.mqh"
+      ],
+      "lines": 685
+    },
+    {
+      "file": "include\\intelligence\\ml_duplicate_detector.mqh",
+      "size": 11231,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "audit/audit_nomenclature_validator.mqh"
+      ],
+      "lines": 283
+    },
+    {
+      "file": "include\\intelligence\\quantum_learning.mqh",
+      "size": 13819,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_processor.mqh",
+        "risk/risk_profile.mqh",
+        "quantum/quantum_memory_cell.mqh",
+        "quantum/quantum_behavior_controller.mqh",
+        "types/trade_signal_enum.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 354
+    },
+    {
+      "file": "include\\intelligence\\quantum_adaptive_learning.mqh",
+      "size": 17430,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_entanglement.mqh",
+        "neural/quantum_neural_net.mqh",
+        "intelligence/quantum_learning.mqh",
+        "types/trade_signal_enum.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 449
+    },
+    {
+      "file": "include\\integration\\quantum_data_feed.mqh",
+      "size": 14910,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_entanglement_simulator.mqh",
+        "quantum/quantum_data_processor.mqh"
+      ],
+      "lines": 392
+    },
+    {
+      "file": "include\\visuals\\decision_panel.mq5",
+      "size": 16424,
+      "includes": [
+        "ChartObjects\\ChartObjectsTxtControls.mqh",
+        "ChartObjects\\ChartObjectsBmpControls.mqh",
+        "utils/logger_institutional.mqh",
+        "types/trade_signal_enum.mqh",
+        "risk/risk_profile.mqh",
+        "analysis/market_regime_detector.mqh",
+        "intelligence/anomaly_detector_ai.mqh"
+      ],
+      "lines": 463
+    },
+    {
+      "file": "include\\visuals\\auditstatuspanel.mq5",
+      "size": 20767,
+      "includes": [
+        "ChartObjects\\ChartObjectsTxtControls.mqh",
+        "ChartObjects\\ChartObjectsBmpControls.mqh",
+        "utils/logger_institutional.mqh",
+        "types/trade_signal_enum.mqh",
+        "data/market_data_connector.mqh",
+        "risk/risk_profile.mqh",
+        "analysis/market_regime_detector.mqh",
+        "intelligence/anomaly_detector_ai.mqh",
+        "audit/compliance_checker.mqh"
+      ],
+      "lines": 557
+    },
+    {
+      "file": "include\\visuals\\quantum_decision_panel.mq5",
+      "size": 20188,
+      "includes": [
+        "ChartObjects\\ChartObjectsTxtControls.mqh",
+        "ChartObjects\\ChartObjectsBmpControls.mqh",
+        "utils/logger_institutional.mqh",
+        "types/trade_signal_enum.mqh",
+        "risk/risk_profile.mqh",
+        "security/quantumfirewall.mqh",
+        "analysis/market_regime_detector.mqh",
+        "intelligence/anomaly_detector_ai.mqh",
+        "quantum/quantum_processor.mqh",
+        "neural/quantum_neuralnet.mqh"
+      ],
+      "lines": 518
+    },
+    {
+      "file": "include\\modules\\quantum_var_calculator.mqh",
+      "size": 13950,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "risk/risk_profile.mqh",
+        "quantum/quantum_entanglement_simulator.mqh",
+        "quantum/quantum_noise_filter.mqh"
+      ],
+      "lines": 355
+    },
+    {
+      "file": "include\\tools\\audit_engine.mq5",
+      "size": 9538,
+      "includes": [
+        "include/utils/logger_institutional.mqh"
+      ],
+      "lines": 249
+    },
+    {
+      "file": "include\\tools\\core_audit_engine.mq5",
+      "size": 10822,
+      "includes": [
+        "include/utils/logger_institutional.mqh"
+      ],
+      "lines": 292
+    },
+    {
+      "file": "include\\tools\\include_audit_engine.mq5",
+      "size": 13815,
+      "includes": [
+        "include/utils/logger_institutional.mqh"
+      ],
+      "lines": 381
+    },
+    {
+      "file": "include\\types\\trade_signal_enum.mqh",
+      "size": 15662,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_neural_core.mqh",
+        "analysis/darkpool_monitor.mqh",
+        "analysis/hft_detector.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 376
+    },
+    {
+      "file": "include\\types\\audit_issue_enum.mqh",
+      "size": 9805,
+      "includes": [],
+      "lines": 211
+    },
+    {
+      "file": "include\\types\\system_enums.mqh",
+      "size": 10479,
+      "includes": [],
+      "lines": 273
+    },
+    {
+      "file": "include\\risk\\risk_metrics.mqh",
+      "size": 16929,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_blockchain.mqh",
+        "types/trade_signal_enum.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 454
+    },
+    {
+      "file": "include\\risk\\risk_profile.mqh",
+      "size": 17962,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "types/trade_signal_enum.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 453
+    },
+    {
+      "file": "include\\security\\quantumfirewall.mqh",
+      "size": 13792,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "execution/safe_mode_manager.mqh",
+        "risk/risk_profile.mqh",
+        "analysis/market_regime_detector.mqh",
+        "intelligence/anomaly_detector_ai.mqh",
+        "core/quantum_blockchain.mqh",
+        "intelligence/quantum_learning.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 390
+    },
+    {
+      "file": "include\\security\\sha3_library.mqh",
+      "size": 13977,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_firewall.mqh",
+        "encoding/quantum_encoder.mqh",
+        "quantum/hardware_accelerator.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 381
+    },
+    {
+      "file": "include\\security\\crisis_protocol.mqh",
+      "size": 7734,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "security/quantum_firewall.mqh",
+        "execution/trade_executor.mqh",
+        "core/quantum_blockchain.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 212
+    },
+    {
+      "file": "include\\security\\security_integrity_validator.mqh",
+      "size": 6188,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "core/quantum_blockchain.mqh",
+        "analysis/dependency_graph.mqh",
+        "security/sha3_library.mqh"
+      ],
+      "lines": 164
+    },
+    {
+      "file": "include\\compliance\\quantum_compliance.mqh",
+      "size": 16735,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_blockchain.mqh",
+        "neural/quantum_neuralnet.mqh",
+        "types/trade_signal_enum.mqh"
+      ],
+      "lines": 417
+    },
+    {
+      "file": "include\\audit\\AuditIntegrityPanel.mq5",
+      "size": 6856,
+      "includes": [
+        "ChartObjects\\ChartObjectsTxtControls.mqh",
+        "utils/logger_institutional.mqh",
+        "types/trade_signal_enum.mqh"
+      ],
+      "lines": 164
+    },
+    {
+      "file": "include\\audit\\CoreIntegrityPanel.mq5",
+      "size": 7982,
+      "includes": [
+        "ChartObjects\\ChartObjectsTxtControls.mqh",
+        "utils/logger_institutional.mqh",
+        "types/trade_signal_enum.mqh"
+      ],
+      "lines": 185
+    },
+    {
+      "file": "include\\audit\\compliancechecker.mqh",
+      "size": 13265,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "security/quantum_blockchain.mqh"
+      ],
+      "lines": 333
+    },
+    {
+      "file": "include\\audit\\audit_nomenclature_validator.mqh",
+      "size": 12500,
+      "includes": [
+        "utils/logger_institutional.mqh"
+      ],
+      "lines": 318
+    },
+    {
+      "file": "include\\data\\quantum_market_data.mqh",
+      "size": 13739,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_entanglement_simulator.mqh",
+        "quantum/quantum_cache_manager.mqh",
+        "types/trade_signal_enum.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 367
+    },
+    {
+      "file": "include\\quantum\\quantum_noise_filter.mqh",
+      "size": 15105,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_entanglement_simulator.mqh",
+        "quantum/quantum_wavelet_transform.mqh"
+      ],
+      "lines": 410
+    },
+    {
+      "file": "include\\quantum\\quantum_gate_system.mqh",
+      "size": 16491,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_state_manager.mqh"
+      ],
+      "lines": 435
+    },
+    {
+      "file": "include\\quantum\\quantum_optimizer.mqh",
+      "size": 15611,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_annealing_simulator.mqh",
+        "quantum/quantum_genetic_algorithm.mqh"
+      ],
+      "lines": 406
+    },
+    {
+      "file": "include\\quantum\\quantum_entanglement_simulator.mqh",
+      "size": 15484,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_state_manager.mqh"
+      ],
+      "lines": 407
+    },
+    {
+      "file": "include\\quantum\\quantum_annealing_simulator.mqh",
+      "size": 20441,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "security/quantumfirewall.mqh",
+        "intelligence/quantum_learning.mqh",
+        "quantum/quantum_optimizer.mqh"
+      ],
+      "lines": 510
+    },
+    {
+      "file": "include\\quantum\\quantum_genetic_algorithm.mqh",
+      "size": 16536,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "security/quantumfirewall.mqh",
+        "intelligence/adaptive_learning.mqh",
+        "quantum/quantum_optimizer.mqh"
+      ],
+      "lines": 429
+    },
+    {
+      "file": "include\\quantum\\quantum_entanglement.mqh",
+      "size": 4021,
+      "includes": [
+        "utils/logger_institutional.mqh"
+      ],
+      "lines": 100
+    },
+    {
+      "file": "include\\quantum\\quantum_wavelet_transform.mqh",
+      "size": 17813,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_entanglement.mqh",
+        "neural/quantum_neural_filter.mqh",
+        "data/market_data_quantum.mqh",
+        "types/trade_signal_enum.mqh",
+        "quantum/quantum_processor.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 449
+    },
+    {
+      "file": "include\\quantum\\quantum_cache_manager.mqh",
+      "size": 15604,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_entanglement.mqh",
+        "neural/quantum_neural_net.mqh",
+        "intelligence/quantum_learning.mqh"
+      ],
+      "lines": 421
+    },
+    {
+      "file": "include\\quantum\\quantum_memory_cell.mqh",
+      "size": 17624,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_entanglement.mqh",
+        "quantum/quantum_cache_manager.mqh",
+        "intelligence/quantum_learning.mqh",
+        "types/trade_signal_enum.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 455
+    },
+    {
+      "file": "include\\quantum\\quantum_behavior_controller.mqh",
+      "size": 19086,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_entanglement.mqh",
+        "quantum/quantum_processor.mqh",
+        "neural/quantum_neural_net.mqh",
+        "intelligence/quantum_learning.mqh",
+        "quantum/quantum_memory_cell.mqh",
+        "types/trade_signal_enum.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 475
+    },
+    {
+      "file": "include\\quantum\\quantum_state_manager.mqh",
+      "size": 16056,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_entanglement.mqh",
+        "quantum/quantum_gates.mqh",
+        "neural/quantum_neural_net.mqh",
+        "quantum/quantum_processor.mqh",
+        "types/trade_signal_enum.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 430
+    },
+    {
+      "file": "include\\quantum\\quantum_data_processor.mqh",
+      "size": 17329,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_entanglement.mqh",
+        "quantum/quantum_wavelet_transform.mqh",
+        "neural/quantum_neural_filter.mqh",
+        "types/trade_signal_enum.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 452
+    },
+    {
+      "file": "include\\quantum\\quantum_processor.mqh",
+      "size": 13830,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "security/quantumfirewall.mqh",
+        "core/quantum_blockchain.mqh",
+        "risk/risk_profile.mqh",
+        "visual/quantum_decision_panel.mq5",
+        "types/trade_signal_enum.mqh",
+        "quantum/quantum_data_processor.mqh",
+        "quantum/quantum_wavelet_transform.mqh",
+        "quantum/quantum_behavior_controller.mqh",
+        "quantum/quantum_liquidity_matrix.mqh",
+        "quantum/quantum_pattern_scanner.mqh",
+        "quantum/quantum_adaptive_learning.mqh",
+        "quantum/quantum_finance_framework.mqh"
+      ],
+      "lines": 361
+    },
+    {
+      "file": "include\\quantum\\quantum_finance_framework.mqh",
+      "size": 32707,
+      "includes": [
+        "Math\\Alglib\\alglib.mqh",
+        "Arrays\\ArrayObj.mqh",
+        "utils/logger_institutional.mqh",
+        "types/trade_signal_enum.mqh",
+        "quantum/quantum_adaptive_learning.mqh",
+        "analysis/risk_metrics.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 919
+    },
+    {
+      "file": "include\\quantum\\quantum_neural_core.mqh",
+      "size": 6053,
+      "includes": [
+        "quantum/quantum_finance_framework.mqh",
+        "intelligence/quantum_learning.mqh",
+        "security/quantumfirewall.mqh",
+        "utils/logger_institutional.mqh",
+        "analysis/dependency_graph.mqh",
+        "NeuroNet.mqh"
+      ],
+      "lines": 169
+    },
+    {
+      "file": "include\\quantum\\quantum_neural_bridge.mqh",
+      "size": 4628,
+      "includes": [
+        "quantum/quantum_neural_core.mqh",
+        "analysis/neural_dependency_graph.mqh"
+      ],
+      "lines": 120
+    },
+    {
+      "file": "include\\quantum\\hardware_accelerator.mqh",
+      "size": 11764,
+      "includes": [
+        "include/utils/logger_institutional.mqh",
+        "include/security/quantumfirewall.mqh",
+        "include/quantum/quantum_processor.mqh",
+        "include/intelligence/quantum_learning.mqh",
+        "include/analysis/dependency_graph.mqh"
+      ],
+      "lines": 328
+    },
+    {
+      "file": "include\\neural\\quantum_neural_filter.mqh",
+      "size": 8684,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "types/trade_signal_enum.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 223
+    },
+    {
+      "file": "include\\neural\\quantum_neural_net.mqh",
+      "size": 16066,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "core/quantum_blockchain.mqh",
+        "intelligence/quantum_learning.mqh",
+        "analysis/dependency_graph.mqh",
+        "Arrays\\ArrayObj.mqh"
+      ],
+      "lines": 448
+    },
+    {
+      "file": "include\\neural\\NeuroNet.mqh",
+      "size": 13439,
+      "includes": [],
+      "lines": 432
+    },
+    {
+      "file": "include\\detection\\quantum_pattern_scanner.mqh",
+      "size": 17761,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "quantum/quantum_entanglement.mqh",
+        "detection/hft_detector.mqh",
+        "neural/quantum_neural_net.mqh",
+        "types/trade_signal_enum.mqh",
+        "ChartObjects\\ChartObjectsTxtControls.mqh"
+      ],
+      "lines": 461
+    },
+    {
+      "file": "include\\optimization\\GeneticOptimizer.mqh",
+      "size": 22267,
+      "includes": [
+        "utils/logger_institutional.mqh",
+        "intelligence/quantum_learning.mqh",
+        "core/quantum_blockchain.mqh",
+        "analysis/dependency_graph.mqh",
+        "quantum/quantum_memory_cell.mqh",
+        "Arrays\\ArrayObj.mqh"
+      ],
+      "lines": 605
+    }
+  ],
+  "dependencies": [
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "include/quantum_finance_framework.mqh",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "risk_profile.mqh",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "executionlogic/trade_executor.mqh",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "analysis/neural_dependency_graph.mqh",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "quantum/quantum_neural_bridge.mqh",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "visuals/quantum_decision_panel.mq5",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "core_brain_manager.mqh",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "audit/AuditIntegrityPanel.mq5",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "audit/CoreIntegrityPanel.mq5",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "analysis/dependency_graph.mqh",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "security/quantumfirewall.mqh",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "quantum_blockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "intelligence/quantum_learning.mqh",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "security/crisis_protocol.mqh",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "anti_reincidence_system.mqh",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "security/security_integrity_validator.mqh",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "force_maxima.mqh",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "optimization/GeneticOptimizer.mqh",
+      "type": "include"
+    },
+    {
+      "from": "NumeiaEA.mq5",
+      "to": "neural/NeuroNet.mqh",
+      "type": "include"
+    },
+    {
+      "from": "logs\\audit_ml_system\\error_pattern_analyzer.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "logs\\audit_ml_system\\intelligent_auditor.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "logs\\audit_ml_system\\intelligent_auditor.mqh",
+      "to": "logs/audit_ml_system/error_pattern_analyzer.mqh",
+      "type": "include"
+    },
+    {
+      "from": "logs\\audit_ml_system\\ml_error_registration.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "logs\\audit_ml_system\\ml_error_registration.mqh",
+      "to": "logs/audit_ml_system/error_pattern_analyzer.mqh",
+      "type": "include"
+    },
+    {
+      "from": "core\\core_brain_manager.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "core\\core_brain_manager.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "core\\core_brain_manager.mqh",
+      "to": "quantum/quantum_processor.mqh",
+      "type": "include"
+    },
+    {
+      "from": "core\\core_brain_manager.mqh",
+      "to": "core/quantum_blockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "core\\core_brain_manager.mqh",
+      "to": "analysis/dependency_graph.mqh",
+      "type": "include"
+    },
+    {
+      "from": "core\\core_brain_manager.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "core\\core_brain_manager.mqh",
+      "to": "Arrays\\ArrayObj.mqh",
+      "type": "include"
+    },
+    {
+      "from": "core\\quantum_blockchain.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "core\\quantum_blockchain.mqh",
+      "to": "security/sha3_library.mqh",
+      "type": "include"
+    },
+    {
+      "from": "core\\force_maxima.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "core\\force_maxima.mqh",
+      "to": "quantum/quantum_processor.mqh",
+      "type": "include"
+    },
+    {
+      "from": "core\\force_maxima.mqh",
+      "to": "core/quantum_blockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "core\\force_maxima.mqh",
+      "to": "analysis/audit_validator.mq5",
+      "type": "include"
+    },
+    {
+      "from": "core\\force_maxima.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "core\\force_maxima.mqh",
+      "to": "execution/trade_executor.mqh",
+      "type": "include"
+    },
+    {
+      "from": "core\\force_maxima.mqh",
+      "to": "CORE/core_brain_manager.mqh",
+      "type": "include"
+    },
+    {
+      "from": "core\\force_maxima.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\logger_institutional.mqh",
+      "to": "utils/timestamp_formatter.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\logger_institutional.mqh",
+      "to": "Files\\FileTxt.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\logger_institutional.mqh",
+      "to": "risk_profile.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\logger_institutional.mqh",
+      "to": "market_regime_detector.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\logger_institutional.mqh",
+      "to": "anomaly_detector_ai.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\logger_institutional.mqh",
+      "to": "log_panel.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\anti_reincidence_system.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\anti_reincidence_system.mqh",
+      "to": "core/quantum_blockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\anti_reincidence_system.mqh",
+      "to": "analysis/dependency_graph.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\timestamp_formatter.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\timestamp_formatter.mqh",
+      "to": "core/quantum_blockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\timestamp_formatter.mqh",
+      "to": "intelligence/quantum_learning.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\timestamp_formatter.mqh",
+      "to": "analysis/dependency_graph.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\timestamp_formatter.mqh",
+      "to": "Arrays\\ArrayObj.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\log_panel.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\log_panel.mqh",
+      "to": "utils/timestamp_formatter.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\log_panel.mqh",
+      "to": "core/quantum_blockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\log_panel.mqh",
+      "to": "intelligence/quantum_learning.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\log_panel.mqh",
+      "to": "Canvas/Canvas.mqh",
+      "type": "include"
+    },
+    {
+      "from": "utils\\log_panel.mqh",
+      "to": "Arrays\\ArrayObj.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\audit_validator.mq5",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\audit_validator.mq5",
+      "to": "core/quantum_blockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\audit_validator.mq5",
+      "to": "analysis/dependency_graph.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\audit_validator.mq5",
+      "to": "intelligence/quantum_learning.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\audit_validator.mq5",
+      "to": "executionlogic/trade_executor.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\audit_validator.mq5",
+      "to": "risk/risk_profile.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\audit_validator.mq5",
+      "to": "decisionengine/quantum_processor.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\audit_validator.mq5",
+      "to": "utils/timestamp_formatter.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\audit_validator.mq5",
+      "to": "visuals/decision_panel.mq5",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\audit_validator.mq5",
+      "to": "neural/NeuroNet.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\audit_validator.mq5",
+      "to": "optimization/GeneticOptimizer.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\audit_validator.mq5",
+      "to": "core/core_brain_manager.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\Agent_Omega.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\Agent_Omega.mqh",
+      "to": "security/QuantumBlockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\Agent_Omega.mqh",
+      "to": "analysis/dependency_graph.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\Agent_Omega_v2.1.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\Agent_Omega_v2.1.mqh",
+      "to": "security/QuantumBlockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\Agent_Omega_v2.1.mqh",
+      "to": "analysis/dependency_graph.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\Agent_Omega_v3.0.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\Agent_Omega_v3.0.mqh",
+      "to": "security/QuantumBlockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\Agent_Omega_v3.0.mqh",
+      "to": "analysis/dependency_graph.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\live_monitor.mq5",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\live_monitor.mq5",
+      "to": "types/audit_issue_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "auditor\\live_monitor.mq5",
+      "to": "analysis/dependency_graph.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\executionlogic\\safe_mode_manager.mqh",
+      "to": "Trade\\Trade.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\executionlogic\\safe_mode_manager.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\executionlogic\\safe_mode_manager.mqh",
+      "to": "analysis/market_regime_detector.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\executionlogic\\safe_mode_manager.mqh",
+      "to": "visuals/decision_panel.mq5",
+      "type": "include"
+    },
+    {
+      "from": "include\\executionlogic\\trade_executor.mqh",
+      "to": "Trade\\Trade.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\executionlogic\\trade_executor.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\executionlogic\\trade_executor.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\executionlogic\\trade_executor.mqh",
+      "to": "risk/risk_profile.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\executionlogic\\trade_executor.mqh",
+      "to": "analysis/market_regime_detector.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\executionlogic\\trade_executor.mqh",
+      "to": "intelligence/anomaly_detector_ai.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\decisionengine\\decision_router.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\decisionengine\\decision_router.mqh",
+      "to": "intelligence/thaler_bias_engine.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\decisionengine\\decision_router.mqh",
+      "to": "analysis/correlation_matrix.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\decisionengine\\decision_router.mqh",
+      "to": "analysis/market_regime_detector.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\decisionengine\\decision_router.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\multi_timeframe_validator.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\multi_timeframe_validator.mqh",
+      "to": "analysis/correlation_matrix.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\multi_timeframe_validator.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\multi_timeframe_validator.mqh",
+      "to": "analysis/market_regime_detector.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\market_regime_detector.mqh",
+      "to": "Math\\Alglib\\dataanalysis.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\market_regime_detector.mqh",
+      "to": "Trade\\AccountInfo.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\market_regime_detector.mqh",
+      "to": "GeneticOptimizer.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\market_regime_detector.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\market_regime_detector.mqh",
+      "to": "risk/risk_profile.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\market_regime_detector.mqh",
+      "to": "analysis/correlation_matrix.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\market_regime_detector.mqh",
+      "to": "intelligence/thaler_bias_engine.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\correlation_matrix.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\correlation_matrix.mqh",
+      "to": "analysis/market_regime_detector.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\correlation_matrix.mqh",
+      "to": "ChartObjects/ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\quantum_order_book.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\quantum_order_book.mqh",
+      "to": "quantum/quantum_entanglement_simulator.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\quantum_order_book.mqh",
+      "to": "quantum/quantum_pattern_scanner.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\quantum_darkpool.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\quantum_darkpool.mqh",
+      "to": "quantum/quantum_entanglement_simulator.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\quantum_darkpool.mqh",
+      "to": "quantum/quantum_liquidity_matrix.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\quantum_hft_detector.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\quantum_hft_detector.mqh",
+      "to": "quantum/quantum_entanglement_simulator.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\quantum_hft_detector.mqh",
+      "to": "quantum/quantum_pattern_scanner.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\quantum_liquidity_matrix.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\quantum_liquidity_matrix.mqh",
+      "to": "quantum/quantum_entanglement.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\quantum_liquidity_matrix.mqh",
+      "to": "darkpool/dark_pool_connector.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\quantum_liquidity_matrix.mqh",
+      "to": "neural/quantum_neural_net.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\quantum_liquidity_matrix.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\quantum_liquidity_matrix.mqh",
+      "to": "quantum/quantum_orderbook.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\quantum_liquidity_matrix.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\dependency_graph.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\dependency_graph.mqh",
+      "to": "security/quantumfirewall.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\dependency_graph.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\dependency_graph.mqh",
+      "to": "intelligence/quantum_learning.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\dependency_graph.mqh",
+      "to": "Arrays\\ArrayObj.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\neural_dependency_graph.mqh",
+      "to": "analysis/dependency_graph.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\analysis\\neural_dependency_graph.mqh",
+      "to": "NeuroNet.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\thaler_bias_engine.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\thaler_bias_engine.mqh",
+      "to": "analysis/market_regime_detector.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\thaler_bias_engine.mqh",
+      "to": "risk/risk_profile.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\thaler_bias_engine.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\thaler_bias_engine.mqh",
+      "to": "intelligence/thaler_bias_engine.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\thaler_bias_engine.mqh",
+      "to": "visuals/quantum_decision_panel.mq5",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\thaler_bias_engine.mqh",
+      "to": "Math\\Alglib\\mcpd.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\thaler_bias_engine.mqh",
+      "to": "NeuroNet.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\thaler_bias_engine.mqh",
+      "to": "DarkPoolScanner.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\neural_signal_processor.mqh",
+      "to": "Utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\neural_signal_processor.mqh",
+      "to": "Types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\neural_signal_processor.mqh",
+      "to": "Data/market_data_connector.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\neural_signal_processor.mqh",
+      "to": "Intelligence/anomaly_detector_ai.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\neural_signal_processor.mqh",
+      "to": "Risk/risk_profile.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\anomaly_detector_ai.mqh",
+      "to": "Utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\anomaly_detector_ai.mqh",
+      "to": "Types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\anomaly_detector_ai.mqh",
+      "to": "Data/market_data_connector.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\anomaly_detector_ai.mqh",
+      "to": "Quantum/quantum_entropy_calculator.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\ml_duplicate_detector.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\ml_duplicate_detector.mqh",
+      "to": "audit/audit_nomenclature_validator.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\quantum_learning.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\quantum_learning.mqh",
+      "to": "quantum/quantum_processor.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\quantum_learning.mqh",
+      "to": "risk/risk_profile.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\quantum_learning.mqh",
+      "to": "quantum/quantum_memory_cell.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\quantum_learning.mqh",
+      "to": "quantum/quantum_behavior_controller.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\quantum_learning.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\quantum_learning.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\quantum_adaptive_learning.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\quantum_adaptive_learning.mqh",
+      "to": "quantum/quantum_entanglement.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\quantum_adaptive_learning.mqh",
+      "to": "neural/quantum_neural_net.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\quantum_adaptive_learning.mqh",
+      "to": "intelligence/quantum_learning.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\quantum_adaptive_learning.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\intelligence\\quantum_adaptive_learning.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\integration\\quantum_data_feed.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\integration\\quantum_data_feed.mqh",
+      "to": "quantum/quantum_entanglement_simulator.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\integration\\quantum_data_feed.mqh",
+      "to": "quantum/quantum_data_processor.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\decision_panel.mq5",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\decision_panel.mq5",
+      "to": "ChartObjects\\ChartObjectsBmpControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\decision_panel.mq5",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\decision_panel.mq5",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\decision_panel.mq5",
+      "to": "risk/risk_profile.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\decision_panel.mq5",
+      "to": "analysis/market_regime_detector.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\decision_panel.mq5",
+      "to": "intelligence/anomaly_detector_ai.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\auditstatuspanel.mq5",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\auditstatuspanel.mq5",
+      "to": "ChartObjects\\ChartObjectsBmpControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\auditstatuspanel.mq5",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\auditstatuspanel.mq5",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\auditstatuspanel.mq5",
+      "to": "data/market_data_connector.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\auditstatuspanel.mq5",
+      "to": "risk/risk_profile.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\auditstatuspanel.mq5",
+      "to": "analysis/market_regime_detector.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\auditstatuspanel.mq5",
+      "to": "intelligence/anomaly_detector_ai.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\auditstatuspanel.mq5",
+      "to": "audit/compliance_checker.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\quantum_decision_panel.mq5",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\quantum_decision_panel.mq5",
+      "to": "ChartObjects\\ChartObjectsBmpControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\quantum_decision_panel.mq5",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\quantum_decision_panel.mq5",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\quantum_decision_panel.mq5",
+      "to": "risk/risk_profile.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\quantum_decision_panel.mq5",
+      "to": "security/quantumfirewall.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\quantum_decision_panel.mq5",
+      "to": "analysis/market_regime_detector.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\quantum_decision_panel.mq5",
+      "to": "intelligence/anomaly_detector_ai.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\quantum_decision_panel.mq5",
+      "to": "quantum/quantum_processor.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\visuals\\quantum_decision_panel.mq5",
+      "to": "neural/quantum_neuralnet.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\modules\\quantum_var_calculator.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\modules\\quantum_var_calculator.mqh",
+      "to": "risk/risk_profile.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\modules\\quantum_var_calculator.mqh",
+      "to": "quantum/quantum_entanglement_simulator.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\modules\\quantum_var_calculator.mqh",
+      "to": "quantum/quantum_noise_filter.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\tools\\audit_engine.mq5",
+      "to": "include/utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\tools\\core_audit_engine.mq5",
+      "to": "include/utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\tools\\include_audit_engine.mq5",
+      "to": "include/utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\types\\trade_signal_enum.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\types\\trade_signal_enum.mqh",
+      "to": "quantum/quantum_neural_core.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\types\\trade_signal_enum.mqh",
+      "to": "analysis/darkpool_monitor.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\types\\trade_signal_enum.mqh",
+      "to": "analysis/hft_detector.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\types\\trade_signal_enum.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\risk\\risk_metrics.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\risk\\risk_metrics.mqh",
+      "to": "quantum/quantum_blockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\risk\\risk_metrics.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\risk\\risk_metrics.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\risk\\risk_profile.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\risk\\risk_profile.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\risk\\risk_profile.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\quantumfirewall.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\quantumfirewall.mqh",
+      "to": "execution/safe_mode_manager.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\quantumfirewall.mqh",
+      "to": "risk/risk_profile.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\quantumfirewall.mqh",
+      "to": "analysis/market_regime_detector.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\quantumfirewall.mqh",
+      "to": "intelligence/anomaly_detector_ai.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\quantumfirewall.mqh",
+      "to": "core/quantum_blockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\quantumfirewall.mqh",
+      "to": "intelligence/quantum_learning.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\quantumfirewall.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\sha3_library.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\sha3_library.mqh",
+      "to": "quantum/quantum_firewall.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\sha3_library.mqh",
+      "to": "encoding/quantum_encoder.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\sha3_library.mqh",
+      "to": "quantum/hardware_accelerator.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\sha3_library.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\crisis_protocol.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\crisis_protocol.mqh",
+      "to": "security/quantum_firewall.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\crisis_protocol.mqh",
+      "to": "execution/trade_executor.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\crisis_protocol.mqh",
+      "to": "core/quantum_blockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\crisis_protocol.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\security_integrity_validator.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\security_integrity_validator.mqh",
+      "to": "core/quantum_blockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\security_integrity_validator.mqh",
+      "to": "analysis/dependency_graph.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\security\\security_integrity_validator.mqh",
+      "to": "security/sha3_library.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\compliance\\quantum_compliance.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\compliance\\quantum_compliance.mqh",
+      "to": "quantum/quantum_blockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\compliance\\quantum_compliance.mqh",
+      "to": "neural/quantum_neuralnet.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\compliance\\quantum_compliance.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\audit\\AuditIntegrityPanel.mq5",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\audit\\AuditIntegrityPanel.mq5",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\audit\\AuditIntegrityPanel.mq5",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\audit\\CoreIntegrityPanel.mq5",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\audit\\CoreIntegrityPanel.mq5",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\audit\\CoreIntegrityPanel.mq5",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\audit\\compliancechecker.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\audit\\compliancechecker.mqh",
+      "to": "security/quantum_blockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\audit\\audit_nomenclature_validator.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\data\\quantum_market_data.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\data\\quantum_market_data.mqh",
+      "to": "quantum/quantum_entanglement_simulator.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\data\\quantum_market_data.mqh",
+      "to": "quantum/quantum_cache_manager.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\data\\quantum_market_data.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\data\\quantum_market_data.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_noise_filter.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_noise_filter.mqh",
+      "to": "quantum/quantum_entanglement_simulator.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_noise_filter.mqh",
+      "to": "quantum/quantum_wavelet_transform.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_gate_system.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_gate_system.mqh",
+      "to": "quantum/quantum_state_manager.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_optimizer.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_optimizer.mqh",
+      "to": "quantum/quantum_annealing_simulator.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_optimizer.mqh",
+      "to": "quantum/quantum_genetic_algorithm.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_entanglement_simulator.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_entanglement_simulator.mqh",
+      "to": "quantum/quantum_state_manager.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_annealing_simulator.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_annealing_simulator.mqh",
+      "to": "security/quantumfirewall.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_annealing_simulator.mqh",
+      "to": "intelligence/quantum_learning.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_annealing_simulator.mqh",
+      "to": "quantum/quantum_optimizer.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_genetic_algorithm.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_genetic_algorithm.mqh",
+      "to": "security/quantumfirewall.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_genetic_algorithm.mqh",
+      "to": "intelligence/adaptive_learning.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_genetic_algorithm.mqh",
+      "to": "quantum/quantum_optimizer.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_entanglement.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_wavelet_transform.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_wavelet_transform.mqh",
+      "to": "quantum/quantum_entanglement.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_wavelet_transform.mqh",
+      "to": "neural/quantum_neural_filter.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_wavelet_transform.mqh",
+      "to": "data/market_data_quantum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_wavelet_transform.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_wavelet_transform.mqh",
+      "to": "quantum/quantum_processor.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_wavelet_transform.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_cache_manager.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_cache_manager.mqh",
+      "to": "quantum/quantum_entanglement.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_cache_manager.mqh",
+      "to": "neural/quantum_neural_net.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_cache_manager.mqh",
+      "to": "intelligence/quantum_learning.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_memory_cell.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_memory_cell.mqh",
+      "to": "quantum/quantum_entanglement.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_memory_cell.mqh",
+      "to": "quantum/quantum_cache_manager.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_memory_cell.mqh",
+      "to": "intelligence/quantum_learning.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_memory_cell.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_memory_cell.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_behavior_controller.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_behavior_controller.mqh",
+      "to": "quantum/quantum_entanglement.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_behavior_controller.mqh",
+      "to": "quantum/quantum_processor.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_behavior_controller.mqh",
+      "to": "neural/quantum_neural_net.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_behavior_controller.mqh",
+      "to": "intelligence/quantum_learning.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_behavior_controller.mqh",
+      "to": "quantum/quantum_memory_cell.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_behavior_controller.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_behavior_controller.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_state_manager.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_state_manager.mqh",
+      "to": "quantum/quantum_entanglement.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_state_manager.mqh",
+      "to": "quantum/quantum_gates.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_state_manager.mqh",
+      "to": "neural/quantum_neural_net.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_state_manager.mqh",
+      "to": "quantum/quantum_processor.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_state_manager.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_state_manager.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_data_processor.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_data_processor.mqh",
+      "to": "quantum/quantum_entanglement.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_data_processor.mqh",
+      "to": "quantum/quantum_wavelet_transform.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_data_processor.mqh",
+      "to": "neural/quantum_neural_filter.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_data_processor.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_data_processor.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_processor.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_processor.mqh",
+      "to": "security/quantumfirewall.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_processor.mqh",
+      "to": "core/quantum_blockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_processor.mqh",
+      "to": "risk/risk_profile.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_processor.mqh",
+      "to": "visual/quantum_decision_panel.mq5",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_processor.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_processor.mqh",
+      "to": "quantum/quantum_data_processor.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_processor.mqh",
+      "to": "quantum/quantum_wavelet_transform.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_processor.mqh",
+      "to": "quantum/quantum_behavior_controller.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_processor.mqh",
+      "to": "quantum/quantum_liquidity_matrix.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_processor.mqh",
+      "to": "quantum/quantum_pattern_scanner.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_processor.mqh",
+      "to": "quantum/quantum_adaptive_learning.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_processor.mqh",
+      "to": "quantum/quantum_finance_framework.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_finance_framework.mqh",
+      "to": "Math\\Alglib\\alglib.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_finance_framework.mqh",
+      "to": "Arrays\\ArrayObj.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_finance_framework.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_finance_framework.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_finance_framework.mqh",
+      "to": "quantum/quantum_adaptive_learning.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_finance_framework.mqh",
+      "to": "analysis/risk_metrics.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_finance_framework.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_neural_core.mqh",
+      "to": "quantum/quantum_finance_framework.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_neural_core.mqh",
+      "to": "intelligence/quantum_learning.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_neural_core.mqh",
+      "to": "security/quantumfirewall.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_neural_core.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_neural_core.mqh",
+      "to": "analysis/dependency_graph.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_neural_core.mqh",
+      "to": "NeuroNet.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_neural_bridge.mqh",
+      "to": "quantum/quantum_neural_core.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\quantum_neural_bridge.mqh",
+      "to": "analysis/neural_dependency_graph.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\hardware_accelerator.mqh",
+      "to": "include/utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\hardware_accelerator.mqh",
+      "to": "include/security/quantumfirewall.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\hardware_accelerator.mqh",
+      "to": "include/quantum/quantum_processor.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\hardware_accelerator.mqh",
+      "to": "include/intelligence/quantum_learning.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\quantum\\hardware_accelerator.mqh",
+      "to": "include/analysis/dependency_graph.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\neural\\quantum_neural_filter.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\neural\\quantum_neural_filter.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\neural\\quantum_neural_filter.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\neural\\quantum_neural_net.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\neural\\quantum_neural_net.mqh",
+      "to": "core/quantum_blockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\neural\\quantum_neural_net.mqh",
+      "to": "intelligence/quantum_learning.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\neural\\quantum_neural_net.mqh",
+      "to": "analysis/dependency_graph.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\neural\\quantum_neural_net.mqh",
+      "to": "Arrays\\ArrayObj.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\detection\\quantum_pattern_scanner.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\detection\\quantum_pattern_scanner.mqh",
+      "to": "quantum/quantum_entanglement.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\detection\\quantum_pattern_scanner.mqh",
+      "to": "detection/hft_detector.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\detection\\quantum_pattern_scanner.mqh",
+      "to": "neural/quantum_neural_net.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\detection\\quantum_pattern_scanner.mqh",
+      "to": "types/trade_signal_enum.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\detection\\quantum_pattern_scanner.mqh",
+      "to": "ChartObjects\\ChartObjectsTxtControls.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\optimization\\GeneticOptimizer.mqh",
+      "to": "utils/logger_institutional.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\optimization\\GeneticOptimizer.mqh",
+      "to": "intelligence/quantum_learning.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\optimization\\GeneticOptimizer.mqh",
+      "to": "core/quantum_blockchain.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\optimization\\GeneticOptimizer.mqh",
+      "to": "analysis/dependency_graph.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\optimization\\GeneticOptimizer.mqh",
+      "to": "quantum/quantum_memory_cell.mqh",
+      "type": "include"
+    },
+    {
+      "from": "include\\optimization\\GeneticOptimizer.mqh",
+      "to": "Arrays\\ArrayObj.mqh",
+      "type": "include"
+    }
+  ]
+}

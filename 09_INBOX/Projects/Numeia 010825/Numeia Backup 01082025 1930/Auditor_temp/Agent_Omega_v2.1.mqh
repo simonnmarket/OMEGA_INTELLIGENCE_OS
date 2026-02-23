@@ -1,0 +1,250 @@
+//+------------------------------------------------------------------+
+//| Agent_Omega v2.1 - Supervisor TIER-0 com Correção Automatizada   |
+//| Projeto: QuantumOmegaGodMode / EA Numeia                        |
+//+------------------------------------------------------------------+
+#ifndef __AGENT_OMEGA_V2_1_MQH__
+#define __AGENT_OMEGA_V2_1_MQH__
+
+#include "utils/logger_institutional.mqh"
+#include "security/QuantumBlockchain.mqh"
+#include "analysis/dependency_graph.mqh"
+
+//+------------------------------------------------------------------+
+//| Estrutura de Correção                                           |
+//+------------------------------------------------------------------+
+struct AutoFixResult
+{
+   string file;
+   string issue;
+   string fix_applied;
+   bool success;
+   datetime timestamp;
+};
+
+class AgentOmega
+{
+private:
+   logger_institutional &m_logger;
+   QuantumBlockchain    &m_blockchain;
+   CDependencyGraph     &m_dependency_graph;
+   string               m_symbol;
+   AutoFixResult        m_fix_history[];
+
+   //+--------------------------------------------------------------+
+   //| Valida contexto antes da execução                             |
+   //+--------------------------------------------------------------+
+   bool is_valid_context()
+   {
+      if(!TerminalInfoInteger(TERMINAL_CONNECTED))
+      {
+         m_logger.log_error("[OMEGA] Sem conexão com o servidor");
+         return false;
+      }
+
+      if(!m_logger.is_initialized())
+      {
+         m_logger.log_error("[OMEGA] Logger não inicializado");
+         return false;
+      }
+
+      if(!m_blockchain.IsReady())
+      {
+         m_logger.log_warning("[OMEGA] Blockchain não está pronto");
+         return false;
+      }
+
+      return true;
+   }
+
+   //+--------------------------------------------------------------+
+   //| Corrige caminho de include                                    |
+   //+--------------------------------------------------------------+
+   bool FixIncludePath(string &file_content, string target_include, string corrected_path)
+   {
+      string pattern = "#include "" + target_include + """;
+      string replacement = "#include "" + corrected_path + """;
+      
+      int pos = StringFind(file_content, pattern);
+      if(pos >= 0)
+      {
+         StringReplace(file_content, pattern, replacement);
+         return true;
+      }
+      
+      pattern = "#include \"" + target_include + "\"";
+      replacement = "#include \"" + corrected_path + "\"";
+      pos = StringFind(file_content, pattern);
+      if(pos >= 0)
+      {
+         StringReplace(file_content, pattern, replacement);
+         return true;
+      }
+      
+      return false;
+   }
+
+   //+--------------------------------------------------------------+
+   //| Registra correção no histórico                                |
+   //+--------------------------------------------------------------+
+   void LogFix(string file, string issue, string fix, bool success)
+   {
+      AutoFixResult result;
+      result.file = file;
+      result.issue = issue;
+      result.fix_applied = fix;
+      result.success = success;
+      result.timestamp = TimeCurrent();
+      
+      ArrayPushBack(m_fix_history, result);
+      
+      // Registrar no blockchain
+      string data = StringFormat("FIX=%s|FILE=%s|ISSUE=%s|SUCCESS=%s|TIME=%s",
+                               fix,
+                               file,
+                               issue,
+                               success ? "YES" : "NO",
+                               TimeToString(result.timestamp, TIME_DATE|TIME_SECONDS));
+      m_blockchain.RecordTransaction(data, "AUTO_FIX");
+      
+      if(success)
+         m_logger.log_info("[OMEGA] Correção aplicada: " + fix);
+      else
+         m_logger.log_error("[OMEGA] Falha na correção: " + fix);
+   }
+
+public:
+   //+--------------------------------------------------------------+
+   //| CONSTRUTOR                                                   |
+   //+--------------------------------------------------------------+
+   AgentOmega(logger_institutional &logger,
+             QuantumBlockchain &qb,
+             CDependencyGraph &dg,
+             string symbol = _Symbol) :
+      m_logger(logger),
+      m_blockchain(qb),
+      m_dependency_graph(dg),
+      m_symbol(symbol)
+   {
+      ArrayInitialize(m_fix_history, 0);
+      m_logger.log_info("[OMEGA] Supervisor TIER-0 v2.1 ativado");
+   }
+
+   //+--------------------------------------------------------------+
+   //| Executa correção automática                                  |
+   //+--------------------------------------------------------------+
+   bool RunAutoFix()
+   {
+      if(!is_valid_context()) return false;
+
+      m_logger.log_info("[OMEGA] Iniciando correção automática...");
+      
+      // 1. Escaneia dependências
+      m_dependency_graph.ScanProjectStructure();
+      
+      // 2. Detecta includes faltantes
+      string missing_includes[];
+      if(m_dependency_graph.FindMissingIncludes(missing_includes))
+      {
+         for(int i = 0; i < ArraySize(missing_includes); i++)
+         {
+            string include = missing_includes[i];
+            string corrected = CorrectIncludePath(include);
+            
+            if(corrected != include)
+            {
+               // Tenta corrigir no arquivo
+               string file_path = m_dependency_graph.GetFileContainingInclude(include);
+               if(StringLen(file_path) > 0)
+               {
+                  string content;
+                  if(FileReadToString(file_path, content))
+                  {
+                     if(FixIncludePath(content, include, corrected))
+                     {
+                        // Salva arquivo corrigido
+                        if(FileWriteFromString(file_path, content))
+                        {
+                           LogFix(file_path, "INCLUDE_NOT_FOUND", "CORRECTED_PATH=" + corrected, true);
+                           m_logger.log_success("[OMEGA] Include corrigido: " + include + " → " + corrected);
+                        }
+                        else
+                        {
+                           LogFix(file_path, "INCLUDE_NOT_FOUND", "CORRECTED_PATH=" + corrected, false);
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+      
+      // 3. Valida segurança
+      if(!m_dependency_graph.ValidateSecurityCompliance())
+      {
+         m_logger.log_error("[OMEGA] Falha na auditoria de segurança");
+         return false;
+      }
+      
+      m_logger.log_success("[OMEGA] Correção automática concluída");
+      return true;
+   }
+
+   //+--------------------------------------------------------------+
+   //| Corrige caminho de include                                    |
+   //+--------------------------------------------------------------+
+   string CorrectIncludePath(string include_path)
+   {
+      // Regras de correção
+      if(StringFind(include_path, "utils/") >= 0 && StringFind(include_path, "include/") == -1)
+         return "include/" + include_path;
+         
+      if(StringFind(include_path, "security/") >= 0 && StringFind(include_path, "include/") == -1)
+         return "include/" + include_path;
+         
+      if(StringFind(include_path, "intelligence/") >= 0 && StringFind(include_path, "include/") == -1)
+         return "include/" + include_path;
+         
+      if(StringFind(include_path, "CORE/") >= 0)
+         return "CORE/" + StringSubstr(include_path, StringFind(include_path, "CORE/") + 5);
+         
+      return include_path;
+   }
+
+   //+--------------------------------------------------------------+
+   //| Gera relatório quântico                                      |
+   //+--------------------------------------------------------------+
+   void GenerateQuantumReport()
+   {
+      string report = "=== RELATÓRIO QUÂNTICO DE CORREÇÃO ===\n";
+      report += "Data: " + TimeToString(TimeCurrent(), TIME_DATE|TIME_SECONDS) + "\n";
+      report += "Status: " + (ArraySize(m_fix_history) > 0 ? "CORREÇÕES APLICADAS" : "SEM CORREÇÕES") + "\n";
+      report += "Correções: " + IntegerToString(ArraySize(m_fix_history)) + "\n";
+      
+      for(int i = 0; i < ArraySize(m_fix_history); i++)
+      {
+         report += StringFormat("Arquivo: %s | Problema: %s | Correção: %s | Sucesso: %s\n",
+                              m_fix_history[i].file,
+                              m_fix_history[i].issue,
+                              m_fix_history[i].fix_applied,
+                              m_fix_history[i].success ? "SIM" : "NÃO");
+      }
+      
+      int handle = FileOpen("MQL5/LOGS/quantum_fix_report_" + TimeToString(TimeCurrent(), "yyyymmdd") + ".txt", FILE_WRITE|FILE_TXT);
+      if(handle != INVALID_HANDLE)
+      {
+         FileWrite(handle, report);
+         FileClose(handle);
+         m_logger.log_info("[OMEGA] Relatório quântico de correção gerado");
+      }
+   }
+
+   //+--------------------------------------------------------------+
+   //| Retorna histórico de correções                                |
+   //+--------------------------------------------------------------+
+   AutoFixResult[] GetFixHistory() const
+   {
+      return m_fix_history;
+   }
+};
+
+#endif // __AGENT_OMEGA_V2_1_MQH__ 

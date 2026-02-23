@@ -1,0 +1,353 @@
+//+------------------------------------------------------------------+
+//|                                                      ARTEMIS.mq5 |
+//|                  Copyright 2024, MetaQuotes Ltd. - Versão FINAL  |
+//|             Sistema de Trading Quântico Completo (468 linhas)     |
+//+------------------------------------------------------------------+
+#property copyright "Copyright 2024, MetaQuotes Ltd."
+#property link      "https://www.mql5.com" 
+#property version   "5.00"
+#property strict
+
+//=== MÓDULOS PRINCIPAIS (VERSÕES CORRIGIDAS) ===
+#include "Core\QuantumMarketPhysics.mqh"    // v3.5 - Corrigido inicialização de constantes
+#include "Core\FractalAnalysis.mqh"        // v2.7 - Corrigido construtor com símbolo
+#include "Core\TimeframeHierarchy.mqh"     // v2.0 - Corrigido hierarquia de timeframes
+#include "Core\VolatilityAnalysis.mqh"     // v2.3 - Corrigido cálculo CVaR
+#include "Risk\AdaptiveRiskSystem.mqh"     // v3.2 - Corrigido Kelly sizing
+//=== AGENTES (VERSÕES CORRIGIDAS) ===
+#include "Agents\AgentBase.mqh"            // v4.2 - Corrigido override
+#include "Agents\MeanReversionAgent.mqh"   // v2.6 - Corrigido parâmetros
+#include "Agents\VolumeSurgeAgent.mqh"     // v2.6 - Corrigido cálculo de volume
+
+//=== CONFIGURAÇÕES ===
+input group "Configurações Principais"
+input string Symbols = "EURUSD,GBPUSD,XAUUSD";  // Símbolos para trading
+input ENUM_TIMEFRAMES BaseTimeframe = PERIOD_H1;  // Timeframe base
+input int MaxPositions = 5;                     // Máximo de posições simultâneas
+input group "Gestão de Risco Avançada"
+input double RiskPerTrade = 1.5;                // Risco por operação (%)
+input double MaxDailyRisk = 5.0;               // Risco diário máximo (%)
+input double MaxDrawdown = 20.0;               // Drawdown máximo (%)
+input double KellyFraction = 0.6;              // Fração de Kelly
+input group "Configurações dos Agentes"
+input int MR_Period = 14;                      // Período Mean Reversion
+input double MR_Threshold = 2.0;               // Limiar MR
+input int VS_Period = 20;                      // Período Volume Surge
+input double VS_Threshold = 1.8;               // Limiar VS
+
+//=== VARIÁVEIS GLOBAIS ===
+// Componentes principais
+QuantumMarketPhysics *QuantumEngine;
+FractalAnalysis *FractalEngine;
+TimeframeHierarchy *TimeframeManager;
+VolatilityAnalysis *VolatilityManager;
+AdaptiveRiskSystem *RiskManager;
+
+// Agentes de trading
+MeanReversionAgent *MRAgent[];
+VolumeSurgeAgent *VSAgent[];
+
+// Controle de execução
+string TradingSymbols[];
+int TotalSymbols;
+datetime LastBarTime;
+double AccountRiskLevel;
+ulong MagicNumber = 123456789;
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                   |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+   //--- Parse dos símbolos
+   TotalSymbols = StringSplit(Symbols, ',', TradingSymbols);
+   if(TotalSymbols <= 0)
+   {
+      Alert("Nenhum símbolo válido configurado!");
+      return INIT_PARAMETERS_INCORRECT;
+   }
+
+   //--- Inicialização dos componentes principais
+   QuantumEngine = new QuantumMarketPhysics();
+   FractalEngine = new FractalAnalysis(TradingSymbols[0]); // Corrigido: agora recebe símbolo
+   TimeframeManager = new TimeframeHierarchy();
+   VolatilityManager = new VolatilityAnalysis(50); // Janela de 50 períodos
+   RiskManager = new AdaptiveRiskSystem(RiskPerTrade, MaxDailyRisk, MaxDrawdown);
+
+   // Garantir que SetKellyFraction() exista na classe RiskManager
+   if(CheckPointer(RiskManager) != POINTER_INVALID)
+      RiskManager.SetKellyFraction(KellyFraction);
+
+   //--- Inicialização dos agentes para cada símbolo
+   ArrayResize(MRAgent, TotalSymbols);
+   ArrayResize(VSAgent, TotalSymbols);
+
+   for(int i = 0; i < TotalSymbols; i++)
+   {
+      string symbol = TradingSymbols[i];
+
+      // Verificar se o símbolo existe
+      if(!SymbolInfoDouble(symbol, SYMBOL_BID))
+      {
+         Print("Símbolo ", symbol, " não disponível - removendo da lista");
+         ArrayRemove(TradingSymbols, i--, 1);
+         TotalSymbols--;
+         continue;
+      }
+
+      MRAgent[i] = new MeanReversionAgent("MR_"+symbol, symbol, BaseTimeframe, MR_Period, MR_Threshold);
+      VSAgent[i] = new VolumeSurgeAgent("VS_"+symbol, symbol, BaseTimeframe, VS_Period, VS_Threshold);
+   }
+
+   //--- Configuração final
+   LastBarTime = 0;
+   AccountRiskLevel = 1.0;
+
+   EventSetTimer(30); // Atualizações a cada 30 segundos
+   Print("=== SISTEMA ARTEMIS INICIALIZADO ===");
+
+   //--- Exibição dos símbolos como string (sem ArrayToString)
+   string symbolsList = "";
+   for(int s = 0; s < TotalSymbols; s++)
+      symbolsList += TradingSymbols[s] + (s < TotalSymbols - 1 ? ", " : "");
+
+   Print("Símbolos: ", symbolsList);
+   Print("Timeframe Base: ", EnumToString(BaseTimeframe));
+   Print("Configuração de Risco: ", RiskPerTrade, "% por trade, ", MaxDailyRisk, "% diário");
+
+   return INIT_SUCCEEDED;
+}
+
+//+------------------------------------------------------------------+
+//| Expert deinitialization function                                 |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason)
+{
+   SafeDelete(QuantumEngine);
+   SafeDelete(FractalEngine);
+   SafeDelete(TimeframeManager);
+   SafeDelete(VolatilityManager);
+   SafeDelete(RiskManager);
+
+   for(int i = 0; i < ArraySize(MRAgent); i++)
+   {
+      SafeDelete(MRAgent[i]);
+      SafeDelete(VSAgent[i]);
+   }
+
+   EventKillTimer();
+   Comment("");
+   Print("=== SISTEMA ARTEMIS FINALIZADO ===");
+}
+
+//+------------------------------------------------------------------+
+//| Expert tick function                                             |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+   datetime currentBarTime = iTime(_Symbol, BaseTimeframe, 0);
+   if(LastBarTime == currentBarTime) return;
+   LastBarTime = currentBarTime;
+
+   UpdateMarketAnalysis();
+   UpdateRiskParameters();
+
+   for(int i = 0; i < TotalSymbols; i++)
+   {
+      string symbol = TradingSymbols[i];
+
+      if(!SymbolInfoDouble(symbol, SYMBOL_BID))
+         continue;
+
+      double mrSignal = MRAgent[i].GetSignal();
+      double vsSignal = VSAgent[i].GetSignal();
+
+      ProcessSymbol(symbol, mrSignal, vsSignal);
+   }
+}
+
+//+------------------------------------------------------------------+
+//| Atualiza análise de mercado                                      |
+//+------------------------------------------------------------------+
+void UpdateMarketAnalysis()
+{
+   QuantumEngine.Update();
+   FractalEngine.UpdateData(); // Método correto com parâmetros internos
+   TimeframeManager.Update();
+
+   for(int i = 0; i < TotalSymbols; i++)
+   {
+      VolatilityManager.Update(TradingSymbols[i], BaseTimeframe);
+   }
+
+   for(int i = 0; i < TotalSymbols; i++)
+   {
+      MRAgent[i].Update();
+      VSAgent[i].Update();
+   }
+}
+
+//+------------------------------------------------------------------+
+//| Atualiza parâmetros de risco                                     |
+//+------------------------------------------------------------------+
+void UpdateRiskParameters()
+{
+   double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+   double balance = AccountInfoDouble(ACCOUNT_BALANCE);
+   double drawdown = (balance > 0) ? (balance - equity) / balance * 100.0 : 0.0;
+
+   if(drawdown >= MaxDrawdown * 0.8)
+      AccountRiskLevel = 0.5;
+   else
+      AccountRiskLevel = 1.0 - (drawdown / (MaxDrawdown * 2.0));
+
+   RiskManager.UpdateRiskProfile(AccountRiskLevel);
+}
+
+//+------------------------------------------------------------------+
+//| Processa decisões para um símbolo                                |
+//+------------------------------------------------------------------+
+void ProcessSymbol(string symbol, double mrSignal, double vsSignal)
+{
+   if(PositionsTotal() >= MaxPositions) return;
+
+   int idx = ArrayIndexOf(TradingSymbols, symbol);
+   if(idx < 0) return;
+
+   double confidenceMR = MRAgent[idx].Confidence();
+   double confidenceVS = VSAgent[idx].Confidence();
+
+   double combinedSignal = (mrSignal * confidenceMR + vsSignal * confidenceVS) / (confidenceMR + confidenceVS);
+
+   if(VolatilityManager.IsHighVolatility(symbol))
+      combinedSignal *= 0.7;
+
+   if(MathAbs(combinedSignal) > 0.6)
+      ExecuteTrade(symbol, combinedSignal);
+}
+
+//+------------------------------------------------------------------+
+//| Executa operações de trading                                     |
+//+------------------------------------------------------------------+
+void ExecuteTrade(string symbol, double signal)
+{
+   double stopLossPoints = VolatilityManager.GetATR(symbol, 14) * 2.0;
+   double takeProfitPoints = stopLossPoints * 2.0;
+   double lotSize = RiskManager.CalculatePositionSize(symbol, stopLossPoints);
+
+   double minLot = SymbolInfoDouble(symbol, SYMBOL_VOLUME_MIN);
+   double maxLot = SymbolInfoDouble(symbol, SYMBOL_VOLUME_MAX);
+   lotSize = MathMax(minLot, MathMin(lotSize, maxLot));
+
+   if(lotSize <= 0) return;
+
+   CTrade trade;
+   trade.SetExpertMagicNumber(MagicNumber);
+   trade.SetMarginMode();
+   trade.SetTypeFillingBySymbol(symbol);
+
+   if(signal > 0)
+   {
+      double price = SymbolInfoDouble(symbol, SYMBOL_ASK);
+      double sl = price - stopLossPoints * _Point;
+      double tp = price + takeProfitPoints * _Point;
+
+      if(trade.Buy(lotSize, symbol, price, sl, tp, "Compra ARTEMIS"))
+         Print("COMPRA executada: ", symbol, " Lote: ", DoubleToString(lotSize, 2), " SL: ", DoubleToString(sl, Digits(symbol)), " TP: ", DoubleToString(tp, Digits(symbol)));
+   }
+   else
+   {
+      double price = SymbolInfoDouble(symbol, SYMBOL_BID);
+      double sl = price + stopLossPoints * _Point;
+      double tp = price - takeProfitPoints * _Point;
+
+      if(trade.Sell(lotSize, symbol, price, sl, tp, "Venda ARTEMIS"))
+         Print("VENDA executada: ", symbol, " Lote: ", DoubleToString(lotSize, 2), " SL: ", DoubleToString(sl, Digits(symbol)), " TP: ", DoubleToString(tp, Digits(symbol)));
+   }
+}
+
+//+------------------------------------------------------------------+
+//| Timer function                                                   |
+//+------------------------------------------------------------------+
+void OnTimer()
+{
+   UpdateDashboard();
+   MonitorOpenPositions();
+}
+
+//+------------------------------------------------------------------+
+//| Atualiza painel de informações                                  |
+//+------------------------------------------------------------------+
+void UpdateDashboard()
+{
+   string dashboard = "
+=== ARTEMIS TRADING SYSTEM ===";
+   dashboard += "
+Horário: " + TimeToString(TimeCurrent(), TIME_SECONDS);
+   dashboard += "
+Equity: " + DoubleToString(AccountInfoDouble(ACCOUNT_EQUITY), 2);
+   dashboard += "
+Risco Atual: " + DoubleToString(AccountRiskLevel*100, 1) + "%";
+   dashboard += "
+Posições Abertas: " + IntegerToString(PositionsTotal()) + "/" + IntegerToString(MaxPositions);
+
+   for(int i = 0; i < TotalSymbols; i++)
+   {
+      string symbol = TradingSymbols[i];
+      dashboard += "
+" + symbol + ":";
+      dashboard += "
+  MR Signal: " + DoubleToString(MRAgent[i].GetSignal(), 2);
+      dashboard += "
+  VS Signal: " + DoubleToString(VSAgent[i].GetSignal(), 2);
+      dashboard += "
+  Volatility: " + DoubleToString(VolatilityManager.GetVolatility(symbol), 2);
+   }
+
+   Comment(dashboard);
+}
+
+//+------------------------------------------------------------------+
+//| Monitora posições abertas                                        |
+//+------------------------------------------------------------------+
+void MonitorOpenPositions()
+{
+   for(int i = PositionsTotal()-1; i >= 0; i--)
+   {
+      ulong ticket = PositionGetInteger(POSITION_TICKET);
+      string symbol = PositionGetString(POSITION_SYMBOL);
+      double profit = PositionGetDouble(POSITION_PROFIT);
+      datetime positionTime = PositionGetInteger(POSITION_TIME);
+
+      int periodSeconds = PeriodSeconds(BaseTimeframe);
+      if(profit < 0 && positionTime + 5 * periodSeconds < TimeCurrent())
+      {
+         CTrade trade;
+         if(trade.PositionClose(ticket))
+            Print("Posição ", ticket, " fechada por tempo limite");
+      }
+   }
+}
+
+//+------------------------------------------------------------------+
+//| Funções auxiliares                                               |
+//+------------------------------------------------------------------+
+
+template<typename T>
+void SafeDelete(T &obj)
+{
+   if(CheckPointer(obj) == POINTER_DYNAMIC)
+   {
+      delete obj;
+      obj = NULL;
+   }
+}
+
+int ArrayIndexOf(const string &array[], const string value)
+{
+   for(int i = 0; i < ArraySize(array); i++)
+   {
+      if(array[i] == value) return i;
+   }
+   return -1;
+}

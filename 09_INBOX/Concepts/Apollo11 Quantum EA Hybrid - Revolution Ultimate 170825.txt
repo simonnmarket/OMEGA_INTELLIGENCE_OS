@@ -1,0 +1,830 @@
+//+------------------------------------------------------------------+
+//|                                                                  |
+//|           Apollo11 Quantum EA Hybrid - Revolution Ultimate       |
+//|                                                                  |
+//|      Combines Advanced EA Logic with Rich Visual Indicators      |
+//|              Based on Quantum Physics, Relativity, Game Theory   |
+//|              and Multidimensional Analysis for EURUSD            |
+//|                                                                  |
+//+------------------------------------------------------------------+
+#property copyright "Apollo11 Quantum EA"
+#property link      "https://www.apollo11quantum.com"
+#property version   "3.2"
+#property strict
+
+//--- Indicator properties for visualization
+#property indicator_chart_window
+#property indicator_buffers 8
+#property indicator_plots   3
+
+//--- Plot 1: Gravitational Zone
+#property indicator_label1  "GravZone"
+#property indicator_type1   DRAW_COLOR_HISTOGRAM
+#property indicator_color1  clrGreen,clrOrange,clrRed
+#property indicator_style1  STYLE_SOLID
+#property indicator_width1  5
+
+//--- Plot 2: Thermal Energy (Qv)
+#property indicator_label2  "ThermalEnergy"
+#property indicator_type2   DRAW_HISTOGRAM
+#property indicator_color2  clrDodgerBlue
+#property indicator_style2  STYLE_SOLID
+#property indicator_width2  2
+
+//--- Plot 3: POC Levels
+#property indicator_label3  "POCs"
+#property indicator_type3   DRAW_ARROW
+#property indicator_color3  clrGold
+#property indicator_style3  STYLE_SOLID
+#property indicator_width3  1
+
+// Inclusão de bibliotecas necessárias
+#include <Trade\Trade.mqh>
+#include <Arrays\ArrayDouble.mqh>
+#include <Arrays\ArrayLong.mqh> 
+#include <Math\Stat\Math.mqh>
+#include <Math\Stat\Stat.mqh>
+#include <ChartObjects\ChartObjectsShapes.mqh> 
+
+//--- Indicator Buffers
+double ExtGravZoneBuffer[];
+double ExtThermalEnergyBuffer[];
+double ExtPOCBuffer[];
+double ExtColorBuffer1[];
+
+// Enumerações
+enum ENUM_APOLLO11_SIGNAL
+{
+   SIGNAL_NONE,  // Sem sinal
+   SIGNAL_BUY,   // Sinal de compra
+   SIGNAL_SELL   // Sinal de venda
+};
+
+enum ENUM_QUANTUM_STATE
+{
+   QUANTUM_BULL_STRONG,    // Estado quântico fortemente bullish
+   QUANTUM_BULL_NEUTRAL,   // Estado quântico moderadamente bullish
+   QUANTUM_NEUTRAL,        // Estado quântico neutro
+   QUANTUM_BEAR_NEUTRAL,   // Estado quântico moderadamente bearish
+   QUANTUM_BEAR_STRONG     // Estado quântico fortemente bearish
+};
+
+// Parâmetros Gerais
+input group "=== Parâmetros Gerais ==="
+input double InitialLots = 0.01;                // Tamanho inicial do lote
+input double MaxLots = 1.0;                     // Tamanho máximo do lote
+input double RiskPercent = 1.0;                 // Percentual de risco por operação
+input int StopLossPoints = 150;                 // Stop Loss em pontos (se não usar ATR)
+input int TakeProfitPoints = 300;               // Take Profit em pontos (se não usar ATR)
+input bool UseATRStopLoss = true;               // Usar ATR para Stop Loss
+input double ATRStopLossMultiplier = 2.0;       // Multiplicador do ATR para Stop Loss
+input bool UseATRTakeProfit = true;             // Usar ATR para Take Profit
+input double ATRTakeProfitMultiplier = 3.0;     // Multiplicador do ATR para Take Profit
+input bool UseTrailingStop = true;              // Usar Trailing Stop
+input int TrailingStop = 50;                    // Trailing Stop em pontos
+input int TrailingStep = 10;                    // Trailing Step em pontos
+input bool UseBreakEven = true;                 // Usar Break Even
+input int BreakEvenPoints = 30;                 // Pontos para ativar Break Even
+input int BreakEvenProfit = 10;                 // Pontos de lucro após Break Even
+input int MagicNumber = 11041982;               // Número mágico para identificação de ordens
+
+struct GravitationalSphereModel
+{
+   double thermal_energy;
+   double magnetic_field;
+   double channel_vector;
+   double poc_level;
+   
+   void UpdateThermalEnergy(const double &volume_array[], int period)
+   {
+      if(ArraySize(volume_array) == 0) return;
+      
+      double volume_sum = ArraySum(volume_array, period);
+      if(volume_sum <= 0.0) return;
+      
+      double volume_ratio = volume_array[0] / volume_sum;
+      thermal_energy = volume_ratio * 100.0;
+   }
+   
+   void CalculateMagneticField(const double &high[], const double &low[], int period)
+   {
+      if(ArraySize(high) == 0 || ArraySize(low) == 0) return;
+      
+      double avg_high = 0.0, avg_low = 0.0;
+      int count = 0;
+      
+      for(int i = 0; i < period && i < ArraySize(high) && i < ArraySize(low); i++)
+      {
+         avg_high += high[i];
+         avg_low += low[i];
+         count++;
+      }
+      
+      if(count > 0)
+      {
+         magnetic_field = (avg_high - avg_low) / (double)count;
+      }
+   }
+   
+   void MapChannelVector(const double &price[], const double &volume[], int period)
+   {
+      if(ArraySize(price) == 0 || ArraySize(volume) == 0) return;
+      
+      double price_sum = 0.0, volume_sum = 0.0;
+      
+      for(int i = 0; i < period && i < ArraySize(price) && i < ArraySize(volume); i++)
+      {
+         price_sum += price[i] * volume[i];
+         volume_sum += volume[i];
+      }
+      
+      channel_vector = (volume_sum > 0.0) ? price_sum / volume_sum : 0.0;
+   }
+   
+   void IdentifyPOCs(const double &price[], const double &volume[], int period)
+   {
+      if(ArraySize(price) == 0 || ArraySize(volume) == 0) return;
+      
+      double max_volume = 0.0;
+      int poc_index = 0;
+      
+      for(int i = 0; i < period && i < ArraySize(price) && i < ArraySize(volume); i++)
+      {
+         if(volume[i] > max_volume)
+         {
+            max_volume = volume[i];
+            poc_index = i;
+         }
+      }
+      
+      poc_level = (poc_index < ArraySize(price)) ? price[poc_index] : 0.0;
+   }
+};
+
+struct InstitutionalRadarData
+{
+   double volume_pulse;
+   double energy_flow;
+   double cosmic_frequency;
+   double neural_confidence;
+   
+   void ScanInstitutionalPulse(const double &volume[], int period)
+   {
+      if(ArraySize(volume) == 0) return;
+      
+      double avg_volume = 0.0;
+      int count = 0;
+      
+      for(int i = 0; i < period && i < ArraySize(volume); i++)
+      {
+         avg_volume += volume[i];
+         count++;
+      }
+      
+      if(count > 0 && avg_volume > 0.0)
+      {
+         volume_pulse = volume[0] / (avg_volume / (double)count);
+      }
+      else
+      {
+         volume_pulse = 1.0;
+      }
+   }
+   
+   void MapEnergyFlow(const double &price[], const double &volume[], int period)
+   {
+      if(ArraySize(price) == 0 || ArraySize(volume) == 0) return;
+      
+      double price_sum = 0.0, volume_sum = 0.0;
+      int count = 0;
+      
+      for(int i = 0; i < period && i < ArraySize(price) && i < ArraySize(volume); i++)
+      {
+         price_sum += price[i];
+         volume_sum += volume[i];
+         count++;
+      }
+      
+      if(count > 0)
+      {
+         double price_avg = price_sum / (double)count;
+         double volume_avg = volume_sum / (double)count;
+         double correlation = 0.0;
+         
+         for(int i = 0; i < period && i < ArraySize(price) && i < ArraySize(volume); i++)
+         {
+            correlation += (price[i] - price_avg) * (volume[i] - volume_avg);
+         }
+         
+         energy_flow = correlation / (double)count;
+      }
+      else
+      {
+         energy_flow = 0.0;
+      }
+   }
+   
+   void TuneCosmicFrequency(const datetime &time[], const double &volume[], int period)
+   {
+      if(ArraySize(time) == 0 || ArraySize(volume) == 0) return;
+      
+      int peak_count = 0;
+      
+      for(int i = 1; i < period-1 && i < ArraySize(volume); i++)
+      {
+         if(volume[i] > volume[i-1] && volume[i] > volume[i+1])
+         {
+            peak_count++;
+         }
+      }
+      
+      cosmic_frequency = (period > 0) ? (double)peak_count / (double)period : 0.0;
+      neural_confidence = MathMin(cosmic_frequency * 100.0, 100.0);
+   }
+};
+
+struct FibonacciAnalysis
+{
+   double swing_high;
+   double swing_low;
+   double fib_levels[];
+   
+   void IdentifySwingPoints(const double &high[], const double &low[], int period)
+   {
+      if(ArraySize(high) == 0 || ArraySize(low) == 0) return;
+      
+      swing_high = high[0];
+      swing_low = low[0];
+      
+      for(int i = 1; i < period && i < ArraySize(high) && i < ArraySize(low); i++)
+      {
+         if(high[i] > swing_high) swing_high = high[i];
+         if(low[i] < swing_low) swing_low = low[i];
+      }
+   }
+   
+   void CalculateFibonacciLevels()
+   {
+      if(swing_high <= swing_low) return;
+      
+      ArrayResize(fib_levels, 8);
+      double range = swing_high - swing_low;
+      
+      fib_levels[0] = swing_high;
+      fib_levels[1] = swing_high - range * 0.236;
+      fib_levels[2] = swing_high - range * 0.382;
+      fib_levels[3] = swing_high - range * 0.5;
+      fib_levels[4] = swing_high - range * 0.618;
+      fib_levels[5] = swing_high - range * 0.786;
+      fib_levels[6] = swing_high - range * 0.886;
+      fib_levels[7] = swing_low;
+   }
+};
+
+// Função auxiliar para soma de array
+double ArraySum(const double &array[], int count)
+{
+   if(ArraySize(array) == 0) return 0.0;
+   
+   double sum = 0.0;
+   for(int i = 0; i < count && i < ArraySize(array); i++)
+   {
+      sum += array[i];
+   }
+   return sum;
+}
+
+// Variáveis globais
+GravitationalSphereModel g_grav_model;
+InstitutionalRadarData g_inst_radar;
+FibonacciAnalysis g_fib_analysis;
+CTrade g_trade;
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                   |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+   // Configuração do indicador
+   SetIndexBuffer(0, ExtGravZoneBuffer, INDICATOR_DATA);
+   SetIndexBuffer(1, ExtThermalEnergyBuffer, INDICATOR_DATA);
+   SetIndexBuffer(2, ExtPOCBuffer, INDICATOR_DATA);
+   SetIndexBuffer(3, ExtColorBuffer1, INDICATOR_COLOR_INDEX);
+   
+   // Configurar propriedades dos plots
+   PlotIndexSetInteger(0, PLOT_DRAW_TYPE, DRAW_COLOR_HISTOGRAM);
+   PlotIndexSetInteger(1, PLOT_DRAW_TYPE, DRAW_HISTOGRAM);
+   PlotIndexSetInteger(2, PLOT_DRAW_TYPE, DRAW_ARROW);
+   
+   // Configurar cores
+   PlotIndexSetInteger(0, PLOT_LINE_COLOR, clrGreen);
+   PlotIndexSetInteger(1, PLOT_LINE_COLOR, clrDodgerBlue);
+   PlotIndexSetInteger(2, PLOT_LINE_COLOR, clrGold);
+   
+   // Configurar larguras
+   PlotIndexSetInteger(0, PLOT_LINE_WIDTH, 5);
+   PlotIndexSetInteger(1, PLOT_LINE_WIDTH, 2);
+   PlotIndexSetInteger(2, PLOT_LINE_WIDTH, 1);
+   
+   // Configuração do trade
+   g_trade.SetExpertMagicNumber(MagicNumber);
+   g_trade.SetMarginMode();
+   g_trade.SetTypeFillingBySymbol(_Symbol);
+   g_trade.SetDeviationInPoints(10);
+   
+   // Inicializar arrays
+   ArrayResize(ExtGravZoneBuffer, 100);
+   ArrayResize(ExtThermalEnergyBuffer, 100);
+   ArrayResize(ExtPOCBuffer, 100);
+   ArrayResize(ExtColorBuffer1, 100);
+   
+   // Inicializar arrays como séries temporais
+   ArraySetAsSeries(ExtGravZoneBuffer, true);
+   ArraySetAsSeries(ExtThermalEnergyBuffer, true);
+   ArraySetAsSeries(ExtPOCBuffer, true);
+   ArraySetAsSeries(ExtColorBuffer1, true);
+   
+   Print("EA inicializado com sucesso!");
+   return(INIT_SUCCEEDED);
+}
+
+//+------------------------------------------------------------------+
+//| Expert deinitialization function                                 |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason)
+{
+   // Limpeza de objetos gráficos
+   ObjectsDeleteAll(0, "GALEX_");
+}
+
+//+------------------------------------------------------------------+
+//| Expert tick function                                             |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+   // Verificar se o trading é permitido
+   if(!IsTradeAllowed())
+   {
+      Print("DEBUG: Trading não permitido. Verifique as configurações do terminal.");
+      return;
+   }
+   
+   // Obter dados de preço e volume
+   double high[], low[], close[], volume[];
+   ArraySetAsSeries(high, true);
+   ArraySetAsSeries(low, true);
+   ArraySetAsSeries(close, true);
+   ArraySetAsSeries(volume, true);
+   
+   int copied = CopyHigh(_Symbol, PERIOD_CURRENT, 0, 100, high);
+   if(copied != 100) 
+   {
+      Print("DEBUG: Falha ao copiar dados de High: ", GetLastError());
+      return;
+   }
+   
+   copied = CopyLow(_Symbol, PERIOD_CURRENT, 0, 100, low);
+   if(copied != 100) 
+   {
+      Print("DEBUG: Falha ao copiar dados de Low: ", GetLastError());
+      return;
+   }
+   
+   copied = CopyClose(_Symbol, PERIOD_CURRENT, 0, 100, close);
+   if(copied != 100) 
+   {
+      Print("DEBUG: Falha ao copiar dados de Close: ", GetLastError());
+      return;
+   }
+   
+   // Corrigindo o uso do CopyTickVolume
+   long volume_array[];
+   ArraySetAsSeries(volume_array, true);
+   copied = CopyTickVolume(_Symbol, PERIOD_CURRENT, 0, 100, volume_array);
+   if(copied != 100) 
+   {
+      Print("DEBUG: Falha ao copiar dados de Volume: ", GetLastError());
+      return;
+   }
+   
+   // Convertendo long para double
+   ArrayResize(volume, copied);
+   for(int i = 0; i < copied; i++)
+   {
+      volume[i] = (double)volume_array[i];
+   }
+   
+   // Atualizar modelos
+   g_grav_model.UpdateThermalEnergy(volume, 20);
+   g_grav_model.CalculateMagneticField(high, low, 20);
+   g_grav_model.MapChannelVector(close, volume, 20);
+   g_grav_model.IdentifyPOCs(close, volume, 20);
+   
+   g_inst_radar.ScanInstitutionalPulse(volume, 20);
+   g_inst_radar.MapEnergyFlow(close, volume, 20);
+   
+   datetime time[];
+   ArraySetAsSeries(time, true);
+   copied = CopyTime(_Symbol, PERIOD_CURRENT, 0, 100, time);
+   if(copied != 100) 
+   {
+      Print("DEBUG: Falha ao copiar dados de Time: ", GetLastError());
+      return;
+   }
+   
+   g_inst_radar.TuneCosmicFrequency(time, volume, 20);
+   
+   g_fib_analysis.IdentifySwingPoints(high, low, 20);
+   g_fib_analysis.CalculateFibonacciLevels();
+   
+   // Verificar sinais de trading
+   ENUM_APOLLO11_SIGNAL signal = CheckForSignal();
+   Print("DEBUG: Sinal gerado: ", SignalToString(signal));
+   
+   // Gerenciar posições existentes
+   ManagePositions();
+   
+   // Executar sinais de trading
+   if(signal != SIGNAL_NONE)
+   {
+      Print("DEBUG: Tentando executar sinal: ", SignalToString(signal));
+      if(ExecuteSignal(signal))
+      {
+         Print("DEBUG: Sinal executado com sucesso!");
+      }
+      else
+      {
+         Print("DEBUG: Falha ao executar sinal!");
+      }
+   }
+   
+   // Atualizar indicadores visuais
+   UpdateIndicators();
+}
+
+//+------------------------------------------------------------------+
+//| Verificar sinais de trading                                      |
+//+------------------------------------------------------------------+
+ENUM_APOLLO11_SIGNAL CheckForSignal()
+{
+   Print("=== CheckForSignal Debug ===");
+   Print("Thermal Energy: ", g_grav_model.thermal_energy);
+   Print("Volume Pulse: ", g_inst_radar.volume_pulse);
+   Print("Neural Confidence: ", g_inst_radar.neural_confidence);
+   
+   // Ajustar os níveis para serem mais realistas
+   if(g_grav_model.thermal_energy > 1.2 && 
+      g_inst_radar.volume_pulse > 0.3 && 
+      g_inst_radar.neural_confidence > 15.0)
+   {
+      Print("DEBUG: Condições de COMPRA atendidas:");
+      Print("DEBUG: - Thermal Energy > 1.2: ", g_grav_model.thermal_energy);
+      Print("DEBUG: - Volume Pulse > 0.3: ", g_inst_radar.volume_pulse);
+      Print("DEBUG: - Neural Confidence > 15.0: ", g_inst_radar.neural_confidence);
+      return SIGNAL_BUY;
+   }
+   
+   if(g_grav_model.thermal_energy < 0.8 && 
+      g_inst_radar.volume_pulse < 0.2 && 
+      g_inst_radar.neural_confidence > 15.0)
+   {
+      Print("DEBUG: Condições de VENDA atendidas:");
+      Print("DEBUG: - Thermal Energy < 0.8: ", g_grav_model.thermal_energy);
+      Print("DEBUG: - Volume Pulse < 0.2: ", g_inst_radar.volume_pulse);
+      Print("DEBUG: - Neural Confidence > 15.0: ", g_inst_radar.neural_confidence);
+      return SIGNAL_SELL;
+   }
+   
+   Print("DEBUG: Nenhuma condição de entrada atendida");
+   return SIGNAL_NONE;
+}
+
+//+------------------------------------------------------------------+
+//| Gerenciar posições existentes                                    |
+//+------------------------------------------------------------------+
+void ManagePositions()
+{
+   for(int i = PositionsTotal() - 1; i >= 0; i--)
+   {
+      ulong ticket = PositionGetTicket(i);
+      if(ticket <= 0) continue;
+      
+      if(PositionGetInteger(POSITION_MAGIC) != MagicNumber) continue;
+      
+      double position_profit = PositionGetDouble(POSITION_PROFIT);
+      double position_volume = PositionGetDouble(POSITION_VOLUME);
+      ENUM_POSITION_TYPE position_type = (ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE);
+      
+      // Break Even
+      if(UseBreakEven && position_profit > 0)
+      {
+         double open_price = PositionGetDouble(POSITION_PRICE_OPEN);
+         double current_price = PositionGetDouble(POSITION_PRICE_CURRENT);
+         
+         if(position_type == POSITION_TYPE_BUY && 
+            current_price - open_price >= BreakEvenPoints * _Point)
+         {
+            g_trade.PositionModify(ticket, 
+                                 open_price + BreakEvenProfit * _Point,
+                                 PositionGetDouble(POSITION_TP));
+         }
+         else if(position_type == POSITION_TYPE_SELL && 
+                 open_price - current_price >= BreakEvenPoints * _Point)
+         {
+            g_trade.PositionModify(ticket, 
+                                 open_price - BreakEvenProfit * _Point,
+                                 PositionGetDouble(POSITION_TP));
+         }
+      }
+      
+      // Trailing Stop
+      if(UseTrailingStop && position_profit > 0)
+      {
+         double current_price = PositionGetDouble(POSITION_PRICE_CURRENT);
+         double current_sl = PositionGetDouble(POSITION_SL);
+         
+         if(position_type == POSITION_TYPE_BUY)
+         {
+            double new_sl = current_price - TrailingStop * _Point;
+            if(new_sl > current_sl + TrailingStep * _Point)
+            {
+               g_trade.PositionModify(ticket, new_sl,
+                                    PositionGetDouble(POSITION_TP));
+            }
+         }
+         else if(position_type == POSITION_TYPE_SELL)
+         {
+            double new_sl = current_price + TrailingStop * _Point;
+            if(new_sl < current_sl - TrailingStep * _Point)
+            {
+               g_trade.PositionModify(ticket, new_sl,
+                                    PositionGetDouble(POSITION_TP));
+            }
+         }
+      }
+   }
+}
+
+//+------------------------------------------------------------------+
+//| Converter sinal para string                                       |
+//+------------------------------------------------------------------+
+string SignalToString(ENUM_APOLLO11_SIGNAL signal)
+{
+   switch(signal)
+   {
+      case SIGNAL_BUY:  return "BUY";
+      case SIGNAL_SELL: return "SELL";
+      default:          return "NONE";
+   }
+}
+
+//+------------------------------------------------------------------+
+//| Executar sinais de trading                                       |
+//+------------------------------------------------------------------+
+bool ExecuteSignal(ENUM_APOLLO11_SIGNAL signal)
+{
+   Print("=== ExecuteSignal Debug ===");
+   
+   // Verificar se o trading está permitido
+   if(!IsTradeAllowed())
+   {
+      Print("DEBUG: Trading não permitido na função ExecuteSignal");
+      return false;
+   }
+   
+   // Verificar se já existe posição aberta
+   if(PositionSelect(_Symbol))
+   {
+      Print("DEBUG: Já existe posição aberta para ", _Symbol);
+      return false;
+   }
+   
+   // Obter preços atuais
+   double ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+   double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+   double point = SymbolInfoDouble(_Symbol, SYMBOL_POINT);
+   
+   Print("DEBUG: Preços atuais - Ask: ", ask, " Bid: ", bid, " Point: ", point);
+   
+   // Calcular tamanho do lote
+   double lots = CalculateLots();
+   Print("DEBUG: Tamanho do lote calculado: ", lots);
+   
+   if(lots <= 0)
+   {
+      Print("DEBUG: Erro: Cálculo de lotes resultou em valor inválido: ", lots);
+      return false;
+   }
+   
+   // Preparar ordem
+   MqlTradeRequest request = {};
+   MqlTradeResult result = {};
+   
+   request.action = TRADE_ACTION_DEAL;
+   request.symbol = _Symbol;
+   request.volume = lots;
+   request.magic = MagicNumber;
+   request.deviation = 10;
+   
+   if(signal == SIGNAL_BUY)
+   {
+      request.type = ORDER_TYPE_BUY;
+      request.price = ask;
+      request.sl = ask - StopLossPoints * point;
+      request.tp = ask + TakeProfitPoints * point;
+      Print("DEBUG: Ordem de COMPRA - Preço: ", request.price, " SL: ", request.sl, " TP: ", request.tp);
+   }
+   else if(signal == SIGNAL_SELL)
+   {
+      request.type = ORDER_TYPE_SELL;
+      request.price = bid;
+      request.sl = bid + StopLossPoints * point;
+      request.tp = bid - TakeProfitPoints * point;
+      Print("DEBUG: Ordem de VENDA - Preço: ", request.price, " SL: ", request.sl, " TP: ", request.tp);
+   }
+   
+   // Enviar ordem
+   bool success = OrderSend(request, result);
+   Print("DEBUG: Resultado do envio da ordem: ", success ? "Sucesso" : "Falha");
+   
+   if(!success)
+   {
+      int error = GetLastError();
+      Print("DEBUG: Erro ao enviar ordem - Código: ", error);
+      Print("DEBUG: Descrição do erro: ", GetLastError());
+      return false;
+   }
+   
+   Print("DEBUG: Ordem executada com sucesso - Ticket: ", result.order);
+   return true;
+}
+
+//+------------------------------------------------------------------+
+//| Verificar se o trading é permitido                               |
+//+------------------------------------------------------------------+
+bool IsTradeAllowed()
+{
+   Print("=== IsTradeAllowed Debug ===");
+   
+   // Verificar se o trading está habilitado no terminal
+   if(!MQLInfoInteger(MQL_TRADE_ALLOWED))
+   {
+      Print("DEBUG: Trading automático não está habilitado no terminal");
+      return false;
+   }
+   
+   // Verificar se o trading está habilitado para o símbolo
+   if(!SymbolInfoInteger(_Symbol, SYMBOL_TRADE_MODE))
+   {
+      Print("DEBUG: Trading não está habilitado para o símbolo ", _Symbol);
+      return false;
+   }
+   
+   // Verificar se o EA tem permissão para trading
+   if(!AccountInfoInteger(ACCOUNT_TRADE_EXPERT))
+   {
+      Print("DEBUG: Trading por EAs não está habilitado na conta");
+      return false;
+   }
+   
+   // Verificar se o mercado está aberto
+   if(!SymbolInfoInteger(_Symbol, SYMBOL_TRADE_MODE))
+   {
+      Print("DEBUG: Mercado fechado para o símbolo ", _Symbol);
+      return false;
+   }
+   
+   Print("DEBUG: Todas as verificações de trading passaram");
+   return true;
+}
+
+//+------------------------------------------------------------------+
+//| Calcular tamanho do lote                                         |
+//+------------------------------------------------------------------+
+double CalculateLots()
+{
+   double balance = AccountInfoDouble(ACCOUNT_BALANCE);
+   double risk_amount = balance * RiskPercent / 100.0;
+   double tick_value = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+   double tick_size = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+   double point = SymbolInfoDouble(_Symbol, SYMBOL_POINT);
+   double min_lot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
+   double lot_step = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP);
+   
+   Print("DEBUG: Cálculo de Lotes - Balance: ", balance);
+   Print("DEBUG: Cálculo de Lotes - Risk Amount: ", risk_amount);
+   Print("DEBUG: Cálculo de Lotes - Tick Value: ", tick_value);
+   Print("DEBUG: Cálculo de Lotes - Tick Size: ", tick_size);
+   Print("DEBUG: Cálculo de Lotes - Point: ", point);
+   Print("DEBUG: Cálculo de Lotes - Min Lot: ", min_lot);
+   Print("DEBUG: Cálculo de Lotes - Lot Step: ", lot_step);
+   
+   double stop_loss_points;
+   if(UseATRStopLoss)
+   {
+      int atr_handle = iATR(_Symbol, PERIOD_CURRENT, 14);
+      if(atr_handle != INVALID_HANDLE)
+      {
+         double atr[];
+         ArraySetAsSeries(atr, true);
+         if(CopyBuffer(atr_handle, 0, 0, 1, atr) > 0)
+         {
+            stop_loss_points = atr[0] * ATRStopLossMultiplier / point;
+            Print("DEBUG: Cálculo de Lotes - ATR Stop Loss Points: ", stop_loss_points);
+         }
+         else
+         {
+            Print("DEBUG: Falha ao copiar buffer ATR para cálculo de lote: ", GetLastError());
+            stop_loss_points = StopLossPoints;
+         }
+         IndicatorRelease(atr_handle);
+      }
+      else
+      {
+         Print("DEBUG: Falha ao criar handle ATR para cálculo de lote: ", GetLastError());
+         stop_loss_points = StopLossPoints;
+      }
+   }
+   else
+   {
+      stop_loss_points = StopLossPoints;
+   }
+   
+   // Evitar divisão por zero
+   if(stop_loss_points <= 0 || tick_value <= 0 || tick_size <= 0)
+   {
+      Print("DEBUG: Erro no cálculo de lotes: valores inválidos");
+      return InitialLots;
+   }
+   
+   // Calcular lote baseado no risco
+   double lots = NormalizeDouble(risk_amount / (stop_loss_points * tick_value * point / tick_size), 2);
+   Print("DEBUG: Cálculo de Lotes - Lote Calculado (antes dos limites): ", lots);
+   
+   // Verificar se o lote está dentro dos limites
+   lots = MathMax(lots, min_lot);
+   lots = MathMin(lots, MaxLots);
+   
+   // Arredondar para o lot_step
+   lots = MathFloor(lots / lot_step) * lot_step;
+   
+   // Garantir que o lote não seja zero
+   if(lots < min_lot) lots = min_lot;
+   
+   Print("DEBUG: Cálculo de Lotes - Lote Final: ", lots);
+   
+   return lots;
+}
+
+//+------------------------------------------------------------------+
+//| Atualizar indicadores visuais                                    |
+//+------------------------------------------------------------------+
+void UpdateIndicators()
+{
+   // Atualizar buffers do indicador
+   for(int i = 0; i < 100; i++)
+   {
+      ExtGravZoneBuffer[i] = g_grav_model.channel_vector;
+      ExtThermalEnergyBuffer[i] = g_grav_model.thermal_energy;
+      ExtPOCBuffer[i] = g_grav_model.poc_level;
+      ExtColorBuffer1[i] = g_grav_model.thermal_energy > 100.0 ? 0 : 1;
+   }
+   
+   // Atualizar objetos gráficos
+   string obj_name = "GALEX_FibLevels";
+   ObjectsDeleteAll(0, obj_name);
+   
+   // Verificar se o array de níveis Fibonacci foi inicializado
+   if(ArraySize(g_fib_analysis.fib_levels) > 0)
+   {
+      for(int i = 0; i < ArraySize(g_fib_analysis.fib_levels); i++)
+      {
+         string level_name = obj_name + "_" + IntegerToString(i);
+         if(ObjectCreate(0, level_name, OBJ_HLINE, 0, 0, g_fib_analysis.fib_levels[i]))
+         {
+            ObjectSetInteger(0, level_name, OBJPROP_COLOR, clrGold);
+            ObjectSetInteger(0, level_name, OBJPROP_STYLE, STYLE_DASH);
+            ObjectSetInteger(0, level_name, OBJPROP_WIDTH, 1);
+            ObjectSetInteger(0, level_name, OBJPROP_BACK, true);
+            ObjectSetInteger(0, level_name, OBJPROP_SELECTABLE, false);
+            ObjectSetInteger(0, level_name, OBJPROP_SELECTED, false);
+            ObjectSetInteger(0, level_name, OBJPROP_HIDDEN, true);
+            ObjectSetInteger(0, level_name, OBJPROP_ZORDER, 0);
+         }
+      }
+   }
+   
+   // Forçar atualização do gráfico
+   ChartRedraw(0);
+   
+   // Adicionar log para debug
+   static datetime last_update = 0;
+   datetime current_time = TimeCurrent();
+   if(current_time - last_update >= 60) // Log a cada minuto
+   {
+      Print("Indicadores atualizados - Thermal Energy: ", g_grav_model.thermal_energy,
+            " Volume Pulse: ", g_inst_radar.volume_pulse,
+            " Neural Confidence: ", g_inst_radar.neural_confidence);
+      last_update = current_time;
+   }
+} 

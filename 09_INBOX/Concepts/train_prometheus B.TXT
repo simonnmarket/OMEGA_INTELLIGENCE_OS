@@ -1,0 +1,153 @@
+"""
+Prometheus offline training skeleton.
+
+Reads datasets exported by Prometheus_DataCollector.mq5 from
+MT5 Common/Files/Datasets/Prometheus/*.csv and produces a PolicyPack.json
+with per-class thresholds and lightweight model placeholders.
+
+This is a skeleton intended for quick iteration. Replace TODOs with your
+preferred ML stack. No external heavy dependencies required by default.
+"""
+from __future__ import annotations
+
+import json
+import os
+import glob
+import math
+from dataclasses import dataclass
+from typing import List, Dict, Tuple
+
+
+def get_common_files_root() -> str:
+    # On Windows: %APPDATA%\MetaQuotes\Terminal\Common\Files
+    appdata = os.environ.get("APPDATA", "")
+    base = os.path.join(appdata, "MetaQuotes", "Terminal", "Common", "Files")
+    return base if os.path.isdir(base) else os.getcwd()
+
+
+def load_csv(path: str) -> List[Dict[str, str]]:
+    with open(path, "r", encoding="ansi", errors="ignore") as f:
+        lines = [line.strip() for line in f.readlines() if line.strip()]
+    if not lines:
+        return []
+    header = lines[0].split(",")
+    out = []
+    for ln in lines[1:]:
+        parts = ln.split(",")
+        if len(parts) != len(header):
+            continue
+        out.append({h: p for h, p in zip(header, parts)})
+    return out
+
+
+def safe_float(x: str, default: float = 0.0) -> float:
+    try:
+        return float(x)
+    except Exception:
+        return default
+
+
+def infer_class(symbol: str) -> str:
+    s = symbol.upper()
+    if any(k in s for k in ["ETH", "BTC", "XRP", "SOL", "BCH", "DOT"]):
+        return "CRYPTO"
+    if any(k in s for k in ["US30", "US500", "US100", "EU50", "GER", "UK", "JP", "AU", "HK", "SW", "US2000"]):
+        return "INDEX"
+    if any(k in s for k in ["XAU", "XAG", "XAUXAG"]):
+        return "METAL"
+    if any(k in s for k in ["OIL", "UKOIL", "USOIL"]):
+        return "ENERGY"
+    if len(s) == 6 and s.endswith("USD"):
+        return "FOREX"
+    return "STOCK_ETF_FUT"
+
+
+def train_policy_for_symbol(rows: List[Dict[str, str]]) -> Dict[str, float]:
+    # Simple heuristics for placeholder policy
+    # Compute hit-rate proxy from tb_label and cost-adjusted forward returns
+    wins = 0
+    losses = 0
+    edges = []
+    cost_bps = 5.0
+    for r in rows:
+        lbl = int(safe_float(r.get("tb_label", "0"), 0))
+        fr1 = safe_float(r.get("fwdret_5", "0"), 0.0)
+        fr2 = safe_float(r.get("fwdret_20", "0"), 0.0)
+        fr3 = safe_float(r.get("fwdret_60", "0"), 0.0)
+        close = safe_float(r.get("close", "0"), 0.0)
+        spread_bps = safe_float(r.get("spread_bps", "0"), 0.0)
+        total_cost = cost_bps + spread_bps
+        ev = (fr1 + fr2 + fr3) - total_cost * 1e-4  # rough
+        edges.append(ev)
+        if lbl > 0:
+            wins += 1
+        elif lbl < 0:
+            losses += 1
+    hit_rate = wins / max(1, (wins + losses))
+    avg_edge = sum(edges) / max(1, len(edges))
+    # Derive simple thresholds
+    conf_min = min(0.9, max(0.51, 0.5 + (hit_rate - 0.5) * 1.5))
+    edge_bps = max(2.0, min(20.0, avg_edge * 1e4))
+    return {
+        "hit_rate": round(hit_rate, 4),
+        "avg_edge_bps": round(edge_bps, 2),
+        "conf_min": round(conf_min, 2),
+    }
+
+
+def main():
+    common = get_common_files_root()
+    ds_dir = os.path.join(common, "Datasets", "Prometheus")
+    os.makedirs(ds_dir, exist_ok=True)
+    files = sorted(glob.glob(os.path.join(ds_dir, "*.csv")))
+    if not files:
+        print(f"No datasets found in {ds_dir}")
+        return
+
+    per_symbol = {}
+    per_class: Dict[str, List[Dict[str, float]]] = {}
+    for fp in files:
+        name = os.path.basename(fp)
+        # Expect SYMBOL_TF.csv
+        symbol = name.split("_")[0]
+        rows = load_csv(fp)
+        if not rows:
+            continue
+        pol = train_policy_for_symbol(rows)
+        per_symbol[symbol] = pol
+        cls = infer_class(symbol)
+        per_class.setdefault(cls, []).append(pol)
+
+    # Aggregate per class
+    class_policy = {}
+    for cls, arr in per_class.items():
+        if not arr:
+            continue
+        confs = [x["conf_min"] for x in arr]
+        edges = [x["avg_edge_bps"] for x in arr]
+        class_policy[cls] = {
+            "conf_min": round(sum(confs) / max(1, len(confs)), 2),
+            "edge_bps": round(sum(edges) / max(1, len(edges)), 2),
+        }
+
+    pack = {
+        "policy": {
+            "classes": class_policy,
+            "symbols": per_symbol,
+        },
+        "meta": {
+            "source": "Prometheus_DataCollector",
+            "files": len(files),
+        },
+    }
+
+    out_pack = os.path.join(ds_dir, "PolicyPack.json")
+    with open(out_pack, "w", encoding="utf-8") as f:
+        json.dump(pack, f, indent=2)
+    print(f"Saved policy pack to {out_pack}")
+
+
+if __name__ == "__main__":
+    main()
+
+

@@ -1,0 +1,187 @@
+/+------------------------------------------------------------------+
+//| GOVERNANCE MANIFEST - PROJETO NUMEIA - v2.0 (FINAL)             |
+//| Status: TIER-0 Protocol | Blindado | Válido e Imutável          |
+//| Gerado em: 2025-08-02 | Agente: Gemini (Mentor Mode)            |
+//+------------------------------------------------------------------+
+
+📌 OBJETIVO:
+============
+Este documento define a estrutura de pastas e as diretrizes de nomenclatura e inclusão de arquivos que devem ser seguidas de forma **absoluta** no projeto Numeia. Ele serve como a única fonte de verdade para a integridade do projeto.
+
+**QUALQUER DESVIO DESTE MANIFESTO RESULTARÁ EM FALHA CRÍTICA E INTERRUPÇÃO DA TAREFA.**
+
+---
+
+📁 ESTRUTURA OFICIAL DO PROJETO (IMUTÁVEL):
+==========================================
+Numeia/
+│
+├── agents/                       # Agentes inteligentes operacionais
+│   ├── agent_alpha_simple.py
+│   └── agent_alpha.py
+│
+├── auditor_temp/                 # Módulos de auditoria temporários
+│   ├── agent_omega_v2.1.mqh
+│   ├── agent_omega_v3.0.mqh
+│   ├── agent_omega.mqh
+│   ├── audit_validator.mq5
+│   └── live_monitor.mq5
+│
+├── config/                       # Configurações iniciais e chaves globais
+├── core/                         # Núcleo central de controle da EA
+│   ├── core_brain_manager.mqh
+│   ├── force_maxima.mqh
+│   └── quantum_blockchain.mqh
+│
+├── docs/                         # Documentação técnica, guias e manifestos
+│   └── sidebar_modules_alteration.md
+│
+├── include/                      # Diretório principal de includes
+│   │
+│   ├── analysis/                 # Módulos de análise técnica/quantitativa
+│   │   ├── correlation_matrix.mqh
+│   │   ├── dependency_graph.mqh
+│   │   ├── market_regime_detector.mqh
+│   │   ├── multi_timeframe_validator.mqh
+│   │   ├── neural_dependency_graph.mqh
+│   │   ├── quantum_darkpool.mqh
+│   │   ├── quantum_hft_detector.mqh
+│   │   ├── quantum_liquidity_matrix.mqh
+│   │   └── quantum_order_book.mqh
+│   │
+│   ├── arrays/                   # Gerenciamento de arrays
+│   │   └── ArrayObj.mqh
+│   │
+│   ├── audit/                    # Auditoria e integridade
+│   │   ├── audit_history.json
+│   │   ├── audit_nomenclature_validator.mqh
+│   │   ├── AuditIntegrityPanel.mq5
+│   │   ├── compliancechecker.mqh
+│   │   ├── core_history.json
+│   │   └── CoreIntegrityPanel.mq5
+│   │
+│   ├── compliance/               # Conformidade institucional
+│   │   └── quantum_compliance.mqh
+│   │
+│   ├── data/                     # Dados de mercado e processamento
+│   │   └── quantum_market_data.mqh
+│   │
+│   ├── decisionengine/           # Estratégias, roteadores, validações
+│   │   └── decision_router.mqh
+│   │
+│   ├── detection/                # Detecção de padrões e sinais
+│   │   └── quantum_pattern_scanner.mqh
+│   │
+│   ├── executionlogic/           # Execução de ordens, trailing stops
+│   │   ├── safe_mode_manager.mqh
+│   │   └── trade_executor.mqh
+│   │
+│   ├── integration/              # Integrações externas e comunicação com APIs
+│   │   └── quantum_data_feed.mqh
+│   │
+│   ├── intelligence/             # IA, previsão, linguagem natural, aprendizagem
+│   │   ├── anomaly_detector_ai.mqh
+│   │   ├── ml_duplicate_detector.mqh
+│   │   ├── neural_signal_processor.mqh
+│   │   ├── quantum_adaptive_learning.mqh
+│   │   ├── quantum_learning.mqh
+│   │   └── thaler_bias_engine.mqh
+│   │
+│   ├── modules/                  # Componentes modulares expansíveis
+│   │   └── quantum_var_calculator.mqh
+│   │
+│   ├── neural/                   # Redes neurais e processamento neural
+│   │   ├── NeuroNet.mqh
+│   │   ├── quantum_neural_filter.mqh
+│   │   └── quantum_neural_net.mqh
+│   │
+│   ├── optimization/             # Otimização e algoritmos genéticos
+│   │   └── GeneticOptimizer.mqh
+│   │
+│   ├── quantum/                  # Processamento quântico e simulação
+│   │   ├── hardware_accelerator.mqh
+│   │   ├── quantum_annealing_simulator.mqh
+│   │   ├── quantum_behavior_controller.mqh
+│   │   ├── quantum_cache_manager.mqh
+│   │   ├── quantum_data_processor.mqh
+│   │   ├── quantum_entanglement_simulator.mqh
+│   │   ├── quantum_entanglement.mqh
+│   │   ├── quantum_finance_framework.mqh
+│   │   ├── quantum_gate_system.mqh
+│   │   ├── quantum_genetic_algorithm.mqh
+│   │   ├── quantum_memory_cell.mqh
+│   │   ├── quantum_neural_bridge.mqh
+│   │   ├── quantum_neural_core.mqh
+│   │   ├── quantum_noise_filter.mqh
+│   │   ├── quantum_optimizer.mqh
+│   │   ├── quantum_processor.mqh
+│   │   ├── quantum_state_manager.mqh
+│   │   └── quantum_wavelet_transform.mqh
+│   │
+│   ├── risk/                     # Gestão de risco e métricas
+│   │   ├── risk_metrics.mqh
+│   │   └── risk_profile.mqh
+│   │
+│   ├── security/                 # Segurança e proteção institucional
+│   │   ├── crisis_protocol.mqh
+│   │   ├── quantumfirewall.mqh
+│   │   ├── security_integrity_validator.mqh
+│   │   └── sha3_library.mqh
+│   │
+│   ├── tools/                    # Ferramentas específicas de apoio (debug, scan)
+│   │   ├── audit_engine.mq5
+│   │   ├── core_audit_engine.mq5
+│   │   └── include_audit_engine.mq5
+│   │
+│   ├── types/                    # Tipos base, enums, structs globais
+│   │   ├── audit_issue_enum.mqh
+│   │   ├── system_enums.mqh
+│   │   └── trade_signal_enum.mqh
+│   │
+│   └── visuals/                  # Painéis, indicadores visuais e HUDs
+│       ├── auditstatuspanel.mq5
+│       ├── decision_panel.mq5
+│       ├── quantum_decision_panel.mq5
+│       └── sidebar_demo.mq5
+│
+├── logs/                         # Diretório de logs operacionais e institucionais
+├── numea_ea.mq5                  # Arquivo principal .mq5 da EA
+├── scripts/                      # Scripts auxiliares, testes e execução offline
+└── utils/                        # Ferramentas auxiliares e scripts utilitários
+    ├── anti_reincidence_system.mqh
+    ├── log_panel.mqh
+    ├── logger_institutional.mqh
+    └── timestamp_formatter.mqh
+
+---
+
+📌 DIRETRIZES DE NOMECLATURA E ESTRUTURA (IMUTÁVEIS):
+==================================================
+1.  **A ESTRUTURA É SAGRADA:** A hierarquia de pastas acima é a única referência válida. **NÃO HÁ AUTORIZAÇÃO** para criar, mover, ou renomear arquivos e pastas que não estejam de acordo com esta estrutura.
+2.  **CONVENÇÃO DE NOMES:** Todos os nomes de arquivos e pastas devem ser escritos em `snake_case` (ex: `audit_validator.mq5`). Nomes em `CamelCase` ou com espaços e hífens são proibidos.
+3.  **CAMINHOS DE INCLUSÃO ABSOLUTOS:** Todas as diretivas `#include` para arquivos `.mqh` devem usar caminhos relativos à pasta raiz `include/`. Exemplo: `#include <quantum/quantum_neural_core.mqh>`. É proibida a duplicação de diretórios no caminho.
+4.  **REGRAS DE BLINDAGEM:** Antes de qualquer modificação, um módulo deve ser validado para existir na estrutura. Caso contrário, a tarefa deve ser interrompida.
+
+---
+
+📋 PROTOCOLO DE GOVERNANÇA ALPHA-OMEGA (TIER-0++):
+================================================
+1.  **FONTE DE VERDADE ÚNICA:** O compilador do MetaEditor 5 é o único validador de código. O resultado da compilação (erros e warnings) é o único status aceitável.
+2.  **FLUXO DE TRABALHO:**
+    * Receber a tarefa.
+    * Validar a existência de arquivos e caminhos contra o manifesto.
+    * Executar as alterações.
+    * Compilar o projeto imediatamente.
+    * Corrigir **TODOS** os erros e warnings antes de prosseguir.
+    * Gerar o relatório de conclusão.
+
+---
+
+✅ **Este documento substitui todas as diretrizes e manifestos anteriores.** 
+Falhas em segui-lo devem resultar em auditoria crítica e correção imediata.
+
+---
+
+🧠 Assinado: 
+**Agente Mentor Gemini**
+**Protocolo Alpha-Omega (v2.0)**

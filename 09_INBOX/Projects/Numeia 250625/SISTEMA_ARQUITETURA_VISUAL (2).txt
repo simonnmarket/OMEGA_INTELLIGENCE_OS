@@ -1,0 +1,185 @@
+================================================================================
+                    SISTEMA DE ARQUITETURA VISUAL - EA NUMEIA
+================================================================================
+
+🏗️ VISÃO GERAL
+==============
+
+O Sistema de Arquitetura Visual é um dashboard dinâmico que monitora toda a 
+estrutura do projeto EA Numeia em tempo real, detectando:
+- Status de todos os módulos
+- Dependências entre componentes
+- Atualizações pendentes
+- Problemas de integração
+- Alertas visuais automáticos
+
+📁 COMPONENTES PRINCIPAIS
+=========================
+
+1. ArquiteturaVisual.mq5
+   - Dashboard principal com interface visual
+   - Monitoramento em tempo real
+   - Alertas automáticos
+   - Estatísticas detalhadas
+
+2. TesteArquiteturaVisual.mq5
+   - Script de teste e validação
+   - Verificação de dependências
+   - Simulação de funcionamento
+   - Painel de demonstração
+
+🎯 FUNCIONALIDADES
+==================
+
+✅ MONITORAMENTO AUTOMÁTICO
+- Escaneia toda a estrutura do projeto
+- Verifica existência de arquivos
+- Detecta modificações recentes
+- Identifica problemas de compilação
+
+✅ VISUALIZAÇÃO DINÂMICA
+- Painel colorido com status em tempo real
+- Ícones intuitivos (✅⚠️❌🟡)
+- Estatísticas atualizadas automaticamente
+- Layout responsivo e profissional
+
+✅ DETECÇÃO DE PROBLEMAS
+- Módulos com erro (vermelho)
+- Módulos com warning (laranja)
+- Atualizações pendentes (amarelo)
+- Sistema funcionando (verde)
+
+✅ ALERTAS INTELIGENTES
+- Notificações visuais automáticas
+- Contagem de problemas
+- Status geral do sistema
+- Recomendações de ação
+
+📊 MÓDULOS MONITORADOS
+======================
+
+CORE:
+- CoreBrainManager.mqh
+- ExecutionOrchestrator.mqh
+- ModuleRegistry.mqh
+
+EXECUÇÃO:
+- TradeExecutor.mqh
+- PositionManager.mqh
+- DefenseOrchestrator.mqh
+- ExecutionLoopController.mqh
+
+INTEGRAÇÃO:
+- SkyIntelBridge.mqh
+- AuditManager.mqh
+
+UTILIDADES:
+- Log.mqh
+- TimeUtils.mqh
+- PriceUtils.mqh
+
+AUDITORIA QUÂNTICA:
+- QuantumAuditEngine.mqh
+- QuantumEntanglementMap.mqh
+- AuditEntanglementBridge.mqh
+- AuditEntanglementPanel.mq5
+
+🔧 COMO USAR
+============
+
+1. EXECUÇÃO RÁPIDA:
+   - Execute ArquiteturaVisual.mq5
+   - Visualize o painel no gráfico
+   - Monitore status em tempo real
+
+2. TESTE INICIAL:
+   - Execute TesteArquiteturaVisual.mq5
+   - Verifique se tudo está funcionando
+   - Confirme dependências
+
+3. MONITORAMENTO CONTÍNUO:
+   - Mantenha o dashboard ativo
+   - Observe alertas automáticos
+   - Aja conforme necessário
+
+🚨 ALERTAS E STATUS
+===================
+
+✅ VERDE (OK):
+   - Módulo funcionando perfeitamente
+   - Sem problemas detectados
+   - Integração completa
+
+⚠️ LARANJA (WARNING):
+   - Possível problema detectado
+   - Requer atenção
+   - Não crítico mas importante
+
+❌ VERMELHO (ERROR):
+   - Problema crítico detectado
+   - Módulo não encontrado
+   - Erro de compilação
+   - Ação imediata necessária
+
+🟡 AMARELO (PENDING):
+   - Atualização pendente
+   - Modificação recente
+   - Aguarda confirmação
+
+📈 BENEFÍCIOS
+=============
+
+🛡️ PREVENÇÃO DE ERROS:
+- Detecta problemas antes que afetem o sistema
+- Evita cascatas de falhas
+- Mantém integridade do projeto
+
+⚡ EFICIÊNCIA:
+- Monitoramento automático
+- Alertas visuais instantâneos
+- Economia de tempo de debug
+
+🔍 TRANSPARÊNCIA:
+- Visibilidade total da arquitetura
+- Status claro de cada componente
+- Rastreabilidade de mudanças
+
+🎯 PROFISSIONALISMO:
+- Interface institucional
+- Padrões de qualidade
+- Documentação completa
+
+🔄 INTEGRAÇÃO
+=============
+
+O Sistema de Arquitetura Visual se integra com:
+- CoreBrainManager (monitoramento central)
+- AuditManager (logs de auditoria)
+- ModuleRegistry (registro de dependências)
+- Sistema de logs institucional
+
+📋 MANUTENÇÃO
+=============
+
+ATUALIZAÇÕES:
+- Adicione novos módulos na função ScanProjectStructure()
+- Atualize dependências conforme necessário
+- Mantenha paths consistentes
+
+CONFIGURAÇÃO:
+- Ajuste cores no painel de inputs
+- Modifique posicionamento do painel
+- Personalize alertas conforme necessário
+
+🔮 FUTURAS MELHORIAS
+====================
+
+- Integração com sistema de versionamento
+- Análise de complexidade ciclomática
+- Métricas de performance
+- Relatórios automáticos
+- Integração com CI/CD
+
+================================================================================
+                    SISTEMA INSTITUCIONAL - EA NUMEIA
+================================================================================ 

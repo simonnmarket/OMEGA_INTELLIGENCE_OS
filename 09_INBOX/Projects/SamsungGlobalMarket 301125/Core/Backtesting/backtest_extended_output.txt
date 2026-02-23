@@ -1,0 +1,156 @@
+﻿python : 2025-11-03 23:58:35,214 - WARNING - TA-Lib not available - using fallback calculations
+At C:\Users\Lenovo\AppData\Local\Temp\ps-script-f014b0aa-b4a3-435e-8908-5b6b6e1dac89.ps1:78 char:66
++ ... acktesting; python run_backtest_crypto_mean_reversion.py 2>&1 | Out-F ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (2025-11-03 23:5...ck calculations:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+2025-11-03 23:58:35,680 - INFO - PerÝodo: 2018-01-01 a 2023-12-31
+2025-11-03 23:58:35,680 - INFO - Capital: EUR 30,000
+2025-11-03 23:58:35,680 - INFO - SÝmbolos: ['BTC-USD', 'ETH-USD', 'BNB-USD', 'LTC-USD', 'ADA-USD', 'XRP-USD', 'SOL-USD'
+]
+2025-11-03 23:58:35,680 - INFO - Custos: 10 bps
+2025-11-03 23:58:35,680 - INFO - [CRYPTO_MEAN_REVERSION_BACKTEST] Initialized
+2025-11-03 23:58:35,680 - INFO -   RSI: period=14, oversold=30, overbought=70
+2025-11-03 23:58:35,680 - INFO -   BB: period=20, std=2.0
+2025-11-03 23:58:35,682 - INFO - [Backtester] Inicializado
+2025-11-03 23:58:35,682 - INFO -   PerÝodo: 2018-01-01 a 2023-12-31
+2025-11-03 23:58:35,683 - INFO -   Capital inicial: EUR 30,000
+2025-11-03 23:58:35,683 - INFO -   Custo de transaþÒo: 10 bps
+2025-11-03 23:58:35,683 - INFO - Processando BTC-USD...
+C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Core\Backtesting\run_backtest_crypto_mean_reversion.py:96: FutureWarning: Y
+F.download() has changed argument auto_adjust default to True
+  data_df = yf.download(symbol, start=START_DATE, end=END_DATE, progress=False)
+2025-11-03 23:58:36,133 - INFO - [CRYPTO_MEAN_REVERSION_BACKTEST] BTC-USD: Generated 56 BUY, 1263 SELL signals
+2025-11-03 23:58:36,133 - INFO -   OK: 2190 dias processados
+2025-11-03 23:58:36,133 - INFO - Processando ETH-USD...
+C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Core\Backtesting\run_backtest_crypto_mean_reversion.py:96: FutureWarning: Y
+F.download() has changed argument auto_adjust default to True
+  data_df = yf.download(symbol, start=START_DATE, end=END_DATE, progress=False)
+2025-11-03 23:58:36,377 - INFO - [CRYPTO_MEAN_REVERSION_BACKTEST] ETH-USD: Generated 53 BUY, 1229 SELL signals
+2025-11-03 23:58:36,377 - INFO -   OK: 2190 dias processados
+2025-11-03 23:58:36,377 - INFO - Processando BNB-USD...
+C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Core\Backtesting\run_backtest_crypto_mean_reversion.py:96: FutureWarning: Y
+F.download() has changed argument auto_adjust default to True
+  data_df = yf.download(symbol, start=START_DATE, end=END_DATE, progress=False)
+2025-11-03 23:58:36,692 - INFO - [CRYPTO_MEAN_REVERSION_BACKTEST] BNB-USD: Generated 75 BUY, 1273 SELL signals
+2025-11-03 23:58:36,692 - INFO -   OK: 2190 dias processados
+2025-11-03 23:58:36,692 - INFO - Processando LTC-USD...
+C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Core\Backtesting\run_backtest_crypto_mean_reversion.py:96: FutureWarning: Y
+F.download() has changed argument auto_adjust default to True
+  data_df = yf.download(symbol, start=START_DATE, end=END_DATE, progress=False)
+2025-11-03 23:58:37,274 - INFO - [CRYPTO_MEAN_REVERSION_BACKTEST] LTC-USD: Generated 66 BUY, 1160 SELL signals
+2025-11-03 23:58:37,274 - INFO -   OK: 2190 dias processados
+2025-11-03 23:58:37,274 - INFO - Processando ADA-USD...
+C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Core\Backtesting\run_backtest_crypto_mean_reversion.py:96: FutureWarning: Y
+F.download() has changed argument auto_adjust default to True
+  data_df = yf.download(symbol, start=START_DATE, end=END_DATE, progress=False)
+2025-11-03 23:58:38,214 - INFO - [CRYPTO_MEAN_REVERSION_BACKTEST] ADA-USD: Generated 60 BUY, 1153 SELL signals
+2025-11-03 23:58:38,214 - INFO -   OK: 2190 dias processados
+2025-11-03 23:58:38,215 - INFO - Processando XRP-USD...
+C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Core\Backtesting\run_backtest_crypto_mean_reversion.py:96: FutureWarning: Y
+F.download() has changed argument auto_adjust default to True
+  data_df = yf.download(symbol, start=START_DATE, end=END_DATE, progress=False)
+2025-11-03 23:58:38,933 - INFO - [CRYPTO_MEAN_REVERSION_BACKTEST] XRP-USD: Generated 59 BUY, 1047 SELL signals
+2025-11-03 23:58:38,933 - INFO -   OK: 2190 dias processados
+2025-11-03 23:58:38,933 - INFO - Processando SOL-USD...
+C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Core\Backtesting\run_backtest_crypto_mean_reversion.py:96: FutureWarning: Y
+F.download() has changed argument auto_adjust default to True
+  data_df = yf.download(symbol, start=START_DATE, end=END_DATE, progress=False)
+2025-11-03 23:58:39,355 - INFO - [CRYPTO_MEAN_REVERSION_BACKTEST] SOL-USD: Generated 22 BUY, 784 SELL signals
+2025-11-03 23:58:39,355 - INFO -   OK: 1360 dias processados
+2025-11-03 23:58:39,355 - INFO - 
+Iniciando simulaþÒo...
+2025-11-03 23:58:40,507 - INFO - 
+[OK] Relat¾rio Extended salvo: C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Documentation\03_Relatorios_Conselho\RELATOR
+IO_EXTENDED_DATA_COLLECTION.md
+================================================================================
+NUMEIA TRADING SYSTEM v3.1 - BACKTEST CRYPTO MEAN REVERSION
+================================================================================
+
+
+
+================================================================================
+RESULTADOS DO BACKTEST
+================================================================================
+
+Capital Inicial: EUR 30,000.00
+Capital Final: EUR 30,051.68
+Retorno Total: 17.23%
+Retorno Anualizado: 2.87%
+
+Total de Trades: 161
+Trades Vencedores: 96
+Trades Perdedores: 65
+Win Rate: 59.63%
+
+Sharpe Ratio: -0.12
+Mßximo Drawdown: 25.55%
+Profit Factor: 1.02
+================================================================================
+
+================================================================================
+AN┴LISE DE REGIME (ANO A ANO)
+================================================================================
+
+2018:
+  Trades: 34
+  Wins/Losses: 18/16
+  Win Rate: 52.94%
+  P&L: EUR -3,285.08
+
+2019:
+  Trades: 32
+  Wins/Losses: 19/13
+  Win Rate: 59.38%
+  P&L: EUR 1,009.60
+
+2020:
+  Trades: 14
+  Wins/Losses: 7/7
+  Win Rate: 50.00%
+  P&L: EUR -2,570.88
+
+2021:
+  Trades: 26
+  Wins/Losses: 19/7
+  Win Rate: 73.08%
+  P&L: EUR 5,894.98
+
+2022:
+  Trades: 34
+  Wins/Losses: 18/16
+  Win Rate: 52.94%
+  P&L: EUR -2,816.60
+
+2023:
+  Trades: 21
+  Wins/Losses: 15/6
+  Win Rate: 71.43%
+  P&L: EUR 2,255.17
+
+================================================================================
+TESTE DE HIPËTESE ESTAT═STICA
+================================================================================
+
+Teste Binomial:
+  H0: Win Rate = 50% (sem edge)
+  H1: Win Rate > 50% (com edge)
+  n = 161 trades
+  wins = 96
+  Win Rate observado = 59.63%
+  p-value = 0.008894
+  Significancia (alpha=0.05): SIM
+
+  [OK] CONCLUSAO: Edge estatisticamente significativo (p < 0.05)
+  Intervalo de Confianþa 95%: [52.17%, 67.08%]
+
+================================================================================
+BACKTEST EXTENDED COMPLETO
+================================================================================
+
+Total de Trades: 161
+p-value: 0.008894
+Significancia: [OK] SIM (p < 0.05)
+
+[OK] Relat¾rios gerados

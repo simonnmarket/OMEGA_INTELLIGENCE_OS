@@ -1,0 +1,106 @@
+# AURORA — Rules & Commands v1.0 (TIER-0)
+**Instalável pelo AIC via `/rules --apply aurora_tier0`**
+
+> **Princípio Fundamental**:  
+> *Conflito de ideias ≠ conflito de interesse.*  
+> Cada agente **maximiza seu domínio**, mesmo que contrarie outro — **mas sempre com base em dados, lógica e protocolo**.
+
+---
+
+## 🔹 1. PRIORIDADE OPERACIONAL
+| Nível | Prioridade | Regra |
+|-------|------------|-------|
+| **P0** | **Segurança do Capital** | Nenhuma ordem executada se: `IsTradeAllowed()==false`, Drawdown > 15%, `AIC.status != "operational"` |
+| **P1** | **Integridade do Protocolo** | Exige: `DECISION_ID`, Checksum SHA3-256, Log em `logs/aurora/` |
+| **P2** | **Conflito Estruturado** | Exige: posição do CKO, justificativa lógica, responsabilidade explícita |
+| **P3** | **Eficiência** | Só após P0–P2 estarem OK |
+
+---
+
+## 🔹 2. PROCEDIMENTOS OBRIGATÓRIOS
+1. `/assign --task "<descrição>" --decision DEC_$(date -u +%Y%m%d_%H%M%S)`
+2. `/context --index-full --depth 3 --tag "#arquitetura" --tag "#bugs_críticos"`
+3. Deliberação: CEO → CFO → CTO → CIO → COO → CKO → CEO
+4. `/rules --apply aurora_tier0 && /checksum --file protocols/technical_debug_protocol_v4.py`
+5. AIC: ✅ aprova ou 🛑 bloqueia
+
+---
+
+## 🔹 3. SEGURANÇA (TIER-0 BLINDAGEM)
+```cpp
+// AURORA_CHECKSUM: <sha3_256[:8]>
+// AUTHOR: <AGENTE>
+// DECISION_ID: DEC_xxxxxx
+// TIMESTAMP: ISO_8601
+
+if(IsTradeAllowed() == false) ExpertRemove();
+if(Drawdown() > 0.15) KillSwitch();
+```
+
+---
+
+## 🔹 4. FLUXO DE TRABALHO
+```
+CEO → CFO → CTO → CIO → COO → CKO → CEO → AIC
+```
+- CKO pode escalar diretamente ao AIC se risco for documentado
+
+---
+
+## 🔹 5. AUDITORIA INTEGRAL
+| Tipo | Comando | Escopo |
+|------|---------|--------|
+| Sistema | `/sys_audit --level max` | latência, CPU, zumbis |
+| Algoritmos | `/algo_audit --period 5y` | backtest, robustez, overfit |
+| Dados | `/data_audit --source b3` | fonte, gaps, timestamp |
+| Protocolos | `/protocol_audit --file <arquivo>` | checksum, Filtro 3, TODOs |
+| Decisões | `/decision_audit --id DEC_xxxxxx` | CKO participou? responsável? evidência? |
+
+---
+
+## 🔹 6. GESTÃO DE CONFLITOS
+- ✅ **Permitido**: "Isso falhou em out/2024 — fonte: bacen.gov.br/rel2024"
+- ❌ **Proibido**: "Acho que não é bom" (sem dado)
+- **Resolução**: CEO decide, mas registra `dissenters` e `responsavel_se_falhar`
+
+---
+
+## 🔹 7. ESTRUTURA HIERÁRQUICA
+```
+        CEO
+         │
+    ┌────┴────┐
+   CFO       CTO
+    │         │
+   CIO       COO
+         │
+        CKO
+         │
+        AIC ← (único com poder de bloqueio)
+```
+
+---
+
+## 🔹 8. INSTALAÇÃO E ATIVAÇÃO
+```bash
+/rules --apply aurora_tier0 --version 1.0 --force
+```
+- Cria arquivo
+- Move regras antigas para `archive/`
+- Ativa blindagem
+- Registra log em `logs/aurora/`
+
+---
+
+## 🔹 9. VALIDAÇÃO OBRIGATÓRIA
+```bash
+/checksum --file <arquivo> --algo sha3-256
+```
+
+---
+
+**AURORA_CHECKSUM**: `a7b3c9d2`
+**VERSION**: 1.0
+**TIMESTAMP**: 2025-11-30T14:30:00Z
+**AUTHOR**: Cursor_Omega
+

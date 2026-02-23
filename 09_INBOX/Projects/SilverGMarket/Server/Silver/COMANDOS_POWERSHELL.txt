@@ -1,0 +1,56 @@
+============================================================
+COMANDOS POWERSHELL - SILVER SYSTEM V2.3
+Projeto: SilverGMarket (Independente)
+============================================================
+
+CAMINHO COMPLETO DO ARQUIVO:
+C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver\silver_system_v2.3.py
+
+============================================================
+COMANDO COMPLETO (COPIE E COLE NO POWERSHELL):
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver"
+python silver_system_v2.3.py
+
+============================================================
+OU EM UMA ÚNICA LINHA (COPIE TUDO):
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver"; python silver_system_v2.3.py
+
+============================================================
+OU USE O SCRIPT POWERSHELL (MAIS FÁCIL):
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver"
+.\EXECUTAR_SILVER.ps1
+
+============================================================
+VERIFICAR HORÁRIO DE TRADING ANTES DE EXECUTAR:
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver"
+python verificar_horario_trading_xag.py
+
+============================================================
+ANALISAR PERFORMANCE DO SISTEMA SILVER:
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver"
+python analise_performance_silver.py
+
+============================================================
+VERIFICAR SE ESTÁ NA PASTA CORRETA:
+============================================================
+
+pwd
+
+============================================================
+LISTAR ARQUIVOS DA PASTA:
+============================================================
+
+dir
+
+============================================================
+

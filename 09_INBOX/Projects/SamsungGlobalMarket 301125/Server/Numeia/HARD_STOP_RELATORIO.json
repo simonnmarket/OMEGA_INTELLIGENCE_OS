@@ -1,0 +1,21 @@
+{
+    "relatorio_timestamp": "2025-11-28T22:18:01.769475Z",
+    "VERSAO_PROTOCOLO": "V4.0 - Executivo",
+    "DECISAO_FINAL_CONSELHO": "HARD_STOP_SISTEMICO",
+    "STATUS_OPERACIONAL": "INTERROMPIDO POR ORDEM EXECUTIVA",
+    "protocolo_detalhes": {
+        "acao_recomendada": "PARAR OPERAÇÃO E INICIAR PIVÔ CIENTÍFICO (D.U.D.E. ATIVADO)",
+        "motivos_ativacao_stop": [
+            "LEXITY (Capital): Lucro Total (-36.94) < Limite (-10.00). CRÍTICA",
+            "ZAI (Instabilidade): Taxa de Erros (52.19%) > Limite (5.00%). CATASTRÓFICA",
+            "EESEK (Sharpe Ratio): Sharpe Ratio (-0.2426) < Mínimo (0.0). SISTÊMICA",
+            "CIENTÍFICO (E[X]): Expectativa Matemática (-0.0142) < Mínimo (0.0). FUNDAMENTAL"
+        ]
+    },
+    "dados_criticos_que_ativaram_o_stop": {
+        "lucro_total": -36.94,
+        "sharpe_ratio": -0.2426,
+        "taxa_erros_excecoes": 52.19,
+        "expectativa_matematica_observada": -0.0142
+    }
+}

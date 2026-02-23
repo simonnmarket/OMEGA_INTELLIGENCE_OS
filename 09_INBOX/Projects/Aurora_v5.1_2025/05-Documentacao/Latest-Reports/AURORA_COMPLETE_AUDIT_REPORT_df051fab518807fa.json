@@ -1,0 +1,1214 @@
+{
+  "audit_id": "df051fab518807fa",
+  "timestamp": "2025-12-15T00:51:48.827714",
+  "project_name": "Aurora",
+  "project_version": "3.0",
+  "executive_summary": {
+    "project_name": "Aurora",
+    "audit_date": "2025-12-15T00:51:48.827714",
+    "total_modules": 121,
+    "integration_score": 14.049586776859504,
+    "security_score": 0,
+    "compliance_status": "FAIL",
+    "risk_level": "MEDIUM",
+    "critical_issues": 4,
+    "recommendations_count": 4
+  },
+  "system_architecture": {
+    "total_modules": 121,
+    "integrated_modules_v2": 6,
+    "integrated_modules_v1": 22,
+    "standalone_modules": 93,
+    "total_lines_of_code": 21033,
+    "integration_score": 14.049586776859504
+  },
+  "security_audit": {
+    "total_findings": 239,
+    "critical": 2,
+    "high": 15,
+    "medium": 222,
+    "findings_by_category": {
+      "WEAK_CRYPTO": 15,
+      "INSECURE_RANDOM": 222,
+      "COMMAND_INJECTION": 2
+    },
+    "overall_security_score": 0
+  },
+  "compliance_audit": {
+    "ISO_27001": {
+      "average_score": 73.34710743801652,
+      "min_score": 65.0,
+      "max_score": 100.0,
+      "modules_checked": 121,
+      "status": "FAIL"
+    },
+    "ISO_42001": {
+      "average_score": 67.10743801652893,
+      "min_score": 65.0,
+      "max_score": 90.0,
+      "modules_checked": 121,
+      "status": "FAIL"
+    },
+    "GDPR": {
+      "average_score": 75.0,
+      "min_score": 75.0,
+      "max_score": 75.0,
+      "modules_checked": 4,
+      "status": "FAIL"
+    },
+    "MiFID_II": {
+      "average_score": 50.0,
+      "min_score": 50.0,
+      "max_score": 50.0,
+      "modules_checked": 3,
+      "status": "FAIL"
+    },
+    "SEC_15c3_5": {
+      "average_score": 100.0,
+      "min_score": 100.0,
+      "max_score": 100.0,
+      "modules_checked": 5,
+      "status": "PASS"
+    }
+  },
+  "code_quality_audit": {
+    "total_lines_of_code": 21033,
+    "average_complexity": 88.88429752066116,
+    "average_comment_ratio": 0.4571288765099682,
+    "code_quality_score": 80.25414777813324,
+    "technical_debt_hours": 0.0
+  },
+  "integration_audit": {
+    "integration_score": 14.049586776859504,
+    "modules_v2": 6,
+    "modules_v1": 22,
+    "standalone_modules": 93,
+    "integration_status": "CRITICAL",
+    "recommendations": [
+      "Migrate 93 standalone modules to NCNTModule v2.0",
+      "Upgrade 22 v1.0 modules to v2.0"
+    ]
+  },
+  "risk_assessment": {
+    "overall_risk_score": 52.64462809917355,
+    "risk_level": "MEDIUM",
+    "high_risk_modules": [
+      "executive_presentation",
+      "ncnt_system_complete",
+      "innovationlab_module",
+      "cicdpipeline_module",
+      "onboarding_module",
+      "executionwindow_module",
+      "premarketchecklist_module",
+      "realtimedashboard_module"
+    ],
+    "critical_modules": [
+      "ncnt_system_complete",
+      "cicdpipeline_module",
+      "premarketchecklist_module",
+      "realtimedashboard_module"
+    ],
+    "risk_factors": {
+      "security": 239,
+      "compliance": 191,
+      "integration": 93
+    }
+  },
+  "recommendations": [
+    "URGENT: Migrate 93 modules to NCNTModule v2.0",
+    "URGENT: Upgrade 22 modules from v1.0 to v2.0",
+    "CRITICAL: Address 2 critical security findings",
+    "COMPLIANCE: Address failures in ISO_27001, ISO_42001, GDPR, MiFID_II"
+  ],
+  "modules": [
+    {
+      "name": "complete_integration",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 35.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "create_structure",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 50.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "executive_presentation",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 80.0,
+      "security_findings_count": 3,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "integrate_ncnt",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 20.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "main",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "main_ncnt",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 40.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "ncnt_scan",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 20.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "ncnt_system_complete",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 100.0,
+      "security_findings_count": 129,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "visual_presentation",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 70.0,
+      "security_findings_count": 1,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "visual_presentation_simple",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 70.0,
+      "security_findings_count": 1,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "audit_system_complete",
+      "type": "GOVERNANCE",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V2",
+      "risk_score": 25.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "complexity_guard",
+      "type": "GOVERNANCE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 70.0,
+      "security_findings_count": 2,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "generate_complete_report",
+      "type": "GOVERNANCE",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V2",
+      "risk_score": 25.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "genesis_includes",
+      "type": "GOVERNANCE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 60.0,
+      "security_findings_count": 1,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "genesis_includes_v3_complete",
+      "type": "GOVERNANCE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 60.0,
+      "security_findings_count": 1,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "governance_module",
+      "type": "GOVERNANCE",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 25.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "integration_gate_v2",
+      "type": "GOVERNANCE",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V2",
+      "risk_score": 25.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "integration_gate_v3",
+      "type": "GOVERNANCE",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V2",
+      "risk_score": 25.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "run_complete_audit",
+      "type": "GOVERNANCE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 50.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "GOVERNANCE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "audit_trail",
+      "type": "COMPLIANCE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "compliance_module",
+      "type": "COMPLIANCE",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 50.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 3
+    },
+    {
+      "name": "reg_tracker",
+      "type": "COMPLIANCE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "report_generator",
+      "type": "COMPLIANCE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "COMPLIANCE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "api_gateway",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "coreengine_module",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 35.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "core_engine",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "data_layer",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 70.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 3
+    },
+    {
+      "name": "__init__",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "order_management",
+      "type": "TRADING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "smart_routing",
+      "type": "TRADING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "strategy_module",
+      "type": "TRADING",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 40.0,
+      "security_findings_count": 1,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "TRADING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "alpha_momentum",
+      "type": "TRADING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 40.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "base_strategy",
+      "type": "TRADING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 40.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "breakout_detection",
+      "type": "TRADING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 40.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "mean_reversion",
+      "type": "TRADING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 40.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "TRADING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "interface",
+      "type": "TRADING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "TRADING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "TRADING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "strategy_template",
+      "type": "TRADING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "TRADING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "innovationlab_module",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 85.0,
+      "security_findings_count": 10,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "prototypes",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "circuit_breakers",
+      "type": "RISK_MANAGEMENT",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "risk_engine",
+      "type": "RISK_MANAGEMENT",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 70.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 4
+    },
+    {
+      "name": "risk_module",
+      "type": "RISK_MANAGEMENT",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 60.0,
+      "security_findings_count": 1,
+      "compliance_checks_count": 4
+    },
+    {
+      "name": "tier1_validator_v3",
+      "type": "RISK_MANAGEMENT",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 1,
+      "compliance_checks_count": 3
+    },
+    {
+      "name": "tier1_validator_v3_complete",
+      "type": "RISK_MANAGEMENT",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 50.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 3
+    },
+    {
+      "name": "__init__",
+      "type": "RISK_MANAGEMENT",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "allocation_engine",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "capital_manager",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "treasury_module",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 35.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "cicdpipeline_module",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 100.0,
+      "security_findings_count": 14,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "build",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "deploy",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "incidentresponse_module",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 35.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "counterparty_onboarding",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "data_onboarding",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 70.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 3
+    },
+    {
+      "name": "onboarding_module",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 80.0,
+      "security_findings_count": 9,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "strategy_onboarding",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "executionwindow_module",
+      "type": "TRADING",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 80.0,
+      "security_findings_count": 9,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "throttling",
+      "type": "TRADING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "TRADING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "delta_reports",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "posttradereconciliation_module",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 55.0,
+      "security_findings_count": 2,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "reconciliation",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "premarketchecklist_module",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 100.0,
+      "security_findings_count": 13,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "dashboard",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "realtimedashboard_module",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 100.0,
+      "security_findings_count": 39,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "moduleregistry",
+      "type": "INFRASTRUCTURE",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 40.0,
+      "security_findings_count": 1,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "main",
+      "type": "INFRASTRUCTURE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "INFRASTRUCTURE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "strategies",
+      "type": "INFRASTRUCTURE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 40.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "INFRASTRUCTURE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "connection",
+      "type": "INFRASTRUCTURE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 40.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "models",
+      "type": "INFRASTRUCTURE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "INFRASTRUCTURE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "ncnt_cli",
+      "type": "INFRASTRUCTURE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 40.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "INFRASTRUCTURE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "INFRASTRUCTURE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "backup",
+      "type": "INFRASTRUCTURE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "deploy",
+      "type": "INFRASTRUCTURE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "monitor",
+      "type": "INFRASTRUCTURE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "INFRASTRUCTURE",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "sops_module",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 35.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "feedbackloop_module",
+      "type": "MONITORING",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 35.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "neural_connection_monitor_v2",
+      "type": "MONITORING",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V2",
+      "risk_score": 10.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "action_items",
+      "type": "MONITORING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "post_mortem",
+      "type": "MONITORING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "rca_templates",
+      "type": "MONITORING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "MONITORING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "interfaces",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 50.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "ncnt_base",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V1",
+      "risk_score": 30.0,
+      "security_findings_count": 1,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "ncnt_module_template",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "INTEGRATED_V2",
+      "risk_score": 10.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "data_connector",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 70.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 3
+    },
+    {
+      "name": "execution_connector",
+      "type": "TRADING",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "risk_connector",
+      "type": "RISK_MANAGEMENT",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 70.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 4
+    },
+    {
+      "name": "strategy_connector",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "message_bus",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 40.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "ncnt_orchestrator_complete",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 25.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "orchestrator",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 40.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "registry",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 40.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    },
+    {
+      "name": "__init__",
+      "type": "OTHER",
+      "status": "OPERATIONAL",
+      "integration_status": "NOT_INTEGRATED",
+      "risk_score": 55.0,
+      "security_findings_count": 0,
+      "compliance_checks_count": 2
+    }
+  ]
+}

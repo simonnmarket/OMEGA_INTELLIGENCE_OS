@@ -1,0 +1,8 @@
+Log de Execução da Diretiva F1-T3-LIMPEZA-CAPITAL
+Timestamp: 2025-11-02T21:45:02.172836
+Ações executadas conforme descrito no arquivo JSON.
+
+Arquivos modificados:
+  - Core/Strategies/Crypto/CryptoStrategiesAdapter_Numeia.py
+  - Core/Strategies/Forex/ForexStrategiesAdapter_Numeia.py
+  - Core/SystemOrchestrator_v3_1.py

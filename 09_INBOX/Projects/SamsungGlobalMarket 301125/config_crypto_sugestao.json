@@ -1,0 +1,11 @@
+{
+  "TRADING_SYMBOLS": [
+    "BTCUSD",
+    "ETHUSD"
+  ],
+  "MAX_SPREAD_PIPS": {
+    "BTCUSD": 160000,
+    "ETHUSD": 880000
+  },
+  "OBSERVACAO": "Configuração sugerida para operação em criptomoedas no final de semana"
+}

@@ -1,0 +1,174 @@
+{
+  "scan_id": "AIC_SCAN_20251207_202549",
+  "timestamp": "2025-12-07T20:25:49.156004",
+  "agent": "AIC (Agente de Instala\u00e7\u00e3o)",
+  "test_results": {
+    "folder_structure": {
+      "status": "PASS",
+      "required": [
+        "00-Governanca",
+        "01-Departamentos",
+        "02-Processos-Chave",
+        "03-Operacoes-Diarias",
+        "04-Infraestrutura",
+        "05-Documentacao",
+        "06-Monitoramento"
+      ],
+      "found": [
+        "00-Governanca",
+        "01-Departamentos",
+        "02-Processos-Chave",
+        "03-Operacoes-Diarias",
+        "04-Infraestrutura",
+        "05-Documentacao",
+        "06-Monitoramento"
+      ],
+      "missing": [],
+      "score": 1.0
+    },
+    "core_modules": {
+      "status": "PASS",
+      "required": [
+        "GovernanceModule",
+        "TreasuryModule",
+        "RiskModule",
+        "ComplianceModule",
+        "CoreEngineModule",
+        "StrategyModule",
+        "CICDPipelineModule",
+        "QABacktestingModule",
+        "PreMarketChecklistModule",
+        "ExecutionWindowModule",
+        "RealTimeDashboardModule",
+        "PostTradeReconciliationModule"
+      ],
+      "found": [
+        "GovernanceModule",
+        "TreasuryModule",
+        "RiskModule",
+        "ComplianceModule",
+        "CoreEngineModule",
+        "StrategyModule",
+        "CICDPipelineModule",
+        "QABacktestingModule",
+        "PreMarketChecklistModule",
+        "ExecutionWindowModule",
+        "RealTimeDashboardModule",
+        "PostTradeReconciliationModule"
+      ],
+      "missing": [],
+      "score": 1.0
+    },
+    "dependencies": {
+      "status": "FAIL",
+      "dependencies_checked": [
+        {
+          "dependency": "TreasuryModule -> GovernanceModule",
+          "status": "FAIL",
+          "evidence": "N\u00e3o encontrada"
+        },
+        {
+          "dependency": "RiskModule -> TreasuryModule",
+          "status": "FAIL",
+          "evidence": "N\u00e3o encontrada"
+        },
+        {
+          "dependency": "ComplianceModule -> GovernanceModule",
+          "status": "FAIL",
+          "evidence": "N\u00e3o encontrada"
+        },
+        {
+          "dependency": "ExecutionWindowModule -> PreMarketChecklistModule",
+          "status": "FAIL",
+          "evidence": "N\u00e3o encontrada"
+        }
+      ],
+      "passing": 0,
+      "total": 4
+    },
+    "interfaces": {
+      "status": "PASS",
+      "checks": [
+        {
+          "interface": "NCNTTransmission",
+          "is_dataclass": true,
+          "has_validate": true,
+          "has_to_dict": true,
+          "status": "PASS"
+        },
+        {
+          "interface": "NCNTBaseModule",
+          "has_initialize": true,
+          "has_process_transmission": true,
+          "has_health_check": true,
+          "status": "PASS"
+        }
+      ]
+    },
+    "templates": {
+      "status": "FAIL",
+      "templates": [
+        {
+          "template": "NCNTTransmission",
+          "status": "PASS",
+          "file": "modules/ncnt_base.py"
+        },
+        {
+          "template": "NCNTBaseModule",
+          "status": "PASS",
+          "file": "modules/ncnt_base.py"
+        },
+        {
+          "template": "StrategyModule",
+          "status": "PASS",
+          "file": "01-Departamentos/Execution-Trading/strategy_module.py"
+        },
+        {
+          "template": "CapitalAllocation",
+          "status": "FAIL",
+          "file": "01-Departamentos/Treasury-Capital/treasury_module.py"
+        }
+      ],
+      "passing": 3,
+      "total": 4
+    },
+    "connections": {
+      "status": "PASS",
+      "tests": [
+        {
+          "module": "GovernanceModule",
+          "instantiation": "PASS",
+          "file_exists": true,
+          "has_class": true,
+          "has_init": true
+        },
+        {
+          "module": "TreasuryModule",
+          "instantiation": "PASS",
+          "file_exists": true,
+          "has_class": true,
+          "has_init": true
+        },
+        {
+          "module": "RiskModule",
+          "instantiation": "PASS",
+          "file_exists": true,
+          "has_class": true,
+          "has_init": true
+        }
+      ]
+    }
+  },
+  "verification_checks": {},
+  "issues_found": [],
+  "overall_status": "PARTIAL_OPERATIONAL",
+  "final_score": 0.7916666666666666,
+  "status_message": "[WARN] 75% OPERACIONAL - REVISAO NECESSARIA",
+  "test_summary": {
+    "total_tests": 6,
+    "passing_tests": 4,
+    "failing_tests": 2,
+    "average_score": 0.7916666666666666
+  },
+  "integrity_checksum": "445f332a2e64a33dc0d3bf12df08523d9e106b1b21bdd5c59463b731ace8368d"
+}

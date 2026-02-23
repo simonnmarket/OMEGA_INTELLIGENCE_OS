@@ -1,0 +1,224 @@
+# 📋 EXEMPLO - TEMPLATE PREENCHIDO - AURORA v5.1
+# Este é um exemplo de como preencher o template
+
+metadata:
+  document_id: "PLAN-AURORA-5.1-20251225"
+  classification: "Action Plan & Checklist"
+  format: "YAML Structured"
+  version: "1.0"
+  date: "2025-12-25"
+  status: "DRAFT"
+  responsible: "AIC_Agent"
+
+objetivo:
+  descricao: |
+    Implementar validação CVA no módulo quantum_firewall para conformidade
+    com Basel III Pillar 1.
+  
+  justificativa: |
+    Necessário para atender requisitos regulatórios de Basel III e melhorar
+    gestão de risco de contraparte.
+  
+  escopo:
+    - modulos_especificos: true
+    - diretrizes_protocolos: false
+    - infraestrutura: false
+    - compliance: true
+    - outro: ""
+
+validacao_previa:
+  protocolo_fonte_verdade:
+    executado: true
+    resultado: "OK"
+    data: "2025-12-25"
+    observacoes: ""
+  
+  validacao_completa:
+    executado: true
+    resultado: "OK"
+    data: "2025-12-25"
+    observacoes: ""
+  
+  status_sistema:
+    total_modulos: 321
+    modulos_active: 0
+    modulos_backlog: 321
+    modulos_inactive: 0
+    modulos_completed: 0
+
+modulos_afetados:
+  lista:
+    - id: "MOD-001"
+      nome: "quantum_firewall"
+      status_atual: "BACKLOG"
+      acao_planejada: "Implementar validação CVA (Credit Valuation Adjustment)"
+      prioridade: "ALTA"
+      arquivos_afetados:
+        - "00-Governanca/quantum_firewall.py"
+      tipo_alteracao: "CÓDIGO"
+      compliance_tags:
+        - "Basel III"
+        - "MiFID II"
+
+validacao_transicoes:
+  - modulo_id: "MOD-001"
+    status_atual: "BACKLOG"
+    status_desejado: "ACTIVE"
+    transicao_permitida: true
+    data_validacao: "2025-12-25"
+    observacoes: ""
+
+pivot_protection:
+  nenhum_inactive_sem_reativacao: true
+  modulos_inactive_para_reativar: []
+  justificativa_reativacao: ""
+
+registro_intencao:
+  - modulo_id: "MOD-001"
+    action_desc: "Implementação de validação CVA no quantum_firewall"
+    status_type: "active"
+    actor: "AIC_Agent"
+    regulatory_context:
+      - "Basel III"
+      - "MiFID II"
+    executado: false
+    data: ""
+    timestamp: ""
+    resultado: ""
+    observacoes: ""
+
+alteracoes:
+  - modulo_id: "MOD-001"
+    tipo: "CÓDIGO"
+    arquivos:
+      - caminho: "00-Governanca/quantum_firewall.py"
+        descricao: "Adicionar função de validação CVA com cálculo de exposição de contraparte"
+    implementado: false
+    data: ""
+    observacoes: ""
+
+testes:
+  unitarios:
+    executados: false
+    cobertura: 0
+    todos_passando: false
+    observacoes: ""
+  
+  integracao:
+    executados: false
+    modulos_dependentes_testados: false
+    todos_passando: false
+    observacoes: ""
+  
+  stress:
+    executados: false
+    limites_carga_testados: false
+    performance_validada: false
+    observacoes: ""
+  
+  sistema_completo:
+    executado: false
+    integracao_verificada: false
+    sem_regressoes: false
+    observacoes: ""
+
+registro_conclusao:
+  - modulo_id: "MOD-001"
+    action_desc: "Validação CVA implementada e testada com sucesso"
+    status_type: "completed"
+    actor: "AIC_Agent"
+    metadata:
+      test_coverage: 95
+      stress_tested: true
+      integration_tested: true
+      version: "1.1.0"
+    regulatory_context:
+      - "Basel III"
+    executado: false
+    data: ""
+    timestamp: ""
+    resultado: ""
+    observacoes: ""
+
+compliance:
+  - modulo_id: "MOD-001"
+    tags:
+      - framework: "Basel III"
+        version: "Pillar 1"
+      - framework: "MiFID II"
+        version: "Artigo 16, 48"
+    adicionadas: false
+    data: ""
+
+validacao_final:
+  protocolo_fonte_verdade:
+    executado: false
+    resultado: ""
+    data: ""
+  
+  validacao_completa:
+    executado: false
+    resultado: ""
+    data: ""
+  
+  relatorio_governanca:
+    gerado: false
+    arquivo: ""
+    data: ""
+  
+  verificacao_consistencia:
+    nenhum_modulo_quebrado: false
+    nenhuma_dependencia_quebrada: false
+    modulos_status_correto: false
+    audit_trail_completo: false
+    metadados_atualizados: false
+
+resumo_executivo:
+  estatisticas:
+    modulos_afetados: 1
+    modulos_completados: 0
+    modulos_com_erro: 0
+    cobertura_testes_media: 0
+    tempo_total_execucao: ""
+    data_inicio: ""
+    data_conclusao: ""
+  
+  status_final_modulos:
+    - modulo_id: "MOD-001"
+      status_inicial: "BACKLOG"
+      status_final: "COMPLETED"
+      sucesso: false
+
+problemas: []
+
+observacoes: |
+  Este é um exemplo de template preenchido.
+  Substitua os valores de exemplo pelos valores reais do seu plano.
+
+aprovacao:
+  preparado_por:
+    nome: ""
+    data: ""
+  
+  revisado_por:
+    nome: ""
+    data: ""
+  
+  aprovado_por:
+    nome: ""
+    data: ""
+  
+  executado_por:
+    nome: ""
+    data: ""
+  
+  validado_por:
+    nome: ""
+    data: ""
+
+referencias:
+  - "PROTOCOLO_GOVERNANCA_VISUAL.md"
+  - "PROTOCOLO_ANTI_ERRO.md"
+  - "README_PROTOCOLO_ANTI_ERRO.md"
+  - "project_manifest.json"
+

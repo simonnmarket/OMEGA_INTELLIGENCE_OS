@@ -1,0 +1,43 @@
+import os
+import json
+import time
+from pathlib import Path
+
+import zmq
+
+
+def main() -> None:
+    # Optional PUB->file listener (not required if using REQ/REP above)
+    data_dir = Path(os.environ.get("MT5_FILES_DIR", "./MQL5/Files"))
+    data_dir.mkdir(parents=True, exist_ok=True)
+
+    port = int(os.environ.get("ZMQ_PUB_PORT", "5566"))
+    ctx = zmq.Context.instance()
+    sock = ctx.socket(zmq.SUB)
+    sock.connect(f"tcp://127.0.0.1:{port}")
+    sock.setsockopt_string(zmq.SUBSCRIBE, "")
+
+    print(f"[PUB_BRIDGE] Listening tcp://127.0.0.1:{port} -> {data_dir}")
+
+    while True:
+        try:
+            data = sock.recv_string()
+            try:
+                payload = json.loads(data)
+            except Exception:
+                payload = {"raw": data}
+            symbol = payload.get("symbol", "GENERIC")
+            (data_dir / f"PythonSignals.{symbol}.json").write_text(
+                json.dumps(payload, ensure_ascii=False), encoding="utf-8"
+            )
+        except KeyboardInterrupt:
+            break
+        except Exception as exc:
+            print(f"[PUB_BRIDGE][ERROR] {exc}")
+            time.sleep(0.25)
+
+
+if __name__ == "__main__":
+    main()
+
+

@@ -1,0 +1,54 @@
+====================== ARQUITETURA ESTRUTURAL MODULOS E ARQUIVOS - PROJETO NUMEIA ======================
+CLASSIFICAÇÃO: TIER-0 | PROTOCOLO: ALPHA-OMEGA | STATUS: HOMOLOGADO
+
+Numeia/
+│
+├── core/                         # Núcleo central de controle da EA
+│            
+├── agents/                       # Agentes inteligentes operacionais
+│  
+├── utils/                        # Ferramentas auxiliares e scripts utilitários
+│   
+├── config/  					   # Configurações iniciais e chaves globais
+│                     			  
+├── risk/   					   # Módulo institucional de risco e proteção
+│   
+├── include/					  # Diretório principal de includes
+│
+│   ├── analysis/                # Módulos de análise técnica/quantitativa
+│   │      
+│   ├── executionlogic/          # Execução de ordens, trailing stops
+│   │  
+│   │
+│   ├── decisionengine/          # Estratégias, roteadores, validações
+│   │   
+│   │
+│   ├── intelligence/            # IA, previsão, linguagem natural, aprendizagem
+│   │   
+│   │
+│   ├── integration/             # Integrações externas e comunicação com APIs
+│   │   
+│   │   
+│   ├── visuals/                 # Painéis, indicadores visuais e HUDs
+│   │   
+│   │
+│   ├── modules/                 # Componentes modulares expansíveis
+│   │   
+│   │
+│   ├── tools/                   # Ferramentas específicas de apoio (debug, scan)
+│   │  
+│   │
+│   └── types/                   # Tipos base, enums, structs globais
+│       
+│
+├── auditor/                     # Módulos de auditoria, verificação e autocorreção
+│   
+├── expert/                      # Arquivo principal .mq5 da EA
+│   
+├── scripts/                     # Scripts auxiliares, testes e execução offline
+│   
+├── logs/                         # Diretório de logs operacionais e institucionais
+│  
+├── docs/                        # Documentação técnica, guias e manifestos
+│   
+└── GovernanceManifest.txt       # Documento de estrutura e diretrizes (imutável)

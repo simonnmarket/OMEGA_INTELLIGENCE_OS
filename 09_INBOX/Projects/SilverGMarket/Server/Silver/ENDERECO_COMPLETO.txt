@@ -1,0 +1,52 @@
+============================================================
+ENDEREÇO COMPLETO - SILVER SYSTEM V3.0 ESCALONADO
+============================================================
+
+ARQUIVO PRINCIPAL (SISTEMA):
+C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver\silver_system_v3.0_escalonado.py
+
+============================================================
+SCRIPTS DE ANÁLISE:
+============================================================
+
+Ver Posições Abertas:
+C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver\VER_POSICOES_ABERTAS.py
+
+Análise de Entradas Prematuras:
+C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver\ANALISE_ENTRADAS_PREMATURAS.py
+
+Análise de Resultados:
+C:\Users\Lenovo\.SilverGMarket\Server\Silver\ANALISAR_RESULTADOS_AMANHA.py
+
+Diagnóstico MT5:
+C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver\VERIFICAR_MT5_TRADING.py
+
+============================================================
+ATALHOS WINDOWS:
+============================================================
+
+Executar Sistema:
+C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver\EXECUTAR_SILVER_V3.0.bat
+
+Ver Posições:
+C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver\VER_POSICOES_ABERTAS.bat
+
+Análise Entradas Prematuras:
+C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver\ANALISAR_ENTRADAS_PREMATURAS.bat
+
+============================================================
+ARQUIVOS DE LOG:
+============================================================
+
+Log de Telemetria:
+C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver\silver_telemetry_v3.0.log
+
+============================================================
+COMANDO POWERSHELL COMPLETO:
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver"
+python silver_system_v3.0_escalonado.py
+
+============================================================
+

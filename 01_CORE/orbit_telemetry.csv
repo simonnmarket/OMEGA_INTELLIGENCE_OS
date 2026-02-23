@@ -1,0 +1,10 @@
+Timestamp,Symbol,Price,Volume_Delta,Order_Flow,Trend,Volatility,Absorption
+2026-02-22 01:00:00,BTCUSD,68102.5,1540,Bullish,Upward,45.2,Clear
+2026-02-22 02:00:00,BTCUSD,67950.0,-3200,Bearish,Downward,152.5,Detected
+2026-02-22 03:00:00,BTCUSD,68400.0,8400,Bullish,Upward,450.0,Clear
+2026-02-22 01:00:00,ETHUSD,3502.1,450,Bullish,Upward,12.5,Clear
+2026-02-22 02:00:00,ETHUSD,3480.0,-1200,Bearish,Downward,22.1,Detected
+2026-02-22 03:00:00,ETHUSD,3550.8,3100,Bullish,Upward,70.8,Clear
+2026-02-22 01:00:00,SOLUSD,145.2,120,Bullish,Upward,1.5,Clear
+2026-02-22 02:00:00,SOLUSD,142.5,-450,Bearish,Downward,2.7,Detected
+2026-02-22 03:00:00,SOLUSD,149.8,890,Bullish,Upward,7.3,Clear

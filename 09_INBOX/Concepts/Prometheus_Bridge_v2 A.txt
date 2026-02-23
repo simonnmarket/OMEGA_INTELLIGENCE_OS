@@ -1,0 +1,615 @@
+// 📄 Prometheus_Bridge_v2.mq5
+#property strict
+#property copyright "PROMETHEUS_V2"
+#property version   "2.0"
+#property description "Prometheus Bridge v2.0 - Fortaleza Operacional Completa"
+
+#include <Trade/Trade.mqh>
+#include <Arrays/ArrayString.mqh>
+
+// =============================================================================
+// CONSTANTES NOMEADAS - ZERO MAGIC NUMBERS
+// =============================================================================
+#define MAGIC_NUMBER_DEFAULT 202412
+#define MAX_RETRY_ATTEMPTS 3
+#define FILE_OPERATION_TIMEOUT_MS 500
+#define MAX_SPREAD_VALIDATION_PCT 10.0  // Spread máximo válido (10% do mid price)
+
+// =============================================================================
+// ESTRUTURAS DE DADOS ROBUSTAS
+// =============================================================================
+struct MarketData {
+    string symbol;
+    double bid;
+    double ask;
+    datetime timestamp;
+    double point;
+    bool isValid;
+    
+    MarketData() {
+        isValid = false;
+        bid = 0.0;
+        ask = 0.0;
+        timestamp = 0;
+        point = 0.0;
+    }
+    
+    bool Validate() {
+        if(bid <= 0.0 || ask <= 0.0) {
+            Print("[VALIDATION] Invalid bid/ask: ", bid, "/", ask);
+            return false;
+        }
+        if(ask < bid) {
+            Print("[VALIDATION] Ask < Bid: ", ask, " < ", bid);
+            return false;
+        }
+        double spread = ask - bid;
+        double mid = (ask + bid) / 2.0;
+        if(spread / mid > MAX_SPREAD_VALIDATION_PCT / 100.0) {
+            Print("[VALIDATION] Spread too wide: ", DoubleToString(spread/mid*100, 2), "%");
+            return false;
+        }
+        if(!MathIsValidNumber(bid) || !MathIsValidNumber(ask)) {
+            Print("[VALIDATION] NaN/Inf detected");
+            return false;
+        }
+        isValid = true;
+        return true;
+    }
+};
+
+struct TradingSignal {
+    string symbol;
+    string action;
+    double confidence;
+    datetime timestamp;
+    bool isValid;
+    
+    TradingSignal() {
+        isValid = false;
+        confidence = 0.0;
+    }
+    
+    bool Validate() {
+        if(action != "BUY" && action != "SELL" && action != "HOLD") {
+            Print("[SIGNAL_VALIDATION] Invalid action: ", action);
+            return false;
+        }
+        if(confidence < 0.0 || confidence > 1.0 || !MathIsValidNumber(confidence)) {
+            Print("[SIGNAL_VALIDATION] Invalid confidence: ", confidence);
+            return false;
+        }
+        if(StringLen(symbol) == 0) {
+            Print("[SIGNAL_VALIDATION] Empty symbol");
+            return false;
+        }
+        isValid = true;
+        return true;
+    }
+};
+
+// =============================================================================
+// GESTÃO DE ESTADO SEGURA
+// =============================================================================
+class SafeStateManager {
+private:
+    bool emergency_stop;
+    datetime emergency_trigger_time;
+    double daily_start_equity;
+    datetime last_reset_check;
+    
+public:
+    SafeStateManager() {
+        emergency_stop = false;
+        emergency_trigger_time = 0;
+        daily_start_equity = AccountInfoDouble(ACCOUNT_EQUITY);
+        last_reset_check = TimeCurrent();
+    }
+    
+    bool CanTrade() {
+        CheckAutoReset();
+        return !emergency_stop;
+    }
+    
+    void TriggerEmergencyStop(const string reason) {
+        emergency_stop = true;
+        emergency_trigger_time = TimeCurrent();
+        Print("[EMERGENCY_STOP] Activated: ", reason);
+    }
+    
+    void CheckAutoReset() {
+        datetime current_time = TimeCurrent();
+        
+        // Reset diário automático às 00:00
+        MqlDateTime dt;
+        TimeToStruct(current_time, dt);
+        if(dt.hour == 0 && dt.min == 0 && dt.sec < 30) {
+            if(emergency_stop) {
+                emergency_stop = false;
+                daily_start_equity = AccountInfoDouble(ACCOUNT_EQUITY);
+                Print("[AUTO_RESET] Daily reset completed");
+            }
+        }
+        
+        // Reset após 1 hora em emergência (com validação de recuperação)
+        if(emergency_stop && (current_time - emergency_trigger_time) >= 3600) {
+            double current_equity = AccountInfoDouble(ACCOUNT_EQUITY);
+            double recovery_pct = (current_equity - daily_start_equity) / daily_start_equity * 100.0;
+            
+            if(recovery_pct >= -1.0) { // Recuperou pelo menos 1%
+                emergency_stop = false;
+                Print("[AUTO_RESET] Emergency reset after recovery: ", DoubleToString(recovery_pct, 2), "%");
+            }
+        }
+        
+        last_reset_check = current_time;
+    }
+    
+    bool IsInEmergency() const { return emergency_stop; }
+    datetime GetEmergencyTime() const { return emergency_trigger_time; }
+};
+
+// =============================================================================
+// COMUNICAÇÃO ATÔMICA COM SERVIDOR AI
+// =============================================================================
+class AtomicFileBridge {
+private:
+    string common_path;
+    int timeout_ms;
+    
+public:
+    AtomicFileBridge() {
+        common_path = TerminalInfoString(TERMINAL_COMMONDATA_PATH) + "\\Files\\";
+        timeout_ms = FILE_OPERATION_TIMEOUT_MS;
+    }
+    
+    bool SendRequest(const string symbol) {
+        MarketData data = GetMarketData(symbol);
+        if(!data.Validate()) {
+            Print("[BRIDGE] Invalid market data for ", symbol);
+            return false;
+        }
+        
+        string temp_file = common_path + "AIRequest." + symbol + ".tmp";
+        string final_file = common_path + "AIRequest." + symbol + ".json";
+        
+        string payload = StringFormat(
+            "{\"symbol\":\"%s\",\"bid\":%.10f,\"ask\":%.10f,\"time\":%I64d,\"point\":%.10f}",
+            symbol, data.bid, data.ask, (long)data.timestamp, data.point
+        );
+        
+        // Escreve em arquivo temporário primeiro
+        int handle = FileOpen(temp_file, FILE_WRITE|FILE_TXT|FILE_ANSI);
+        if(handle == INVALID_HANDLE) {
+            Print("[BRIDGE_ERROR] Failed to open temp file: ", temp_file);
+            return false;
+        }
+        
+        FileWriteString(handle, payload);
+        FileFlush(handle);
+        FileClose(handle);
+        
+        // Move atômico para arquivo final
+        if(!FileMove(temp_file, 0, final_file, FILE_REWRITE)) {
+            Print("[BRIDGE_ERROR] Atomic move failed: ", GetLastError());
+            FileDelete(temp_file);
+            return false;
+        }
+        
+        return true;
+    }
+    
+    bool ReceiveResponse(const string symbol, TradingSignal &signal) {
+        string response_file = common_path + "AIResponse." + symbol + ".json";
+        string temp_file = common_path + "AIResponse." + symbol + ".tmp";
+        
+        // Verifica se existe resposta válida
+        if(!FileIsExist(response_file)) {
+            return false;
+        }
+        
+        // Tenta ler com timeout
+        datetime start_time = GetTickCount();
+        while(GetTickCount() - start_time < timeout_ms) {
+            int handle = FileOpen(response_file, FILE_READ|FILE_TXT|FILE_ANSI|FILE_SHARE_READ);
+            if(handle != INVALID_HANDLE) {
+                string content = FileReadString(handle);
+                FileClose(handle);
+                
+                if(ParseSignal(content, signal) && signal.Validate()) {
+                    // Move arquivo para processado (evita leituras duplicadas)
+                    FileMove(response_file, 0, temp_file, FILE_REWRITE);
+                    FileDelete(temp_file);
+                    return true;
+                }
+                break;
+            }
+            Sleep(10);
+        }
+        
+        return false;
+    }
+    
+private:
+    MarketData GetMarketData(const string symbol) {
+        MarketData data;
+        data.symbol = symbol;
+        
+        MqlTick tick;
+        if(SymbolInfoTick(symbol, tick)) {
+            data.bid = tick.bid;
+            data.ask = tick.ask;
+            data.timestamp = tick.time;
+            data.point = SymbolInfoDouble(symbol, SYMBOL_POINT);
+        }
+        
+        return data;
+    }
+    
+    bool ParseSignal(const string json_content, TradingSignal &signal) {
+        // Parser JSON robusto com validação
+        int action_pos = StringFind(json_content, "\"action\":");
+        int conf_pos = StringFind(json_content, "\"confidence\":");
+        int symbol_pos = StringFind(json_content, "\"symbol\":");
+        
+        if(action_pos < 0 || conf_pos < 0 || symbol_pos < 0) {
+            Print("[PARSER_ERROR] Missing required fields");
+            return false;
+        }
+        
+        // Extrai ação
+        int action_start = StringFind(json_content, "\"", action_pos + 9);
+        int action_end = StringFind(json_content, "\"", action_start + 1);
+        if(action_start < 0 || action_end < 0) return false;
+        signal.action = StringSubstr(json_content, action_start + 1, action_end - action_start - 1);
+        
+        // Extrai confiança
+        int conf_start = StringFind(json_content, ":", conf_pos + 12);
+        int conf_end = StringFind(json_content, ",", conf_start);
+        if(conf_end < 0) conf_end = StringFind(json_content, "}", conf_start);
+        if(conf_start < 0 || conf_end < 0) return false;
+        
+        string conf_str = StringSubstr(json_content, conf_start + 1, conf_end - conf_start - 1);
+        StringTrimLeft(conf_str);
+        StringTrimRight(conf_str);
+        signal.confidence = StringToDouble(conf_str);
+        
+        // Extrai símbolo
+        int symbol_start = StringFind(json_content, "\"", symbol_pos + 9);
+        int symbol_end = StringFind(json_content, "\"", symbol_start + 1);
+        if(symbol_start < 0 || symbol_end < 0) return false;
+        signal.symbol = StringSubstr(json_content, symbol_start + 1, symbol_end - symbol_start - 1);
+        
+        signal.timestamp = TimeCurrent();
+        return true;
+    }
+};
+
+// =============================================================================
+// GESTÃO DE RISCO COM PROTEÇÃO CONTRA OVERFITTING
+// =============================================================================
+class RobustRiskManager {
+private:
+    double max_risk_pct;
+    double kelly_rr;
+    double kelly_min_frac;
+    double kelly_max_frac;
+    double confidence_discount;  // Proteção contra overfitting
+    
+public:
+    RobustRiskManager(double risk_pct = 0.5, double rr = 1.5, double min_frac = 0.05, double max_frac = 0.5) {
+        max_risk_pct = risk_pct;
+        kelly_rr = rr;
+        kelly_min_frac = min_frac;
+        kelly_max_frac = max_frac;
+        confidence_discount = 0.7;  // 30% de desconto padrão
+    }
+    
+    double CalculateKellyFraction(double raw_confidence) {
+        // Aplica desconto para proteger contra overfitting
+        double adjusted_confidence = 0.5 + (raw_confidence - 0.5) * confidence_discount;
+        adjusted_confidence = MathMin(MathMax(adjusted_confidence, 0.0), 1.0);
+        
+        double p = adjusted_confidence;
+        double r = MathMax(kelly_rr, 0.1);
+        double kelly_raw = p - (1.0 - p) / r;
+        
+        // Limites conservadores
+        double kelly_clamped = MathMax(0.0, MathMin(kelly_raw, kelly_max_frac));
+        return MathMax(kelly_min_frac, kelly_clamped);
+    }
+    
+    double CalculatePositionSize(const string symbol, double stop_distance, double confidence) {
+        if(stop_distance <= 0.0) {
+            return SymbolInfoDouble(symbol, SYMBOL_VOLUME_MIN);
+        }
+        
+        double kelly_frac = CalculateKellyFraction(confidence);
+        double risk_pct = MathMin(max_risk_pct, kelly_frac * max_risk_pct);
+        
+        double balance = AccountInfoDouble(ACCOUNT_BALANCE);
+        double risk_money = balance * (risk_pct / 100.0);
+        
+        double tick_value = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_VALUE);
+        double tick_size = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_SIZE);
+        
+        if(tick_value <= 0.0 || tick_size <= 0.0) {
+            return SymbolInfoDouble(symbol, SYMBOL_VOLUME_MIN);
+        }
+        
+        double ticks = stop_distance / tick_size;
+        if(ticks <= 0.0) {
+            return SymbolInfoDouble(symbol, SYMBOL_VOLUME_MIN);
+        }
+        
+        double lots = risk_money / (ticks * tick_value);
+        return NormalizeLotSize(symbol, lots);
+    }
+    
+    bool ValidateMarketConditions(const string symbol) {
+        MqlTick tick;
+        if(!SymbolInfoTick(symbol, tick)) {
+            Print("[RISK] Cannot get tick data for ", symbol);
+            return false;
+        }
+        
+        // Validação rigorosa de preços
+        if(tick.bid <= 0.0 || tick.ask <= 0.0) {
+            Print("[RISK] Invalid prices: bid=", tick.bid, " ask=", tick.ask);
+            return false;
+        }
+        
+        if(tick.ask < tick.bid) {
+            Print("[RISK] Negative spread: ask=", tick.ask, " bid=", tick.bid);
+            return false;
+        }
+        
+        double spread = tick.ask - tick.bid;
+        double mid = (tick.ask + tick.bid) / 2.0;
+        double spread_pct = (spread / mid) * 100.0;
+        
+        if(spread_pct > MAX_SPREAD_VALIDATION_PCT) {
+            Print("[RISK] Spread too wide: ", DoubleToString(spread_pct, 2), "%");
+            return false;
+        }
+        
+        if(!MathIsValidNumber(tick.bid) || !MathIsValidNumber(tick.ask)) {
+            Print("[RISK] NaN/Inf detected in prices");
+            return false;
+        }
+        
+        return true;
+    }
+    
+private:
+    double NormalizeLotSize(const string symbol, double lots) {
+        double min_lot = SymbolInfoDouble(symbol, SYMBOL_VOLUME_MIN);
+        double max_lot = SymbolInfoDouble(symbol, SYMBOL_VOLUME_MAX);
+        double step = SymbolInfoDouble(symbol, SYMBOL_VOLUME_STEP);
+        
+        if(step <= 0.0) step = 0.01;
+        
+        double steps = MathFloor(lots / step);
+        double normalized = steps * step;
+        
+        return MathMax(min_lot, MathMin(normalized, max_lot));
+    }
+};
+
+// =============================================================================
+// COMPONENTES PRINCIPAIS
+// =============================================================================
+input group "=== CORE CONFIGURATION ==="
+input string   EA_Name = "PROMETHEUS_BRIDGE_V2";
+input int      Magic_Number = MAGIC_NUMBER_DEFAULT;
+input bool     Enable_Trading = true;
+
+input group "=== RISK MANAGEMENT ==="  
+input double   Max_Risk_Percent = 0.5;
+input double   Kelly_Reward_Risk = 1.5;
+input double   Kelly_Min_Fraction = 0.05;
+input double   Kelly_Max_Fraction = 0.5;
+input double   Confidence_Discount = 0.7;  // Proteção contra overfitting
+
+input group "=== CIRCUIT BREAKERS ==="
+input bool     Use_Circuit_Breakers = true;
+input double   Max_Daily_Loss_Pct = 3.0;
+input double   Max_Position_Loss_Pct = 1.0;
+
+// Instâncias dos componentes
+CTrade Trade;
+SafeStateManager state_mgr;
+AtomicFileBridge file_bridge;
+RobustRiskManager risk_mgr;
+
+datetime last_cycle = 0;
+int cycle_interval_sec = 15;
+
+// =============================================================================
+// FUNÇÕES PRINCIPAIS
+// =============================================================================
+int OnInit() {
+    Print("[PROMETHEUS_V2] Initializing Fortress Edition...");
+    
+    // Configuração do trade
+    Trade.SetExpertMagicNumber(Magic_Number);
+    Trade.SetDeviationInPoints(10);
+    
+    // Inicialização do risk manager
+    risk_mgr = new RobustRiskManager(Max_Risk_Percent, Kelly_Reward_Risk, 
+                                   Kelly_Min_Fraction, Kelly_Max_Fraction);
+    
+    Print("[PROMETHEUS_V2] Initialization complete. Safety systems: ONLINE");
+    return INIT_SUCCEEDED;
+}
+
+void OnDeinit(const int reason) {
+    Print("[PROMETHEUS_V2] Deinitializing. Reason: ", reason);
+    delete risk_mgr;
+}
+
+void OnTick() {
+    if(TimeCurrent() - last_cycle < cycle_interval_sec) return;
+    last_cycle = TimeCurrent();
+    
+    if(!state_mgr.CanTrade()) {
+        if(TimeCurrent() % 60 == 0) { // Log a cada minuto
+            Print("[SAFETY] Trading blocked by circuit breaker");
+        }
+        return;
+    }
+    
+    ProcessTradingCycle();
+    EnforceSafetyMeasures();
+}
+
+void ProcessTradingCycle() {
+    string symbol = _Symbol; // Foco no símbolo atual para estabilidade
+    
+    if(!risk_mgr.ValidateMarketConditions(symbol)) {
+        Print("[CYCLE] Market conditions invalid for ", symbol);
+        return;
+    }
+    
+    // Comunicação atômica com servidor AI
+    if(!file_bridge.SendRequest(symbol)) {
+        Print("[CYCLE] Failed to send request for ", symbol);
+        return;
+    }
+    
+    TradingSignal signal;
+    if(file_bridge.ReceiveResponse(symbol, signal)) {
+        ExecuteValidatedSignal(signal);
+    }
+}
+
+void ExecuteValidatedSignal(const TradingSignal &signal) {
+    if(!signal.isValid || signal.action == "HOLD") {
+        return;
+    }
+    
+    if(!Enable_Trading) {
+        Print("[EXEC] Trading disabled by configuration");
+        return;
+    }
+    
+    // Verificação final de segurança
+    if(!risk_mgr.ValidateMarketConditions(signal.symbol)) {
+        Print("[EXEC] Safety check failed for ", signal.symbol);
+        return;
+    }
+    
+    MqlTick tick;
+    if(!SymbolInfoTick(signal.symbol, tick)) {
+        Print("[EXEC] Cannot get current tick");
+        return;
+    }
+    
+    ENUM_ORDER_TYPE order_type = (signal.action == "BUY") ? ORDER_TYPE_BUY : ORDER_TYPE_SELL;
+    double price = (order_type == ORDER_TYPE_BUY) ? tick.ask : tick.bid;
+    
+    // Cálculo de posição com risco controlado
+    double atr = CalculateATR(signal.symbol);
+    double stop_distance = atr * 2.0; // SL baseado em ATR
+    
+    double lots = risk_mgr.CalculatePositionSize(signal.symbol, stop_distance, signal.confidence);
+    
+    if(lots <= 0.0) {
+        Print("[EXEC] Invalid lot size calculated");
+        return;
+    }
+    
+    // Execução com fallback robusto
+    if(!ExecuteOrderWithFallback(signal.symbol, order_type, lots, price)) {
+        Print("[EXEC] Order execution failed after retries");
+    }
+}
+
+bool ExecuteOrderWithFallback(const string symbol, ENUM_ORDER_TYPE type, double lots, double price) {
+    double sl = 0.0, tp = 0.0;
+    CalculateStops(symbol, type, price, sl, tp);
+    
+    for(int attempt = 0; attempt < MAX_RETRY_ATTEMPTS; attempt++) {
+        ResetLastError();
+        
+        if(Trade.PositionOpen(symbol, type, lots, price, sl, tp, "PROMETHEUS_V2")) {
+            Print("[EXEC_SUCCESS] ", symbol, " ", EnumToString(type), " ", DoubleToString(lots, 2));
+            return true;
+        }
+        
+        int error = GetLastError();
+        Print("[EXEC_ATTEMPT]", attempt + 1, "] Error: ", error);
+        
+        // Fallback estratégico baseado no erro
+        if(IsStopLevelError(error)) {
+            // Tenta sem stops e define depois
+            if(Trade.PositionOpen(symbol, type, lots, price, 0, 0, "PROMETHEUS_V2")) {
+                Sleep(100);
+                return SetStopsAfterOpen(symbol, sl, tp);
+            }
+        }
+        
+        Sleep(100 * (attempt + 1)); // Backoff exponencial
+    }
+    
+    return false;
+}
+
+void EnforceSafetyMeasures() {
+    if(!Use_Circuit_Breakers) return;
+    
+    CheckDailyDrawdown();
+    CheckPositionLossLimits();
+}
+
+void CheckDailyDrawdown() {
+    double current_equity = AccountInfoDouble(ACCOUNT_EQUITY);
+    double daily_drawdown_pct = (state_mgr.daily_start_equity - current_equity) / state_mgr.daily_start_equity * 100.0;
+    
+    if(daily_drawdown_pct >= Max_Daily_Loss_Pct) {
+        state_mgr.TriggerEmergencyStop("Daily drawdown limit: " + DoubleToString(daily_drawdown_pct, 2) + "%");
+    }
+}
+
+// =============================================================================
+// FUNÇÕES AUXILIARES
+// =============================================================================
+double CalculateATR(const string symbol, int period = 14, ENUM_TIMEFRAMES tf = PERIOD_M5) {
+    int handle = iATR(symbol, tf, period);
+    if(handle == INVALID_HANDLE) return 0.0;
+    
+    double values[];
+    int copied = CopyBuffer(handle, 0, 0, 1, values);
+    IndicatorRelease(handle);
+    
+    return (copied > 0) ? values[0] : 0.0;
+}
+
+void CalculateStops(const string symbol, ENUM_ORDER_TYPE type, double price, double &sl, double &tp) {
+    double atr = CalculateATR(symbol);
+    if(atr <= 0.0) return;
+    
+    if(type == ORDER_TYPE_BUY) {
+        sl = price - (atr * 2.0);
+        tp = price + (atr * 3.0);
+    } else {
+        sl = price + (atr * 2.0);
+        tp = price - (atr * 3.0);
+    }
+}
+
+bool IsStopLevelError(int error) {
+    return (error == 130 || error == 131 || error == 132); // Invalid stops, market closed, etc.
+}
+
+bool SetStopsAfterOpen(const string symbol, double sl, double tp) {
+    for(int attempt = 0; attempt < MAX_RETRY_ATTEMPTS; attempt++) {
+        if(Trade.PositionModify(symbol, sl, tp)) {
+            Print("[STOPS_SUCCESS] SL/TP set for ", symbol);
+            return true;
+        }
+        Sleep(50);
+    }
+    Print("[STOPS_FAILED] Could not set SL/TP for ", symbol);
+    return false;
+}

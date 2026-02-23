@@ -1,0 +1,83 @@
+# integration_example.py
+"""
+Exemplo de integração do sistema de monitoramento com arquitetura existente
+"""
+from prometheus_orchestra import PrometheusOrchestraMonitor
+
+class YourOrchestraSystem:
+    """Sistema existente com arquitetura de orquestra"""
+    
+    def __init__(self):
+        # Inicializar monitoramento
+        self.monitor = PrometheusOrchestraMonitor(port=9091)
+        self.monitor.start_monitoring_server()
+        
+        # Registrar componentes
+        self._register_components()
+    
+    def _register_components(self):
+        """Registra todos os componentes no sistema de monitoramento"""
+        # Registrar agentes
+        self.alpha_metrics = self.monitor.register_agent('alpha_agent', 'analysis')
+        self.beta_metrics = self.monitor.register_agent('beta_agent', 'execution')
+        self.gamma_metrics = self.monitor.register_agent('gamma_agent', 'risk')
+        
+        # Registrar filtros
+        self.precision_filter = self.monitor.register_filter('precision_filter', 'quality')
+        self.velocity_filter = self.monitor.register_filter('velocity_filter', 'speed')
+        
+        # Registrar calibrações
+        self.main_calibration = self.monitor.register_calibration('main_calibration')
+    
+    def on_agent_processing(self, agent_name: str, processing_time: float, 
+                          input_type: str, confidence: float):
+        """Callback quando um agente completa processamento"""
+        agent_metrics = getattr(self, f'{agent_name}_metrics', None)
+        if agent_metrics:
+            agent_metrics.processing_time.labels(
+                agent_type=agent_metrics.agent_type,
+                input_type=input_type
+            ).observe(processing_time)
+            
+            agent_metrics.decision_confidence.labels(
+                asset_class='forex',
+                timeframe='5m'
+            ).set(confidence)
+    
+    def on_filter_processing(self, filter_name: str, efficiency: float, 
+                           processed_count: int, rejection_rate: float):
+        """Callback quando um filtro processa dados"""
+        filter_metrics = getattr(self, f'{filter_name}_metrics', None)
+        if filter_metrics:
+            filter_metrics.efficiency.labels(
+                data_type='market_data'
+            ).set(efficiency)
+            
+            filter_metrics.throughput.labels(
+                item_type='data_point'
+            ).inc(processed_count)
+            
+            filter_metrics.rejection_rate.labels(
+                rejection_reason='quality'
+            ).set(rejection_rate)
+    
+    def on_maestro_decisions(self, decision_type: str, latency: float, 
+                           coordination_score: float):
+        """Callback para decisões do maestro"""
+        self.monitor.maestro.orchestration_latency.labels(
+            decision_type=decision_type
+        ).observe(latency)
+        
+        self.monitor.maestro.agent_coordination.labels(
+            orchestration_cycle='current'
+        ).set(coordination_score)
+
+# Exemplo de uso
+if __name__ == "__main__":
+    # Inicializar sistema
+    system = YourOrchestraSystem()
+    
+    # Simular processamento
+    system.on_agent_processing('alpha', 0.0023, 'market_data', 0.85)
+    system.on_filter_processing('precision', 0.92, 1500, 0.08)
+    system.on_maestro_decisions('resource_allocation', 0.0015, 0.88)

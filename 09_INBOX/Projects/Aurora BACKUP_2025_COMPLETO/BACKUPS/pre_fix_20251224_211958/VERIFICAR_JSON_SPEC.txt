@@ -1,0 +1,38 @@
+================================================================================
+ARQUIVO: aurora_modules_spec.json
+================================================================================
+
+LOCALIZAÇÃO:
+C:\Users\Lenovo\Projects\Aurora\aurora_modules_spec.json
+
+TAMANHO:
+360,037 bytes (351 KB)
+
+DATA DE CRIAÇÃO:
+21-12-2025 10:26:04
+
+CONTEÚDO:
+- Metadados do sistema
+- Especificações de 257 módulos
+- Classes, funções, imports de cada módulo
+- Categorização por tipo
+
+FORMATO:
+JSON estruturado para processamento programático
+
+================================================================================
+PARA VISUALIZAR:
+================================================================================
+
+1. Abrir no editor de texto:
+   notepad aurora_modules_spec.json
+
+2. Abrir no navegador (formatação JSON):
+   - Copiar caminho completo
+   - Usar extensão JSON viewer
+
+3. Processar com Python:
+   python -c "import json; print(json.load(open('aurora_modules_spec.json'))['metadata'])"
+
+================================================================================
+

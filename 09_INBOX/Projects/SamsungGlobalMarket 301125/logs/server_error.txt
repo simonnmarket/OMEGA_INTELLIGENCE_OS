@@ -1,0 +1,30 @@
+[2025-10-29 02:06:23] [INFO] Servidor inicializado. Diretório de arquivos: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files
+[2025-10-29 02:06:23] [INFO] Diretório de arquivos: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files
+[2025-10-29 02:06:23] [INFO] Pressione Ctrl+C para parar o servidor
+[2025-10-29 02:06:23] [INFO] Servidor iniciado. Aguardando requests...
+[2025-10-29 02:08:45] [INFO] [SCAN] 3 request(s) encontrado(s)
+[2025-10-29 02:08:45] [INFO] [REQUEST] Processando EURUSD de AIRequest.EURUSD.json
+[2025-10-29 02:08:45] [INFO] [ANALYZE] EURUSD: bid=1.16526, ask=1.16535, spread=9.0
+[2025-10-29 02:08:45] [INFO] [RESULT] EURUSD: HOLD (conf=0.50) - Spread alto (9.0 pips) - não recomendado operar
+[2025-10-29 02:08:45] [INFO] [RESPONSE] EURUSD escrito em AIResponse.EURUSD.json
+[2025-10-29 02:08:45] [INFO] [REQUEST] Processando GBPUSD de AIRequest.GBPUSD.json
+[2025-10-29 02:08:45] [INFO] [ANALYZE] GBPUSD: bid=1.32713, ask=1.32723, spread=10.0
+[2025-10-29 02:08:45] [INFO] [RESULT] GBPUSD: HOLD (conf=0.50) - Spread alto (10.0 pips) - não recomendado operar
+[2025-10-29 02:08:45] [INFO] [RESPONSE] GBPUSD escrito em AIResponse.GBPUSD.json
+[2025-10-29 02:08:45] [INFO] [REQUEST] Processando USDJPY de AIRequest.USDJPY.json
+[2025-10-29 02:08:45] [INFO] [ANALYZE] USDJPY: bid=151.67200, ask=151.68100, spread=9.0
+[2025-10-29 02:08:45] [INFO] [RESULT] USDJPY: HOLD (conf=0.50) - Spread alto (9.0 pips) - não recomendado operar
+[2025-10-29 02:08:45] [INFO] [RESPONSE] USDJPY escrito em AIResponse.USDJPY.json
+[2025-10-29 02:13:44] [INFO] [SCAN] 3 request(s) encontrado(s)
+[2025-10-29 02:13:44] [INFO] [REQUEST] Processando EURUSD de AIRequest.EURUSD.json
+[2025-10-29 02:13:44] [INFO] [ANALYZE] EURUSD: bid=1.16527, ask=1.16536, spread=9.0
+[2025-10-29 02:13:44] [INFO] [RESULT] EURUSD: HOLD (conf=0.50) - Spread alto (9.0 pips) - não recomendado operar
+[2025-10-29 02:13:44] [INFO] [RESPONSE] EURUSD escrito em AIResponse.EURUSD.json
+[2025-10-29 02:13:44] [INFO] [REQUEST] Processando GBPUSD de AIRequest.GBPUSD.json
+[2025-10-29 02:13:44] [INFO] [ANALYZE] GBPUSD: bid=1.32714, ask=1.32724, spread=10.0
+[2025-10-29 02:13:44] [INFO] [RESULT] GBPUSD: HOLD (conf=0.50) - Spread alto (10.0 pips) - não recomendado operar
+[2025-10-29 02:13:44] [INFO] [RESPONSE] GBPUSD escrito em AIResponse.GBPUSD.json
+[2025-10-29 02:13:44] [INFO] [REQUEST] Processando USDJPY de AIRequest.USDJPY.json
+[2025-10-29 02:13:44] [INFO] [ANALYZE] USDJPY: bid=151.68100, ask=151.69000, spread=9.0
+[2025-10-29 02:13:44] [INFO] [RESULT] USDJPY: HOLD (conf=0.50) - Spread alto (9.0 pips) - não recomendado operar
+[2025-10-29 02:13:44] [INFO] [RESPONSE] USDJPY escrito em AIResponse.USDJPY.json

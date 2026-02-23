@@ -1,0 +1,68 @@
+{
+  "directive_id": "F1-T3-LIMPEZA-CAPITAL",
+  "version": "1.0",
+  "timestamp": "2024-05-21T15:00:00Z",
+  "issuer": "CEO_Numeia_System",
+  "description": "Diretiva para remoção de estratégias inviáveis, desabilitação de estratégias não funcionais e realocação de capital. Esta é uma ordem executiva e deve ser implementada precisamente.",
+  "pre_execution_check": {
+    "instruction": "Antes de executar, verifique se os arquivos de destino existem no caminho esperado. A execução sem verificação é proibida.",
+    "target_files_exist": [
+      "Core/Strategies/Crypto/CryptoStrategiesAdapter_Numeia.py",
+      "Core/Strategies/Forex/ForexStrategiesAdapter_Numeia.py",
+      "Core/SystemOrchestrator_v3_1.py"
+    ]
+  },
+  "actions": [
+    {
+      "action_id": "ACTION_01",
+      "type": "REMOVE_FROM_STRATEGY_MAP",
+      "description": "Remover permanentemente as estratégias de 'LiquidityMining' e 'FundingArbitrage' do mapa de estratégias do CryptoModule. Elas são inviáveis.",
+      "target_file": "Core/Strategies/Crypto/CryptoStrategiesAdapter_Numeia.py",
+      "target_structure": {
+        "type": "dictionary",
+        "name": "AVAILABLE_STRATEGIES"
+      },
+      "keys_to_remove": [
+        "LiquidityMining",
+        "FundingArbitrage"
+      ]
+    },
+    {
+      "action_id": "ACTION_02",
+      "type": "DISABLE_FROM_STRATEGY_MAP",
+      "description": "Desabilitar as estratégias 'CrossCurrencyArbitrage' e 'CBSentiment' do ForexModule, removendo-as do mapa de estratégias ativas. O código pode ser mantido para referência futura, mas não deve ser chamado.",
+      "target_file": "Core/Strategies/Forex/ForexStrategiesAdapter_Numeia.py",
+      "target_structure": {
+        "type": "dictionary",
+        "name": "AVAILABLE_STRATEGIES"
+      },
+      "keys_to_remove": [
+        "CrossCurrencyArbitrage",
+        "CBSentiment"
+      ]
+    },
+    {
+      "action_id": "ACTION_03",
+      "type": "REALLOCATE_CAPITAL",
+      "description": "Atualizar a alocação de capital no SystemOrchestrator para refletir a remoção das estratégias não viáveis e otimizar a distribuição para as estratégias funcionais. O capital total de EUR 500k será realocado.",
+      "target_file": "Core/SystemOrchestrator_v3_1.py",
+      "target_structure": {
+        "type": "dictionary",
+        "name": "allocated_capital",
+        "context": "Dentro do método __init__ da classe GlobalCapitalManager"
+      },
+      "new_allocation": {
+        "Crypto": "Decimal('120000')",
+        "Equities": "Decimal('130000')",
+        "Forex": "Decimal('35000')",
+        "Gold": "Decimal('100000')",
+        "Futures": "Decimal('115000')"
+      },
+      "validation_rule": "A soma dos novos valores deve ser Decimal('500000'). O script deve validar isso antes de escrever o arquivo."
+    }
+  ],
+  "post_execution_report": {
+    "instruction": "Após a execução de todas as ações, gerar um log de confirmação detalhando cada arquivo modificado e as linhas alteradas. Salvar este log como 'EXECUTION_LOG_F1-T3.txt'."
+  }
+}
+

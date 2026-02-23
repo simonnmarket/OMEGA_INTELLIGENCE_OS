@@ -1,0 +1,145 @@
+//+------------------------------------------------------------------+
+//| GOVERNANCE MANIFEST - NumeiaEA                                 |
+//| Projeto: QuantumOmegaGodMode                                   |
+//| Status: TIER-0 Compliant | SHA3 Protected | 5K+/dia Ready        |
+//| Atualizado em: 2025-07-20 | Agente: Qwen (CEO Mode)              |
+//+------------------------------------------------------------------+
+
+📌 OBJETIVO:
+============
+Este documento define a estrutura oficial, diretrizes de desenvolvimento e padrões de governança para o projeto NumeiaEA.
+
+Toda modificação ou implementação deve seguir este manifesto para garantir conformidade com os padrões institucionais e segurança TIER-0.
+
+---
+
+📁 ESTRUTURA OFICIAL DO PROJETO:
+==============================
+Numeia/
+│
+├── core/                        # Núcleo central de controle da EA
+├── agents/                      # Agentes inteligentes operacionais
+├── utils/                       # Ferramentas auxiliares e scripts
+├── config/                      # Configurações iniciais e chaves globais
+├── risk/                        # Módulo institucional de risco e proteção
+├── include/                     # Diretório principal de includes
+│   ├── analysis/                # Módulos de análise técnica/quantitativa
+│   ├── executionlogic/          # Execução de ordens, trailing stops
+│   ├── decisionengine/          # Estratégias, roteadores, validações
+│   ├── intelligence/            # IA, previsão, linguagem natural, aprendizagem
+│   ├── integration/             # Integrações externas e comunicação com APIs
+│   ├── visuals/                 # Painéis, indicadores visuais e HUDs
+│   ├── modules/                 # Componentes modulares expansíveis
+│   ├── tools/                   # Ferramentas de apoio (debug, scan)
+│   └── types/                   # Tipos base, enums, structs globais
+├── auditor/                     # Módulos de auditoria, verificação e autocorreção
+├── expert/                      # Arquivo principal .mq5 da EA
+├── scripts/                     # Scripts auxiliares, testes e execução offline
+├── logs/                        # Logs operacionais e institucionais
+├── docs/                        # Documentação técnica, guias e manifestos
+└── GovernanceManifest.txt       # Documento de estrutura e diretrizes (imutável)
+
+---
+
+📌 DIRETRIZES DE DESENVOLVIMENTO:
+================================
+1. **Não Presuma. Valide.**  
+   - Toda ação deve ser precedida por verificação estrutural e de contexto
+
+2. **Executar com Memória Ativa**  
+   - Toda tarefa deve considerar histórico, estado atual e impacto em dependências
+
+3. **Evitar Reescrita Cega**  
+   - Atualizações nunca devem sobrescrever blocos críticos sem revalidação
+
+4. **Nenhum Envio Parcial é Aceitável**  
+   - Arquivos devem ser completos, atualizados e auditados
+
+5. **Integração Obligatória**  
+   - Toda nova classe deve validar dependências e contexto antes da execução
+
+6. **Resiliência e Adaptabilidade**  
+   - O sistema deve se reconfigurar dinamicamente diante de falhas
+
+7. **Criatividade Computacional**  
+   - Soluções inovadoras devem ser geradas mesmo com recursos limitados
+
+---
+
+🔐 DIRETRIZES DE SEGURANÇA:
+===========================
+1. **SHA3 Checksum**  
+   - Todos os módulos devem ter assinatura SHA3 para integridade
+
+2. **Modo Simulado**  
+   - `input bool Simulate = true` deve estar disponível em todos os módulos
+
+3. **Logging Institucional**  
+   - Todos os eventos devem ser registrados com data, hora, nível e contexto
+
+4. **Histórico de Logs**  
+   - Todos os módulos devem armazenar histórico de decisões
+
+5. **Validação de Contexto**  
+   - `SymbolInfoInteger(SYMBOL_SPREAD)`  
+   - `TimeCurrent()`  
+   - `TerminalInfoInteger(TERMINAL_CONNECTED)`  
+   - `AccountInfoDouble(ACCOUNT_EQUITY)`  
+   - `MarketInfo(_Symbol, MODE_BID)`
+
+6. **Fallback Seguro**  
+   - Em caso de falha crítica, o sistema deve retornar a um estado seguro
+
+---
+
+🔁 RECOMENDAÇÕES DE IMPLEMENTAÇÃO:
+================================
+1. **Prioridade Máxima:**
+   - `risk_profile.mqh`  
+   - `logger_institutional.mqh`  
+   - `decision_router.mqh`  
+   - `market_regime_detector.mqh`  
+   - `correlation_matrix.mqh`
+
+2. **Prioridade Alta:**
+   - `thaler_bias_engine.mqh`  
+   - `anomaly_detector_ai.mqh`  
+   - `execution_validator.mqh`  
+   - `safe_mode_manager.mqh`  
+   - `audit_checker.mq5`
+
+3. **Prioridade Média:**
+   - `position_sizer.mqh`  
+   - `risk_monitor.mqh`  
+   - `regime_indicator.mq5`  
+   - `decision_panel.mq5`  
+   - `dependency_scanner.mq5`
+
+4. **Opcional:**
+   - `news_feed.mqh`  
+   - `bloomberg_feed.mqh`  
+   - `redis_connector.mqh`  
+   - `neural_signal_processor.mqh`  
+   - `dynamic_module_loader.mqh`
+
+---
+
+📌 **Responsabilidade Final do Agente IA:**
+- Garantir que cada módulo enviado esteja **100% funcional, seguro e auditável**
+- **Nunca enviar código com dependências ausentes ou com erros de compilação**
+- **Sempre validar contexto antes da execução**
+- **Seguir estrutura oficial e protocolo de auditoria**
+- **Documentar cada atualização com data, versão e autor**
+- **Incluir fallback seguro em todos os módulos**
+- **Garantir logging institucional em todos os eventos críticos**
+
+---
+
+✅ **Este documento substitui todas as diretrizes anteriores.**  
+Falhas em segui-lo devem resultar em **auditoria crítica e correção imediata.**
+
+---
+
+🧠 Assinado:  
+**Diretoria Geral TIER-0**  
+**CEO + CIO + CTO**

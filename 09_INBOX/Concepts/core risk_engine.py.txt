@@ -1,0 +1,273 @@
+def stress_test_scenarios(
+    self,
+    returns: pd.Series,
+    scenarios: List[Dict[str, Any]],
+    validation_required: bool = True
+) -> Dict[str, Any]:
+    """
+    Comprehensive stress testing with validation.
+    
+    Parameters:
+    -----------
+    returns : pd.Series
+        Historical returns
+    scenarios : List[Dict]
+        List of scenario definitions
+    validation_required : bool
+        Whether to validate stressed returns
+    
+    Returns:
+    --------
+    Dict with stress test results
+    """
+    returns_clean = returns.dropna()
+    
+    if len(returns_clean) < 100:
+        return {
+            'error': 'Insufficient data for stress testing',
+            'min_required': 100,
+            'available': len(returns_clean)
+        }
+    
+    # Calculate baseline VaR once
+    try:
+        baseline_result = self.calculate_portfolio_var(
+            returns_clean,
+            method='historical',
+            portfolio_value=1_000_000.0
+        )
+        
+        if baseline_result.get('status') == 'KILL_SWITCH':
+            return {
+                'status': 'KILL_SWITCH',
+                'reason': 'Baseline VaR triggered kill-switch',
+                'baseline_drawdown': baseline_result.get('risk_metrics', {}).get('max_drawdown', 0)
+            }
+        
+        baseline_var = baseline_result['var_absolute']
+        baseline_metrics = baseline_result['risk_metrics']
+        
+    except Exception as e:
+        return {
+            'error': f'Baseline VaR calculation failed: {str(e)}'
+        }
+    
+    # Process each scenario
+    scenario_results = {}
+    
+    for scenario in scenarios:
+        scenario_name = scenario.get('name', f'scenario_{len(scenario_results)}')
+        scenario_desc = scenario.get('description', '')
+        shock_type = scenario.get('shock_type', 'percentage')  # 'percentage', 'absolute', 'volatility'
+        shock_value = scenario.get('shock', 0.0)
+        method = scenario.get('method', 'historical')
+        
+        # Create stressed returns based on shock type
+        stressed_returns = returns_clean.copy()
+        
+        try:
+            if shock_type == 'percentage':
+                # Percentage shock: multiply returns
+                stressed_returns = stressed_returns * (1 + shock_value)
+                
+            elif shock_type == 'absolute':
+                # Absolute shock: add to returns (for log-returns)
+                stressed_returns = stressed_returns + shock_value
+                
+            elif shock_type == 'volatility':
+                # Volatility shock: scale by volatility multiplier
+                current_vol = stressed_returns.std()
+                stressed_returns = stressed_returns * shock_value
+                
+            elif shock_type == 'extreme_event':
+                # Add extreme event (e.g., flash crash)
+                # shock_value should be a callable that modifies returns
+                if callable(shock_value):
+                    stressed_returns = shock_value(stressed_returns)
+                else:
+                    raise ValueError("extreme_event shock_type requires callable")
+                    
+            elif shock_type == 'regime_shift':
+                # Regime shift: change distribution parameters
+                new_mean = scenario.get('new_mean', returns_clean.mean())
+                new_vol = scenario.get('new_vol', returns_clean.std())
+                
+                # Standardize then rescale
+                z_scores = (stressed_returns - stressed_returns.mean()) / stressed_returns.std()
+                stressed_returns = z_scores * new_vol + new_mean
+                
+            else:
+                raise ValueError(f"Unknown shock_type: {shock_type}")
+            
+            # Validate stressed returns
+            if validation_required:
+                validation = self._validate_stressed_returns(
+                    original=returns_clean,
+                    stressed=stressed_returns,
+                    scenario=scenario
+                )
+                
+                if not validation.get('is_valid', True):
+                    scenario_results[scenario_name] = {
+                        'error': 'Stressed returns failed validation',
+                        'validation_errors': validation.get('errors', [])
+                    }
+                    continue
+            
+            # Calculate VaR for stressed scenario
+            stress_result = self.calculate_portfolio_var(
+                stressed_returns,
+                method=method,
+                portfolio_value=1_000_000.0
+            )
+            
+            if 'error' in stress_result:
+                raise ValueError(stress_result['error'])
+            
+            # Calculate impact metrics
+            var_stress = stress_result['var_absolute']
+            cvar_stress = stress_result['cvar_absolute']
+            
+            # Risk metrics comparison
+            stress_metrics = stress_result['risk_metrics']
+            baseline_metrics = baseline_result['risk_metrics']
+            
+            scenario_results[scenario_name] = {
+                'description': scenario_desc,
+                'shock_type': shock_type,
+                'shock_value': shock_value,
+                'method': method,
+                'var_stress': float(var_stress),
+                'cvar_stress': float(cvar_stress),
+                'var_increase_pct': float((var_stress / baseline_var - 1) * 100) if baseline_var > 0 else np.nan,
+                'cvar_increase_pct': float((cvar_stress / baseline_result['cvar_absolute'] - 1) * 100) if baseline_result['cvar_absolute'] > 0 else np.nan,
+                'metrics_comparison': {
+                    'volatility_increase': float((stress_metrics['vol'] / baseline_metrics['vol'] - 1) * 100) if baseline_metrics['vol'] > 0 else np.nan,
+                    'sharpe_change': float(stress_metrics['sharpe'] - baseline_metrics['sharpe']),
+                    'max_drawdown_change': float(stress_metrics['max_drawdown'] - baseline_metrics['max_drawdown'])
+                },
+                'backtesting': stress_result.get('backtesting', {}),
+                'validation': validation if validation_required else None
+            }
+            
+        except Exception as e:
+            scenario_results[scenario_name] = {
+                'error': str(e),
+                'scenario': scenario
+            }
+    
+    # Overall assessment
+    max_var_increase = max([
+        r.get('var_increase_pct', 0) 
+        for r in scenario_results.values() 
+        if isinstance(r, dict) and 'var_increase_pct' in r
+    ] + [0])
+    
+    # Determine worst-case scenario
+    worst_scenario = None
+    if scenario_results:
+        valid_results = {
+            k: v for k, v in scenario_results.items() 
+            if isinstance(v, dict) and 'var_increase_pct' in v
+        }
+        if valid_results:
+            worst_scenario = max(valid_results.items(), key=lambda x: x[1]['var_increase_pct'])
+    
+    return {
+        'baseline': {
+            'var': float(baseline_var),
+            'cvar': float(baseline_result['cvar_absolute']),
+            'metrics': baseline_metrics
+        },
+        'scenarios': scenario_results,
+        'overall_assessment': {
+            'max_var_increase_pct': float(max_var_increase),
+            'worst_case_scenario': worst_scenario[0] if worst_scenario else None,
+            'worst_case_increase': float(worst_scenario[1]['var_increase_pct']) if worst_scenario else 0.0,
+            'n_scenarios_tested': len(scenarios),
+            'n_scenarios_passed': sum(1 for r in scenario_results.values() if isinstance(r, dict) and 'error' not in r),
+            'overall_risk_level': self._assess_overall_risk_level(max_var_increase)
+        },
+        'genesis_checksum': GENESIS_CHECKSUM,
+        'timestamp': datetime.now(timezone.utc).isoformat()
+    }
+
+def _validate_stressed_returns(self, original: pd.Series, stressed: pd.Series, 
+                               scenario: Dict) -> Dict:
+    """
+    Validate stressed returns for plausibility.
+    """
+    errors = []
+    warnings = []
+    
+    # 1. Check for NaN or infinite values
+    if stressed.isna().any():
+        errors.append("Stressed returns contain NaN values")
+    
+    if np.isinf(stressed).any():
+        errors.append("Stressed returns contain infinite values")
+    
+    # 2. Check for extreme values (> 100% daily return)
+    extreme_pos = (stressed > 1.0).sum()
+    extreme_neg = (stressed < -1.0).sum()
+    
+    if extreme_pos > 0:
+        warnings.append(f"Stressed returns contain {extreme_pos} extreme positive values (>100%)")
+    
+    if extreme_neg > 0:
+        warnings.append(f"Stressed returns contain {extreme_neg} extreme negative values (<-100%)")
+    
+    # 3. Compare statistics with original
+    orig_mean = original.mean()
+    orig_std = original.std()
+    stress_mean = stressed.mean()
+    stress_std = stressed.std()
+    
+    # Mean change check
+    mean_change_pct = abs((stress_mean - orig_mean) / orig_mean) if abs(orig_mean) > 1e-6 else 0
+    if mean_change_pct > 10.0:  # More than 1000% change in mean
+        warnings.append(f"Mean changed by {mean_change_pct:.1f}%")
+    
+    # Volatility change check
+    if orig_std > 0:
+        vol_change_pct = abs((stress_std - orig_std) / orig_std) * 100
+        if vol_change_pct > 500:  # More than 5x volatility
+            warnings.append(f"Volatility changed by {vol_change_pct:.1f}%")
+    
+    # 4. Distribution shape check (basic)
+    try:
+        from scipy import stats
+        ks_stat, ks_pvalue = stats.ks_2samp(original, stressed)
+        if ks_pvalue < 0.01:  # Very different distributions
+            warnings.append(f"Distributions significantly different (KS p-value: {ks_pvalue:.4f})")
+    except:
+        pass
+    
+    is_valid = len(errors) == 0
+    
+    return {
+        'is_valid': is_valid,
+        'errors': errors,
+        'warnings': warnings,
+        'statistics': {
+            'original_mean': float(orig_mean),
+            'original_std': float(orig_std),
+            'stressed_mean': float(stress_mean),
+            'stressed_std': float(stress_std),
+            'mean_change_pct': float(mean_change_pct),
+            'vol_change_pct': float(vol_change_pct) if orig_std > 0 else None
+        }
+    }
+
+def _assess_overall_risk_level(self, max_var_increase: float) -> str:
+    """Assess overall risk level based on stress test results."""
+    if max_var_increase > 200:
+        return 'EXTREME'
+    elif max_var_increase > 100:
+        return 'HIGH'
+    elif max_var_increase > 50:
+        return 'MEDIUM'
+    elif max_var_increase > 20:
+        return 'MODERATE'
+    else:
+        return 'LOW'

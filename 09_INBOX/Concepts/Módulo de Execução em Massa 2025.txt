@@ -1,0 +1,11 @@
+Módulo de Execução em Massa
+
+// Execute em TODOS os pares do Market Watch  
+void OnTick() {  
+    string symbols[];  
+    CopyMarketWatch(symbols); // Função personalizada  
+    
+    foreach(string sym in symbols) {  
+        if(DetectBigPlayers(sym)) ExecuteTrade(sym);  
+    }  
+}  

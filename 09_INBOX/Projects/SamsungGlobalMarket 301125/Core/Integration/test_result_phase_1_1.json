@@ -1,0 +1,9 @@
+{
+  "function": "_stop_current_server()",
+  "passed": true,
+  "timestamp": "2025-11-02T18:05:16.754724",
+  "details": {
+    "message": "Servidor(es) parado(s) com sucesso ou nenhum servidor encontrado",
+    "validation": "Nenhum processo servidor detectado ap\u00f3s parada"
+  }
+}

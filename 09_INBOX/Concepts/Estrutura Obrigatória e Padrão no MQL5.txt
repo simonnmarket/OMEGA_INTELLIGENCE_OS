@@ -1,0 +1,236 @@
+Fontes e Recursos Consultados
+Documentação Oficial: O site MetaTrader5.com e MQL5.com fornecem guias detalhados, incluindo a referência MQL5 e manuais sobre programação (ex.: "Redes neurais no algotrading com MQL5").
+Comunidade MQL5: A seção CodeBase oferece exemplos de códigos gratuitos, e o Fórum MQL5 contém discussões práticas.
+Artigos: A biblioteca de artigos no MQL5.com cobre desde iniciantes até tópicos avançados, como aprendizado de máquina.
+MetaEditor: Inclui modelos prontos (acessíveis via Arquivo > Novo) que seguem a estrutura padrão.
+
+Estrutura Obrigatória e Padrão no MQL5
+A linguagem MQL5, usada no MetaEditor para desenvolver programas para o MetaTrader 5, é uma linguagem de alto nível baseada em C++, voltada para automação de negociação, indicadores técnicos e aplicativos auxiliares. Para que um programa seja compilado corretamente no MetaEditor, ele deve seguir uma estrutura específica, dependendo do tipo de aplicação (Expert Advisor, Indicador, Script ou Biblioteca). Abaixo, detalho as estruturas obrigatórias para cada tipo, com base na documentação oficial e nas práticas recomendadas.
+
+1. Estrutura Geral de um Programa MQL5
+Todo programa MQL5 deve incluir:
+
+Diretivas de pré-processador: Como #property para definir propriedades do programa (nome, versão, descrição, etc.) e #include para importar bibliotecas ou arquivos de inclusão.
+Funções principais: Funções específicas que o MetaTrader 5 espera, como OnInit(), OnDeinit(), OnTick(), OnCalculate(), entre outras, dependendo do tipo de programa.
+Código-fonte no formato .mq5: O arquivo deve ter a extensão .mq5 (código-fonte) para ser compilado em .ex5 (executável).
+Os arquivos devem ser salvos no diretório correto dentro da pasta de dados do MetaTrader 5:
+
+Expert Advisors: MQL5\Experts\
+Indicadores Personalizados: MQL5\Indicators\
+Scripts: MQL5\Scripts\
+Bibliotecas: MQL5\Libraries\
+2. Estrutura Obrigatória por Tipo de Programa
+2.1. Expert Advisor (EA)
+Os Expert Advisors são programas que automatizam análises e negociações. A estrutura mínima obrigatória inclui:
+
+Diretivas #property:
+#property copyright "Seu Nome"
+#property link "Seu Site"
+#property version "1.00"
+Opcional: #property description "Descrição do EA"
+#property strict (para forçar verificações rigorosas de sintaxe).
+Funções Principais:
+int OnInit(): Inicializa o EA, executada quando o programa é carregado.
+void OnDeinit(const int reason): Executada quando o EA é removido ou o terminal é fechado.
+void OnTick(): Executada a cada novo tick de preço (para EAs baseados em ticks).
+Exemplo de Código Mínimo para um EA:
+mql
+#property copyright "Seu Nome"
+#property link      "https://www.seusite.com"
+#property version   "1.00"
+#property strict
+
+// Função de inicialização
+int OnInit()
+{
+   Print("Expert Advisor inicializado!");
+   return(INIT_SUCCEEDED);
+}
+
+// Função de desinicialização
+void OnDeinit(const int reason)
+{
+   Print("Expert Advisor finalizado. Motivo: ", reason);
+}
+
+// Função executada a cada tick
+void OnTick()
+{
+   Print("Novo tick recebido: ", TimeToString(TimeCurrent()));
+}
+Observações:
+
+A função OnTick() é usada para processar eventos de mercado em tempo real.
+O EA deve ser salvo em MQL5\Experts\ e compilado para gerar um arquivo .ex5.
+Para permitir negociação automática, a opção “Permitir negociação automática” deve estar habilitada no MetaTrader 5.
+2.2. Indicador Personalizado
+Indicadores personalizados são usados para análise técnica e não realizam operações de negociação automaticamente. A estrutura mínima inclui:
+
+Diretivas #property:
+#property indicator_chart_window ou #property indicator_separate_window (define onde o indicador será exibido).
+#property indicator_buffers (número de buffers de dados).
+#property indicator_plots (número de linhas a serem desenhadas).
+Propriedades visuais, como #property indicator_label1, #property indicator_color1, etc.
+Funções Principais:
+int OnInit(): Configura os buffers e propriedades do indicador.
+void OnDeinit(const int reason): Libera recursos.
+int OnCalculate(): Calcula os valores do indicador.
+Exemplo de Código Mínimo para um Indicador:
+mql
+#property copyright "Seu Nome"
+#property link      "https://www.seusite.com"
+#property version   "1.00"
+#property strict
+#property indicator_chart_window
+#property indicator_buffers 1
+#property indicator_plots   1
+#property indicator_label1  "Linha de Exemplo"
+#property indicator_type1   DRAW_LINE
+#property indicator_color1  clrRed
+#property indicator_style1  STYLE_SOLID
+#property indicator_width1  1
+
+// Buffer para armazenar os dados do indicador
+double Buffer[];
+
+int OnInit()
+{
+   SetIndexBuffer(0, Buffer, INDICATOR_DATA); // Associa o buffer
+   return(INIT_SUCCEEDED);
+}
+
+void OnDeinit(const int reason)
+{
+   Print("Indicador finalizado. Motivo: ", reason);
+}
+
+int OnCalculate(const int rates_total,
+                const int prev_calculated,
+                const datetime &time[],
+                const double &open[],
+                const double &high[],
+                const double &low[],
+                const double &close[],
+                const long &tick_volume[],
+                const long &volume[],
+                const int &spread[])
+{
+   for(int i = prev_calculated; i < rates_total; i++)
+   {
+      Buffer[i] = close[i]; // Exemplo: copia os preços de fechamento
+   }
+   return(rates_total);
+}
+Observações:
+
+A função OnCalculate() é essencial para processar dados históricos e em tempo real.
+Os buffers devem ser declarados e associados corretamente usando SetIndexBuffer().
+O indicador deve ser salvo em MQL5\Indicators\.
+2.3. Script
+Scripts são programas que executam uma única ação e terminam. A estrutura mínima inclui:
+
+Diretivas #property:
+#property copyright
+#property link
+#property version
+#property strict (opcional).
+Função Principal:
+void OnStart(): Executada uma vez quando o script é ativado.
+Exemplo de Código Mínimo para um Script:
+mql
+#property copyright "Seu Nome"
+#property link      "https://www.seusite.com"
+#property version   "1.00"
+#property strict
+
+void OnStart()
+{
+   Alert("Script executado em: ", TimeToString(TimeCurrent()));
+}
+Observações:
+
+Scripts são salvos em MQL5\Scripts\.
+São úteis para ações pontuais, como gerar alertas ou modificar ordens.
+2.4. Biblioteca
+Bibliotecas contêm funções reutilizáveis e não podem ser executadas sozinhas. A estrutura mínima inclui:
+
+Diretiva #property:
+#property library
+#property copyright
+#property link
+#property version
+Funções Exportáveis:
+Funções marcadas com o modificador export para serem usadas por outros programas.
+Exemplo de Código Mínimo para uma Biblioteca:
+mql
+#property library
+#property copyright "Seu Nome"
+#property link      "https://www.seusite.com"
+#property version   "1.00"
+#property strict
+
+double CalcularMedia(double preco1, double preco2) export
+{
+   return (preco1 + preco2) / 2;
+}
+Observações:
+
+Bibliotecas são salvas em MQL5\Libraries\.
+Devem ser incluídas em outros programas com #include <NomeDaBiblioteca.mqh>.
+3. Diretrizes Gerais para Compilação
+Ambiente de Desenvolvimento: Use o MetaEditor, integrado ao MetaTrader 5, que oferece ferramentas como depuração, preenchimento automático e acesso ao MQL5 Storage.
+Compilação: Pressione F5 no MetaEditor para compilar o arquivo .mq5 em .ex5. O arquivo compilado é automaticamente colocado no diretório correto.
+Erros de Compilação: Verifique mensagens de erro no MetaEditor (aba “Erros”). O uso de #property strict ajuda a identificar problemas de sintaxe.
+Testes: Antes de usar em contas reais, teste EAs e indicadores no Testador de Estratégias do MetaTrader 5.
+4. Recursos Adicionais e Boas Práticas
+Documentação Oficial: A documentação da MQL5 (disponível em www.mql5.com) é a fonte primária para aprender a estrutura e funções da linguagem. Inclui manuais detalhados e exemplos.
+MQL5 CodeBase: Contém milhares de códigos prontos (EAs, indicadores, scripts) que seguem a estrutura padrão e podem ser usados como referência.
+Fórum MQL5.community: Um espaço ativo para discutir problemas, compartilhar códigos e encontrar exemplos práticos. É recomendado explorar tópicos recentes para soluções atualizadas.
+Artigos MQL5: A seção de artigos no site da MQL5 oferece tutoriais práticos, como “Redes neurais no algotrading com MQL5”, que detalham estruturas avançadas.
+Boas Práticas:
+Use comentários claros para documentar o código.
+Estruture o código em funções modulares para facilitar manutenção.
+Sempre teste em contas demo antes de usar em contas reais.
+Evite sobrecarga computacional em funções como OnTick().
+5. Exemplo Prático Completo (EA Simples)
+Abaixo está um exemplo de um EA que verifica a média móvel simples (SMA) e imprime uma mensagem:
+
+mql
+#property copyright "Seu Nome"
+#property link      "https://www.seusite.com"
+#property version   "1.00"
+#property strict
+
+input int PeriodoSMA = 14; // Período da Média Móvel
+
+int OnInit()
+{
+   Print("EA inicializado com período SMA: ", PeriodoSMA);
+   return(INIT_SUCCEEDED);
+}
+
+void OnDeinit(const int reason)
+{
+   Print("EA finalizado. Motivo: ", reason);
+}
+
+void OnTick()
+{
+   double sma[];
+   ArraySetAsSeries(sma, true);
+   int handle = iMA(_Symbol, PERIOD_CURRENT, PeriodoSMA, 0, MODE_SMA, PRICE_CLOSE);
+   CopyBuffer(handle, 0, 0, 1, sma);
+   Print("Valor da SMA(", PeriodoSMA, "): ", sma[0]);
+}
+Explicação:
+
+Usa a função iMA para calcular a média móvel.
+O parâmetro input permite configurar o período da SMA na interface do MetaTrader 5.
+Salvo em MQL5\Experts\, este código pode ser compilado e executado.
+6. Fontes Consultadas
+Documentação oficial da MetaQuotes (www.metatrader5.com e www.mql5.com).
+Artigos e CodeBase da MQL5.community, que fornecem exemplos práticos e bibliotecas como ALGLIB.
+Informações sobre a estrutura de diretórios e boas práticas do MetaTrader 5.
+Discussões em fóruns da MQL5.community (acessados via busca avançada em 03/08/2025).
+7. Considerações Finais
+A estrutura obrigatória depende do tipo de programa (EA, Indicador, Script ou Biblioteca), mas todos exigem diretivas #property e funções específicas (como OnInit, OnTick, etc.). A documentação oficial e a CodeBase são os melhores recursos para exemplos e aprendizado. Para dúvidas específicas ou exemplos mais complexos, recomendo consultar a seção de artigos da MQL5 ou postar no fórum da comunidade.

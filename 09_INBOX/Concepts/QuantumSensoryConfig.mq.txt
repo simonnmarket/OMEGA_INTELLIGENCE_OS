@@ -1,0 +1,97 @@
+#property copyright "Quantum Sensory Trading System"
+#property link      "https://www.quantumsensory.com"
+#property version   "4.0"
+
+// Estruturas de dados sensoriais
+struct MarketVision {
+    double priceAction;
+    double volumeProfile;
+    double trendStrength;
+    double marketDepth;
+    double volatilityLevel;
+};
+
+struct MarketHearing {
+    double volumeIntensity;
+    double priceVelocity;
+    double marketNoise;
+    double orderFlow;
+    double tickFrequency;
+};
+
+struct MarketTouch {
+    double supportLevel;
+    double resistanceLevel;
+    double pressurePoints;
+    double marketMomentum;
+    double priceElasticity;
+};
+
+struct MarketSmell {
+    double riskLevel;
+    double marketSentiment;
+    double volatilityRisk;
+    double trendRisk;
+    double liquidityRisk;
+};
+
+struct MarketTaste {
+    double profitPotential;
+    double riskReward;
+    double marketQuality;
+    double tradeOpportunity;
+    double entryQuality;
+};
+
+struct IntegratedSensoryData {
+    MarketVision vision;
+    MarketHearing hearing;
+    MarketTouch touch;
+    MarketSmell smell;
+    MarketTaste taste;
+    double sensoryCoherence;
+    double overallPerception;
+};
+
+// Configurações globais
+namespace GlobalConfig {
+    // Thresholds e Limites
+    const double CoherenceThreshold = 0.7;
+    const double MinimumConfidence = 0.8;
+    const double RiskThreshold = 0.6;
+    const double VolatilityThreshold = 0.5;
+    
+    // Pesos dos sistemas sensoriais
+    const double VisionWeight = 0.25;
+    const double HearingWeight = 0.20;
+    const double TouchWeight = 0.20;
+    const double SmellWeight = 0.15;
+    const double TasteWeight = 0.20;
+    
+    // Parâmetros de trading
+    const double MaxRiskPerTrade = 0.02;  // 2% do capital
+    const double MinProfitRatio = 1.5;    // Risco:Retorno mínimo
+    const int MaxOpenTrades = 3;
+    const int MaxDailyTrades = 10;
+    
+    // Timeframes para análise
+    const ENUM_TIMEFRAMES PrimaryTimeframe = PERIOD_M5;
+    const ENUM_TIMEFRAMES SecondaryTimeframe = PERIOD_M15;
+    const ENUM_TIMEFRAMES TertiaryTimeframe = PERIOD_H1;
+}
+
+// Enumerações
+enum ENUM_MARKET_STATE {
+    MARKET_STATE_NORMAL = 0,    // Estado Normal
+    MARKET_STATE_VOLATILE = 1,  // Estado Volátil
+    MARKET_STATE_TRENDING = 2,  // Estado de Tendência
+    MARKET_STATE_RANGING = 3,   // Estado Lateral
+    MARKET_STATE_UNCERTAIN = 4  // Estado Incerto
+};
+
+enum ENUM_SIGNAL_STRENGTH {
+    SIGNAL_WEAK = 0,         // Sinal Fraco
+    SIGNAL_MODERATE = 1,     // Sinal Moderado
+    SIGNAL_STRONG = 2,       // Sinal Forte
+    SIGNAL_VERY_STRONG = 3   // Sinal Muito Forte
+};

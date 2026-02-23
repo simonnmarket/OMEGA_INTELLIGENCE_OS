@@ -1,0 +1,124 @@
+    // Gestão de posições
+    void ManagePositions() {
+        if(!PositionSelect(_Symbol)) return;
+        
+        // Verificar break even
+        if(UseBreakEven) {
+            CheckBreakEven();
+        }
+        
+        // Atualizar stops
+        UpdateStops();
+        
+        // Verificar saída
+        CheckExit();
+    }
+    
+    // Validação de risco
+    bool ValidateRisk() {
+        // Atualizar métricas de risco
+        risk.currentRisk = CalculateCurrentRisk();
+        risk.exposure = CalculateExposure();
+        risk.heatLevel = CalculateHeatLevel();
+        
+        // Verificar risco máximo
+        if(risk.currentRisk > risk.maxRisk) {
+            Print("Risco excede máximo permitido: ", risk.currentRisk);
+            return false;
+        }
+        
+        // Verificar exposição
+        if(risk.exposure > 100) {
+            Print("Exposição excede 100%: ", risk.exposure);
+            return false;
+        }
+        
+        // Verificar drawdown
+        if(currentDrawdown > MaxDrawdown) {
+            Print("Drawdown excede máximo: ", currentDrawdown);
+            return false;
+        }
+        
+        // Verificar perdas consecutivas
+        if(consecutiveLosses >= MaxConsecutiveLosses) {
+            Print("Máximo de perdas consecutivas atingido: ", consecutiveLosses);
+            return false;
+        }
+        
+        return true;
+    }
+    
+    // Cálculo de posição
+    double CalculatePosition() {
+        // Obter informações da conta
+        double balance = AccountInfoDouble(ACCOUNT_BALANCE);
+        double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+        
+        // Calcular risco em dinheiro
+        double riskAmount = balance * (RiskPercent / 100);
+        
+        // Calcular distância do stop
+        double stopDistance = MathAbs(setup.entry - setup.stopLoss);
+        
+        // Calcular volume baseado no risco
+        double volume = NormalizeVolume(riskAmount / (stopDistance * SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE)));
+        
+        // Verificar limites
+        double minVolume = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
+        double maxVolume = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX);
+        
+        return MathMin(maxVolume, MathMax(minVolume, volume));
+    }
+    
+    // Execução de compra
+    void ExecuteBuy() {
+        if(!trade.Buy(
+            setup.volume,
+            _Symbol,
+            setup.entry,
+            setup.stopLoss,
+            setup.takeProfit,
+            "Quantum Scout Pro - Buy"
+        )) {
+            Print("Erro na execução da compra: ", GetLastError());
+            return;
+        }
+        
+        // Registrar trade
+        RegisterTrade();
+    }
+    
+    // Execução de venda
+    void ExecuteSell() {
+        if(!trade.Sell(
+            setup.volume,
+            _Symbol,
+            setup.entry,
+            setup.stopLoss,
+            setup.takeProfit,
+            "Quantum Scout Pro - Sell"
+        )) {
+            Print("Erro na execução da venda: ", GetLastError());
+            return;
+        }
+        
+        // Registrar trade
+        RegisterTrade();
+    }
+    
+    // Verificação de break even
+    void CheckBreakEven() {
+        if(!PositionSelect(_Symbol)) return;
+        
+        double openPrice = PositionGetDouble(POSITION_PRICE_OPEN);
+        double currentPrice = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+        double stopLoss = PositionGetDouble(POSITION_SL);
+        
+        // Verificar se atingiu pontos para break even
+        if(currentPrice - openPrice > BreakEvenPoints * _Point) {
+            // Mover stop para preço de entrada
+            if(trade.PositionModify(_Symbol, openPrice, PositionGetDouble(POSITION_TP))) {
+                Print("Break even ativado");
+            }
+        }
+    }

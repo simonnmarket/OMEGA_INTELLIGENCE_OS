@@ -1,0 +1,339 @@
+"""
+NCNT MODULE TEMPLATE v1.0 - COM CONEXÃO NEURAL INTEGRADA
+STATUS: PADRÃO OURO PARA TODOS OS NOVOS MÓDULOS
+TODOS os módulos futuros DEVEM seguir este template exatamente.
+"""
+
+import hashlib
+from dataclasses import dataclass, field
+from typing import Dict, Any, List, Optional, Callable
+from datetime import datetime
+import logging
+import inspect
+
+# ============================================================================
+# INTERFACE DE CONEXÃO NEURAL (PINOS LEGO PADRÃO)
+# ============================================================================
+@dataclass
+class NeuralConnection:
+    """Conexão neural padrão entre módulos"""
+    module_id: str
+    connection_type: str  # "DATA_FLOW", "CONTROL_SIGNAL", "HEALTH_MONITOR"
+    target_module: str
+    bandwidth: float = 1.0  # 0.0 a 1.0
+    latency_ms: float = 0.0
+    checksum: str = ""
+    
+    def calculate_checksum(self) -> str:
+        """Checksum da conexão neural"""
+        data = f"{self.module_id}{self.connection_type}{self.target_module}"
+        return hashlib.sha3_256(data.encode()).hexdigest()[:16]
+
+@dataclass
+class ModuleVitals:
+    """Sinais vitais do módulo - DEVE ser implementado por TODOS"""
+    module_name: str
+    status: str  # "BOOTING", "HEALTHY", "DEGRADED", "FAILED"
+    connection_count: int = 0
+    active_connections: List[str] = field(default_factory=list)
+    last_heartbeat: datetime = field(default_factory=datetime.now)
+    error_rate: float = 0.0
+    processing_speed: float = 0.0
+    
+    def is_alive(self) -> bool:
+        """Verifica se o módulo está vivo"""
+        return self.status in ["BOOTING", "HEALTHY", "DEGRADED"]
+    
+    def has_healthy_connections(self) -> bool:
+        """Verifica se tem conexões saudáveis"""
+        return len(self.active_connections) > 0
+
+# ============================================================================
+# CLASSE BASE: NCNT_MODULE (TODOS OS MÓDULOS HERDAM DAQUI)
+# ============================================================================
+class NCNTModule:
+    """
+    CLASSE BASE PARA TODOS OS MÓDULOS NCNT
+    IMPLEMENTA CONEXÕES NEURAIS AUTOMÁTICAS
+    """
+    
+    # CONFIGURAÇÃO PADRÃO DO MÓDULO
+    MODULE_VERSION = "1.0.0"
+    REQUIRES_GENESIS = True  # Registra automaticamente no Genesis Includes
+    AUTO_CONNECT = True      # Tenta conexões automáticas com dependências
+    
+    def __init__(self, module_name: str, config: Dict = None):
+        # IDENTIFICAÇÃO DO MÓDULO
+        self.module_name = module_name
+        self.module_id = hashlib.sha3_256(
+            f"{module_name}{datetime.now().timestamp()}".encode()
+        ).hexdigest()[:12]
+        
+        # CONFIGURAÇÃO
+        self.config = config or {}
+        self.vitals = ModuleVitals(
+            module_name=module_name,
+            status="BOOTING"
+        )
+        
+        # CONEXÕES NEURAIS
+        self.neural_connections: List[NeuralConnection] = []
+        self.required_modules: List[str] = []
+        self.connected_modules: Dict[str, Any] = {}
+        
+        # LOGGING PADRÃO
+        self.logger = logging.getLogger(f"NCNT.{module_name}")
+        
+        # HEALTH CHECK AUTOMÁTICO
+        self.health_checkers: List[Callable] = []
+        
+        self.logger.info(f"📦 Módulo {module_name} inicializando...")
+    
+    def _initialize_module(self) -> bool:
+        """
+        INICIALIZAÇÃO PADRÃO DO MÓDULO
+        Retorna: True se inicialização bem-sucedida
+        """
+        try:
+            # 1. CALCULAR CHECKSUM DO MÓDULO
+            self._calculate_module_checksum()
+            
+            # 2. REGISTRAR NO GENESIS INCLUDES (se necessário)
+            if self.REQUIRES_GENESIS:
+                self._register_with_genesis()
+            
+            # 3. VALIDAR DEPENDÊNCIAS
+            if not self._validate_dependencies():
+                self.vitals.status = "FAILED"
+                return False
+            
+            # 4. ESTABELECER CONEXÕES NEURAIS
+            self._establish_neural_connections()
+            
+            # 5. INICIAR HEALTH CHECKS
+            self._start_health_monitoring()
+            
+            self.vitals.status = "HEALTHY"
+            self.logger.info(f"✅ Módulo {self.module_name} inicializado e conectado")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"❌ Falha na inicialização: {e}")
+            self.vitals.status = "FAILED"
+            return False
+    
+    def _calculate_module_checksum(self) -> str:
+        """Calcula checksum único do módulo"""
+        source_code = inspect.getsource(self.__class__)
+        self.module_checksum = hashlib.sha3_256(source_code.encode()).hexdigest()[:32]
+        self.logger.debug(f"Checksum do módulo: {self.module_checksum[:8]}...")
+        return self.module_checksum
+    
+    def _register_with_genesis(self) -> bool:
+        """Registra módulo automaticamente no Genesis Includes"""
+        try:
+            # Importação dinâmica para evitar dependência circular
+            from 00_governanca.genesis_includes import get_genesis
+            
+            genesis = get_genesis()
+            
+            # Health checker específico do módulo
+            def health_checker() -> bool:
+                return self.vitals.is_alive() and self.vitals.has_healthy_connections()
+            
+            genesis.register(
+                name=self.module_name,
+                dependency=self,
+                is_singleton=True,
+                health_checker=health_checker
+            )
+            
+            self.logger.info(f"📝 Registrado no Genesis Includes como '{self.module_name}'")
+            return True
+            
+        except Exception as e:
+            self.logger.warning(f"⚠️ Não foi possível registrar no Genesis: {e}")
+            return False
+    
+    def _validate_dependencies(self) -> bool:
+        """Valida se todos os módulos requeridos estão disponíveis"""
+        if not self.required_modules:
+            return True
+        
+        missing = []
+        try:
+            from 00_governanca.genesis_includes import get_genesis
+            genesis = get_genesis()
+            
+            for dep in self.required_modules:
+                if dep not in genesis._dependency_registry:
+                    missing.append(dep)
+            
+            if missing:
+                self.logger.error(f"❌ Dependências faltando: {missing}")
+                return False
+            
+            self.logger.info(f"✅ Todas dependências disponíveis: {self.required_modules}")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"❌ Erro ao validar dependências: {e}")
+            return False
+    
+    def _establish_neural_connections(self) -> bool:
+        """
+        Estabelece conexões neurais com módulos dependentes
+        Implementação específica do módulo deve sobrescrever
+        """
+        if not self.AUTO_CONNECT:
+            return True
+        
+        try:
+            from 00_governanca.genesis_includes import get_genesis
+            genesis = get_genesis()
+            
+            for dep in self.required_modules:
+                # Resolver dependência
+                dependency = genesis.resolve(dep)
+                
+                # Criar conexão neural
+                connection = NeuralConnection(
+                    module_id=self.module_id,
+                    connection_type="DATA_FLOW",
+                    target_module=dep
+                )
+                connection.checksum = connection.calculate_checksum()
+                
+                self.neural_connections.append(connection)
+                self.connected_modules[dep] = dependency
+                self.vitals.active_connections.append(dep)
+            
+            self.vitals.connection_count = len(self.neural_connections)
+            self.logger.info(f"🔗 {len(self.neural_connections)} conexões neurais estabelecidas")
+            return True
+            
+        except Exception as e:
+            self.logger.warning(f"⚠️ Conexões neurais incompletas: {e}")
+            return False
+    
+    def _start_health_monitoring(self) -> None:
+        """Inicia monitoramento de saúde do módulo"""
+        # Health checker básico
+        def basic_health_check() -> Dict:
+            return {
+                "module": self.module_name,
+                "status": self.vitals.status,
+                "connections": len(self.neural_connections),
+                "active_connections": self.vitals.active_connections,
+                "last_heartbeat": self.vitals.last_heartbeat.isoformat(),
+                "checksum": self.module_checksum[:8]
+            }
+        
+        self.health_checkers.append(basic_health_check)
+        self.logger.debug("❤️  Monitor de saúde iniciado")
+    
+    # ============================================================================
+    # MÉTODOS PÚBLICOS (INTERFACE PADRÃO)
+    # ============================================================================
+    
+    def get_vitals(self) -> ModuleVitals:
+        """Retorna sinais vitais do módulo"""
+        self.vitals.last_heartbeat = datetime.now()
+        return self.vitals
+    
+    def get_neural_connections(self) -> List[NeuralConnection]:
+        """Retorna todas as conexões neurais"""
+        return self.neural_connections
+    
+    def perform_health_check(self) -> Dict:
+        """Executa todos os health checks"""
+        results = []
+        for checker in self.health_checkers:
+            try:
+                results.append(checker())
+            except Exception as e:
+                results.append({"error": str(e)})
+        
+        return {
+            "module": self.module_name,
+            "timestamp": datetime.now().isoformat(),
+            "vitals": self.get_vitals(),
+            "health_checks": results,
+            "overall_health": self.vitals.is_alive()
+        }
+    
+    def send_neural_signal(self, target_module: str, signal: Dict) -> bool:
+        """Envia sinal neural para outro módulo"""
+        if target_module not in self.connected_modules:
+            self.logger.error(f"❌ Módulo alvo não conectado: {target_module}")
+            return False
+        
+        try:
+            # Verificar se o módulo alvo tem método receive_neural_signal
+            target = self.connected_modules[target_module]
+            if hasattr(target, 'receive_neural_signal'):
+                return target.receive_neural_signal(self.module_name, signal)
+            else:
+                self.logger.warning(f"⚠️ Módulo {target_module} não tem receptor neural")
+                return False
+                
+        except Exception as e:
+            self.logger.error(f"❌ Erro ao enviar sinal neural: {e}")
+            return False
+    
+    def receive_neural_signal(self, source_module: str, signal: Dict) -> bool:
+        """
+        Recebe sinal neural de outro módulo
+        Módulos específicos DEVEM sobrescrever este método
+        """
+        self.logger.info(f"📡 Sinal neural recebido de {source_module}: {signal.get('type', 'UNKNOWN')}")
+        return True
+
+# ============================================================================
+# TESTE DO TEMPLATE
+# ============================================================================
+if __name__ == "__main__":
+    """Teste da classe base do módulo"""
+    
+    print("🧪 TESTE DO TEMPLATE DE MÓDULO NCNT")
+    print("=" * 50)
+    
+    # Criar módulo de teste
+    class TestModule(NCNTModule):
+        """Módulo de teste que segue o template"""
+        
+        def __init__(self):
+            super().__init__("TestModule")
+            self.required_modules = ["system_config"]  # Dependência de exemplo
+            
+        def custom_operation(self):
+            """Operação específica do módulo"""
+            return "Operação executada"
+    
+    # Testar inicialização
+    print("1. Inicializando módulo de teste...")
+    module = TestModule()
+    
+    print("2. Executando inicialização padrão...")
+    success = module._initialize_module()
+    
+    if success:
+        print("✅ Módulo inicializado com sucesso")
+        
+        # Verificar sinais vitais
+        vitals = module.get_vitals()
+        print(f"   Status: {vitals.status}")
+        print(f"   Conexões: {vitals.connection_count}")
+        
+        # Verificar conexões neurais
+        connections = module.get_neural_connections()
+        print(f"   Conexões neurais: {len(connections)}")
+        
+        # Health check
+        health = module.perform_health_check()
+        print(f"   Health check: {health['overall_health']}")
+        
+        print("=" * 50)
+        print("🎯 TEMPLATE VALIDADO - Pronto para uso em todos os módulos")
+    else:
+        print("❌ Falha na inicialização do módulo")

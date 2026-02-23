@@ -1,0 +1,104 @@
+    // Registro de Trade
+    void RegisterTrade() {
+        // Atualizar contadores
+        dailyTrades++;
+        performance.totalTrades++;
+        
+        // Registrar resultado
+        if(IsLastTradeWin()) {
+            performance.winTrades++;
+            consecutiveLosses = 0;
+        }
+        else {
+            performance.lossTrades++;
+            consecutiveLosses++;
+        }
+        
+        // Atualizar métricas
+        UpdatePerformanceMetrics();
+        
+        // Salvar log
+        LogTrade();
+    }
+    
+    // Atualização de Métricas de Performance
+    void UpdatePerformanceMetrics() {
+        // Win Rate
+        performance.winRate = (double)performance.winTrades / performance.totalTrades * 100;
+        
+        // Profit Factor
+        performance.profitFactor = CalculateProfitFactor();
+        
+        // Drawdown
+        double newDrawdown = CalculateDrawdown();
+        if(newDrawdown > performance.maxDrawdown) {
+            performance.maxDrawdown = newDrawdown;
+        }
+        
+        // Sharpe Ratio
+        performance.sharpeRatio = CalculateSharpeRatio();
+        
+        performance.lastUpdate = TimeCurrent();
+    }
+    
+    // Log de Trade
+    void LogTrade() {
+        string logMessage = StringFormat(
+            "Trade %d: %s, Volume: %.2f, Entry: %.2f, SL: %.2f, TP: %.2f, Result: %s",
+            performance.totalTrades,
+            EnumToString(setup.signal),
+            setup.volume,
+            setup.entry,
+            setup.stopLoss,
+            setup.takeProfit,
+            IsLastTradeWin() ? "Win" : "Loss"
+        );
+        
+        Print(logMessage);
+    }
+    
+    // Limpeza
+    void Cleanup() {
+        // Liberar handles de indicadores
+        IndicatorRelease(maHandle);
+        IndicatorRelease(volumeHandle);
+        IndicatorRelease(atrHandle);
+        
+        // Fechar posições se necessário
+        if(PositionSelect(_Symbol)) {
+            trade.PositionClose(_Symbol);
+        }
+        
+        // Salvar estatísticas
+        SaveStats();
+    }
+};
+
+//+------------------------------------------------------------------+
+//| Funções Globais do Expert                                         |
+//+------------------------------------------------------------------+
+CQuantumScout* Scout;
+
+// Inicialização
+int OnInit() {
+    Scout = new CQuantumScout();
+    
+    if(!Scout.Initialize()) {
+        Print("Erro ao inicializar Quantum Scout!");
+        return INIT_FAILED;
+    }
+    
+    return INIT_SUCCEEDED;
+}
+
+// Desinicialização
+void OnDeinit(const int reason) {
+    delete Scout;
+}
+
+// Tick
+void OnTick() {
+    Scout.ProcessTick();
+}
+
+//+------------------------------------------------------------------+

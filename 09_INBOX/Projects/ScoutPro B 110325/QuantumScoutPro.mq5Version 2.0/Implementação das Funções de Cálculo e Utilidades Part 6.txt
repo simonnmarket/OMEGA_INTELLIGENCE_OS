@@ -1,0 +1,106 @@
+    // Cálculo de Volume Médio
+    double CalculateVolumeMA() {
+        double sum = 0;
+        
+        for(int i = 0; i < VolumePeriod; i++) {
+            sum += volumeBuffer[i];
+        }
+        
+        return sum / VolumePeriod;
+    }
+    
+    // Cálculo de Delta Volume
+    double CalculateVolumeDelta() {
+        if(marketData.close > marketData.open) {
+            return marketData.volume;  // Volume positivo
+        }
+        else if(marketData.close < marketData.open) {
+            return -marketData.volume; // Volume negativo
+        }
+        
+        return 0; // Volume neutro
+    }
+    
+    // Cálculo de Tendência
+    double CalculateTrend() {
+        return (maBuffer[0] - maBuffer[2]) / maBuffer[2] * 100;
+    }
+    
+    // Cálculo de Momentum
+    double CalculateMomentum() {
+        return (marketData.close - marketData.open) / marketData.open * 100;
+    }
+    
+    // Cálculo de Risco Atual
+    double CalculateCurrentRisk() {
+        if(!PositionSelect(_Symbol)) return 0;
+        
+        double positionSize = PositionGetDouble(POSITION_VOLUME);
+        double openPrice = PositionGetDouble(POSITION_PRICE_OPEN);
+        double stopLoss = PositionGetDouble(POSITION_SL);
+        
+        return MathAbs(openPrice - stopLoss) * positionSize * SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+    }
+    
+    // Cálculo de Exposição
+    double CalculateExposure() {
+        if(!PositionSelect(_Symbol)) return 0;
+        
+        double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+        double positionValue = PositionGetDouble(POSITION_VOLUME) * 
+                             PositionGetDouble(POSITION_PRICE_OPEN) * 
+                             SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+        
+        return (positionValue / equity) * 100;
+    }
+    
+    // Cálculo de Nível de Calor
+    double CalculateHeatLevel() {
+        return (currentDrawdown / MaxDrawdown) * 100;
+    }
+    
+    // Normalização de Volume
+    double NormalizeVolume(double volume) {
+        double minVolume = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
+        double maxVolume = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX);
+        double stepVolume = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP);
+        
+        volume = MathRound(volume / stepVolume) * stepVolume;
+        volume = MathMax(minVolume, MathMin(maxVolume, volume));
+        
+        return volume;
+    }
+    
+    // Verificação de Horário de Mercado
+    bool IsMarketOpen() {
+        datetime time = TimeCurrent();
+        MqlDateTime dt;
+        TimeToStruct(time, dt);
+        
+        // Verificar dia da semana
+        if(dt.day_of_week == 0 || dt.day_of_week == 6) return false;
+        
+        // Verificar horário (9:00 - 18:00)
+        if(dt.hour < 9 || dt.hour >= 18) return false;
+        
+        return true;
+    }
+    
+    // Verificação de Spread Alto
+    bool IsHighSpread() {
+        double currentSpread = SymbolInfoInteger(_Symbol, SYMBOL_SPREAD) * _Point;
+        return (currentSpread > MaxSpread * _Point);
+    }
+    
+    // Verificação de Volume Suficiente
+    bool HasSufficientVolume() {
+        return (marketData.volume > marketData.volumeMA * VolumeThreshold);
+    }
+    
+    // Verificação de Limites Diários
+    bool CheckDailyLimits() {
+        if(dailyTrades >= MaxDailyTrades) return false;
+        if(currentDrawdown > MaxDailyLoss) return false;
+        
+        return true;
+    }

@@ -1,0 +1,216 @@
+# CrossCurrencyArbitragePerfectionEngine.py
+"""
+MOTOR DE ESTRATÉGIA: CROSS-CURRENCY ARBITRAGE PERFECTION
+BASEADO EM: S-FOREX-20240120-2300000002-cca3m7p5_FINAL_UPGRADED
+STATUS: ELEVADO À PERFEIÇÃO PELO CONSELHO PLENO V3.0
+DATA: 2024-01-20
+CHECKSUM: SHA3-256: w9m1...j6k4
+"""
+
+import asyncio
+import numpy as np
+import mpmath as mp
+from decimal import Decimal, getcontext
+from dataclasses import dataclass
+from typing import Dict, List, Optional, Any, Tuple
+import logging
+from collections import deque
+from scipy.stats import norm
+from itertools import permutations
+
+# Importa os motores centrais do sistema Numeia v3.0
+from NUMEIA_TRADING_SYSTEM_v3_0_PERFEICAO import (
+    TradingSignalPerfeito, TanakaKalmanEngine, RossiDynamicKellyEngine,
+    MarketMastersPerfectionEngine
+)
+
+getcontext().prec = 100
+
+@dataclass
+class ArbitrageOpportunity:
+    """Estrutura de uma oportunidade de arbitragem triangular."""
+    cycle: Tuple[str, str, str]  # (A->B, B->C, C->A)
+    theoretical_profit_pips: float
+    execution_probability: float
+    risk_adjusted_score: float
+    execution_plan: Dict[str, Any]
+
+class CrossCurrencyArbitragePerfectionEngine:
+    """
+    MOTOR DE ARBITRAGEM CRUZADA - MOEDAS
+    Uma fusão de otimização sob risco, execução paralela e validação probabilística.
+    Síntese do Conselho Pleno aplicada à exploração de ineficiências de cotações.
+    """
+    def __init__(self):
+        self.strategy_id = "CROSS_CURRENCY_ARBITRAGE_PERFECTION"
+        
+        # Instancia os motores de perfeição necessários
+        self.rossi_engine = RossiDynamicKellyEngine()
+        self.market_masters_engine = MarketMastersPerfectionEngine()
+        
+        # Universo de moedas e pares
+        self.currencies = ['EUR', 'USD', 'GBP', 'JPY', 'CHF']
+        self.triangular_cycles = list(permutations(self.currencies, 3))
+        
+        # Parâmetros da estratégia validados pelo conselho
+        self.min_profit_pips = 0.5 # 0.5 pips de lucro mínimo
+        self.max_position_size_usd = 50000 # $50k por operação
+        
+        # Estado do motor (Otimização de Portfólio - Rossi)
+        self.price_history = {pair: deque(maxlen=100) for pair in self._generate_all_pairs()}
+        
+        logging.info(f"🌐 Motor {self.strategy_id} inicializado com otimização de portfólio.")
+
+    def analyze_and_generate_signal(self, market_data: Dict, system_intentional_state: str) -> Optional[TradingSignalPerfeito]:
+        """
+        Analisa o mercado e gera um sinal de arbitragem triangular.
+        """
+        # 1. Verificação de Intenção (Dr. Hale)
+        if system_intentional_state != "SCAN_OPPORTUNITIES":
+            return None
+
+        # 2. Atualização de Preços
+        self._update_price_history(market_data)
+        
+        # 3. Detecção de Oportunidades
+        best_opportunity = self._detect_best_arbitrage_opportunity()
+        
+        if not best_opportunity or best_opportunity.execution_probability < 0.7:
+            return None
+
+        # 4. Geração do Sinal Perfeito
+        action = "BUY" if best_opportunity.direction == 'forward' else "SELL"
+        confidence = Decimal(str(min(best_opportunity.execution_probability, 0.95)))
+        risk_score = Decimal('0.4') # Risco inerente à arbitragem
+
+        signal = TradingSignalPerfeito(
+            strategy_id=self.strategy_id,
+            asset=f"TRI_{best_opportunity.cycle[0]}_{best_opportunity.cycle[1]}",
+            action=action,
+            confidence=confidence,
+            risk_score=risk_score,
+            timestamp=int(time.time() * 1e6),
+            hale_intentional_state=system_intentional_state,
+            # Metadados da perfeição
+            rossi_dynamic_kelly_fraction=self.rossi_engine.update_and_calculate(Decimal('500')),
+            # Metadados específicos da estratégia
+            metadata={
+                'cycle': best_opportunity.cycle,
+                'theoretical_profit_pips': best_opportunity.theoretical_profit_pips,
+                'execution_probability': best_opportunity.execution_probability,
+                'risk_adjusted_score': best_opportunity.risk_adjusted_score,
+                'execution_plan': best_opportunity.execution_plan
+            }
+        )
+        
+        logging.info(f"✅ [{self.strategy_id}] Oportunidade de arbitragem detectada. Confiança: {confidence:.2f}.")
+        return signal
+
+    def _update_price_history(self, market_data: Dict):
+        """Atualiza o histórico de preços para análise de cointegração."""
+        # Em um sistema real, isso se conectaria aos feeds de dados
+        for pair in self._generate_all_pairs():
+            price = market_data.get(pair)
+            if price:
+                self.price_history[pair].append(float(price))
+
+    def _generate_all_pairs(self) -> List[str]:
+        """Gera todos os pares diretos possíveis."""
+        return [f"{a}/{b}" for a, b in permutations(self.currencies, 2)]
+
+    def _detect_best_arbitrage_opportunity(self) -> Optional[ArbitrageOpportunity]:
+        """Detecta a melhor oportunidade de arbitragem triangular."""
+        best_opportunity = None
+        best_score = -1.0
+
+        for cycle in self.triangular_cycles:
+            a, b, c = cycle
+            pair_ab, pair_bc, pair_ca = f"{a}/{b}", f"{b}/{c}", f"{c}/{a}"
+            
+            # Verifica se temos dados suficientes para todos os pares
+            if not all(pair in self.price_history and len(self.price_history[pair]) > 50 for pair in [pair_ab, pair_bc, pair_ca]):
+                continue
+
+            # 1. Cálculo do Lucro Teórico
+            price_ab = self.price_history[pair_ab][-1]
+            price_bc = self.price_history[pair_bc][-1]
+            price_ca = self.price_history[pair_ca][-1]
+            
+            # A arbitragem é: 1/A * 1/B * C
+            theoretical_rate = (1.0 / price_ab) * (1.0 / price_bc) * price_ca
+            profit_rate = theoretical_rate - 1.0
+            profit_pips = profit_rate * 10000 # Aproximação para pips
+
+            if profit_pips < self.min_profit_pips:
+                continue
+
+            # 2. Cálculo da Probabilidade de Execução (Petrov)
+            execution_probability = self._calculate_execution_probability(cycle, profit_pips)
+            
+            # 3. Cálculo do Risco Ajustado (Rossi)
+            risk_adjusted_score = self._calculate_risk_adjusted_score(profit_pips, execution_probability)
+            
+            if risk_adjusted_score > best_score:
+                best_score = risk_adjusted_score
+                best_opportunity = ArbitrageOpportunity(
+                    cycle=cycle,
+                    theoretical_profit_pips=profit_pips,
+                    execution_probability=execution_probability,
+                    risk_adjusted_score=risk_adjusted_score,
+                    direction='forward' if profit_rate > 0 else 'reverse',
+                    execution_plan={'sequence': [pair_ab, pair_bc, pair_ca]}
+                )
+
+        return best_opportunity
+
+    def _calculate_execution_probability(self, cycle: Tuple[str, str, str], profit_pips: float) -> float:
+        """Calcula a probabilidade de execução bem-sucedida (Petrov)."""
+        # Modelo simplificado: a probabilidade diminui com o lucro (menos oportunidades são mais raras e competitivas)
+        # e aumenta com a liquidez (profundidade do livro de ordens).
+        # Aqui, usamos um modelo logístico.
+        
+        # Quanto maior o lucro, mais rápido ele será explorado e mais arriscado se torna.
+        # Quanto maior a liquidez, maior a chance de execução.
+        
+        # Profundidade simulada (proxy para liquidez)
+        avg_liquidity = 5000000 # $5M médio por par
+        
+        # Probabilidade baseada no lucro (exponencial decrescente)
+        profit_factor = np.exp(-profit_pips / 5.0) # Decaimento de 5 pips
+        
+        # Probabilidade baseada na liquidez (logística crescente)
+        liquidity_factor = np.log(avg_liquidity / 100000) / np.log(500000 / 100000)
+        
+        # Probabilidade combinada
+        base_probability = 0.8 # Probabilidade base de execução para uma oportunidade de 1 pip
+        probability = base_probability * profit_factor * liquidity_factor
+        
+        return max(0.1, min(0.95, probability))
+
+    def _calculate_risk_adjusted_score(self, profit_pips: float, execution_probability: float) -> float:
+        """Calcula o score ajustado ao risco (Rossi)."""
+        # O score é o lucro esperado, ponderado pela probabilidade de execução.
+        # Isso nos permite comparar oportunidades de alto lucro/baixa probabilidade com baixo lucro/alta probabilidade.
+        return profit_pips * execution_probability
+
+# Função de demonstração
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
+    engine = CrossCurrencyArbitragePerfectionEngine()
+    
+    # Dados de mercado simulados
+    market_data = {
+        'EUR/USD': 1.0855,
+        'USD/JPY': 110.50,
+        'EUR/JPY': 119.80
+    }
+    
+    # Simula múltiplos ciclos para atualizar os preços
+    for _ in range(100):
+        signal = engine.analyze_and_generate_signal(market_data, system_intentional_state="SCAN_OPPORTUNITIES")
+        if signal:
+            print(f"Sinal Gerado: {signal.asset} - Ação: {signal.action} - Lucro: {signal.metadata['theoretical_profit_pips']:.1f} pips")
+            break
+        # Simula uma pequena mudança nos preços
+        for pair in market_data:
+            market_data[pair] *= (1 + np.random.normal(0, 0.0001)) # Ruído de mercado

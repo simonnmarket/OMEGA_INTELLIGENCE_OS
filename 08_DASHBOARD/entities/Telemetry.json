@@ -1,0 +1,57 @@
+{
+    "name": "Telemetry",
+    "type": "object",
+    "properties": {
+        "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp da telemetria"
+        },
+        "hub_name": {
+            "type": "string",
+            "description": "Nome do hub"
+        },
+        "asset": {
+            "type": "string",
+            "description": "Ativo (BTCUSD, EURUSD, etc.)"
+        },
+        "price": {
+            "type": "number",
+            "description": "Preço atual"
+        },
+        "volatility": {
+            "type": "number",
+            "description": "Volatilidade instantânea"
+        },
+        "volume_delta": {
+            "type": "number",
+            "description": "Delta de volume"
+        },
+        "absorption_detected": {
+            "type": "boolean",
+            "description": "Absorção de impacto detectada"
+        },
+        "cti_signals": {
+            "type": "array",
+            "items": {
+                "type": "object"
+            },
+            "description": "Sinais dos CTI indicators"
+        },
+        "action_taken": {
+            "type": "string",
+            "enum": [
+                "ENTRY",
+                "EXIT",
+                "HOLD",
+                "SILENCE"
+            ],
+            "description": "Ação tomada pelo sistema"
+        }
+    },
+    "required": [
+        "timestamp",
+        "hub_name",
+        "asset"
+    ]
+}

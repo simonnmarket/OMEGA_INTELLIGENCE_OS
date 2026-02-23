@@ -1,0 +1,145 @@
+GALEX Trading System v3.0
+=======================
+
+Sistema de Trading Quântico Avançado
+
+1. INSTALAÇÃO
+-------------
+1.1. Copie a pasta GALEX para o diretório MQL5 do MetaTrader 5:
+    - C:\Users\[SeuUsuário]\AppData\Roaming\MetaQuotes\Terminal\[ID]\MQL5\
+
+1.2. Estrutura de diretórios:
+    /GALEX
+        /Experts
+            GALEX.mq5
+        /Include
+            /Core
+                /MarketSignal
+                /TradeExecutor
+                /DataUpdater
+            /Physics
+            /Analysis
+            /Risk
+            /Utils
+            /Detectors
+            /Interfaces
+
+2. CONFIGURAÇÃO
+--------------
+2.1. Parâmetros de Entrada:
+    - LotSize: Tamanho do lote (padrão: 0.1)
+    - MagicNumber: Número mágico para identificação (padrão: 123456)
+    - StopLoss: Stop Loss em pontos (padrão: 100)
+    - TakeProfit: Take Profit em pontos (padrão: 200)
+    - Timeframe: Timeframe de operação (padrão: M15)
+    - BarsToProcess: Número de barras para análise (padrão: 100)
+
+2.2. Parâmetros Quânticos:
+    - QuantumBullThreshold: Limiar para sinal forte de compra (padrão: 0.5)
+    - QuantumBearThreshold: Limiar para sinal forte de venda (padrão: -0.5)
+    - QuantumMemoryDepth: Profundidade da memória quântica (padrão: 5)
+
+2.3. Filtros:
+    - TrendPeriod: Período para análise de tendência (padrão: 20)
+    - VolatilityThreshold: Limiar de volatilidade (padrão: 0.02)
+    - VolumeThreshold: Limiar de volume (padrão: 1.5)
+    - CorrelationPeriod: Período para correlação (padrão: 14)
+    - MinCorrelation: Correlação mínima (padrão: 0.7)
+
+3. USO
+-----
+3.1. Compilação:
+    - Abra o MetaEditor
+    - Abra o arquivo GALEX.mq5
+    - Pressione F7 para compilar
+
+3.2. Aplicação:
+    - Arraste o EA para um gráfico
+    - Configure os parâmetros
+    - Clique em OK
+
+3.3. Monitoramento:
+    - O Dashboard Quântico mostra:
+        * Estado atual do mercado
+        * Força do sinal
+        * Razão de volume
+        * Força da tendência
+        * Volatilidade
+        * Correlação
+        * Taxa de sucesso
+        * Memória quântica
+
+4. MÓDULOS
+---------
+4.1. MarketSignal:
+    - Geração de sinais baseada em análise quântica
+    - Sistema de memória para estados anteriores
+    - Filtros de tendência e volume
+
+4.2. PhysicsEngine:
+    - Análise baseada em princípios físicos
+    - Cálculos de energia e momentum
+    - Análise de entropia
+
+4.3. MarketAnalyzer:
+    - Análise de condições de mercado
+    - Detecção de tendências
+    - Análise de volatilidade
+
+4.4. TrajectoryAnalyzer:
+    - Análise de trajetórias de preço
+    - Detecção de padrões
+    - Cálculo de desvios
+
+4.5. RiskManager:
+    - Gerenciamento de risco
+    - Cálculo dinâmico de lotes
+    - Controle de drawdown
+
+4.6. InstitutionalRadar:
+    - Detecção de atividade institucional
+    - Análise de volume
+    - Impacto de preço
+
+5. LOGS E MONITORAMENTO
+----------------------
+5.1. Logs:
+    - Operações executadas
+    - Sinais gerados
+    - Erros e avisos
+    - Métricas de performance
+
+5.2. Dashboard:
+    - Atualização em tempo real
+    - Visualização de estados quânticos
+    - Métricas de mercado
+
+6. RECOMENDAÇÕES
+---------------
+6.1. Testes:
+    - Realize backtesting antes de usar em conta real
+    - Teste em diferentes timeframes
+    - Verifique diferentes pares de moedas
+
+6.2. Otimização:
+    - Ajuste os parâmetros conforme o ativo
+    - Monitore a taxa de sucesso
+    - Ajuste os filtros conforme necessário
+
+6.3. Segurança:
+    - Use sempre stop loss
+    - Monitore o drawdown
+    - Mantenha o sistema atualizado
+
+7. SUPORTE
+---------
+Para suporte e atualizações:
+- Website: https://www.galex.com
+- Email: support@galex.com
+- Versão atual: 3.0.0
+
+8. DISCLAIMER
+------------
+Este sistema é fornecido "como está", sem garantias de qualquer tipo.
+O uso deste sistema é de inteira responsabilidade do usuário.
+Trading envolve risco de perda. Use com cautela. 

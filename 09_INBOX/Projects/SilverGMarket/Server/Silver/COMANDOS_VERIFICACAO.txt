@@ -1,0 +1,52 @@
+============================================================
+COMANDOS PARA VERIFICAR POSIÇÕES ABERTAS
+============================================================
+
+OPÇÃO 1: SCRIPT PYTHON (RECOMENDADO - MAIS COMPLETO)
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver"
+python VER_POSICOES_ABERTAS.py
+
+OU DUPLO CLIQUE EM:
+VER_POSICOES_ABERTAS.bat
+
+============================================================
+OPÇÃO 2: POWERSHELL (RÁPIDO)
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver"
+
+# Ver últimas entradas no log
+Get-Content silver_telemetry_v3.0.log -Tail 20 | Select-String "position_opened"
+
+# Ver todas as entradas
+Get-Content silver_telemetry_v3.0.log | Select-String "position_opened"
+
+# Ver posições fechadas
+Get-Content silver_telemetry_v3.0.log | Select-String "position_closed"
+
+# Ver gestão de risco (BE/TS)
+Get-Content silver_telemetry_v3.0.log | Select-String "risk_management"
+
+============================================================
+OPÇÃO 3: METATRADER 5 (VISUAL)
+============================================================
+
+1. Abra o MetaTrader 5
+2. Vá em "Terminal" (aba inferior)
+3. Filtre por Magic Number: 99992
+4. Veja todas as posições abertas
+
+============================================================
+O QUE O SCRIPT PYTHON MOSTRA:
+============================================================
+
+✅ Posições abertas no MT5 (em tempo real)
+✅ PnL de cada posição
+✅ Lucro em pips
+✅ Últimas 10 entradas do log
+✅ Informações detalhadas de cada ordem
+
+============================================================
+

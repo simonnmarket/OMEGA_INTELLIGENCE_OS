@@ -1,0 +1,16 @@
+=== CORREÇÃO GLOBAL DE INCLUDES - RELATÓRIO ===
+Data: 07/29/2025 18:56:06
+Status: TODOS OS INCLUDES CORRIGIDOS
+
+=== ESTATÍSTICAS ===
+Total de arquivos processados: 79
+Total de correções aplicadas: 363
+
+=== PADRÃO APLICADO ===
+ANTES: #include <arquivo.mqh>
+DEPOIS: #include "arquivo.mqh"
+
+=== PRÓXIMO PASSO ===
+1. Copiar arquivos para MetaTrader
+2. Compilar NumeiaEA.mq5
+3. Verificar: 0 erros de include

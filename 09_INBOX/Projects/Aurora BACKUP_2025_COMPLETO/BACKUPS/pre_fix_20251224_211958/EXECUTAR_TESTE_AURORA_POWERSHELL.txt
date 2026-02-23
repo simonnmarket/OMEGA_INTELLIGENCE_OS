@@ -1,0 +1,60 @@
+================================================================================
+COMANDO COMPLETO PARA EXECUTAR NO POWERSHELL
+================================================================================
+
+OPÇÃO 1: TESTE RÁPIDO EM SIMULAÇÃO (Recomendado primeiro)
+----------------------------------------------------------
+cd C:\Users\Lenovo\Projects\Aurora; python AURORA_TEST_MODE_NO_STOPS.py --simulation --quick
+
+OPÇÃO 2: TESTE RÁPIDO REAL (Com ordens na conta DEMO)
+------------------------------------------------------
+cd C:\Users\Lenovo\Projects\Aurora; python AURORA_TEST_MODE_NO_STOPS.py --quick
+
+OPÇÃO 3: TESTE ESTENDIDO REAL (10 ciclos, ~5 minutos)
+------------------------------------------------------
+cd C:\Users\Lenovo\Projects\Aurora; python AURORA_TEST_MODE_NO_STOPS.py --extended
+
+OPÇÃO 4: TESTE ESTENDIDO SIMULAÇÃO
+-----------------------------------
+cd C:\Users\Lenovo\Projects\Aurora; python AURORA_TEST_MODE_NO_STOPS.py --simulation --extended
+
+================================================================================
+RECOMENDAÇÃO: EXECUTE PRIMEIRO A OPÇÃO 1
+================================================================================
+
+1. Teste em simulação primeiro para validar:
+   python AURORA_TEST_MODE_NO_STOPS.py --simulation --quick
+
+2. Se funcionar, teste REAL rápido:
+   python AURORA_TEST_MODE_NO_STOPS.py --quick
+
+3. Para acompanhar ordens em tempo real, use o teste estendido:
+   python AURORA_TEST_MODE_NO_STOPS.py --extended
+
+================================================================================
+O QUE VOCÊ VERÁ:
+================================================================================
+
+✅ Conexão MT5 estabelecida
+✅ Estratégias analisando mercado
+✅ Sinais sendo gerados
+✅ Ordens executadas (SEM stops)
+✅ Status em tempo real
+✅ Relatório final completo
+
+================================================================================
+ARQUIVOS GERADOS:
+================================================================================
+
+• aurora_test_mode.log - Log completo do sistema
+• aurora_test_report_TIMESTAMP.json - Relatório detalhado em JSON
+
+================================================================================
+MONITORAMENTO DE ORDENS:
+================================================================================
+
+As ordens aparecerão no MetaTrader 5 com comentário "AURORA_TEST_NO_STOPS"
+Você pode acompanhar em tempo real no terminal MT5
+
+================================================================================
+

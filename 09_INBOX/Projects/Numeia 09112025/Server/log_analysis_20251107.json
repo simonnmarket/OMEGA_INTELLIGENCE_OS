@@ -1,0 +1,122 @@
+{
+  "total_signals": 1063,
+  "summary": {
+    "XAGUSD": {
+      "executed": 3,
+      "ignored_confidence": 0,
+      "symbol_missing": 0,
+      "market_closed": 0,
+      "invalid_stops": 0,
+      "already_position": 111,
+      "other_failure": 0
+    },
+    "XAUUSD": {
+      "executed": 1,
+      "ignored_confidence": 77,
+      "symbol_missing": 0,
+      "market_closed": 0,
+      "invalid_stops": 0,
+      "already_position": 36,
+      "other_failure": 0
+    },
+    "UK100": {
+      "executed": 1,
+      "ignored_confidence": 77,
+      "symbol_missing": 0,
+      "market_closed": 0,
+      "invalid_stops": 0,
+      "already_position": 36,
+      "other_failure": 0
+    },
+    "US500": {
+      "executed": 1,
+      "ignored_confidence": 77,
+      "symbol_missing": 0,
+      "market_closed": 0,
+      "invalid_stops": 0,
+      "already_position": 36,
+      "other_failure": 0
+    },
+    "USDJPY": {
+      "executed": 1,
+      "ignored_confidence": 77,
+      "symbol_missing": 0,
+      "market_closed": 0,
+      "invalid_stops": 0,
+      "already_position": 36,
+      "other_failure": 0
+    },
+    "UKOIL+": {
+      "executed": 0,
+      "ignored_confidence": 77,
+      "symbol_missing": 0,
+      "market_closed": 0,
+      "invalid_stops": 0,
+      "already_position": 0,
+      "other_failure": 0
+    },
+    "GBPUSD": {
+      "executed": 0,
+      "ignored_confidence": 77,
+      "symbol_missing": 0,
+      "market_closed": 0,
+      "invalid_stops": 0,
+      "already_position": 0,
+      "other_failure": 0
+    },
+    "GER40": {
+      "executed": 0,
+      "ignored_confidence": 77,
+      "symbol_missing": 0,
+      "market_closed": 0,
+      "invalid_stops": 0,
+      "already_position": 0,
+      "other_failure": 0
+    },
+    "EURUSD": {
+      "executed": 1,
+      "ignored_confidence": 77,
+      "symbol_missing": 0,
+      "market_closed": 0,
+      "invalid_stops": 0,
+      "already_position": 36,
+      "other_failure": 0
+    },
+    "SLV": {
+      "executed": 0,
+      "ignored_confidence": 0,
+      "symbol_missing": 37,
+      "market_closed": 0,
+      "invalid_stops": 0,
+      "already_position": 0,
+      "other_failure": 0
+    },
+    "GLD": {
+      "executed": 0,
+      "ignored_confidence": 0,
+      "symbol_missing": 37,
+      "market_closed": 0,
+      "invalid_stops": 0,
+      "already_position": 0,
+      "other_failure": 0
+    },
+    "QQQ": {
+      "executed": 0,
+      "ignored_confidence": 0,
+      "symbol_missing": 37,
+      "market_closed": 0,
+      "invalid_stops": 0,
+      "already_position": 0,
+      "other_failure": 0
+    },
+    "SPY": {
+      "executed": 0,
+      "ignored_confidence": 0,
+      "symbol_missing": 37,
+      "market_closed": 0,
+      "invalid_stops": 0,
+      "already_position": 0,
+      "other_failure": 0
+    }
+  }
+}

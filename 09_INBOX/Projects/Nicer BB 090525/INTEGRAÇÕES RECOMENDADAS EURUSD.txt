@@ -1,0 +1,55 @@
+INTEGRAÇÕES RECOMENDADAS EURUSD
+Integração	Descrição
+WaveDetector	Use o Quantum State como filtro para reforçar a classificação de ondas (impulsiva/corretiva/tsunami).
+VolumeDetector	Combine a força de volume com o Quantum State para criar um novo tipo de divergência quântica.
+PhysicsEngine (futuro)	Transfira o state para o módulo de força (𝐹𝑣) e utilize na equação 𝐸𝑞 = P ⋅ [𝐹𝑣 ⋅ 𝑉ℎ + 𝑆𝑓] + 𝑄𝑣.
+CSignalHub	Adicione CQuantumAnalyzer como provedor de sinal independente ou validatório (modo layer 2).
+
+
+
+
+WaveDetector + Quantum State
+Objetivo: Reforçar a classificação de ondas com base no estado quântico.
+// Exemplo de uso:
+if(WaveDetector.ClassifyWave() == "impulsiva" && QuantumState == "bull_strong")
+    wave_score += 0.20;
+
+if(WaveDetector.ClassifyWave() == "corretiva" && QuantumState == "bear_neutral")
+    wave_score += 0.10;
+
+
+VolumeDetector + Quantum Divergence
+Objetivo: Criar um novo tipo de divergência com volume + quantum.
+if(VolumeDetector.IsRisingVolume() && QuantumState == "bearish")
+{
+    Print("Divergência Quântica detectada: Volume alto + estado bearish");
+    divergence_score += 0.25;
+}
+
+
+PhysicsEngine (futuro módulo)
+double Fv = QuantumStateToForce(QuantumState); // exemplo: bull_strong → 1.8, neutral → 1.0
+double Eq = PositionSize * (Fv * VolumeHeat + StructureForce) + QuantumValue;
+
+
+CSignalHub + CQuantumAnalyzer
+Objetivo: Integrar como provedor ou validador de sinal no modo Layer 2.
+
+CSignalHub.AddSignal("EURUSD_Q_Layer2", CQuantumAnalyzer.GenerateSignal());
+
+// Modo validatório:
+if(CSignalHub.Validate("EURUSD_Q_Layer2", score_total))
+{
+    ExecuteEntry();
+}
+
+
+Modelo de Arquitetura Modular (Resumo)
+Módulo	Função
+WaveDetector	Classificação estrutural de ondas (Elliott, fractais)
+VolumeDetector	Análise de força e divergência volumétrica
+QuantumAnalyzer	Determina o estado do mercado (ex: bull_strong)
+PhysicsEngine	Calcula energia e força via equação avançada
+CSignalHub	Integra, valida e distribui sinais entre módulos
+
+

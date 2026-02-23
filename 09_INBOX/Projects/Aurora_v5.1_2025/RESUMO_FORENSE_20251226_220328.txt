@@ -1,0 +1,37 @@
+================================================================================
+🔬 RELATÓRIO FORENSE - TESTE DE INTEGRIDADE BLOCO 3
+================================================================================
+
+DATA/HORA: 2025-12-26T22:03:29.136968
+STATUS GERAL: INTEGRO_PARCIAL
+NÍVEL DE CONFIANÇA: MODERADO
+
+📊 RESULTADOS DETALHADOS:
+----------------------------------------
+
+📁 TESTES CRÍTICOS (Arquivos Obrigatórios):
+✅ RELATORIO_CONSOLIDACAO_20251226_213652.md: APROVADO
+✅ checkpoint_consolidacao_20251226_213652.json: APROVADO
+✅ mt5_executor_consolidado_20251226_213652.py: APROVADO
+✅ backup_pre_arch001_20251226_204338.zip: APROVADO
+
+📋 ETAPAS DO BLOCO 3 CONFIRMADAS: 8/8
+
+🔍 ANÁLISES FORENSES:
+❌ CONTEÚDO DO RELATÓRIO: COMPROMETIDO
+✅ CHECKPOINT DE CONSOLIDAÇÃO: INTEGRO
+✅ EXECUTOR CONSOLIDADO: INTEGRO
+❌ BACKUP ORIGINAL: SUSPEITO
+
+🚨 ALERTAS DE MANIPULAÇÃO:
+✅ NENHUM ALERTA DETECTADO
+
+================================================================================
+🎯 CONCLUSÃO:
+================================================================================
+
+⚠️  INTEGRIDADE PARCIALMENTE CONFIRMADA
+   Algumas verificações falharam, mas não indica fraude.
+   Recomenda-se verificação adicional.
+
+🔐 Hash SHA256 deste relatório: 0ced82ebd4a73c288f917612aa1ef81b9872d21c2bc140a4b2a7f51994e03b12

@@ -1,0 +1,24 @@
+classification,file_name,relative_path,category,directory,status,total_return,max_drawdown,sharpe_ratio,win_rate,total_trades,symbol,timeframe,sma_period,stop_loss_pips,take_profit_pips,lot_size,has_backtest_function,has_strategy_class,error
+,,,,,,,,,,,,,,,,,,,
+SUMMARY,,,,,,,,,,,,,,,,,,,
+total_strategies,15,,,,,,,,,,,,,,,,,,
+PROMISSOR,0,,,,,,,,,,,,,,,,,,
+ANÊMICO,0,,,,,,,,,,,,,,,,,,
+MORTO,15,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+DETAILS,,,,,,,,,,,,,,,,,,,
+MORTO,CryptoBreakoutStrategy_Scientific.py,Core\Strategies\Crypto\CryptoBreakoutStrategy_Scientific.py,Crypto,Crypto,NOT_TESTABLE,0.00,0.00,0.00,0.0000,0,,,,,,,False,True,Nenhuma função de backtest encontrada ou executável
+MORTO,CryptoFundingRateArbitrageStrategy_Scientific.py,Core\Strategies\Crypto\CryptoFundingRateArbitrageStrategy_Scientific.py,Crypto,Crypto,NOT_TESTABLE,0.00,0.00,0.00,0.0000,0,,,,,,,False,True,Nenhuma função de backtest encontrada ou executável
+MORTO,CryptoLiquidityMiningStrategy_Scientific.py,Core\Strategies\Crypto\CryptoLiquidityMiningStrategy_Scientific.py,Crypto,Crypto,NOT_TESTABLE,0.00,0.00,0.00,0.0000,0,,,,,,,False,True,Nenhuma função de backtest encontrada ou executável
+MORTO,CryptoMeanReversionStrategy_Scientific.py,Core\Strategies\Crypto\CryptoMeanReversionStrategy_Scientific.py,Crypto,Crypto,NOT_TESTABLE,0.00,0.00,0.00,0.0000,0,BTC/USDT,,,,,,False,True,Nenhuma função de backtest encontrada ou executável
+MORTO,CryptoMomentumStrategy_Scientific.py,Core\Strategies\Crypto\CryptoMomentumStrategy_Scientific.py,Crypto,Crypto,NOT_TESTABLE,0.00,0.00,0.00,0.0000,0,,,,,,,False,True,Nenhuma função de backtest encontrada ou executável
+MORTO,CryptoTriangularArbitrageStrategy_Scientific.py,Core\Strategies\Crypto\CryptoTriangularArbitrageStrategy_Scientific.py,Crypto,Crypto,NOT_TESTABLE,0.00,0.00,0.00,0.0000,0,,,,,,,False,True,Nenhuma função de backtest encontrada ou executável
+MORTO,DefenseTechPairsStrategy_Scientific.py,Core\Strategies\Equities\DefenseTechPairsStrategy_Scientific.py,Equities,Equities,NOT_TESTABLE,0.00,0.00,0.00,0.0000,0,,,,,,,False,True,Nenhuma função de backtest encontrada ou executável
+MORTO,SectorRotationStrategy_Scientific.py,Core\Strategies\Equities\SectorRotationStrategy_Scientific.py,Equities,Equities,NOT_TESTABLE,0.00,0.00,0.00,0.0000,0,,,,,,,False,True,Nenhuma função de backtest encontrada ou executável
+MORTO,VolatilityArbitrageStrategy_Scientific.py,Core\Strategies\Equities\VolatilityArbitrageStrategy_Scientific.py,Equities,Equities,NOT_TESTABLE,0.00,0.00,0.00,0.0000,0,,,,,,,False,True,Nenhuma função de backtest encontrada ou executável
+MORTO,ForexCentralBankSentimentStrategy_Scientific.py,Core\Strategies\Forex\ForexCentralBankSentimentStrategy_Scientific.py,Forex,Forex,NOT_TESTABLE,0.00,0.00,0.00,0.0000,0,,,,,,,False,True,Nenhuma função de backtest encontrada ou executável
+MORTO,ForexCrossCurrencyArbitrageStrategy_Scientific.py,Core\Strategies\Forex\ForexCrossCurrencyArbitrageStrategy_Scientific.py,Forex,Forex,NOT_TESTABLE,0.00,0.00,0.00,0.0000,0,,,,,,,False,True,Nenhuma função de backtest encontrada ou executável
+MORTO,ForexSpreadCaptureStrategy_Scientific.py,Core\Strategies\Forex\ForexSpreadCaptureStrategy_Scientific.py,Forex,Forex,NOT_TESTABLE,0.00,0.00,0.00,0.0000,0,,,,,,,False,True,Nenhuma função de backtest encontrada ou executável
+MORTO,SyntheticCalendarSpreadStrategy_Scientific.py,Core\Strategies\Futures\SyntheticCalendarSpreadStrategy_Scientific.py,Futures,Futures,NOT_TESTABLE,0.00,0.00,0.00,0.0000,0,,,,,,,False,True,Nenhuma função de backtest encontrada ou executável
+MORTO,SyntheticTermStructureStrategy_Scientific.py,Core\Strategies\Futures\SyntheticTermStructureStrategy_Scientific.py,Futures,Futures,NOT_TESTABLE,0.00,0.00,0.00,0.0000,0,,,,,,,False,True,Nenhuma função de backtest encontrada ou executável
+MORTO,GoldMacroInflectionStrategy_Scientific.py,Core\Strategies\Gold\GoldMacroInflectionStrategy_Scientific.py,Gold,Gold,NOT_TESTABLE,0.00,0.00,0.00,0.0000,0,,,,,,,False,True,Nenhuma função de backtest encontrada ou executável

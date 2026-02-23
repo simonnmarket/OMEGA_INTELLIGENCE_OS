@@ -1,0 +1,89 @@
+{
+  "test_id": "EXTREME_VALIDATION_20251226_202347",
+  "criticidade": "ALTA_CIENCIA",
+  "status": "COMPLETO",
+  "testes": [
+    {
+      "nome": "Backup Forense",
+      "status": "FALHA_CRITICA",
+      "pontos": 0,
+      "max_pontos": 200,
+      "detalhes": [
+        "❌ NENHUM BACKUP ENCONTRADO - RISCO EXTREMO"
+      ]
+    },
+    {
+      "nome": "Análise Cirúrgica Executor",
+      "status": "APROVADO",
+      "pontos": 210,
+      "max_pontos": 300,
+      "detalhes": [
+        "🔍 Executor principal: .\\04-Infraestrutura\\mt5_executor.py",
+        "⚠️ 2 executores encontrados (esperado: 1)",
+        "✅ mt5.initialize",
+        "✅ mt5.order_send",
+        "✅ mt5.positions_get",
+        "⚠️ Ausente: class.*MT5",
+        "⚠️ Ausente: def.*send_order",
+        "⚠️ Ausente: def.*close_position",
+        "✅ try:",
+        "⚠️ Ausente: except.*Exception",
+        "✅ logging",
+        "✅ import MetaTrader5",
+        "✅ Complexidade adequada: 665 linhas",
+        "📊 Estatísticas: 10 funções, 2 classes",
+        "✅ Classe MT5 detectada na importação",
+        "✅ Importação dinâmica bem-sucedida"
+      ]
+    },
+    {
+      "nome": "Verificação Remoção Duplicatas",
+      "status": "REPROVADO",
+      "pontos": 50,
+      "max_pontos": 200,
+      "detalhes": [
+        "📁 Total arquivos Python: 506",
+        "⚠️ 10 referências suspeitas encontradas:",
+        "   🔸 .\\arch001_executor_completo.py: MT5NoStopsExecutor (linha 128)",
+        "   🔸 .\\arch001_executor_completo.py: mt5_executor_v (linha 122)",
+        "   🔸 .\\arch001_fase1_identificar.py: MT5NoStopsExecutor (linha 14)",
+        "   🔸 .\\AURORA_TEST_MODE_NO_STOPS.py: MT5NoStopsExecutor (linha 67)",
+        "   🔸 .\\bloco1_analise_identificacao.py: MT5NoStopsExecutor (linha 100)",
+        "⚠️ Import suspeito em: .\\ADICIONAR_LISTA_COMPLETA_FINAL.py",
+        "⚠️ Import suspeito em: .\\arch001_executor_completo.py",
+        "⚠️ Import suspeito em: .\\arch001_fase1_identificar.py",
+        "⚠️ Import suspeito em: .\\AURORA_FINAL_EXECUCAO_AIC_V5.1.py",
+        "⚠️ Import suspeito em: .\\AURORA_TEST_MODE_NO_STOPS.py"
+      ]
+    },
+    {
+      "nome": "Stress Test Importação",
+      "status": "APROVADO",
+      "pontos": 150,
+      "max_pontos": 150,
+      "detalhes": [
+        "🧪 Testando importação stress de: .\\04-Infraestrutura\\mt5_executor.py",
+        "✅ Importação dinâmica bem-sucedida",
+        "✅ 20 atributos públicos disponíveis",
+        "   Estrutura rica confirmada",
+        "✅ MetaTrader5 detectado no ambiente",
+        "   Versão MT5: 5.0.45"
+      ]
+    },
+    {
+      "nome": "Validação Relatórios",
+      "status": "APROVADO",
+      "pontos": 150,
+      "max_pontos": 150,
+      "detalhes": [
+        "📄 Relatório analisado: RELATORIO_INTEGRACAO_ARCH001.md",
+        "✅ Relatório completo: 4259 chars",
+        "✅ Status de conclusão encontrado"
+      ]
+    }
+  ],
+  "pontuacao_total": 560,
+  "max_pontos": 1000,
+  "veredito_final": "APROVADO_COM_RESSALVAS",
+  "porcentagem": 56.0
+}

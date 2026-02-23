@@ -1,0 +1,1084 @@
+# ============================================================================
+# ⛏️ STRATEGY MINER (GitHub Intelligence)
+# ============================================================================
+
+class StrategyMiner:
+    """Minerador de estratégias do GitHub com RAG"""
+    
+    def __init__(self, github_token: Optional[str] = None):
+        self.github = Github(github_token) if github_token else Github()
+        self.model = SentenceTransformer("all-MiniLM-L6-v2")
+        self.strategies_db = []
+        self.vector_index = None
+        self.db_path = Path("data/strategies")
+        self.db_path.mkdir(parents=True, exist_ok=True)
+        
+        # Carregar DB existente
+        self._load_db()
+        
+        logger.info("⛏️ Strategy Miner inicializado")
+    
+    async def mine_strategies(self, query: str = "trading strategy filetype:yaml"):
+        """Minera estratégias do GitHub"""
+        logger.info(f"Iniciando mineração: {query}")
+        
+        try:
+            # Buscar no GitHub
+            results = self.github.search_code(
+                query=query,
+                sort="stars",
+                order="desc"
+            )
+            
+            new_strategies = []
+            count = 0
+            
+            for code_file in results[:20]:  # Limitar a 20 resultados
+                try:
+                    if count >= 10:  # Coletar 10 estratégias
+                        break
+                    
+                    strategy = await self._parse_strategy_file(code_file)
+                    if strategy:
+                        new_strategies.append(strategy)
+                        count += 1
+                        
+                        logger.debug(f"Estratégia minerada: {strategy['title'][:50]}...")
+                        
+                except Exception as e:
+                    logger.debug(f"Erro ao processar arquivo: {e}")
+                    continue
+            
+            # Adicionar ao banco de dados
+            for strategy in new_strategies:
+                if not any(s["id"] == strategy["id"] for s in self.strategies_db):
+                    self.strategies_db.append(strategy)
+                    logger.info(f"✅ Nova estratégia: {strategy['title']}")
+            
+            # Atualizar índice vetorial
+            await self._update_vector_index()
+            
+            # Salvar banco de dados
+            await self._save_db()
+            
+            logger.info(f"Mineração completada: {len(new_strategies)} novas estratégias")
+            return new_strategies
+            
+        except Exception as e:
+            logger.error(f"❌ Mineração falhou: {e}")
+            return []
+    
+    async def _parse_strategy_file(self, code_file) -> Optional[Dict]:
+        """Analisar arquivo de estratégia"""
+        try:
+            # Obter conteúdo bruto
+            raw_url = code_file.download_url
+            response = requests.get(raw_url, timeout=10)
+            response.raise_for_status()
+            content = response.text
+            
+            # Determinar formato
+            if code_file.name.endswith(('.yaml', '.yml')):
+                data = yaml.safe_load(content)
+            elif code_file.name.endswith('.json'):
+                data = json.loads(content)
+            else:
+                # Tentar extrair de Markdown ou código
+                data = self._extract_from_text(content)
+            
+            if not data:
+                return None
+            
+            # Extrair informações
+            title = self._extract_title(data, code_file.name)
+            description = self._extract_description(data, content)
+            symbols = self._extract_symbols(content, data)
+            asset_classes = self._infer_asset_classes(symbols)
+            backtest_stats = self._extract_backtest_stats(data, content)
+            
+            # Criar embedding
+            text_for_embedding = f"{title} {description} {' '.join(symbols)}"
+            embedding = self.model.encode(text_for_embedding).tolist()
+            
+            strategy = {
+                "id": f"{code_file.repository.full_name}/{code_file.path}",
+                "title": title,
+                "description": description,
+                "symbols": symbols,
+                "asset_classes": asset_classes,
+                "timeframe": data.get("timeframe", "H1"),
+                "logic_summary": self._summarize_logic(data),
+                "backtest": backtest_stats,
+                "source_url": f"https://github.com/{code_file.repository.full_name}/blob/master/{code_file.path}",
+                "stars": code_file.repository.stargazers_count,
+                "updated_at": code_file.repository.updated_at.isoformat() if code_file.repository.updated_at else datetime.now(timezone.utc).isoformat(),
+                "embedding": embedding,
+                "mined_at": datetime.now(timezone.utc).isoformat()
+            }
+            
+            return strategy
+            
+        except Exception as e:
+            logger.debug(f"Parse falhou: {e}")
+            return None
+    
+    def _extract_title(self, data: Dict, filename: str) -> str:
+        """Extrair título da estratégia"""
+        candidates = [
+            data.get("strategy", {}).get("name"),
+            data.get("name"),
+            data.get("title"),
+            filename.replace(".yaml", "").replace(".json", "").replace("_", " ").title()
+        ]
+        
+        for candidate in candidates:
+            if candidate and isinstance(candidate, str) and len(candidate) > 3:
+                return candidate[:100]
+        
+        return f"Strategy {filename}"
+    
+    def _extract_description(self, data: Dict, content: str) -> str:
+        """Extrair descrição"""
+        # Tentar do YAML/JSON primeiro
+        if isinstance(data, dict):
+            desc = data.get("description") or data.get("desc") or data.get("about", "")
+            if desc and isinstance(desc, str) and len(desc) > 10:
+                return desc[:200]
+        
+        # Extrair do Markdown
+        import re
+        md_desc = re.search(r'#+\s*[Dd]escription\s*\n+(.*?)(\n#+|\n---|\Z)', content, re.DOTALL)
+        if md_desc:
+            return md_desc.group(1).strip()[:200]
+        
+        # Primeiro parágrafo
+        lines = [l.strip() for l in content.split('\n') if l.strip() and not l.strip().startswith('#')]
+        if lines:
+            return lines[0][:200]
+        
+        return "No description available"
+    
+    def _extract_symbols(self, content: str, data: Dict) -> List[str]:
+        """Extrair símbolos mencionados"""
+        symbols = set()
+        content_upper = content.upper()
+        
+        # Pares forex comuns
+        forex_pairs = ["EURUSD", "GBPUSD", "USDJPY", "USDCHF", "AUDUSD", "USDCAD", "NZDUSD"]
+        for pair in forex_pairs:
+            if pair in content_upper:
+                symbols.add(pair)
+        
+        # Metais
+        if "XAU" in content_upper or "GOLD" in content_upper:
+            symbols.add("XAUUSD")
+        if "XAG" in content_upper or "SILVER" in content_upper:
+            symbols.add("XAGUSD")
+        
+        # Crypto
+        if "BTC" in content_upper:
+            symbols.add("BTCUSD")
+        if "ETH" in content_upper:
+            symbols.add("ETHUSD")
+        
+        # Índices
+        indices = ["US500", "US30", "NAS100", "UK100"]
+        for idx in indices:
+            if idx in content_upper:
+                symbols.add(idx)
+        
+        # Verificar em data keys
+        for key in ["symbols", "pairs", "assets", "instrument"]:
+            if key in data:
+                value = data[key]
+                if isinstance(value, list):
+                    for item in value:
+                        if isinstance(item, str) and len(item) in (6, 7):
+                            symbols.add(item.upper())
+                elif isinstance(value, str):
+                    symbols.add(value.upper())
+        
+        return sorted(list(symbols))
+    
+    def _infer_asset_classes(self, symbols: List[str]) -> List[str]:
+        """Inferir classes de ativo dos símbolos"""
+        classes = set()
+        
+        for symbol in symbols:
+            if "XAU" in symbol or "XAG" in symbol:
+                classes.add("metals")
+            elif any(crypto in symbol for crypto in ["BTC", "ETH", "XRP"]):
+                classes.add("crypto")
+            elif any(idx in symbol for idx in ["US500", "US30", "NAS100", "UK100"]):
+                classes.add("indices")
+            elif len(symbol) == 6 and symbol.isalpha():
+                classes.add("forex")
+        
+        return sorted(list(classes)) or ["multi"]
+    
+    def _extract_backtest_stats(self, data: Dict, content: str) -> Dict:
+        """Extrair estatísticas de backtest"""
+        stats = {}
+        
+        # Procurar em data
+        if isinstance(data, dict):
+            for key, value in data.items():
+                if isinstance(value, dict) and any(k in str(value).lower() for k in ["sharpe", "profit", "drawdown", "win"]):
+                    stats = value
+                    break
+        
+        # Procurar em texto
+        import re
+        
+        sharpe_match = re.search(r'sharpe[^0-9]*([0-9]*\.?[0-9]+)', content, re.IGNORECASE)
+        if sharpe_match:
+            stats["sharpe"] = float(sharpe_match.group(1))
+        
+        winrate_match = re.search(r'win.*rate[^0-9]*([0-9]*\.?[0-9]+)%', content, re.IGNORECASE)
+        if winrate_match:
+            stats["win_rate"] = float(winrate_match.group(1))
+        
+        dd_match = re.search(r'drawdown[^0-9]*([0-9]*\.?[0-9]+)%', content, re.IGNORECASE)
+        if dd_match:
+            stats["max_drawdown"] = f"{dd_match.group(1)}%"
+        
+        return stats
+    
+    def _summarize_logic(self, data: Dict) -> str:
+        """Resumir lógica da estratégia"""
+        logic_keys = ["logic", "rules", "conditions", "strategy"]
+        
+        for key in logic_keys:
+            if key in data:
+                logic = data[key]
+                if isinstance(logic, str):
+                    return logic[:150]
+                elif isinstance(logic, dict):
+                    return json.dumps(logic)[:150]
+        
+        return "Logic not specified"
+    
+    def _extract_from_text(self, content: str) -> Dict:
+        """Extrair dados de texto não estruturado"""
+        data = {}
+        
+        # Tentar encontrar blocos YAML/JSON
+        import re
+        
+        yaml_match = re.search(r'```(?:yaml|yml)\n(.*?)\n```', content, re.DOTALL)
+        if yaml_match:
+            try:
+                data = yaml.safe_load(yaml_match.group(1))
+                return data
+            except:
+                pass
+        
+        json_match = re.search(r'```json\n(.*?)\n```', content, re.DOTALL)
+        if json_match:
+            try:
+                data = json.loads(json_match.group(1))
+                return data
+            except:
+                pass
+        
+        # Extrair pares chave-valor simples
+        lines = content.split('\n')
+        for line in lines:
+            if ':' in line:
+                parts = line.split(':', 1)
+                if len(parts) == 2:
+                    key = parts[0].strip()
+                    value = parts[1].strip()
+                    if key and value:
+                        data[key] = value
+        
+        return data
+    
+    async def search_strategies(self, query: str, top_k: int = 5) -> List[Dict]:
+        """Buscar estratégias semanticamente similares"""
+        if not self.strategies_db or not self.vector_index:
+            return []
+        
+        # Gerar embedding da query
+        query_embedding = self.model.encode(query).reshape(1, -1)
+        
+        # Buscar no índice
+        distances, indices = self.vector_index.search(query_embedding.astype("float32"), top_k)
+        
+        # Retornar estratégias
+        results = []
+        for idx, distance in zip(indices[0], distances[0]):
+            if idx < len(self.strategies_db):
+                strategy = self.strategies_db[idx].copy()
+                strategy["similarity_score"] = 1.0 / (1.0 + distance)  # Converter distância para similaridade
+                results.append(strategy)
+        
+        return results
+    
+    async def get_strategies_for_symbol(self, symbol: str) -> List[Dict]:
+        """Obter estratégias relevantes para um símbolo"""
+        relevant = []
+        
+        for strategy in self.strategies_db:
+            if symbol in strategy["symbols"]:
+                relevant.append(strategy)
+        
+        # Ordenar por qualidade (stars + backtest)
+        relevant.sort(key=lambda x: (
+            x.get("stars", 0),
+            float(x.get("backtest", {}).get("sharpe", 0))
+        ), reverse=True)
+        
+        return relevant[:10]  # Top 10
+    
+    async def _update_vector_index(self):
+        """Atualizar índice vetorial FAISS"""
+        if not self.strategies_db:
+            return
+        
+        embeddings = []
+        valid_strategies = []
+        
+        for strategy in self.strategies_db:
+            if "embedding" in strategy and strategy["embedding"]:
+                embeddings.append(strategy["embedding"])
+                valid_strategies.append(strategy)
+        
+        if not embeddings:
+            return
+        
+        embeddings_array = np.array(embeddings).astype("float32")
+        
+        # Criar índice
+        dimension = embeddings_array.shape[1]
+        self.vector_index = faiss.IndexFlatL2(dimension)
+        self.vector_index.add(embeddings_array)
+        
+        logger.debug(f"Índice vetorial atualizado: {len(embeddings)} estratégias")
+    
+    def _load_db(self):
+        """Carregar banco de dados salvo"""
+        db_file = self.db_path / "strategies.json"
+        
+        if db_file.exists():
+            try:
+                with open(db_file, 'r') as f:
+                    data = json.load(f)
+                
+                self.strategies_db = data
+                logger.info(f"✅ DB carregado: {len(self.strategies_db)} estratégias")
+                
+                # Reconstruir índice
+                asyncio.create_task(self._update_vector_index())
+                
+            except Exception as e:
+                logger.error(f"❌ Erro ao carregar DB: {e}")
+                self.strategies_db = []
+    
+    async def _save_db(self):
+        """Salvar banco de dados"""
+        db_file = self.db_path / "strategies.json"
+        
+        # Remover embeddings para economizar espaço
+        strategies_to_save = []
+        for strategy in self.strategies_db:
+            s_copy = strategy.copy()
+            if "embedding" in s_copy:
+                del s_copy["embedding"]
+            strategies_to_save.append(s_copy)
+        
+        try:
+            with open(db_file, 'w') as f:
+                json.dump(strategies_to_save, f, indent=2, default=str)
+            
+            logger.info(f"💾 DB salvo: {len(strategies_to_save)} estratégias")
+            
+        except Exception as e:
+            logger.error(f"❌ Erro ao salvar DB: {e}")
+
+# ============================================================================
+# 📊 DASHBOARD STREAMLIT (Real-Time Monitoring)
+# ============================================================================
+
+class OmegaDashboard:
+    """Dashboard Streamlit em tempo real"""
+    
+    def __init__(self, orchestrator: 'AuroraOrchestrator'):
+        self.orchestrator = orchestrator
+        self.page_config = {
+            "page_title": "AURORA OMEGA v8.0",
+            "page_icon": "⚡",
+            "layout": "wide",
+            "initial_sidebar_state": "expanded"
+        }
+        
+        # Estado do dashboard
+        self.metrics_history = []
+        self.alert_history = []
+        self.max_history_points = 1000
+        
+        logger.info("📊 Dashboard inicializado")
+    
+    def run(self, port: int = 8501, host: str = "0.0.0.0"):
+        """Executar dashboard Streamlit"""
+        import subprocess
+        import sys
+        
+        # Criar script Streamlit temporário
+        script_content = self._generate_streamlit_script()
+        
+        script_path = Path("dashboard_temp.py")
+        script_path.write_text(script_content)
+        
+        # Executar Streamlit
+        cmd = [
+            sys.executable, "-m", "streamlit", "run",
+            str(script_path),
+            "--server.port", str(port),
+            "--server.address", host,
+            "--server.headless", "true",
+            "--browser.serverAddress", host,
+            "--theme.base", "dark"
+        ]
+        
+        logger.info(f"🚀 Iniciando dashboard em http://{host}:{port}")
+        
+        try:
+            process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            return process
+        except Exception as e:
+            logger.error(f"❌ Falha ao iniciar dashboard: {e}")
+            return None
+    
+    def _generate_streamlit_script(self) -> str:
+        """Gerar script Streamlit completo"""
+        return '''
+import streamlit as st
+import pandas as pd
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import plotly.express as px
+from datetime import datetime, timezone, timedelta
+import json
+from pathlib import Path
+import asyncio
+import sys
+import os
+
+# Adicionar diretório atual ao path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+st.set_page_config(
+    page_title="AURORA OMEGA v8.0",
+    page_icon="⚡",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# CSS customizado
+st.markdown("""
+<style>
+    .main-header {
+        background: linear-gradient(90deg, #1a237e 0%, #311b92 100%);
+        padding: 2rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+    }
+    .metric-card {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+    }
+    .metric-card:hover {
+        border-color: #58a6ff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(88, 166, 255, 0.1);
+    }
+    .status-healthy { color: #2ecc71; }
+    .status-warning { color: #f39c12; }
+    .status-critical { color: #e74c3c; }
+    .agent-tile {
+        background: #161b22;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+        border-left: 4px solid #58a6ff;
+    }
+    .alert-critical {
+        background: #2d1b1b;
+        border-left: 4px solid #e74c3c;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+    }
+    .alert-warning {
+        background: #2d2a1b;
+        border-left: 4px solid #f39c12;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+    }
+    .alert-info {
+        background: #1b2d2d;
+        border-left: 4px solid #3498db;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Cabeçalho principal
+with st.container():
+    col1, col2, col3 = st.columns([1, 2, 1])
+    
+    with col1:
+        st.image("https://img.icons8.com/color/96/000000/artificial-intelligence.png", width=80)
+    
+    with col2:
+        st.markdown("""
+        <div class="main-header">
+            <h1 style="color: white; margin: 0;">⚡ AURORA OMEGA v8.0</h1>
+            <p style="color: #bbbbbb; margin: 0.5rem 0 0 0;">
+            Enterprise-Grade Multi-Agent Trading System • Protocolo Omega TIER-0 Ativo
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        current_time = datetime.now(timezone.utc).strftime("%H:%M:%S")
+        st.markdown(f"""
+        <div style="text-align: right; padding-top: 1rem;">
+            <p style="margin: 0; color: #bbbbbb;">System Time (UTC)</p>
+            <h3 style="margin: 0; color: #58a6ff;">{current_time}</h3>
+        </div>
+        """, unsafe_allow_html=True)
+
+# Sidebar - Controles
+with st.sidebar:
+    st.markdown("## 🎛️ Command Center")
+    
+    # Modo de operação
+    operation_mode = st.selectbox(
+        "Operation Mode",
+        ["EXPLORATION", "VALIDATION", "PRODUCTION"],
+        index=0,
+        help="EXPLORATION: Baixos thresholds, sem bloqueios\\nVALIDATION: Thresholds médios, bloqueios habilitados\\nPRODUCTION: Thresholds altos, aprovação humana"
+    )
+    
+    # Refresh rate
+    refresh_rate = st.slider("Refresh Rate (seconds)", 2, 60, 5)
+    
+    st.markdown("---")
+    
+    # Controles do sistema
+    st.markdown("### ⚙️ System Controls")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        if st.button("🔄 Sync All", use_container_width=True):
+            st.info("Syncing all agents...")
+            # Chamada para sincronização
+    
+    with col2:
+        if st.button("📊 Report", use_container_width=True):
+            st.info("Generating daily report...")
+    
+    if st.button("🚨 Emergency Stop", type="secondary", use_container_width=True):
+        confirm = st.checkbox("Confirm Emergency Stop")
+        if confirm:
+            st.error("EMERGENCY STOP ACTIVATED")
+            # Chamada para emergency stop
+    
+    st.markdown("---")
+    
+    # Status do sistema
+    st.markdown("### 📡 System Status")
+    
+    # Métricas rápidas
+    try:
+        with open("logs/system_status.log", "r") as f:
+            lines = f.readlines()[-5:]
+            for line in lines:
+                if "✅" in line:
+                    st.success(line.strip())
+                elif "⚠️" in line:
+                    st.warning(line.strip())
+                elif "❌" in line:
+                    st.error(line.strip())
+    except:
+        st.info("Awaiting system logs...")
+
+# Funções auxiliares
+def load_execution_logs():
+    """Carregar logs de execução"""
+    try:
+        today = datetime.now(timezone.utc).date()
+        log_file = Path(f"logs/executions_{today.isoformat()}.csv")
+        
+        if log_file.exists():
+            df = pd.read_csv(log_file)
+            df["timestamp"] = pd.to_datetime(df["timestamp"], utc=True)
+            return df
+    except Exception as e:
+        st.error(f"Error loading logs: {e}")
+    
+    return pd.DataFrame()
+
+def load_simulation_logs():
+    """Carregar logs de simulação"""
+    try:
+        today = datetime.now(timezone.utc).date()
+        log_file = Path(f"logs/simulated_executions_{today.isoformat()}.csv")
+        
+        if log_file.exists():
+            df = pd.read_csv(log_file)
+            df["timestamp"] = pd.to_datetime(df["timestamp"], utc=True)
+            return df
+    except:
+        pass
+    
+    return pd.DataFrame()
+
+def get_agent_status():
+    """Obter status dos agentes"""
+    # Em produção, buscar do sistema real
+    agents = []
+    
+    # Agentes de exemplo
+    sample_agents = [
+        {"name": "Agent_XAUUSD", "status": "HEALTHY", "latency_ms": 42, "confidence": 0.82, "position": 15000},
+        {"name": "Agent_EURUSD", "status": "HEALTHY", "latency_ms": 38, "confidence": 0.76, "position": 8000},
+        {"name": "Agent_BTCUSD", "status": "WARNING", "latency_ms": 125, "confidence": 0.65, "position": 12000},
+        {"name": "CEO", "status": "HEALTHY", "latency_ms": 55, "confidence": 0.71, "position": 0},
+        {"name": "CKO", "status": "HEALTHY", "latency_ms": 48, "confidence": 0.88, "position": 0},
+    ]
+    
+    return sample_agents
+
+# Conteúdo principal
+tab1, tab2, tab3, tab4 = st.tabs(["📈 Trading", "🤖 Agents", "📊 Analytics", "⚙️ Config"])
+
+with tab1:
+    st.markdown("## 📈 Trading Activity")
+    
+    # Carregar dados
+    real_logs = load_execution_logs()
+    sim_logs = load_simulation_logs()
+    
+    if not real_logs.empty or not sim_logs.empty:
+        # Combinar logs
+        if not real_logs.empty and not sim_logs.empty:
+            all_logs = pd.concat([real_logs, sim_logs])
+        elif not real_logs.empty:
+            all_logs = real_logs
+        else:
+            all_logs = sim_logs
+        
+        # Métricas rápidas
+        col1, col2, col3, col4 = st.columns(4)
+        
+        with col1:
+            total_trades = len(all_logs)
+            st.metric("Total Trades", total_trades)
+        
+        with col2:
+            today_trades = len(all_logs[all_logs["timestamp"].dt.date == datetime.now(timezone.utc).date()])
+            st.metric("Today's Trades", today_trades)
+        
+        with col3:
+            buy_trades = len(all_logs[all_logs["action"] == "BUY"])
+            st.metric("Buy Trades", buy_trades)
+        
+        with col4:
+            sell_trades = len(all_logs[all_logs["action"] == "SELL"])
+            st.metric("Sell Trades", sell_trades)
+        
+        # Gráfico de timeline
+        st.markdown("### Trading Timeline")
+        
+        if not all_logs.empty:
+            fig = go.Figure()
+            
+            # Adicionar trades BUY
+            buy_df = all_logs[all_logs["action"] == "BUY"]
+            if not buy_df.empty:
+                fig.add_trace(go.Scatter(
+                    x=buy_df["timestamp"],
+                    y=buy_df["price"],
+                    mode='markers',
+                    name='BUY',
+                    marker=dict(
+                        color='green',
+                        size=10,
+                        symbol='triangle-up'
+                    ),
+                    hovertemplate="<b>BUY</b><br>Price: %{y:.5f}<br>Time: %{x}<extra></extra>"
+                ))
+            
+            # Adicionar trades SELL
+            sell_df = all_logs[all_logs["action"] == "SELL"]
+            if not sell_df.empty:
+                fig.add_trace(go.Scatter(
+                    x=sell_df["timestamp"],
+                    y=sell_df["price"],
+                    mode='markers',
+                    name='SELL',
+                    marker=dict(
+                        color='red',
+                        size=10,
+                        symbol='triangle-down'
+                    ),
+                    hovertemplate="<b>SELL</b><br>Price: %{y:.5f}<br>Time: %{x}<extra></extra>"
+                ))
+            
+            fig.update_layout(
+                title="Execution Timeline",
+                xaxis_title="Time (UTC)",
+                yaxis_title="Price",
+                height=400,
+                template="plotly_dark",
+                hovermode="closest"
+            )
+            
+            st.plotly_chart(fig, use_container_width=True)
+        
+        # Tabela de trades recentes
+        st.markdown("### Recent Trades")
+        
+        if not all_logs.empty:
+            recent_trades = all_logs.sort_values("timestamp", ascending=False).head(20)
+            
+            # Formatar para exibição
+            display_df = recent_trades[["timestamp", "symbol", "action", "volume", "price", "status"]].copy()
+            display_df["timestamp"] = display_df["timestamp"].dt.strftime("%H:%M:%S")
+            display_df["price"] = display_df["price"].round(5)
+            
+            st.dataframe(
+                display_df,
+                use_container_width=True,
+                column_config={
+                    "timestamp": "Time",
+                    "symbol": "Symbol",
+                    "action": "Action",
+                    "volume": "Volume",
+                    "price": "Price",
+                    "status": "Status"
+                }
+            )
+    else:
+        st.info("⏳ Awaiting trading activity...")
+
+with tab2:
+    st.markdown("## 🤖 Agent Fleet")
+    
+    agents = get_agent_status()
+    
+    # Métricas dos agentes
+    healthy_count = sum(1 for a in agents if a["status"] == "HEALTHY")
+    warning_count = sum(1 for a in agents if a["status"] == "WARNING")
+    critical_count = sum(1 for a in agents if a["status"] == "CRITICAL")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.metric("🟢 Healthy", healthy_count)
+    
+    with col2:
+        st.metric("🟡 Warning", warning_count)
+    
+    with col3:
+        st.metric("🔴 Critical", critical_count)
+    
+    # Lista de agentes
+    st.markdown("### Agent Details")
+    
+    for agent in agents:
+        status_color = {
+            "HEALTHY": "#2ecc71",
+            "WARNING": "#f39c12",
+            "CRITICAL": "#e74c3c"
+        }.get(agent["status"], "#bbbbbb")
+        
+        st.markdown(f"""
+        <div class="agent-tile">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>{agent['name']}</strong><br>
+                    <small>Status: <span style="color: {status_color};">{agent['status']}</span></small>
+                </div>
+                <div style="text-align: right;">
+                    <small>Latency: {agent['latency_ms']}ms</small><br>
+                    <small>Confidence: {agent['confidence']:.0%}</small>
+                </div>
+            </div>
+            <small>Position: ${agent['position']:,.0f}</small>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Gráfico de performance
+    st.markdown("### Agent Performance")
+    
+    if agents:
+        df = pd.DataFrame(agents)
+        
+        fig = px.bar(
+            df,
+            x="name",
+            y="confidence",
+            color="status",
+            color_discrete_map={
+                "HEALTHY": "#2ecc71",
+                "WARNING": "#f39c12",
+                "CRITICAL": "#e74c3c"
+            },
+            title="Agent Confidence Levels",
+            labels={"name": "Agent", "confidence": "Confidence"},
+            height=300
+        )
+        
+        fig.update_layout(template="plotly_dark")
+        st.plotly_chart(fig, use_container_width=True)
+
+with tab3:
+    st.markdown("## 📊 System Analytics")
+    
+    # Performance metrics
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("### System Health")
+        
+        # CPU/RAM usage (simulado)
+        cpu_usage = 65.3
+        ram_usage = 42.8
+        
+        fig1 = go.Figure()
+        
+        fig1.add_trace(go.Indicator(
+            mode="gauge+number",
+            value=cpu_usage,
+            title={"text": "CPU Usage"},
+            domain={'x': [0, 1], 'y': [0, 1]},
+            gauge={
+                'axis': {'range': [0, 100]},
+                'bar': {'color': "#58a6ff"},
+                'steps': [
+                    {'range': [0, 50], 'color': "#2ecc71"},
+                    {'range': [50, 80], 'color': "#f39c12"},
+                    {'range': [80, 100], 'color': "#e74c3c"}
+                ]
+            }
+        ))
+        
+        st.plotly_chart(fig1, use_container_width=True)
+    
+    with col2:
+        st.markdown("### Memory Usage")
+        
+        fig2 = go.Figure()
+        
+        fig2.add_trace(go.Indicator(
+            mode="gauge+number",
+            value=ram_usage,
+            title={"text": "RAM Usage"},
+            domain={'x': [0, 1], 'y': [0, 1]},
+            gauge={
+                'axis': {'range': [0, 100]},
+                'bar': {'color': "#58a6ff"},
+                'steps': [
+                    {'range': [0, 60], 'color': "#2ecc71"},
+                    {'range': [60, 85], 'color': "#f39c12"},
+                    {'range': [85, 100], 'color': "#e74c3c"}
+                ]
+            }
+        ))
+        
+        st.plotly_chart(fig2, use_container_width=True)
+    
+    # Latency monitoring
+    st.markdown("### System Latency")
+    
+    # Dados simulados de latência
+    import numpy as np
+    
+    timestamps = pd.date_range(
+        end=datetime.now(timezone.utc),
+        periods=50,
+        freq="1min"
+    )
+    
+    latency_data = pd.DataFrame({
+        "timestamp": timestamps,
+        "decision_latency_ms": np.random.normal(45, 10, 50),
+        "execution_latency_ms": np.random.normal(80, 20, 50),
+        "network_latency_ms": np.random.normal(5, 1, 50)
+    })
+    
+    fig3 = go.Figure()
+    
+    for col in ["decision_latency_ms", "execution_latency_ms", "network_latency_ms"]:
+        fig3.add_trace(go.Scatter(
+            x=latency_data["timestamp"],
+            y=latency_data[col],
+            mode='lines+markers',
+            name=col.replace("_ms", "").replace("_", " ").title(),
+            hovertemplate="%{y:.1f}ms<extra></extra>"
+        ))
+    
+    fig3.update_layout(
+        title="Latency Over Time",
+        xaxis_title="Time",
+        yaxis_title="Latency (ms)",
+        height=300,
+        template="plotly_dark",
+        hovermode="x unified"
+    )
+    
+    st.plotly_chart(fig3, use_container_width=True)
+
+with tab4:
+    st.markdown("## ⚙️ System Configuration")
+    
+    # Configurações atuais
+    st.markdown("### Current Settings")
+    
+    config_col1, config_col2 = st.columns(2)
+    
+    with config_col1:
+        st.markdown("**Trading Settings**")
+        
+        st.code("""
+Mode: EXPLORATION
+Consensus Threshold: 28.6%
+Risk Mode: EXPLORATION
+Max Drawdown: 15.0%
+Cycle Interval: 30s
+Max Agents: 20
+        """)
+    
+    with config_col2:
+        st.markdown("**System Settings**")
+        
+        st.code("""
+Log Level: INFO
+Dashboard Port: 8501
+Dashboard Host: 0.0.0.0
+Data Directory: ./data
+Logs Directory: ./logs
+Auto Restart: Enabled
+        """)
+    
+    st.markdown("---")
+    
+    # Editor de configuração
+    st.markdown("### Configuration Editor")
+    
+    config_file = st.file_uploader("Upload config file (JSON)", type=["json"])
+    
+    if config_file:
+        try:
+            config_data = json.load(config_file)
+            st.json(config_data)
+            
+            if st.button("Apply Configuration"):
+                st.success("Configuration applied successfully!")
+        except Exception as e:
+            st.error(f"Error loading config: {e}")
+    
+    # Exportar configuração
+    if st.button("Export Current Config"):
+        sample_config = {
+            "mode": "EXPLORATION",
+            "symbols": ["XAUUSD", "EURUSD", "GBPUSD"],
+            "cycle_interval_sec": 30,
+            "max_agents": 20,
+            "log_level": "INFO"
+        }
+        
+        st.download_button(
+            label="Download Config",
+            data=json.dumps(sample_config, indent=2),
+            file_name="aurora_config.json",
+            mime="application/json"
+        )
+
+# Auto-refresh
+if refresh_rate < 30:
+    st.info(f"🔄 Auto-refreshing in {refresh_rate} seconds...")
+    import time
+    time.sleep(refresh_rate)
+    st.rerun()
+'''
+
+# ============================================================================
+# 🚀 MAIN EXECUTION
+# ============================================================================
+
+async def main():
+    """Função principal de execução"""
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="AURORA OMEGA v8.0 - Enterprise Trading System")
+    parser.add_argument("--config", type=str, help="Path to configuration file")
+    parser.add_argument("--mode", choices=["EXPLORATION", "VALIDATION", "PRODUCTION"], 
+                       default="EXPLORATION", help="System operation mode")
+    parser.add_argument("--dashboard", action="store_true", help="Enable Streamlit dashboard")
+    parser.add_argument("--dashboard-port", type=int, default=8501, help="Dashboard port")
+    parser.add_argument("--dashboard-host", type=str, default="0.0.0.0", help="Dashboard host")
+    parser.add_argument("--start-all", action="store_true", help="Start all components")
+    parser.add_argument("--log-level", choices=["DEBUG", "INFO", "WARNING", "ERROR"], 
+                       default="INFO", help="Logging level")
+    
+    args = parser.parse_args()
+    
+    # Configurar logging
+    logging.getLogger().setLevel(getattr(logging, args.log_level))
+    
+    logger.info("🚀 Inicializando AURORA OMEGA v8.0")
+    
+    try:
+        # Criar orquestrador
+        orchestrator = AuroraOrchestrator(args.config)
+        
+        # Iniciar dashboard se solicitado
+        dashboard_process = None
+        if args.dashboard:
+            dashboard = OmegaDashboard(orchestrator)
+            dashboard_process = dashboard.run(
+                port=args.dashboard_port,
+                host=args.dashboard_host
+            )
+            logger.info(f"📊 Dashboard iniciado em http://{args.dashboard_host}:{args.dashboard_port}")
+        
+        # Iniciar sistema principal
+        if args.start_all:
+            await orchestrator.start()
+        else:
+            logger.info("Sistema pronto. Use --start-all para iniciar trading.")
+        
+        # Aguardar finalização
+        if dashboard_process:
+            dashboard_process.wait()
+        
+    except KeyboardInterrupt:
+        logger.info("🛑 Interrupção por usuário")
+    except Exception as e:
+        logger.error(f"💥 Erro fatal: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
+    finally:
+        logger.info("👋 AURORA OMEGA v8.0 finalizado")
+
+if __name__ == "__main__":
+    # Criar diretórios necessários
+    Path("logs").mkdir(exist_ok=True)
+    Path("data").mkdir(exist_ok=True)
+    Path("config").mkdir(exist_ok=True)
+    
+    # Executar sistema
+    asyncio.run(main())

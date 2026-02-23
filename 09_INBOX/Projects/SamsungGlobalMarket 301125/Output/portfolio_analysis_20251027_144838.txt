@@ -1,0 +1,127 @@
+========================================================================================================================
+SAMSUNG GLOBAL MARKET - ANÁLISE HOLÍSTICA DE PORTFÓLIO
+Data: 2025-10-27 14:48:38
+========================================================================================================================
+
+RANKING COMPLETO (12 ESTRATÉGIAS):
+------------------------------------------------------------------------------------------------------------------------
+
+1. Crypto Mean Reversion BTC V3 (Crypto)
+   Capital Final:     $108,684.54
+   Retorno:           8.68%
+   Sharpe Ratio:      0.41
+   Sortino Ratio:     0.31
+   Max Drawdown:      -10.23%
+   Win Rate:          100.00%
+   Total Trades:      1
+   Profit Factor:     inf
+
+2. Gold Quantum Perfection V3 (Commodities)
+   Capital Final:     $100,000.00
+   Retorno:           0.00%
+   Sharpe Ratio:      0.00
+   Sortino Ratio:     -200.00
+   Max Drawdown:      0.00%
+   Win Rate:          0.00%
+   Total Trades:      0
+   Profit Factor:     inf
+
+3. Golden Strategy Futures V3 (Futuros)
+   Capital Final:     $100,000.00
+   Retorno:           0.00%
+   Sharpe Ratio:      0.00
+   Sortino Ratio:     -200.00
+   Max Drawdown:      0.00%
+   Win Rate:          0.00%
+   Total Trades:      0
+   Profit Factor:     inf
+
+4. Term Structure Arbitrage V3 (Futuros)
+   Capital Final:     $100,000.00
+   Retorno:           0.00%
+   Sharpe Ratio:      0.00
+   Sortino Ratio:     -200.00
+   Max Drawdown:      0.00%
+   Win Rate:          0.00%
+   Total Trades:      0
+   Profit Factor:     inf
+
+5. Cross Currency Arbitrage V3 (Forex)
+   Capital Final:     $100,000.00
+   Retorno:           0.00%
+   Sharpe Ratio:      0.00
+   Sortino Ratio:     -200.00
+   Max Drawdown:      0.00%
+   Win Rate:          0.00%
+   Total Trades:      0
+   Profit Factor:     inf
+
+6. Forex Central Bank Sentiment V3 (Forex)
+   Capital Final:     $100,000.00
+   Retorno:           0.00%
+   Sharpe Ratio:      0.00
+   Sortino Ratio:     -200.00
+   Max Drawdown:      0.00%
+   Win Rate:          0.00%
+   Total Trades:      0
+   Profit Factor:     inf
+
+7. Forex Liquidity Mining V3 (Forex)
+   Capital Final:     $100,000.00
+   Retorno:           0.00%
+   Sharpe Ratio:      0.00
+   Sortino Ratio:     -200.00
+   Max Drawdown:      0.00%
+   Win Rate:          0.00%
+   Total Trades:      0
+   Profit Factor:     inf
+
+8. Crypto Triangular Arbitrage V3 (Crypto)
+   Capital Final:     $100,000.00
+   Retorno:           0.00%
+   Sharpe Ratio:      0.00
+   Sortino Ratio:     -200.00
+   Max Drawdown:      0.00%
+   Win Rate:          0.00%
+   Total Trades:      0
+   Profit Factor:     inf
+
+9. Equities Defense Tech Pairs V3 (Equities)
+   Capital Final:     $100,000.00
+   Retorno:           0.00%
+   Sharpe Ratio:      0.00
+   Sortino Ratio:     -200.00
+   Max Drawdown:      0.00%
+   Win Rate:          0.00%
+   Total Trades:      0
+   Profit Factor:     inf
+
+10. Equities Sector Rotation V3 (Equities)
+   Capital Final:     $100,000.00
+   Retorno:           0.00%
+   Sharpe Ratio:      0.00
+   Sortino Ratio:     -200.00
+   Max Drawdown:      0.00%
+   Win Rate:          0.00%
+   Total Trades:      0
+   Profit Factor:     inf
+
+11. Equities Volatility Arbitrage V3 (Equities)
+   Capital Final:     $100,000.00
+   Retorno:           0.00%
+   Sharpe Ratio:      0.00
+   Sortino Ratio:     -200.00
+   Max Drawdown:      0.00%
+   Win Rate:          0.00%
+   Total Trades:      0
+   Profit Factor:     inf
+
+12. Oil Strategy Proven V3 (Commodities)
+   Capital Final:     $68,517.49
+   Retorno:           -31.48%
+   Sharpe Ratio:      -0.94
+   Sortino Ratio:     -1.49
+   Max Drawdown:      -43.73%
+   Win Rate:          0.00%
+   Total Trades:      1
+   Profit Factor:     0.00

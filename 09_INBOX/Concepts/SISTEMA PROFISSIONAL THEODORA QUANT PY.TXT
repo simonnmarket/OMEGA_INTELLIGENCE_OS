@@ -1,0 +1,277 @@
+# theodora_quant_system.py
+import numpy as np
+import pandas as pd
+import MetaTrader5 as mt5
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+import talib as ta
+import warnings
+warnings.filterwarnings('ignore')
+
+class TheodoraQuantSystem:
+    def __init__(self):
+        self.model = None
+        self.scaler = StandardScaler()
+        self.feature_columns = []
+        
+    def create_advanced_features(self, df):
+        """Criar features de nível institucional"""
+        # Price features
+        df['returns'] = df['close'].pct_change()
+        df['volatility'] = df['returns'].rolling(20).std()
+        df['log_returns'] = np.log(df['close']/df['close'].shift(1))
+        
+        # Technical indicators
+        df['rsi'] = ta.RSI(df['close'], timeperiod=14)
+        df['macd'], df['macd_signal'], _ = ta.MACD(df['close'])
+        df['bb_upper'], df['bb_middle'], df['bb_lower'] = ta.BBANDS(df['close'])
+        df['atr'] = ta.ATR(df['high'], df['low'], df['close'], timeperiod=14)
+        df['adx'] = ta.ADX(df['high'], df['low'], df['close'], timeperiod=14)
+        df['obv'] = ta.OBV(df['close'], df['tick_volume'])
+        
+        # Statistical features
+        df['z_score'] = (df['close'] - df['close'].rolling(20).mean()) / df['close'].rolling(20).std()
+        df['momentum'] = df['close'] / df['close'].shift(5) - 1
+        df['volume_ratio'] = df['tick_volume'] / df['tick_volume'].rolling(20).mean()
+        
+        # Price action features
+        df['body_size'] = (df['close'] - df['open']).abs() / df['atr']
+        df['high_low_ratio'] = (df['high'] - df['low']) / df['atr']
+        
+        return df.dropna()
+
+    def prepare_ml_data(self, df, lookback=50):
+        """Preparar dados para machine learning"""
+        features = []
+        targets = []
+        
+        for i in range(lookback, len(df)-1):
+            # Features de múltiplos timeframes
+            window = df.iloc[i-lookback:i]
+            
+            feature_set = {
+                'rsi': window['rsi'].iloc[-1],
+                'macd_diff': window['macd'].iloc[-1] - window['macd_signal'].iloc[-1],
+                'bb_position': (window['close'].iloc[-1] - window['bb_lower'].iloc[-1]) / 
+                              (window['bb_upper'].iloc[-1] - window['bb_lower'].iloc[-1]),
+                'volatility': window['volatility'].iloc[-1],
+                'adx_strength': window['adx'].iloc[-1],
+                'volume_spike': window['volume_ratio'].iloc[-1],
+                'momentum': window['momentum'].iloc[-1],
+                'z_score': window['z_score'].iloc[-1],
+                
+                # Features estatísticas
+                'skewness': window['returns'].skew(),
+                'kurtosis': window['returns'].kurtosis(),
+                'hurst': self.calculate_hurst_exponent(window['close']),
+            }
+            
+            features.append(list(feature_set.values()))
+            
+            # Target: Retorno futuro (1 se positivo, 0 se negativo)
+            future_return = df['close'].iloc[i+1] / df['close'].iloc[i] - 1
+            targets.append(1 if future_return > 0 else 0)
+        
+        return np.array(features), np.array(targets), list(feature_set.keys())
+
+    def calculate_hurst_exponent(self, prices):
+        """Calcular Hurst Exponent para tendência"""
+        lags = range(2, 20)
+        tau = [np.sqrt(np.std(np.subtract(prices[lag:], prices[:-lag]))) for lag in lags]
+        poly = np.polyfit(np.log(lags), np.log(tau), 1)
+        return poly[0] * 2.0
+
+    def train_model(self, symbols, timeframe=mt5.TIMEFRAME_H1, bars=2000):
+        """Treinar modelo com dados de múltiplos símbolos"""
+        all_features = []
+        all_targets = []
+        
+        for symbol in symbols:
+            print(f"Coletando dados de {symbol}...")
+            rates = mt5.copy_rates_from_pos(symbol, timeframe, 0, bars)
+            if rates is None:
+                continue
+                
+            df = pd.DataFrame(rates)
+            df = self.create_advanced_features(df)
+            
+            if len(df) > 100:
+                features, targets, feature_names = self.prepare_ml_data(df)
+                all_features.extend(features)
+                all_targets.extend(targets)
+        
+        if not all_features:
+            raise ValueError("Dados insuficientes para treinamento")
+        
+        self.feature_columns = feature_names
+        X = np.array(all_features)
+        y = np.array(all_targets)
+        
+        # Balancear classes
+        from imblearn.over_sampling import SMOTE
+        smote = SMOTE()
+        X, y = smote.fit_resample(X, y)
+        
+        # Treinar modelo
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+        X_train = self.scaler.fit_transform(X_train)
+        X_test = self.scaler.transform(X_test)
+        
+        self.model = RandomForestClassifier(
+            n_estimators=100,
+            max_depth=10,
+            min_samples_split=5,
+            class_weight='balanced',
+            random_state=42
+        )
+        
+        self.model.fit(X_train, y_train)
+        
+        # Avaliar
+        train_score = self.model.score(X_train, y_train)
+        test_score = self.model.score(X_test, y_test)
+        
+        print(f"✅ Modelo treinado - Acurácia: Treino {train_score:.3f}, Teste {test_score:.3f}")
+        return True
+
+    def predict_signal(self, symbol, timeframe=mt5.TIMEFRAME_H1):
+        """Fazer previsão em tempo real"""
+        rates = mt5.copy_rates_from_pos(symbol, timeframe, 0, 100)
+        if rates is None:
+            return "HOLD", 0.0
+            
+        df = pd.DataFrame(rates)
+        df = self.create_advanced_features(df)
+        
+        if len(df) < 50:
+            return "HOLD", 0.0
+        
+        # Preparar features atuais
+        current_features = []
+        window = df.iloc[-50:]
+        
+        feature_set = {
+            'rsi': window['rsi'].iloc[-1],
+            'macd_diff': window['macd'].iloc[-1] - window['macd_signal'].iloc[-1],
+            'bb_position': (window['close'].iloc[-1] - window['bb_lower'].iloc[-1]) / 
+                          (window['bb_upper'].iloc[-1] - window['bb_lower'].iloc[-1]),
+            'volatility': window['volatility'].iloc[-1],
+            'adx_strength': window['adx'].iloc[-1],
+            'volume_spike': window['volume_ratio'].iloc[-1],
+            'momentum': window['momentum'].iloc[-1],
+            'z_score': window['z_score'].iloc[-1],
+            'skewness': window['returns'].skew(),
+            'kurtosis': window['returns'].kurtosis(),
+            'hurst': self.calculate_hurst_exponent(window['close']),
+        }
+        
+        current_features.append(list(feature_set.values()))
+        X_current = self.scaler.transform(current_features)
+        
+        # Prever
+        prediction = self.model.predict(X_current)[0]
+        probability = self.model.predict_proba(X_current)[0][1]
+        
+        return "BUY" if prediction == 1 else "SELL", probability
+
+    def execute_quant_trade(self, symbol, signal, confidence):
+        """Executar trade com gerenciamento de risco quantitativo"""
+        if confidence < 0.6:  # Confidence threshold
+            return False
+            
+        # Obter preço
+        tick = mt5.symbol_info_tick(symbol)
+        if tick is None:
+            return False
+            
+        price = tick.ask if signal == "BUY" else tick.bid
+        
+        # Kelly Criterion position sizing
+        account_balance = mt5.account_info().balance
+        win_probability = confidence
+        win_loss_ratio = 1.5  # Assumption
+        
+        kelly_fraction = win_probability - (1 - win_probability) / win_loss_ratio
+        risk_amount = account_balance * kelly_fraction * 0.1  # 10% do Kelly
+        
+        # Calcular tamanho da posição
+        point = mt5.symbol_info(symbol).point
+        atr = self.calculate_current_atr(symbol)
+        stop_loss = atr * 2  # 2 ATR stop loss
+        
+        tick_value = mt5.symbol_info(symbol).trade_tick_value_profit
+        if tick_value > 0:
+            position_size = risk_amount / (stop_loss * point * tick_value)
+        else:
+            position_size = risk_amount / (stop_loss * point * 10)  # Fallback
+        
+        # Executar ordem
+        request = {
+            "action": mt5.TRADE_ACTION_DEAL,
+            "symbol": symbol,
+            "volume": round(position_size, 2),
+            "type": mt5.ORDER_TYPE_BUY if signal == "BUY" else mt5.ORDER_TYPE_SELL,
+            "price": price,
+            "sl": price - stop_loss * point if signal == "BUY" else price + stop_loss * point,
+            "tp": price + stop_loss * 1.5 * point if signal == "BUY" else price - stop_loss * 1.5 * point,
+            "deviation": 10,
+            "magic": 20241220,
+            "comment": f"TheodoraQuant Conf:{confidence:.2f}",
+            "type_time": mt5.ORDER_TIME_GTC,
+            "type_filling": mt5.ORDER_FILLING_FOK,
+        }
+        
+        result = mt5.order_send(request)
+        return result.retcode == mt5.TRADE_RETCODE_DONE
+
+    def calculate_current_atr(self, symbol, period=14):
+        """Calcular ATR atual"""
+        rates = mt5.copy_rates_from_pos(symbol, mt5.TIMEFRAME_H1, 0, period+1)
+        if rates is None:
+            return 0.001
+            
+        df = pd.DataFrame(rates)
+        return ta.ATR(df['high'], df['low'], df['close'], timeperiod=period).iloc[-1]
+
+# Sistema principal
+def main():
+    print("🚀 THEODORA QUANT SYSTEM - Institutional Grade")
+    print("=" * 60)
+    
+    # Conectar ao MT5
+    if not mt5.initialize():
+        print("❌ Falha ao conectar ao MT5")
+        return
+        
+    # Configuração
+    symbols = ["EURUSD", "GBPUSD", "XAUUSD", "USDJPY", "BTCUSD"]
+    quant_system = TheodoraQuantSystem()
+    
+    # Fase 1: Treinamento
+    print("🧠 Treinando modelo com dados históricos...")
+    quant_system.train_model(symbols)
+    
+    # Fase 2: Trading em tempo real
+    print("🎯 Iniciando trading algorítmico...")
+    while True:
+        try:
+            for symbol in symbols:
+                signal, confidence = quant_system.predict_signal(symbol)
+                if signal != "HOLD":
+                    print(f"📊 {symbol}: {signal} (Conf: {confidence:.2f})")
+                    if quant_system.execute_quant_trade(symbol, signal, confidence):
+                        print(f"✅ Trade executado: {signal} {symbol}")
+                
+                time.sleep(1)
+                
+            time.sleep(300)  # 5 minutos entre ciclos
+            
+        except KeyboardInterrupt:
+            break
+            
+    mt5.shutdown()
+    print("✅ Sistema finalizado")
+
+if __name__ == "__main__":
+    main()

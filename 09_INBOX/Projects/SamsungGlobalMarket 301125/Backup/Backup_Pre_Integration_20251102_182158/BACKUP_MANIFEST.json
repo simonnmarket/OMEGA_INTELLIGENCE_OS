@@ -1,0 +1,177 @@
+{
+  "timestamp": "20251102_182158",
+  "backup_dir": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158",
+  "files": [
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\CRYPTO_FINAL_SIMPLES_FUNCIONAL.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Server\\CRYPTO_FINAL_SIMPLES_FUNCIONAL.py",
+      "size": 6348,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\crypto_FORCA_TOTAL_v3_3.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Server\\crypto_FORCA_TOTAL_v3_3.py",
+      "size": 11913,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\crypto_live_server_v3_1.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Server\\crypto_live_server_v3_1.py",
+      "size": 10977,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\crypto_orbital_launch_v3_1.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Server\\crypto_orbital_launch_v3_1.py",
+      "size": 17186,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\crypto_orbital_server_v3_1_CORRIGIDO_URGENTE.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Server\\crypto_orbital_server_v3_1_CORRIGIDO_URGENTE.py",
+      "size": 10623,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\crypto_orbital_server_v3_1_MAXIMA_POTENCIA.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Server\\crypto_orbital_server_v3_1_MAXIMA_POTENCIA.py",
+      "size": 13818,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\crypto_server_final_v3_2.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Server\\crypto_server_final_v3_2.py",
+      "size": 6619,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\crypto_simple_FUNCIONAL.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Server\\crypto_simple_FUNCIONAL.py",
+      "size": 2628,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\crypto_URGENTE_OPERACIONAL.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Server\\crypto_URGENTE_OPERACIONAL.py",
+      "size": 10369,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\main_server.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Server\\main_server.py",
+      "size": 9633,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\mt5_socket_service.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Server\\mt5_socket_service.py",
+      "size": 15560,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\server_file_based_v2.0.0.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Server\\server_file_based_v2.0.0.py",
+      "size": 9921,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\server_file_based_v3_0_NUMEIA.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Server\\server_file_based_v3_0_NUMEIA.py",
+      "size": 16893,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\server_file_based_v3_1_CORRIGIDO.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Server\\server_file_based_v3_1_CORRIGIDO.py",
+      "size": 15124,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\SERVIDOR_COMPLETO_FINAL.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Server\\SERVIDOR_COMPLETO_FINAL.py",
+      "size": 19884,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\trading_engine.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Server\\trading_engine.py",
+      "size": 12387,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\__init__.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Server\\__init__.py",
+      "size": 191,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\crypto_FORCA_TOTAL.log",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Logs\\crypto_FORCA_TOTAL.log",
+      "size": 12277,
+      "type": "log"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\crypto_live_server.log",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Logs\\crypto_live_server.log",
+      "size": 980,
+      "type": "log"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\crypto_orbital_corrigido.log",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Logs\\crypto_orbital_corrigido.log",
+      "size": 384136,
+      "type": "log"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\crypto_orbital_launch.log",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Logs\\crypto_orbital_launch.log",
+      "size": 0,
+      "type": "log"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\crypto_orbital_server.log",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Logs\\crypto_orbital_server.log",
+      "size": 2330,
+      "type": "log"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\crypto_server_final.log",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Logs\\crypto_server_final.log",
+      "size": 2546,
+      "type": "log"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\crypto_URGENTE.log",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Logs\\crypto_URGENTE.log",
+      "size": 1269,
+      "type": "log"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\SERVIDOR_COMPLETO.log",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Logs\\SERVIDOR_COMPLETO.log",
+      "size": 13822,
+      "type": "log"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\.env",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\Config\\.env",
+      "size": 428,
+      "type": "config"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\AppData\\Roaming\\MetaQuotes\\Terminal\\Common\\Files\\AIRequest.BTCUSD.json",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\EA_Communication\\AIRequest.BTCUSD.json",
+      "size": 144,
+      "type": "ea_communication"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\AppData\\Roaming\\MetaQuotes\\Terminal\\Common\\Files\\response.json",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251102_182158\\EA_Communication\\response.json",
+      "size": 397,
+      "type": "ea_communication"
+    }
+  ],
+  "errors": [],
+  "total_files": 28,
+  "backup_complete": true
+}

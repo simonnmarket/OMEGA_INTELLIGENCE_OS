@@ -1,0 +1,28 @@
+class SafetyProtocols:
+    """Protocolos de segurança e contingência"""
+    
+    def __init__(self):
+        self.circuit_breakers = {
+            'max_daily_loss': -0.03,    # -3% stop diário
+            'max_position_loss': -0.01, # -1% por posição
+            'liquidity_crisis': True,
+            'market_abnormalities': True
+        }
+        self.redundancy_systems = {
+            'backup_trading_system': True,
+            'emergency_liquidity': True,
+            'manual_override': True,
+            'recovery_protocols': True
+        }
+    
+    def execute_safety_protocols(self, market_conditions, portfolio_status):
+        """Execução automática de protocolos de segurança"""
+        if self.trigger_circuit_breaker(market_conditions, portfolio_status):
+            self.activate_emergency_protocols()
+            return "EMERGENCY_PROTOCOL_ACTIVATED"
+        
+        if self.require_risk_reduction(market_conditions):
+            self.reduce_risk_exposure()
+            return "RISK_REDUCTION_ACTIVATED"
+        
+        return "NORMAL_OPERATION"

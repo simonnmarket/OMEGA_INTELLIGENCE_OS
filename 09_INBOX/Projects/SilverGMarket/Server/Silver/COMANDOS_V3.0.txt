@@ -1,0 +1,56 @@
+============================================================
+COMANDOS POWERSHELL - SILVER SYSTEM V3.0 ESCALONADO
+Projeto: SilverGMarket (Independente)
+============================================================
+
+CAMINHO COMPLETO DO ARQUIVO:
+C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver\silver_system_v3.0_escalonado.py
+
+============================================================
+COMANDO COMPLETO (COPIE E COLE NO POWERSHELL):
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver"
+python silver_system_v3.0_escalonado.py
+
+============================================================
+OU EM UMA ÚNICA LINHA (COPIE TUDO):
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver"; python silver_system_v3.0_escalonado.py
+
+============================================================
+OU USE O SCRIPT POWERSHELL (MAIS FÁCIL):
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver"
+.\EXECUTAR_SILVER_V3.0.ps1
+
+============================================================
+OU USE O ATALHO WINDOWS:
+============================================================
+
+Duplo clique em: EXECUTAR_SILVER_V3.0.bat
+
+============================================================
+VERIFICAR HORÁRIO DE TRADING:
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver"
+python verificar_horario_trading_xag.py
+
+============================================================
+ANALISAR PERFORMANCE:
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver"
+python analise_performance_silver.py
+
+============================================================
+VERIFICAR SE ESTÁ RODANDO:
+============================================================
+
+Get-Process python | Where-Object { $_.CommandLine -like "*silver_system_v3.0*" }
+
+============================================================
+

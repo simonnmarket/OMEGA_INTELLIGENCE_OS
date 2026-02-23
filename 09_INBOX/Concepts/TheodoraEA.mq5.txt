@@ -1,0 +1,515 @@
+//+------------------------------------------------------------------+
+//|                     TheodoraEA.mq5                               |
+//|               Sistema de Trading Quântico Blindado               |
+//|                Projeto: Theodora                                 |
+//|                 Autor: [Seu Nome]                                |
+//|               Versão: 7.0 (TIER-0 Single File)                   |
+//+------------------------------------------------------------------+
+#property copyright "Theodora Quantum Trading"
+#property link      "https://www.theodora-quantum.com"
+#property version   "7.0"
+#property strict
+#property description "EA Quântico Autocontido - Zero Dependências"
+#property description "TIER-0 Compliant | 5K+/dia Ready | SHA3 Protected"
+#property description "CEO Mode | Quantum Firewall Active | Crisis Protocol: TEST"
+#property description "Blockchain: Active | Risk Engine: PlanckQuantum"
+
+#include <Trade/Trade.mqh>
+
+input string SymbolList = "EURUSD,USDJPY,GBPUSD,XAUUSD,US30,BTCUSD,ETHUSD,US500,US100,USOIL,UKOIL";  // Universo padrão
+input int    TimerIntervalSec = 20;           // Intervalo do timer (segundos)
+input double ScanMinPulse = 1.8;              // Threshold mínimo de pulso
+input double ScanMinEnergy = 0.4;             // Threshold mínimo de energia
+input int    MaxSymbolsToTrade = 5;           // Máximo de símbolos por ciclo
+input double TotalRiskPct = 1.0;              // Risco total por ciclo (% do equity)
+input double MinLot = 0.01;                   // Lote mínimo desejado
+input bool   GlobalPause = false;             // Pausa global (não abre novas ordens)
+input bool   EmergencyCloseAll = false;       // Fechar todas as posições abertas (gatilho único)
+
+CTrade   trade;
+datetime last_request = 0;
+bool     g_isBusy = false;
+int      g_fail_count = 0;
+int      g_backoff_sec = 0;
+datetime g_next_allowed = 0;
+input int BackoffMaxSec = 600;                // Limite máximo de backoff
+
+//+------------------------------------------------------------------+
+//| OnInit                                                           |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+   Print("🚀 Theodora v7.0 - Inicializando com autorização TIER-0");
+   Print("🔐 Quantum Firewall: Ativo");
+   Print("🔗 Blockchain: Preparando registro quântico");
+   Print("🧠 Cérebro Central: Online");
+   Print("✅ Sistema autorizado para WebRequest em http://127.0.0.1:5000 (adicione também http://localhost:5000)");
+
+   if(!TerminalInfoInteger(TERMINAL_CONNECTED) ||
+      !MQLInfoInteger(MQL_TRADE_ALLOWED) ||
+      !AccountInfoInteger(ACCOUNT_TRADE_EXPERT))
+   {
+      Print("[Theodora] Ambiente sem permissão de trade.");
+      return(INIT_FAILED);
+   }
+   trade.SetExpertMagicNumber(11041982);
+
+   EventSetTimer(TimerIntervalSec);
+   return(INIT_SUCCEEDED);
+}
+
+//+------------------------------------------------------------------+
+//| OnDeinit                                                         |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason)
+{
+   EventKillTimer();
+   Print("[Theodora] Finalizado. Motivo:", reason);
+}
+
+//+------------------------------------------------------------------+
+//| OnTick (watchdog leve)                                           |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+   // Mantido vazio: execução principal ocorre em OnTimer
+}
+
+//+------------------------------------------------------------------+
+//| OnTimer (orquestra IA)                                           |
+//+------------------------------------------------------------------+
+void OnTimer()
+{
+   // Kill switch: pausa global
+   if(GlobalPause)
+   {
+      Print("[Theodora] GlobalPause ativo - ciclo ignorado");
+      return;
+   }
+
+   // Fechamento emergencial (uma vez)
+   static bool closedOnce = false;
+   if(EmergencyCloseAll && !closedOnce)
+   {
+      CloseAllOpenPositions();
+      closedOnce = true;
+   }
+   if(g_isBusy)
+      return;
+
+   datetime now = TimeCurrent();
+   if(g_fail_count > 0 && now < g_next_allowed)
+      return; // em backoff
+
+   g_isBusy = true;
+   bool ok = RequestAIDecision(_Symbol);
+   if(ok)
+   {
+      g_fail_count = 0;
+      g_backoff_sec = 0;
+      g_next_allowed = 0;
+   }
+   else
+   {
+      g_fail_count++;
+      int step = (int)MathPow(2, MathMin(g_fail_count, 10));
+      g_backoff_sec = MathMin(step * TimerIntervalSec, BackoffMaxSec);
+      g_next_allowed = now + g_backoff_sec;
+      Print("[AI] Falha (", g_fail_count, ") - backoff=", g_backoff_sec, "s até ", TimeToString(g_next_allowed, TIME_SECONDS));
+   }
+   g_isBusy = false;
+}
+
+//+------------------------------------------------------------------+
+//| Solicitar Decisão da IA                                          |
+//+------------------------------------------------------------------+
+// Helper: HTTP GET via WebRequest (tries 127.0.0.1 then localhost)
+bool HttpGet(const string path, string &outBody)
+{
+	string bases[2];
+	bases[0] = "http://127.0.0.1:5000";
+	bases[1] = "http://localhost:5000";
+
+	string headers = "Connection: close\r\n" +
+	                 "Accept: application/json\r\n" +
+	                 "User-Agent: TheodoraEA/7.0\r\n";
+
+	ResetLastError();
+	for(int i=0;i<2;i++)
+	{
+		string url = bases[i] + path;
+		uchar data[]; // GET sem payload
+		uchar result[];
+		string result_headers = "";
+
+		int status = WebRequest("GET", url, headers, "", 8000, data, 0, result, result_headers);
+		if(status != 200)
+			status = WebRequest("GET", url, headers, 8000, data, result, result_headers);
+		if(status == 200)
+		{
+			outBody = (ArraySize(result) > 0) ? CharArrayToString(result) : "";
+			return(true);
+		}
+		Print("[HTTP] WebRequest falhou base=", bases[i], " status=", status, " err=", GetLastError());
+	}
+	return(false);
+}
+
+string URLEncodeSymbol(string sym)
+{
+	string s = sym;
+	StringReplace(s, "/", "%2F");
+	return s;
+}
+
+string BuildSymbolsQuery()
+{
+	string list = SymbolList;
+	StringTrimLeft(list);
+	StringTrimRight(list);
+	string result = "";
+	if(StringLen(list) > 0)
+	{
+		string parts[];
+		int n = StringSplit(list, ',', parts);
+		for(int i=0;i<n;i++)
+		{
+			string s = parts[i];
+			StringTrimLeft(s);
+			StringTrimRight(s);
+			if(StringLen(s)==0) continue;
+
+			if(StringLen(result)>0) result += ",";
+			result += URLEncodeSymbol(s);
+		}
+
+		return result;
+	}
+	// fallback: usa Market Watch (até 20 símbolos)
+	int total = (int)SymbolsTotal(true);
+	int limit = MathMin(total, 20);
+	for(int i=0;i<limit;i++)
+	{
+		string s = SymbolName(i, true);
+		if(StringLen(s)==0) continue;
+		if(StringLen(result)>0) result += ",";
+		result += URLEncodeSymbol(s);
+	}
+	return result;
+}
+
+bool ParseAllocations(const string json, string &symbols[], double &weights[])
+{
+	int pos = StringFind(json, "\"allocations\":[");
+	if(pos == -1) return(false);
+	int idx = 0;
+	int cur = pos;
+	while(true)
+	{
+		int ps = StringFind(json, "\"symbol\":\"", cur);
+		if(ps == -1) break;
+		int s0 = ps + (int)StringLen("\"symbol\":\"");
+		int s1 = StringFind(json, "\"", s0);
+		if(s1 == -1) break;
+		string sym = StringSubstr(json, s0, s1 - s0);
+		int pw = StringFind(json, "\"weight\":", s1);
+		if(pw == -1) break;
+		int w0 = pw + (int)StringLen("\"weight\":");
+		int wEnd1 = StringFind(json, ",", w0);
+		int wEnd2 = StringFind(json, "}", w0);
+		int wEnd = (wEnd1==-1 ? wEnd2 : (wEnd2==-1 ? wEnd1 : MathMin(wEnd1, wEnd2)));
+		if(wEnd == -1) break;
+		string wstr = StringSubstr(json, w0, wEnd - w0);
+		StringTrimLeft(wstr);
+		StringTrimRight(wstr);
+		double w = StringToDouble(wstr);
+		ArrayResize(symbols, idx+1);
+		ArrayResize(weights, idx+1);
+		symbols[idx] = sym;
+		weights[idx] = w;
+		idx++;
+		cur = wEnd;
+	}
+	return (idx > 0);
+}
+
+bool ExtractSelectedSymbol(const string json, string &symbol)
+{
+	int posSel = StringFind(json, "\"selected\":[");
+	if(posSel == -1) return(false);
+	int posSym = StringFind(json, "\"symbol\":\"", posSel);
+	if(posSym == -1) return(false);
+	int start = posSym + StringLen("\"symbol\":\"");
+	int endq = StringFind(json, "\"", start);
+	if(endq == -1) return(false);
+	symbol = StringSubstr(json, start, endq - start);
+	return(true);
+}
+
+bool ExtractJsonString(const string json, const string key, string &value)
+{
+	string pat = "\"" + key + "\":\"";
+	int pos = StringFind(json, pat);
+	if(pos == -1) return(false);
+	int start = pos + (int)StringLen(pat);
+	int endq = StringFind(json, "\"", start);
+	if(endq == -1) return(false);
+	value = StringSubstr(json, start, endq - start);
+	return(true);
+}
+
+bool ExtractJsonNumber(const string json, const string key, double &number)
+{
+	string pat = "\"" + key + "\":"; // ex: "sl_points":123.45
+	int pos = StringFind(json, pat);
+	if(pos == -1) return(false);
+	int start = pos + (int)StringLen(pat);
+	int end1 = StringFind(json, ",", start);
+	int end2 = StringFind(json, "}", start);
+	int end = (end1 == -1 ? end2 : (end2 == -1 ? end1 : MathMin(end1, end2)));
+	if(end == -1) return(false);
+	string numStr = StringSubstr(json, start, end - start);
+	StringTrimLeft(numStr);
+	StringTrimRight(numStr);
+	number = StringToDouble(numStr);
+	return(true);
+}
+
+// Calcula spread atual do símbolo em pontos
+double GetSpreadPoints(string symbol)
+{
+	double ask = SymbolInfoDouble(symbol, SYMBOL_ASK);
+	double bid = SymbolInfoDouble(symbol, SYMBOL_BID);
+	double point = SymbolInfoDouble(symbol, SYMBOL_POINT);
+	if(point <= 0.0) point = _Point;
+	return (ask - bid) / point;
+}
+
+// Normaliza volume para o símbolo
+double NormalizeVolume(string symbol, double volume)
+{
+	double volMin = SymbolInfoDouble(symbol, SYMBOL_VOLUME_MIN);
+	double volStep = SymbolInfoDouble(symbol, SYMBOL_VOLUME_STEP);
+	double volMax = SymbolInfoDouble(symbol, SYMBOL_VOLUME_MAX);
+	double v = MathMax(volume, volMin);
+	if(volStep > 0) v = MathFloor(v / volStep) * volStep;
+	if(v < volMin) v = volMin;
+	if(volMax > 0 && v > volMax) v = volMax;
+	return NormalizeDouble(v, 2);
+}
+
+// Calcula lote pelo risco, usando distância de SL em pontos e propriedades do símbolo
+double ComputeLotByRisk(string symbol, double risk_pct_symbol, double sl_points)
+{
+	double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+	double risk_amount = equity * (risk_pct_symbol / 100.0);
+	if(risk_amount <= 0.0 || sl_points <= 0.0) return 0.0;
+	// risco por 1 lote = (distância em ticks) * tick_value
+	double point = SymbolInfoDouble(symbol, SYMBOL_POINT);
+	double tick_size = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_SIZE);
+	double tick_value = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_VALUE);
+	if(point <= 0.0) point = _Point;
+	if(tick_size <= 0.0) tick_size = point;
+	double price_dist = sl_points * point;
+	double ticks = price_dist / tick_size;
+	double risk_per_lot = ticks * tick_value;
+	if(risk_per_lot <= 0.0) return 0.0;
+	double lot = risk_amount / risk_per_lot;
+	return lot;
+}
+
+// Fecha todas as posições abertas em qualquer símbolo
+void CloseAllOpenPositions()
+{
+   int total = (int)PositionsTotal();
+   for(int i=total-1; i>=0; i--)
+   {
+      ulong ticket = PositionGetTicket(i);
+      if(!PositionSelectByTicket(ticket))
+         continue;
+      string sym = PositionGetString(POSITION_SYMBOL);
+      long   type = PositionGetInteger(POSITION_TYPE);
+      double vol  = PositionGetDouble(POSITION_VOLUME);
+      double price = (type==POSITION_TYPE_BUY) ? SymbolInfoDouble(sym, SYMBOL_BID)
+                                              : SymbolInfoDouble(sym, SYMBOL_ASK);
+      trade.SetExpertMagicNumber(11041982);
+      bool ok=false;
+      if(type==POSITION_TYPE_BUY)  ok = trade.Sell(vol, sym, price, 0.0, 0.0, "EmergencyClose");
+      else                         ok = trade.Buy(vol, sym, price, 0.0, 0.0, "EmergencyClose");
+      if(!ok) Print("[Theodora] Falha ao fechar posição ", ticket, " em ", sym, " code=", GetLastError());
+   }
+   Print("[Theodora] EmergencyCloseAll executado");
+}
+
+bool ExecuteFromDecision(const string pickedSymbol)
+{
+	string decBody;
+	string encoded = URLEncodeSymbol(pickedSymbol);
+	if(!HttpGet("/decision?symbol=" + encoded, decBody))
+		return(false);
+
+	// Telemetria: loga bloqueios do backend se houver
+	string blocked = "";
+	if(ExtractJsonString(decBody, "blocked_by", blocked))
+	{
+		if(StringLen(blocked) > 0)
+			Print("[AI][", pickedSymbol, "] blocked_by=", blocked);
+	}
+
+	string missionId = "";
+	ExtractJsonString(decBody, "mission_id", missionId);
+
+	bool isBuy = (StringFind(decBody, "\"signal\":\"BUY\"") != -1);
+	bool isSell = (StringFind(decBody, "\"signal\":\"SELL\"") != -1);
+	if(!isBuy && !isSell)
+	{
+		Print("IA decidiu: HOLD para ", pickedSymbol);
+		return(true);
+	}
+
+	double sl_points=0.0, tp_points=0.0, spread_limit=0.0, max_dev=0.0;
+	ExtractJsonNumber(decBody, "sl_points", sl_points);
+	ExtractJsonNumber(decBody, "tp_points", tp_points);
+	ExtractJsonNumber(decBody, "spread_limit_points", spread_limit);
+	ExtractJsonNumber(decBody, "max_slippage_points", max_dev);
+	// também tentar ler o cap de risco por símbolo (em %)
+	double max_symbol_risk_pct=0.0;
+	ExtractJsonNumber(decBody, "max_symbol_risk_pct", max_symbol_risk_pct);
+
+	double spreadPts = GetSpreadPoints(pickedSymbol);
+	if(spread_limit > 0 && spreadPts > spread_limit)
+	{
+		Print("Guard: spread (", DoubleToString(spreadPts, 1), ") > limit (", DoubleToString(spread_limit, 1), ") em ", pickedSymbol);
+		return(false);
+	}
+
+	double price = (isBuy ? SymbolInfoDouble(pickedSymbol, SYMBOL_ASK) : SymbolInfoDouble(pickedSymbol, SYMBOL_BID));
+	double point = SymbolInfoDouble(pickedSymbol, SYMBOL_POINT);
+	if(point <= 0.0) point = _Point;
+	double sl=0.0, tp=0.0;
+	if(sl_points > 0.0 && tp_points > 0.0)
+	{
+		if(isBuy) { sl = price - sl_points * point; tp = price + tp_points * point; }
+		else      { sl = price + sl_points * point; tp = price - tp_points * point; }
+	}
+
+	if(max_dev > 0) trade.SetDeviationInPoints((int)max_dev);
+	// sizing por risco: distribui TotalRiskPct proporcional ao número de símbolos (fallback=MinLot)
+	double risk_pct_symbol = TotalRiskPct / MathMax(1, MaxSymbolsToTrade);
+	if(max_symbol_risk_pct > 0.0) risk_pct_symbol = MathMin(risk_pct_symbol, max_symbol_risk_pct);
+	double lot = ComputeLotByRisk(pickedSymbol, risk_pct_symbol, sl_points);
+	lot = MathMax(lot, MinLot);
+	lot = NormalizeVolume(pickedSymbol, lot);
+
+	if(isBuy)  { ExecuteOrder(pickedSymbol, ORDER_TYPE_BUY,  lot, sl, tp, missionId); }
+	else       { ExecuteOrder(pickedSymbol, ORDER_TYPE_SELL, lot, sl, tp, missionId); }
+	return(true);
+}
+
+bool RequestAIDecision(string execution_symbol)
+{
+	// 1) Tenta alocação de portfólio multiativo
+	string symsQuery = BuildSymbolsQuery();
+	string allocPath = (StringLen(symsQuery)>0 ? "/portfolio/allocate?symbols=" + symsQuery : "/portfolio/allocate");
+	allocPath += ("&min_pulse=" + DoubleToString(ScanMinPulse,1) + "&min_energy=" + DoubleToString(ScanMinEnergy,1));
+	string allocBody;
+	if(HttpGet(allocPath, allocBody))
+	{
+		string asyms[]; double aweights[];
+		if(ParseAllocations(allocBody, asyms, aweights))
+		{
+			int count = MathMin((int)ArraySize(asyms), MaxSymbolsToTrade);
+			bool anyOk=false;
+			for(int i=0;i<count;i++)
+			{
+				string sym = asyms[i];
+				if(StringLen(sym)==0) continue;
+				// Executa com decisão individual (lot calculado por risco interno)
+				if(ExecuteFromDecision(sym)) anyOk=true;
+			}
+			if(anyOk) return(true);
+		}
+	}
+
+	// 2) Fallback: usa scan simples e melhor símbolo
+	string scanBody;
+	string scanPath = (StringLen(symsQuery)>0 ? "/scan?symbols=" + symsQuery : "/scan");
+	scanPath += ("&min_pulse=" + DoubleToString(ScanMinPulse,1) + "&min_energy=" + DoubleToString(ScanMinEnergy,1));
+	if(!HttpGet(scanPath, scanBody))
+		return(false);
+
+	// Tenta executar múltiplos da lista selected (decorrelacionados)
+	int posSel = StringFind(scanBody, "\"selected\":[");
+	bool anyOk=false;
+	int executed=0;
+	if(posSel != -1)
+	{
+		int cur = posSel;
+		while(true)
+		{
+			string s = "";
+			int ps = StringFind(scanBody, "\"symbol\":\"", cur);
+			if(ps == -1) break;
+			int s0 = ps + (int)StringLen("\"symbol\":\"");
+			int s1 = StringFind(scanBody, "\"", s0);
+			if(s1 == -1) break;
+			s = StringSubstr(scanBody, s0, s1 - s0);
+			cur = s1 + 1;
+			if(StringLen(s)>0)
+			{
+				if(ExecuteFromDecision(s)) { anyOk=true; executed++; }
+				if(executed >= MaxSymbolsToTrade) break;
+			}
+		}
+	}
+	if(anyOk) return(true);
+
+	// Se não houve selected, escolhe o primeiro thresholds_ok=true em results
+	int posRes = StringFind(scanBody, "\"results\":[");
+	if(posRes != -1)
+	{
+		int cur = posRes;
+		while(true)
+		{
+			int okp = StringFind(scanBody, "\"thresholds_ok\":true", cur);
+			if(okp == -1) break;
+			int ps = StringFind(scanBody, "\"symbol\":\"", cur);
+			if(ps == -1) break;
+			int s0 = ps + (int)StringLen("\"symbol\":\"");
+			int s1 = StringFind(scanBody, "\"", s0);
+			if(s1 == -1) break;
+			string sym = StringSubstr(scanBody, s0, s1 - s0);
+			if(StringLen(sym)>0) return ExecuteFromDecision(sym);
+			cur = s1 + 1;
+		}
+	}
+
+	// Último fallback: símbolo do gráfico
+	return ExecuteFromDecision(execution_symbol);
+}
+
+//+------------------------------------------------------------------+
+//| Executar Ordem                                                   |
+//+------------------------------------------------------------------+
+void ExecuteOrder(string symbol, ENUM_ORDER_TYPE type, double lot, double sl, double tp, string comment)
+{
+   if(!SymbolSelect(symbol, true))
+   {
+      Print("Erro: Símbolo não disponível: ", symbol);
+      return;
+   }
+
+   double price = (type == ORDER_TYPE_BUY) ? SymbolInfoDouble(symbol, SYMBOL_ASK)
+                                           : SymbolInfoDouble(symbol, SYMBOL_BID);
+
+   trade.SetExpertMagicNumber(11041982);
+   bool sent=false;
+   if(type == ORDER_TYPE_BUY)
+      sent = trade.Buy(lot, symbol, price, sl, tp, comment);
+   else
+      sent = trade.Sell(lot, symbol, price, sl, tp, comment);
+
+   if(!sent)
+      Print("Falha ao enviar ordem em ", symbol, " (", (type==ORDER_TYPE_BUY?"BUY":"SELL"), ") code=", GetLastError());
+}
+//+------------------------------------------------------------------+

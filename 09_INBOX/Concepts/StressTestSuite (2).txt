@@ -1,0 +1,105 @@
+
+Módulo 1: StressTestSuite.mqh
+Função: Executa testes de estresse para múltiplos ativos e timeframes.
+
+🧪 Mede zonas detectadas, Hurst médio, footprints, rupturas
+
+📊 Integra filtros de volatilidade automaticamente
+
+🔍 Suporte a execução sistemática e logging para auditoria institucional
+
+
+
+//+------------------------------------------------------------------+
+//|                                      StressTestSuite.mqh         |
+//|        Suíte Institucional de Testes de Estresse - SkyLab/Numeia |
+//+------------------------------------------------------------------+
+#ifndef __STRESS_TEST_SUITE__
+#define __STRESS_TEST_SUITE__
+
+#include <Modules/DefenseAgent.mqh>
+#include <Modules/VolatilityFilter.mqh>
+
+struct StressResult {
+   string symbol;
+   ENUM_TIMEFRAMES timeframe;
+   int totalZonas;
+   double hurstMedia;
+   double mediaFootprint;
+   double percentualRupturas;
+};
+
+//--- Parâmetros padrão
+input string AssetList = "EURUSD,US500,BTCUSD,WIN$,PETR4";
+input ENUM_TIMEFRAMES TFList[] = { PERIOD_M5, PERIOD_M15, PERIOD_H1 };
+input int LookbackBars = 500;
+input double VolatilityThreshold = 0.0008;
+
+//+------------------------------------------------------------------+
+//| Função Principal de Varredura                                    |
+//+------------------------------------------------------------------+
+void RunStressTest() {
+   string assets[];
+   StringSplit(AssetList, ',', assets);
+
+   for (int a = 0; a < ArraySize(assets); a++) {
+      string sym = assets[a];
+
+      for (int t = 0; t < ArraySize(TFList); t++) {
+         ENUM_TIMEFRAMES tf = TFList[t];
+         if (!SetChart(sym, tf)) continue;
+
+         StressResult r = RunTestFor(sym, tf);
+         LogStressResult(r);
+      }
+   }
+}
+
+//+------------------------------------------------------------------+
+//| Executa o teste para um ativo/timeframe específico               |
+//+------------------------------------------------------------------+
+StressResult RunTestFor(string symbol, ENUM_TIMEFRAMES tf) {
+   int countZonas = 0;
+   double hurstSum = 0, footprintSum = 0, rupturas = 0;
+
+   for (int i = LookbackBars - 1; i >= 0; i--) {
+      if (!VolatilityIsAcceptable(symbol, tf, 14, VolatilityThreshold)) continue;
+
+      DefenseStatus ds = GetDefenseStatus(i);
+      hurstSum += ds.hurst;
+      footprintSum += ds.footprint != EMPTY_VALUE ? 1 : 0;
+
+      if (ds.signal != DEFENSE_NONE)
+         countZonas++;
+      if (ds.breachZone)
+         rupturas++;
+   }
+
+   StressResult result;
+   result.symbol = symbol;
+   result.timeframe = tf;
+   result.totalZonas = countZonas;
+   result.hurstMedia = hurstSum / LookbackBars;
+   result.mediaFootprint = footprintSum / LookbackBars;
+   result.percentualRupturas = (rupturas / (countZonas + 1)) * 100.0;
+
+   return result;
+}
+
+//+------------------------------------------------------------------+
+//| Imprime o resultado                                              |
+//+------------------------------------------------------------------+
+void LogStressResult(const StressResult &r) {
+   PrintFormat("[StressTest] %s [%s]: Zonas=%d | Hurst=%.2f | Footprint=%.2f | Rupturas=%.2f%%",
+              r.symbol, EnumToString(r.timeframe), r.totalZonas,
+              r.hurstMedia, r.mediaFootprint, r.percentualRupturas);
+}
+
+//+------------------------------------------------------------------+
+//| Força mudança de símbolo/timeframe                               |
+//+------------------------------------------------------------------+
+bool SetChart(string symbol, ENUM_TIMEFRAMES tf) {
+   return SymbolSelect(symbol, true) && Period() == tf;
+}
+
+#endif // __STRESS_TEST_SUITE__

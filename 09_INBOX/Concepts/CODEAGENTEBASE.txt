@@ -1,0 +1,305 @@
+//+------------------------------------------------------------------+
+//| AgentBase.mqh - Institutional Framework for Quantitative Agents  |
+//| Version 4.9 - Corrected, Integrated, and Enhanced                |
+//+------------------------------------------------------------------+
+#property copyright "Copyright 2025, MetaQuotes Ltd."
+#property link      "https://www.mql5.com"
+#property version   "1.00"
+#property strict
+
+#include <Math\Alglib\alglib.mqh>
+#include "..\Core\QuantumState.mqh"
+#include "..\Math\QuantumMath.mqh"
+#include <Trade\Trade.mqh>
+#include "..\Core\QuantumMarketPhysics.mqh"
+
+// Forward declaration
+class QuantumOperator;
+
+// Enum for trading signals
+enum TradeSignal {
+   SIGNAL_NEUTRAL = 0,
+   SIGNAL_BUY     = 1,
+   SIGNAL_SELL    = -1
+};
+
+class AgentBase
+{
+protected:
+   string            m_name;
+   double            m_confidence;
+   double            m_nash_weight;
+   double            m_adaptive_learning_rate;
+   double            m_performance[3];
+   double            m_success_rate;
+   int               m_neural_layer_size;
+   CMatrixDouble     m_neural_weights;
+   QuantumState      m_state;
+   QuantumOperator*  m_operator;
+   string            m_symbol;
+   ENUM_TIMEFRAMES   m_timeframe;
+   CTrade            m_trade;
+   QuantumMarketPhysics* m_quantum_physics;
+   double            m_risk_factor;
+
+   // Logging method
+   void Log(string message)
+   {
+      Print("[", TimeToString(TimeCurrent(), TIME_DATE|TIME_SECONDS), "] [AgentBase] ", m_name, ": ", message);
+   }
+
+   // Update neural weights
+   virtual void UpdateNeuralWeights(double error)
+   {
+      if(m_neural_weights.Rows() == 0 || m_neural_weights.Cols() == 0)
+      {
+         Log("Error: Weight matrix not initialized");
+         return;
+      }
+      
+      double adjustment = m_adaptive_learning_rate * error;
+      for(int i = 0; i < m_neural_layer_size; i++)
+      {
+         for(int j = 0; j < m_neural_layer_size; j++)
+         {
+            double new_weight = m_neural_weights.Get(i, j) - adjustment;
+            m_neural_weights.Set(i, j, MathTanh(new_weight));
+         }
+      }
+   }
+
+public:
+   // Constructor
+   AgentBase(string name, QuantumMarketPhysics* physics = NULL, int neural_size = 10) : 
+      m_name(name),
+      m_confidence(0.5),
+      m_nash_weight(1.0),
+      m_adaptive_learning_rate(0.01),
+      m_neural_layer_size(MathMax(5, MathMin(100, neural_size))),
+      m_operator(new QuantumOperator()),
+      m_quantum_physics(physics != NULL ? physics : new QuantumMarketPhysics()),
+      m_risk_factor(1.0)
+   {
+      ArrayInitialize(m_performance, 0);
+      m_success_rate = 0.5;
+      m_symbol = Symbol();
+      m_timeframe = PERIOD_CURRENT;
+      
+      // Initialize weight matrix
+      if(!m_neural_weights.Resize(m_neural_layer_size, m_neural_layer_size))
+      {
+         Log("Critical error: Failed to allocate neural weights matrix");
+         ExpertRemove();
+         return;
+      }
+      
+      // Random initialization
+      MathSrand(GetTickCount());
+      for(int i = 0; i < m_neural_layer_size; i++)
+      {
+         for(int j = 0; j < m_neural_layer_size; j++)
+         {
+            m_neural_weights.Set(i, j, MathRand()/32767.0 - 0.5);
+         }
+      }
+      
+      // Verify quantum physics
+      if(CheckPointer(m_quantum_physics) == NULL)
+      {
+         Log("Critical error: Failed to create QuantumMarketPhysics");
+         ExpertRemove();
+      }
+   }
+
+   // Destructor
+   virtual ~AgentBase()
+   {
+      if(CheckPointer(m_quantum_physics) != NULL)
+      {
+         delete m_quantum_physics;
+      }
+      if(CheckPointer(m_operator) != NULL)
+      {
+         delete m_operator;
+      }
+   }
+
+   // Main analysis method
+   virtual int Analyze(string symbol, ENUM_TIMEFRAMES timeframe = PERIOD_M1)
+   {
+      // Verify symbol
+      if(!SymbolInfoDouble(symbol, SYMBOL_BID) || !SymbolInfoDouble(symbol, SYMBOL_ASK))
+      {
+         Log("Error: Symbol " + symbol + " not available");
+         return SIGNAL_NEUTRAL;
+      }
+
+      // Update quantum operator
+      if(CheckPointer(m_operator) != NULL)
+      {
+         if(!m_operator.Observe(symbol, timeframe))
+            Log("Warning: Failed to update quantum operator for " + symbol);
+      }
+
+      // Update quantum state
+      if(!m_state.Observe(symbol, timeframe))
+      {
+         Log("Error: Failed to update quantum state for " + symbol);
+         return SIGNAL_NEUTRAL;
+      }
+
+      // Prepare input data
+      double market_input[10];
+      ArrayInitialize(market_input, 0);
+      
+      // Collect market data
+      market_input[0] = iClose(symbol, timeframe, 1);
+
+      int atr_handle = iATR(symbol, timeframe, 14);
+      if(atr_handle == INVALID_HANDLE)
+      {
+         Log("Error: Failed to create ATR handle for " + symbol);
+         return SIGNAL_NEUTRAL;
+      }
+      double atr_buffer[1];
+      if(CopyBuffer(atr_handle, 0, 0, 1, atr_buffer) <= 0)
+      {
+         Log("Error: Failed to copy ATR buffer for " + symbol);
+         IndicatorRelease(atr_handle);
+         return SIGNAL_NEUTRAL;
+      }
+      market_input[1] = atr_buffer[0];
+
+      int momentum_handle = iMomentum(symbol, timeframe, 14, PRICE_CLOSE);
+      if(momentum_handle == INVALID_HANDLE)
+      {
+         Log("Error: Failed to create Momentum handle for " + symbol);
+         IndicatorRelease(atr_handle);
+         return SIGNAL_NEUTRAL;
+      }
+      double momentum_buffer[1];
+      if(CopyBuffer(momentum_handle, 0, 0, 1, momentum_buffer) <= 0)
+      {
+         Log("Error: Failed to copy Momentum buffer for " + symbol);
+         IndicatorRelease(atr_handle);
+         IndicatorRelease(momentum_handle);
+         return SIGNAL_NEUTRAL;
+      }
+      market_input[2] = momentum_buffer[0];
+
+      IndicatorRelease(atr_handle);
+      IndicatorRelease(momentum_handle);
+
+      // Add quantum state data
+      market_input[3] = m_state.GetState();
+      market_input[4] = m_state.GetEntanglement();
+
+      // Neural prediction
+      double output = NeuralPredict(market_input, ArraySize(market_input));
+
+      // Calculate confidence
+      double coherence = m_state.GetQuantumCoherence();
+      double entropy = m_state.GetQuantumEntropy();
+      m_confidence = MathMin(1.0, MathMax(0.0, coherence * (1 - entropy)));
+
+      // Adjust risk based on quantum tunneling
+      double prices[10];
+      if(CopyClose(symbol, timeframe, 0, 10, prices) > 0)
+      {
+         if(m_quantum_physics.DetectQuantumTunneling(prices, 0.5))
+            m_risk_factor *= 1.2;
+         else
+            m_risk_factor *= 0.8;
+         m_risk_factor = MathMin(5.0, MathMax(0.1, m_risk_factor));
+      }
+
+      // Trading decision
+      return (output > 0.66) ? SIGNAL_BUY :
+             (output < -0.66) ? SIGNAL_SELL : SIGNAL_NEUTRAL;
+   }
+
+   // Neural prediction
+   virtual double NeuralPredict(double &input[], int size)
+   {
+      if(size == 0)
+      {
+         Log("Error: Empty input array");
+         return 0.0;
+      }
+
+      // Normalize input using QuantumMath
+      QuantumMath::NormalizeState(input);
+
+      double sum = 0.0;
+      int input_size = MathMin(size, m_neural_layer_size);
+      
+      for(int i = 0; i < m_neural_layer_size; i++)
+      {
+         for(int j = 0; j < input_size; j++)
+         {
+            sum += input[j] * m_neural_weights.Get(i, j);
+         }
+      }
+      
+      // Tanh activation
+      return MathTanh(MathMin(100.0, MathMax(-100.0, sum)));
+   }
+
+   // Update performance
+   virtual void UpdatePerformance(double reward)
+   {
+      // Limit reward
+      reward = MathMin(1.0, MathMax(-1.0, reward));
+      
+      // Update success rate
+      m_success_rate = 0.9 * m_success_rate + 0.1 * (reward > 0 ? 1 : 0);
+      
+      // Adaptive learning rate
+      m_adaptive_learning_rate = 0.01 * (1 + MathSin(m_success_rate * M_PI));
+      
+      // Update neural weights
+      UpdateNeuralWeights(1 - reward);
+      
+      // Concatenate log message
+      string log_message = "Performance updated: Reward: " + DoubleToString(reward, 2) + 
+                           ", Success Rate: " + DoubleToString(m_success_rate * 100, 2) + "%";
+      Log(log_message);
+   }
+
+   // Interface methods
+   virtual void Update() {}
+   virtual double GetSignal() const { return 0.0; }
+
+   // Accessors
+   string Name() const { return m_name; }
+   double Confidence() const { return MathMin(1.0, MathMax(0.0, m_confidence * m_nash_weight)); }
+   double GetNashWeight() const { return m_nash_weight; }
+   void SetNashWeight(double weight) { m_nash_weight = MathMax(0.0, MathMin(1.0, weight)); }
+   double GetSuccessRate() const { return m_success_rate; }
+   double GetRiskFactor() const { return m_risk_factor; }
+   void SetRiskFactor(double factor) { m_risk_factor = MathMax(0.1, MathMin(5.0, factor)); }
+
+   // Market regime detection
+   virtual int DetectMarketRegime(string symbol)
+   {
+      double prices[10];
+      if(CopyClose(symbol, m_timeframe, 0, 10, prices) <= 0)
+      {
+         Log("Error: Failed to copy prices for " + symbol);
+         return 3;
+      }
+      
+      return m_quantum_physics.DetectMarketRegime(prices);
+   }
+};
+
+// QuantumOperator implementation
+class QuantumOperator
+{
+public:
+   bool Observe(string symbol, ENUM_TIMEFRAMES timeframe)
+   {
+      return SymbolInfoDouble(symbol, SYMBOL_BID) > 0.0 && 
+             SymbolInfoDouble(symbol, SYMBOL_ASK) > 0.0;
+   }
+};

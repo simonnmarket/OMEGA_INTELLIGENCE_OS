@@ -1,0 +1,270 @@
+#property copyright "Quantum Sensory Trading System"
+#property link      "https://www.quantumsensory.com"
+#property version   "3.0"
+#property strict
+
+#include <Trade\Trade.mqh>
+
+struct IntegratedSensoryData {
+    double visualConfidence;
+    double auditoryConfidence;
+    double tactileConfidence;
+    double olfactoryConfidence;
+    double gustatoryConfidence;
+    double overallPerception;
+    double sensoryCoherence;
+};
+
+struct GlobalConfig {
+    static const double MinimumConfidence;
+    static const double CoherenceThreshold;
+    static const int AnalysisDepth;
+};
+const double GlobalConfig::MinimumConfidence = 0.3;
+const double GlobalConfig::CoherenceThreshold = 0.5;
+const int GlobalConfig::AnalysisDepth = 100;
+
+class CSensoryBase {
+protected:
+    double confidence;
+    bool isInitialized;
+public:
+    CSensoryBase() : confidence(0.0), isInitialized(false) {}
+    virtual ~CSensoryBase() {}
+    virtual bool Initialize() { isInitialized = true; return true; }
+    virtual void Process() = 0;
+    double GetConfidence() const { return confidence; }
+    bool IsInitialized() const { return isInitialized; }
+};
+
+class CQuantumVisionSystem : public CSensoryBase {
+private:
+    double lastVolume;
+    double averageVolume;
+public:
+    CQuantumVisionSystem() : lastVolume(0.0), averageVolume(0.0) {}
+    void Process() override {
+        lastVolume = (double)iVolume(_Symbol, PERIOD_CURRENT, 0);
+        averageVolume = CalculateAverageVolume(20);
+        confidence = CalculateConfidence();
+    }
+private:
+    double CalculateAverageVolume(int period) {
+        long volumes[];
+        ArraySetAsSeries(volumes, true);
+        if(CopyTickVolume(_Symbol, PERIOD_CURRENT, 0, period, volumes) > 0) {
+            double sum = 0.0;
+            for(int i = 0; i < ArraySize(volumes); i++) sum += (double)volumes[i];
+            return sum / ArraySize(volumes);
+        }
+        return 1.0;
+    }
+    double CalculateConfidence() {
+        if(averageVolume == 0) return 0.0;
+        return MathMin(lastVolume / averageVolume, 1.0);
+    }
+};
+
+class CMarketHearingSystem : public CSensoryBase {
+private:
+    int rsiHandle;
+public:
+    CMarketHearingSystem() { rsiHandle = iRSI(_Symbol, PERIOD_CURRENT, 14, PRICE_CLOSE); }
+    ~CMarketHearingSystem() { if(rsiHandle != INVALID_HANDLE) IndicatorRelease(rsiHandle); }
+    bool Initialize() override {
+        if(rsiHandle == INVALID_HANDLE) return false;
+        isInitialized = true;
+        return true;
+    }
+    void Process() override {
+        confidence = CalculateConfidence();
+    }
+private:
+    double CalculateConfidence() {
+        double rsi[];
+        ArraySetAsSeries(rsi, true);
+        if(CopyBuffer(rsiHandle, 0, 0, 1, rsi) > 0) {
+            return 1.0 - MathAbs(50.0 - rsi[0]) / 50.0;
+        }
+        return 0.5;
+    }
+};
+
+class CMarketTouchSystem : public CSensoryBase {
+public:
+    void Process() override { confidence = CalculateConfidence(); }
+private:
+    double CalculateConfidence() { return 0.5; }
+};
+
+class CRiskSmellingSystem : public CSensoryBase {
+private:
+    double riskLevel;
+    double marketStress;
+    int atrHandle;
+public:
+    CRiskSmellingSystem() : riskLevel(0.0), marketStress(0.0) {
+        atrHandle = iATR(_Symbol, PERIOD_CURRENT, 14);
+    }
+    ~CRiskSmellingSystem() { if(atrHandle != INVALID_HANDLE) IndicatorRelease(atrHandle); }
+    bool Initialize() override {
+        if(atrHandle == INVALID_HANDLE) return false;
+        isInitialized = true;
+        return true;
+    }
+    void Process() override {
+        riskLevel = CalculateRiskLevel();
+        marketStress = CalculateMarketStress();
+        confidence = CalculateConfidence();
+    }
+private:
+    double CalculateRiskLevel() {
+        double atr[];
+        ArraySetAsSeries(atr, true);
+        if(CopyBuffer(atrHandle, 0, 0, 2, atr) > 0) return MathMin(atr[0] / atr[1], 1.0);
+        return 0.5;
+    }
+    double CalculateMarketStress() {
+        double atr[];
+        ArraySetAsSeries(atr, true);
+        if(CopyBuffer(atrHandle, 0, 0, 20, atr) > 0) {
+            double maxAtr = atr[ArrayMaximum(atr)];
+            return atr[0] / maxAtr;
+        }
+        return 0.0;
+    }
+    double CalculateConfidence() {
+        double rawConfidence = 1.0 - (riskLevel + marketStress) / 2.0;
+        return MathMax(rawConfidence, 0.0);
+    }
+};
+
+class CMarketTasteSystem : public CSensoryBase {
+public:
+    void Process() override { confidence = CalculateConfidence(); }
+private:
+    double CalculateConfidence() { return 0.7; }
+};
+
+class CSensoryIntegration {
+private:
+    IntegratedSensoryData currentPerception;
+    double sensoryWeights[5];
+public:
+    CSensoryIntegration() {
+        ZeroMemory(currentPerception);
+        ArrayInitialize(sensoryWeights, 0.2);
+    }
+    void ProcessSensoryInput(CQuantumVisionSystem* vision, CMarketHearingSystem* hearing,
+                             CMarketTouchSystem* touch, CRiskSmellingSystem* smell,
+                             CMarketTasteSystem* taste) {
+        if(vision) currentPerception.visualConfidence = vision->GetConfidence();
+        if(hearing) currentPerception.auditoryConfidence = hearing->GetConfidence();
+        if(touch) currentPerception.tactileConfidence = touch->GetConfidence();
+        if(smell) currentPerception.olfactoryConfidence = smell->GetConfidence();
+        if(taste) currentPerception.gustatoryConfidence = taste->GetConfidence();
+
+        currentPerception.overallPerception = (
+            currentPerception.visualConfidence * sensoryWeights[0] +
+            currentPerception.auditoryConfidence * sensoryWeights[1] +
+            currentPerception.tactileConfidence * sensoryWeights[2] +
+            currentPerception.olfactoryConfidence * sensoryWeights[3] +
+            currentPerception.gustatoryConfidence * sensoryWeights[4]
+        );
+
+        double confidences[] = {
+            currentPerception.visualConfidence, currentPerception.auditoryConfidence,
+            currentPerception.tactileConfidence, currentPerception.olfactoryConfidence,
+            currentPerception.gustatoryConfidence
+        };
+        double mean = currentPerception.overallPerception;
+        double variance = 0.0;
+        for(int i = 0; i < 5; i++) variance += MathPow(confidences[i] - mean, 2);
+        currentPerception.sensoryCoherence = 1.0 - MathSqrt(variance / 10.0);
+    }
+    IntegratedSensoryData GetCurrentPerception() const { return currentPerception; }
+};
+
+CTrade trade;
+CQuantumVisionSystem* Vision = NULL;
+CMarketHearingSystem* Hearing = NULL;
+CMarketTouchSystem* Touch = NULL;
+CRiskSmellingSystem* Smell = NULL;
+CMarketTasteSystem* Taste = NULL;
+CSensoryIntegration* SensorySystem = NULL;
+
+int OnInit() {
+    Vision = new CQuantumVisionSystem();
+    Hearing = new CMarketHearingSystem();
+    Touch = new CMarketTouchSystem();
+    Smell = new CRiskSmellingSystem();
+    Taste = new CMarketTasteSystem();
+    SensorySystem = new CSensoryIntegration();
+
+    if(!Vision || !Hearing || !Touch || !Smell || !Taste || !SensorySystem) {
+        Print("Erro ao criar objetos");
+        return INIT_FAILED;
+    }
+
+    if(!Vision->Initialize() || !Hearing->Initialize() || !Touch->Initialize() ||
+       !Smell->Initialize() || !Taste->Initialize()) {
+        Print("Erro na inicialização dos sensores");
+        return INIT_FAILED;
+    }
+
+    trade.SetExpertMagicNumber(123456);
+    Print("Inicialização concluída com sucesso");
+    return INIT_SUCCEEDED;
+}
+
+void OnDeinit(const int reason) {
+    if(Vision) delete Vision;
+    if(Hearing) delete Hearing;
+    if(Touch) delete Touch;
+    if(Smell) delete Smell;
+    if(Taste) delete Taste;
+    if(SensorySystem) delete SensorySystem;
+}
+
+void OnTick() {
+    if(Vision) Vision->Process();
+    if(Hearing) Hearing->Process();
+    if(Touch) Touch->Process();
+    if(Smell) Smell->Process();
+    if(Taste) Taste->Process();
+    if(SensorySystem) SensorySystem->ProcessSensoryInput(Vision, Hearing, Touch, Smell, Taste);
+
+    AnalyzeMarketConditions();
+}
+
+void AnalyzeMarketConditions() {
+    if(!SensorySystem) return;
+
+    IntegratedSensoryData perception = SensorySystem->GetCurrentPerception();
+
+    Print("Overall Perception: ", perception.overallPerception,
+          " | Sensory Coherence: ", perception.sensoryCoherence);
+    Print("Sensor Values: Visual=", perception.visualConfidence,
+          " Auditory=", perception.auditoryConfidence,
+          " Tactile=", perception.tactileConfidence,
+          " Olfactory=", perception.olfactoryConfidence,
+          " Gustatory=", perception.gustatoryConfidence);
+
+    if(perception.overallPerception > GlobalConfig::MinimumConfidence &&
+       perception.sensoryCoherence > GlobalConfig::CoherenceThreshold) {
+        Print("Condições de percepção atendidas");
+        OpenLongPosition();
+    } else {
+        Print("Condições de percepção não atendidas");
+    }
+}
+
+void OpenLongPosition() {
+    double sl = SymbolInfoDouble(_Symbol, SYMBOL_BID) - 0.0010;
+    double tp = SymbolInfoDouble(_Symbol, SYMBOL_BID) + 0.0010;
+    if(trade.Buy(0.1, _Symbol, 0, sl, tp)) {
+        Print("Compra aberta com sucesso!");
+    } else {
+        Print("Erro ao abrir compra: ", GetLastError());
+    }
+}

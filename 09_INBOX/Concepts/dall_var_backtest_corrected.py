@@ -1,0 +1,1 @@
+<coloque aqui o conteúdo completo do script dall_var_backtest_corrected.py>

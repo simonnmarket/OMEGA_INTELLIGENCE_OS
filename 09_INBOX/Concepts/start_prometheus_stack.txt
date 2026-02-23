@@ -1,0 +1,76 @@
+Param(
+  [string]$PythonPath = "python",
+  [string]$ServerPath = "",
+  [string]$BridgePath = "",
+  [string]$TelemetryPath = "",
+  [string]$Mt5FilesDir = "",
+  [int]$ZmqPort = 5555
+)
+
+$ErrorActionPreference = "Stop"
+
+Write-Host "[PROMETHEUS] Starting stack..."
+
+# Project root
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$projRoot = Split-Path -Parent (Split-Path -Parent $scriptDir)
+Set-Location $projRoot
+
+# Optional venv
+if (Test-Path ".venv/Scripts/Activate.ps1") {
+  Write-Host "[PROMETHEUS] Activating venv"
+  . .venv/Scripts/Activate.ps1
+}
+
+# Resolve defaults if not provided
+if (-not $ServerPath -or $ServerPath -eq "") {
+  $ServerPath = Join-Path $projRoot "Scripts/Python/prometheus_ai_server.py"
+}
+if (-not $BridgePath -or $BridgePath -eq "") {
+  $BridgePath = Join-Path $projRoot "Scripts/Python/ea_req_bridge.py"
+}
+if (-not $TelemetryPath -or $TelemetryPath -eq "") {
+  $TelemetryPath = Join-Path $projRoot "Scripts/Python/telemetry_orchestrator.py"
+}
+
+if ($Mt5FilesDir -ne "") { $env:MT5_FILES_DIR = $Mt5FilesDir }
+$env:ZMQ_PORT = "$ZmqPort"
+
+# PolicyPack path (used by AI Server)
+$policyPackPath = [IO.Path]::Combine($env:APPDATA,'MetaQuotes','Terminal','Common','Files','Datasets','Prometheus','PolicyPack.json')
+$env:POLICY_PACK_PATH = $policyPackPath
+
+Write-Host "[PROMETHEUS] Server:  $ServerPath"
+Write-Host "[PROMETHEUS] Bridge:  $BridgePath"
+Write-Host "[PROMETHEUS] Telemetry:  $TelemetryPath"
+Write-Host "[PROMETHEUS] MT5_FILES_DIR: "$env:MT5_FILES_DIR
+Write-Host "[PROMETHEUS] ZMQ_PORT: $ZmqPort"
+Write-Host "[PROMETHEUS] POLICY_PACK_PATH: $env:POLICY_PACK_PATH"
+
+# Start server
+if (Test-Path $ServerPath) {
+  Write-Host "[PROMETHEUS] Starting AI Server..."
+  Start-Process -WindowStyle Minimized -FilePath $PythonPath -ArgumentList "`"$ServerPath`"" | Out-Null
+} else {
+  Write-Warning "AI Server not found at $ServerPath"
+}
+
+# Start bridge
+if (Test-Path $BridgePath) {
+  Write-Host "[PROMETHEUS] Starting EA Bridge..."
+  Start-Process -WindowStyle Minimized -FilePath $PythonPath -ArgumentList "`"$BridgePath`"" | Out-Null
+} else {
+  Write-Warning "EA Bridge not found at $BridgePath"
+}
+
+# Start telemetry orchestrator
+if (Test-Path $TelemetryPath) {
+  Write-Host "[PROMETHEUS] Starting Telemetry Orchestrator..."
+  Start-Process -WindowStyle Minimized -FilePath $PythonPath -ArgumentList "`"$TelemetryPath`"" | Out-Null
+} else {
+  Write-Warning "Telemetry not found at $TelemetryPath"
+}
+
+Write-Host "[PROMETHEUS] Stack started."
+
+

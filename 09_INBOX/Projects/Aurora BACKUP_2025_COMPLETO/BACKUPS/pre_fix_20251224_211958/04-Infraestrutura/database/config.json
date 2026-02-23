@@ -1,0 +1,19 @@
+{
+  "database": {
+    "engine": "postgresql",
+    "host": "localhost",
+    "port": 5432,
+    "name": "ncnt_production",
+    "user": "ncnt_app",
+    "password": "GoldmanSachs_Tier0_2024",
+    "pool_size": 10,
+    "max_overflow": 20,
+    "echo": false
+  },
+  "migration": {
+    "alembic_ini": "alembic.ini",
+    "version_path": "migrations/versions",
+    "auto_generate": true
+  }
+}
+

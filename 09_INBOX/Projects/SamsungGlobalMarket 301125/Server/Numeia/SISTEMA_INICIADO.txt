@@ -1,0 +1,57 @@
+========================================
+PROMETHEUS V6.0 - SISTEMA INICIADO
+========================================
+
+Data/Hora de Início: 25 de Novembro de 2025, 22:55 CET
+Status: ✅ EM PRODUÇÃO
+Autorização: APROVADA E CONFIRMADA
+
+========================================
+CONFIGURAÇÃO ATIVA:
+========================================
+
+- Sistema: Prometheus v6.0
+- Modo: PRODUCTION
+- Bloqueio SELL: ✅ ATIVO
+- Apenas BUY: ✅ PERMITIDO
+- ML Adaptativo (AFR): ✅ ATIVO
+- Monitoramento: ✅ ATIVO
+
+========================================
+ARQUIVOS DE LOG:
+========================================
+
+- Log Principal: prometheus_master_log_v6.0.jsonl
+- Heartbeat: prometheus_heartbeat.tmp
+- Aprendizado ML: prometheus_v6_learning.json
+
+========================================
+COMANDOS PARA VERIFICAR:
+========================================
+
+# Ver logs em tempo real:
+Get-Content prometheus_master_log_v6.0.jsonl -Tail 20 -Wait
+
+# Ver últimas operações:
+Get-Content prometheus_master_log_v6.0.jsonl | Select-String "ORDER_EXECUTED"
+
+# Ver bloqueios SELL:
+Get-Content prometheus_master_log_v6.0.jsonl | Select-String "strategic_block_sell"
+
+# Verificar heartbeat:
+Get-Content prometheus_heartbeat.tmp
+
+========================================
+OBSERVAÇÕES:
+========================================
+
+- Sistema rodando em background
+- Ordens serão executadas automaticamente no MT5
+- Apenas ordens BUY serão executadas (SELL bloqueado)
+- Sistema aprende e otimiza continuamente
+- Verifique logs ao retornar
+
+========================================
+STATUS: 🟢 OPERACIONAL
+========================================
+

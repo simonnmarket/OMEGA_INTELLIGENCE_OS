@@ -1,0 +1,56 @@
+================================================================================
+COMANDO COMPLETO PARA EXECUTAR NO POWERSHELL
+================================================================================
+
+1. Abra o PowerShell
+
+2. Execute este comando (copie e cole tudo):
+
+cd C:\Users\Lenovo\Projects\Aurora; python HANTEC_STOPS_DISCOVERY.py
+
+================================================================================
+OU EXECUTE PASSO A PASSO:
+================================================================================
+
+cd C:\Users\Lenovo\Projects\Aurora
+python HANTEC_STOPS_DISCOVERY.py
+
+================================================================================
+O QUE ESTE SCRIPT FAZ:
+================================================================================
+
+✅ Testa distâncias de 1 a 1000 pontos para cada crypto
+✅ Encontra o MÍNIMO que o Hantec aceita
+✅ Se nada funcionar, testa SEM stops
+✅ Fecha todas as ordens automaticamente
+✅ Gera recomendações baseadas nos resultados REAIS
+✅ Salva resultados em arquivo
+
+================================================================================
+ATENÇÃO:
+================================================================================
+
+⚠️  Este script abrirá/fechará ordens REAIS na conta DEMO
+⚠️  Volume usado: 0.01 (mínimo)
+⚠️  Todas as ordens serão fechadas automaticamente
+⚠️  Você precisará confirmar antes de executar
+
+================================================================================
+RESULTADOS ESPERADOS:
+================================================================================
+
+Cenário A (Melhor): Encontra limites razoáveis (< 50 pontos)
+Cenário B (Atual): Só funciona SEM stops
+Cenário C (Misto): Alguns símbolos funcionam, outros não
+
+================================================================================
+DEPOIS DO TESTE:
+================================================================================
+
+Baseado no resultado REAL, implementaremos a solução CORRETA:
+- Se encontrar limites: Usar esses valores
+- Se só sem stops: Implementar estratégia completa
+- Se misto: Estratégia adaptativa por símbolo
+
+================================================================================
+

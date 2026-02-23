@@ -1,0 +1,223 @@
+//+------------------------------------------------------------------+
+//| Apollo11_GravSphere.mq5 - Esfera Gravitacional Completa         |
+//| Teste do Campo Gravitacional e Densidade Interna                |
+//+------------------------------------------------------------------+
+#property copyright "2025, Cosmic Trading Systems"
+#property link      "https://www.cosmictrader.com"
+#property version   "1.02"
+
+// Inputs para ajustar a Esfera Gravitacional
+input int PeriodoCanal = 20;        // Janela para canais gravitacionais
+input double VolumeThreshold = 1.0; // Limiar de calor
+input double GravForceMin = 0.01;   // Força gravitacional mínima
+input double ATRMultiplier = 2.0;   // Multiplicador para limites
+
+// Variáveis globais
+double price[], atr[], volumeDouble[];
+long volume[];
+double volumeForce, gravForce, sphereEnergy;
+double pocLevel, channelDensity;
+bool isBuySignal, isSellSignal;
+
+//+------------------------------------------------------------------+
+//| Inicialização (Apollo11 - LaunchCycle)                          |
+//+------------------------------------------------------------------+
+int OnInit() {
+   ArraySetAsSeries(price, true);
+   ArraySetAsSeries(volume, true);
+   ArraySetAsSeries(atr, true);
+   ArraySetAsSeries(volumeDouble, true);
+   ArrayResize(volumeDouble, PeriodoCanal);
+   Print("Apollo 11: Lançamento da Esfera Gravitacional iniciado - Tester Mode Ativo");
+   ChartSetInteger(0, CHART_SHOW_GRID, false); // Limpar grade do gráfico
+   return(INIT_SUCCEEDED);
+}
+
+//+------------------------------------------------------------------+
+//| Execução em Tempo Real (Apollo11 - MonitorOrbit)                |
+//+------------------------------------------------------------------+
+void OnTick() {
+   if (!CopyClose(_Symbol, PERIOD_CURRENT, 0, PeriodoCanal, price) ||
+       !CopyTickVolume(_Symbol, PERIOD_CURRENT, 0, PeriodoCanal, volume) ||
+       !CopyBuffer(iATR(_Symbol, PERIOD_CURRENT, 14), 0, 0, 1, atr)) {
+      Print("DataUpdater: Erro ao captar dados do mercado");
+      return;
+   }
+
+   for (int i = 0; i < PeriodoCanal; i++) {
+      volumeDouble[i] = (double)volume[i];
+   }
+
+   double volMean = MediaVolume();
+   double volStdDev = DesvioPadraoVolume(volMean);
+   volumeForce = (volumeDouble[0] - volMean) / (volStdDev > 0 ? volStdDev : 1.0);
+   gravForce = CalculateGravForce();
+   sphereEnergy = CalculateSphereEnergy();
+   pocLevel = CalculatePOC();
+   channelDensity = CalculateChannelDensity();
+
+   AnalyzeMarket();
+
+   double sl = atr[0] * ATRMultiplier;
+   double tp = atr[0] * ATRMultiplier * 2;
+
+   // Visualização no gráfico
+   DrawPOCLine(pocLevel);
+   DrawChannel(pocLevel, atr[0]); // Usar atr[0] diretamente
+   DrawSphereState(volumeForce, gravForce);
+
+   if (isBuySignal && volumeForce > VolumeThreshold && gravForce > GravForceMin) {
+      Print("TradeExecutor: Ordem de compra lançada - Calor: ", volumeForce, " | Energia: ", sphereEnergy);
+   } else if (isSellSignal && volumeForce > VolumeThreshold && gravForce > GravForceMin) {
+      Print("TradeExecutor: Ordem de venda lançada - Calor: ", volumeForce, " | Energia: ", sphereEnergy);
+   }
+
+   Print("Logger: VolumeForce (Calor): ", DoubleToString(volumeForce, 2),
+         " | GravForce: ", DoubleToString(gravForce, 4),
+         " | SphereEnergy: ", DoubleToString(sphereEnergy, 2),
+         " | POC: ", DoubleToString(pocLevel, 5),
+         " | ChannelDensity: ", DoubleToString(channelDensity, 2));
+
+   if (volumeForce > VolumeThreshold && gravForce > GravForceMin) {
+      Print("Apollo11: Esfera Gravitacional flutuando no canal!");
+   } else {
+      Print("Apollo11: Esfera fora do canal ou em repouso.");
+   }
+}
+
+//+------------------------------------------------------------------+
+//| Funções de Visualização                                         |
+//+------------------------------------------------------------------+
+void DrawPOCLine(double poc) {
+   string name = "POC_Line";
+   ObjectDelete(0, name);
+   ObjectCreate(0, name, OBJ_HLINE, 0, 0, poc);
+   ObjectSetInteger(0, name, OBJPROP_COLOR, clrYellow);
+   ObjectSetInteger(0, name, OBJPROP_STYLE, STYLE_SOLID);
+   ObjectSetInteger(0, name, OBJPROP_WIDTH, 2);
+}
+
+void DrawChannel(double poc, double atrValue) { // Renomeado parâmetro para evitar conflito
+   string upperName = "Channel_Upper";
+   string lowerName = "Channel_Lower";
+   ObjectDelete(0, upperName);
+   ObjectDelete(0, lowerName);
+   ObjectCreate(0, upperName, OBJ_HLINE, 0, 0, poc + atrValue);
+   ObjectCreate(0, lowerName, OBJ_HLINE, 0, 0, poc - atrValue);
+   ObjectSetInteger(0, upperName, OBJPROP_COLOR, clrBlue);
+   ObjectSetInteger(0, lowerName, OBJPROP_COLOR, clrBlue);
+   ObjectSetInteger(0, upperName, OBJPROP_STYLE, STYLE_DASH);
+   ObjectSetInteger(0, lowerName, OBJPROP_STYLE, STYLE_DASH);
+}
+
+void DrawSphereState(double vForce, double gForce) {
+   string name = "Sphere_State";
+   ObjectDelete(0, name);
+   ObjectCreate(0, name, OBJ_TEXT, 0, TimeCurrent(), price[0] + atr[0] * 0.5);
+   string state = (vForce > VolumeThreshold && gForce > GravForceMin) ? "Flutuando" : "Repouso";
+   ObjectSetString(0, name, OBJPROP_TEXT, "Esfera: " + state + " (VF: " + DoubleToString(vForce, 2) + ")");
+   ObjectSetInteger(0, name, OBJPROP_COLOR, (vForce > VolumeThreshold && gForce > GravForceMin) ? clrGreen : clrRed);
+}
+
+//+------------------------------------------------------------------+
+//| Statistics: Calcular Média do Volume                            |
+//+------------------------------------------------------------------+
+double MediaVolume() {
+   double sum = 0.0;
+   for (int i = 0; i < PeriodoCanal; i++) sum += volumeDouble[i];
+   return sum / PeriodoCanal;
+}
+
+//+------------------------------------------------------------------+
+//| Statistics: Calcular Desvio Padrão do Volume                    |
+//+------------------------------------------------------------------+
+double DesvioPadraoVolume(double mean) {
+   double sumSq = 0.0;
+   for (int i = 0; i < PeriodoCanal; i++) {
+      double diff = volumeDouble[i] - mean;
+      sumSq += diff * diff;
+   }
+   return MathSqrt(sumSq / (PeriodoCanal - 1));
+}
+
+//+------------------------------------------------------------------+
+//| PhysicsEngine: Calcular Força Gravitacional                     |
+//+------------------------------------------------------------------+
+double CalculateGravForce() {
+   double G = 0.0000001;
+   double force = 0.0;
+   for (int i = 1; i < PeriodoCanal; i++) {
+      double dist = MathAbs(price[0] - price[i]);
+      if (dist > 0) {
+         double distSquared = dist * dist;
+         double increment = G * volumeDouble[0];
+         increment *= volumeDouble[i];
+         increment /= distSquared;
+         force += increment;
+      }
+   }
+   return force;
+}
+
+//+------------------------------------------------------------------+
+//| PhysicsEngine: Calcular Energia da Esfera Gravitacional         |
+//+------------------------------------------------------------------+
+double CalculateSphereEnergy() {
+   double P = (volumeForce > VolumeThreshold) ? 1.0 : 0.0;
+   return P * (volumeForce * gravForce);
+}
+
+//+------------------------------------------------------------------+
+//| TrajectoryAnalyzer: Calcular POC (Ponto de Controle)            |
+//+------------------------------------------------------------------+
+double CalculatePOC() {
+   double maxVol = 0.0;
+   double poc = price[0];
+   for (int i = 0; i < PeriodoCanal; i++) {
+      if (volumeDouble[i] > maxVol) {
+         maxVol = volumeDouble[i];
+         poc = price[i];
+      }
+   }
+   return poc;
+}
+
+//+------------------------------------------------------------------+
+//| TrajectoryAnalyzer: Calcular Densidade do Canal                 |
+//+------------------------------------------------------------------+
+double CalculateChannelDensity() {
+   double density = 0.0;
+   for (int i = 0; i < PeriodoCanal; i++) {
+      double dist = MathAbs(price[i] - pocLevel);
+      if (dist < 0.00001) dist = 0.00001;
+      density += volumeDouble[i] / dist;
+   }
+   return density / PeriodoCanal;
+}
+
+//+------------------------------------------------------------------+
+//| MarketAnalyzer: Analisar o Mercado e Gerar Sinais               |
+//+------------------------------------------------------------------+
+void AnalyzeMarket() {
+   double momentum = price[0] - price[1];
+   isBuySignal = (momentum > 0 && volumeForce > VolumeThreshold);
+   isSellSignal = (momentum < 0 && volumeForce > VolumeThreshold);
+}
+
+//+------------------------------------------------------------------+
+//| InstitutionalRadar: Detectar Pulsos Institucionais              |
+//+------------------------------------------------------------------+
+double ScanInstitutionalPulse() {
+   return volumeForce;
+}
+
+//+------------------------------------------------------------------+
+//| Finalização (Apollo11 - LandSafely)                             |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason) {
+   Print("Apollo 11: Esfera Gravitacional pousou em segurança.");
+   ObjectDelete(0, "POC_Line");
+   ObjectDelete(0, "Channel_Upper");
+   ObjectDelete(0, "Channel_Lower");
+   ObjectDelete(0, "Sphere_State");
+}

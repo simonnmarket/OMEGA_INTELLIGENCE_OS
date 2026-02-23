@@ -1,0 +1,99 @@
+//+------------------------------------------------------------------+
+//|                                    BigPlayersAnalysis.mq5         |
+//|                                     Version 1.2                   |
+//|                                     Título: Identificação de Big Players |
+//+------------------------------------------------------------------+
+
+#property copyright "Samsung Global Market"
+#property version   "1.2"
+#property strict
+
+#include <Trade\Trade.mqh>
+
+// ... (Enums, estruturas e variáveis globais permanecem iguais) ...
+
+//+------------------------------------------------------------------+
+//| Classe Principal do Sistema                                       |
+//+------------------------------------------------------------------+
+class CBigPlayersManager {
+private:
+    // ... (Outras declarações privadas) ...
+
+    // *** FUNÇÕES AUSENTES ADICIONADAS ***
+    ENUM_MARKET_CONDITION DetermineMarketCondition() {
+        if(MathAbs(marketData.trend) > 0.5) return CONDITION_TRENDING;
+        else if(MathAbs(marketData.momentum) < 0.1) return CONDITION_RANGING;
+        else if(marketData.volatility > 0.01) return CONDITION_VOLATILE;
+        return CONDITION_UNDEFINED;
+    }
+
+    bool AnalyzeVolume() {
+        return (marketData.volume / marketData.volumeMA > VolumeThreshold);
+    }
+
+    bool AnalyzePrice() {
+        return (MathAbs(marketData.momentum) > MinimumMomentum);
+    }
+
+    bool AnalyzeFlow() {
+        return (marketData.volumeDelta != 0);
+    }
+
+    ENUM_PLAYER_TYPE DeterminePlayerType() {
+        if(playerData.influence > 0.9 && playerData.activityLevel > 0.8) return PLAYER_INSTITUTIONAL;
+        else if(playerData.influence > 0.7 && playerData.activityLevel > 0.6) return PLAYER_HFUND;
+        return PLAYER_INDIVIDUAL;
+    }
+
+    void ExecuteBuy() {
+        trade.Buy(setup.volume, _Symbol, setup.entry, setup.stopLoss, setup.takeProfit);
+    }
+
+    void ExecuteSell() {
+        trade.Sell(setup.volume, _Symbol, setup.entry, setup.stopLoss, setup.takeProfit);
+    }
+
+    void CheckBreakEven() {
+        double currentPrice = PositionGetDouble(POSITION_PRICE_CURRENT);
+        double openPrice = PositionGetDouble(POSITION_PRICE_OPEN);
+        if(MathAbs(currentPrice - openPrice) >= BreakEvenPoints * _Point) {
+            trade.PositionModify(_Symbol, openPrice, PositionGetDouble(POSITION_TP));
+        }
+    }
+
+    void UpdateStops() {
+        double currentPrice = PositionGetDouble(POSITION_PRICE_CURRENT);
+        double newSl = (setup.signal == SIGNAL_BUY) ? currentPrice - TrailingStopPoints * _Point : currentPrice + TrailingStopPoints * _Point;
+        trade.PositionModify(_Symbol, newSl, PositionGetDouble(POSITION_TP));
+    }
+
+    void CheckExit() {
+        if(PositionGetDouble(POSITION_PROFIT) >= 0 || PositionGetDouble(POSITION_PROFIT) <= -MaxDrawdown) {
+            trade.PositionClose(_Symbol);
+        }
+    }
+
+public:
+    // ... (Restante da classe permanece igual) ...
+};
+
+// *** CORREÇÕES DE CONVERSÃO DE TIPO ***
+bool IsMarketOpen() {
+    datetime time = TimeCurrent();
+    MqlDateTime dt;
+    TimeToStruct(time, dt);
+
+    // Corrigido: 'day_of_week' é int, não há perda de dados
+    if(dt.day_of_week == 0 || dt.day_of_week == 6) return false; 
+    if(dt.hour < 9 || dt.hour >= 18) return false;
+
+    return true;
+}
+
+bool IsHighSpread() {
+    // Corrigido: Conversão explícita para double
+    double currentSpread = (double)SymbolInfoInteger(_Symbol, SYMBOL_SPREAD) * _Point; 
+    return (currentSpread > 5 * _Point);
+}
+
+// ... (Restante do código permanece igual) ...

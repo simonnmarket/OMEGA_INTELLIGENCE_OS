@@ -1,0 +1,83 @@
+//+------------------------------------------------------------------+
+//|                      SignalValidator.mqh                         |
+//|     Validação de Sinais de Entrada com Confluência MTF          |
+//+------------------------------------------------------------------+
+#property strict
+
+#include <Utils/PriceUtils.mqh>
+#include <Analysis/WeisWaveAnalyzer.mqh>
+#include <Analysis/VolumeProfile.mqh>
+#include <Analysis/OrderFlowAnalyzer.mqh>
+#include <Patterns/PatternRegistry.mqh>
+#include <Config/GlobalConfig.mqh>
+
+class SignalValidator {
+private:
+   string symbol;
+   ENUM_TIMEFRAMES exec_tf;
+
+public:
+   SignalValidator(string _symbol, ENUM_TIMEFRAMES _exec_tf = PERIOD_M1) {
+      symbol = _symbol;
+      exec_tf = _exec_tf;
+   }
+
+   bool ValidateEntrySignal() {
+      // Confirmação por padrão de candle (ex: Engulfing)
+      if (!PatternRegistry::HasConfirmedPattern(symbol, exec_tf))
+         return false;
+
+      // Verificação de volume por ondas (Weis Wave)
+      WeisWaveAnalyzer wave(symbol, exec_tf);
+      wave.Update();
+      if (wave.IsExhaustion()) {
+         Print("Sinal rejeitado: onda fraca (exaustão)");
+         return false;
+      }
+
+      // Alinhamento com VWAP (preço acima/abaixo da média institucional)
+      VolumeProfile vp(symbol, exec_tf);
+      double price = iClose(symbol, exec_tf, 0);
+      if (!vp.IsPriceAlignedWithVolume(price)) {
+         Print("Sinal rejeitado: desalinhamento com VWAP");
+         return false;
+      }
+
+      // Ordem de fluxo confirmada?
+      OrderFlowAnalyzer of(symbol, exec_tf);
+      if (!of.IsDirectionalBiasConfirmed()) {
+         Print("Sinal rejeitado: ordem institucional não confirmada");
+         return false;
+      }
+
+      // Confirmação MTF (mínimo de 3 timeframes)
+      if (!IsMTFConfluent()) {
+         Print("Sinal rejeitado: sem confluência entre timeframes");
+         return false;
+      }
+
+      // Contexto Wyckoff (acumulação ou rompimento válido)
+      if (!IsSignalAlignedWithWyckoff())
+         return false;
+
+      return true;
+   }
+
+   bool IsMTFConfluent() {
+      ENUM_TIMEFRAMES tfs[] = {PERIOD_M5, PERIOD_M15, PERIOD_H1, PERIOD_H4, PERIOD_D1};
+      int confirmations = 0;
+      for (int i = 0; i < ArraySize(tfs); i++) {
+         double ma_fast = iMA(symbol, tfs[i], 9, 0, MODE_EMA, PRICE_CLOSE, 0);
+         double ma_slow = iMA(symbol, tfs[i], 21, 0, MODE_EMA, PRICE_CLOSE, 0);
+         if (ma_fast > ma_slow)
+            confirmations++;
+      }
+      return (confirmations >= 3);
+   }
+
+   bool IsSignalAlignedWithWyckoff() {
+      // Placeholder: futura análise mais profunda
+      // Pode ser substituído por uma IA treinada com padrões Wyckoff
+      return true;
+   }
+};

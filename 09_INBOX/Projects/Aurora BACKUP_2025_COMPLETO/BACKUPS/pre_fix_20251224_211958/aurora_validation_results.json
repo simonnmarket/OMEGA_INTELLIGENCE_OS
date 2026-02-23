@@ -1,0 +1,1928 @@
+{
+  "timestamp": "2025-12-19T23:27:05.255426",
+  "total_modules": 274,
+  "operational_modules": 269,
+  "failed_modules": 5,
+  "success_rate": 0.9817518248175182,
+  "modules": {
+    "00-Governanca\\complete_activation_final.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 173,
+      "file_size_kb": 5.6328125,
+      "timestamp": "2025-12-19T23:27:05.476605"
+    },
+    "00-Governanca\\fix_report_errors.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 183,
+      "file_size_kb": 6.392578125,
+      "timestamp": "2025-12-19T23:27:05.480110"
+    },
+    "00-Governanca\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.015625,
+      "timestamp": "2025-12-19T23:27:05.491693"
+    },
+    "00-Governanca\\generate_complete_report.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 786,
+      "file_size_kb": 28.7412109375,
+      "timestamp": "2025-12-19T23:27:05.494248"
+    },
+    "00-Governanca\\audit_system_complete.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1027,
+      "file_size_kb": 40.9189453125,
+      "timestamp": "2025-12-19T23:27:05.496829"
+    },
+    "00-Governanca\\complexity_guard.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 419,
+      "file_size_kb": 16.27734375,
+      "timestamp": "2025-12-19T23:27:05.497848"
+    },
+    "00-Governanca\\generate_complete_technical_report.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 488,
+      "file_size_kb": 18.9970703125,
+      "timestamp": "2025-12-19T23:27:05.640458"
+    },
+    "00-Governanca\\generate_technical_report.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 406,
+      "file_size_kb": 14.65234375,
+      "timestamp": "2025-12-19T23:27:05.643465"
+    },
+    "00-Governanca\\generate_ultra_complete_report.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1049,
+      "file_size_kb": 44.400390625,
+      "timestamp": "2025-12-19T23:27:05.650823"
+    },
+    "00-Governanca\\governance_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 190,
+      "file_size_kb": 6.845703125,
+      "timestamp": "2025-12-19T23:27:05.658184"
+    },
+    "00-Governanca\\genesis_includes.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 254,
+      "file_size_kb": 8.640625,
+      "timestamp": "2025-12-19T23:27:05.669742"
+    },
+    "00-Governanca\\genesis_includes_v3_complete.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 657,
+      "file_size_kb": 26.07421875,
+      "timestamp": "2025-12-19T23:27:05.673272"
+    },
+    "00-Governanca\\integration_gate_v2.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 416,
+      "file_size_kb": 15.6455078125,
+      "timestamp": "2025-12-19T23:27:05.803394"
+    },
+    "00-Governanca\\prepare_fix_environment.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 206,
+      "file_size_kb": 8.3232421875,
+      "timestamp": "2025-12-19T23:27:05.808472"
+    },
+    "00-Governanca\\integration_gate_v3.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 876,
+      "file_size_kb": 34.6259765625,
+      "timestamp": "2025-12-19T23:27:05.810472"
+    },
+    "00-Governanca\\process_fix_file.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 456,
+      "file_size_kb": 16.8369140625,
+      "timestamp": "2025-12-19T23:27:05.821028"
+    },
+    "00-Governanca\\quantum_firewall.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 247,
+      "file_size_kb": 9.1640625,
+      "timestamp": "2025-12-19T23:27:05.833569"
+    },
+    "00-Governanca\\regulatory_context.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 207,
+      "file_size_kb": 7.486328125,
+      "timestamp": "2025-12-19T23:27:05.834564"
+    },
+    "00-Governanca\\restore_executive_report.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 399,
+      "file_size_kb": 12.9921875,
+      "timestamp": "2025-12-19T23:27:05.957716"
+    },
+    "00-Governanca\\script_1_command_injection_test.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 180,
+      "file_size_kb": 6.8779296875,
+      "timestamp": "2025-12-19T23:27:05.972723"
+    },
+    "00-Governanca\\run_complete_audit.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 106,
+      "file_size_kb": 3.38671875,
+      "timestamp": "2025-12-19T23:27:05.973739"
+    },
+    "00-Governanca\\script_2_smoke_test_critical_modules.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 187,
+      "file_size_kb": 6.9189453125,
+      "timestamp": "2025-12-19T23:27:05.991468"
+    },
+    "00-Governanca\\script_4_integration_score_calculator.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 190,
+      "file_size_kb": 7.109375,
+      "timestamp": "2025-12-19T23:27:06.001457"
+    },
+    "00-Governanca\\script_3_compliance_quick_validator.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 210,
+      "file_size_kb": 8.177734375,
+      "timestamp": "2025-12-19T23:27:06.002452"
+    },
+    "00-Governanca\\script_5_master_test_runner.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 220,
+      "file_size_kb": 7.2958984375,
+      "timestamp": "2025-12-19T23:27:06.116793"
+    },
+    "00-Governanca\\tier1_risk_validator.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 189,
+      "file_size_kb": 7.4658203125,
+      "timestamp": "2025-12-19T23:27:06.142908"
+    },
+    "00-Governanca\\test_module_v2.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 133,
+      "file_size_kb": 5.3740234375,
+      "timestamp": "2025-12-19T23:27:06.146544"
+    },
+    "00-Governanca\\validate_upgrade_proposal.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 398,
+      "file_size_kb": 15.1201171875,
+      "timestamp": "2025-12-19T23:27:06.150560"
+    },
+    "01-Departamentos\\AGENTS\\CFO_Agent.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 116,
+      "file_size_kb": 3.98828125,
+      "timestamp": "2025-12-19T23:27:06.168201"
+    },
+    "01-Departamentos\\AGENTS\\CEO_Agent.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 265,
+      "file_size_kb": 10.408203125,
+      "timestamp": "2025-12-19T23:27:06.173544"
+    },
+    "01-Departamentos\\AGENTS\\CKO_Agent.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 40,
+      "file_size_kb": 1.4462890625,
+      "timestamp": "2025-12-19T23:27:06.276490"
+    },
+    "01-Departamentos\\Compliance-Audit\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0244140625,
+      "timestamp": "2025-12-19T23:27:06.305393"
+    },
+    "01-Departamentos\\Compliance-Audit\\audit_trail.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0380859375,
+      "timestamp": "2025-12-19T23:27:06.311657"
+    },
+    "01-Departamentos\\AGENTS\\CTO_Agent.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 34,
+      "file_size_kb": 1.1669921875,
+      "timestamp": "2025-12-19T23:27:06.321378"
+    },
+    "01-Departamentos\\Compliance-Audit\\reg_tracker.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0390625,
+      "timestamp": "2025-12-19T23:27:06.326913"
+    },
+    "01-Departamentos\\Compliance-Audit\\compliance_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 502,
+      "file_size_kb": 19.0458984375,
+      "timestamp": "2025-12-19T23:27:06.340536"
+    },
+    "01-Departamentos\\Compliance-Audit\\report_generator.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.037109375,
+      "timestamp": "2025-12-19T23:27:06.454442"
+    },
+    "01-Departamentos\\Engineering-Infra\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0361328125,
+      "timestamp": "2025-12-19T23:27:06.483635"
+    },
+    "01-Departamentos\\Engineering-Infra\\api_gateway.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0302734375,
+      "timestamp": "2025-12-19T23:27:06.500749"
+    },
+    "01-Departamentos\\Engineering-Infra\\core_engine.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0341796875,
+      "timestamp": "2025-12-19T23:27:06.505582"
+    },
+    "01-Departamentos\\Engineering-Infra\\coreengine_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 188,
+      "file_size_kb": 6.7109375,
+      "timestamp": "2025-12-19T23:27:06.518485"
+    },
+    "01-Departamentos\\Engineering-Infra\\data_layer.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.037109375,
+      "timestamp": "2025-12-19T23:27:06.519486"
+    },
+    "01-Departamentos\\Execution-Trading\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.029296875,
+      "timestamp": "2025-12-19T23:27:06.614459"
+    },
+    "01-Departamentos\\Execution-Trading\\order_management.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0302734375,
+      "timestamp": "2025-12-19T23:27:06.648013"
+    },
+    "01-Departamentos\\Execution-Trading\\smart_routing.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0322265625,
+      "timestamp": "2025-12-19T23:27:06.661908"
+    },
+    "01-Departamentos\\Execution-Trading\\strategies\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 18,
+      "file_size_kb": 0.458984375,
+      "timestamp": "2025-12-19T23:27:06.671452"
+    },
+    "01-Departamentos\\Execution-Trading\\strategies\\base_strategy.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 75,
+      "file_size_kb": 2.2861328125,
+      "timestamp": "2025-12-19T23:27:06.689428"
+    },
+    "01-Departamentos\\Execution-Trading\\strategies\\alpha_momentum.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 171,
+      "file_size_kb": 6.4423828125,
+      "timestamp": "2025-12-19T23:27:06.692675"
+    },
+    "01-Departamentos\\Execution-Trading\\strategies\\breakout_detection.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 155,
+      "file_size_kb": 6.203125,
+      "timestamp": "2025-12-19T23:27:06.765590"
+    },
+    "01-Departamentos\\Execution-Trading\\strategies\\mean_reversion.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 155,
+      "file_size_kb": 6.013671875,
+      "timestamp": "2025-12-19T23:27:06.797484"
+    },
+    "01-Departamentos\\Execution-Trading\\strategy_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 231,
+      "file_size_kb": 8.5078125,
+      "timestamp": "2025-12-19T23:27:06.819490"
+    },
+    "01-Departamentos\\Execution-Trading\\strategy_modules\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.017578125,
+      "timestamp": "2025-12-19T23:27:06.829234"
+    },
+    "01-Departamentos\\Execution-Trading\\strategy_modules\\interface.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.044921875,
+      "timestamp": "2025-12-19T23:27:06.839791"
+    },
+    "01-Departamentos\\Execution-Trading\\strategy_modules\\implementations\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 0,
+      "file_size_kb": 0.0,
+      "timestamp": "2025-12-19T23:27:06.842788"
+    },
+    "01-Departamentos\\Execution-Trading\\strategy_modules\\templates\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 0,
+      "file_size_kb": 0.0,
+      "timestamp": "2025-12-19T23:27:06.912657"
+    },
+    "01-Departamentos\\Execution-Trading\\strategy_modules\\templates\\strategy_template.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.037109375,
+      "timestamp": "2025-12-19T23:27:06.954066"
+    },
+    "01-Departamentos\\Innovation-Lab\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0205078125,
+      "timestamp": "2025-12-19T23:27:06.987284"
+    },
+    "01-Departamentos\\Innovation-Lab\\ab_testing.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0224609375,
+      "timestamp": "2025-12-19T23:27:06.990302"
+    },
+    "01-Departamentos\\Innovation-Lab\\prototypes.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0185546875,
+      "timestamp": "2025-12-19T23:27:07.007382"
+    },
+    "01-Departamentos\\Innovation-Lab\\innovationlab_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 456,
+      "file_size_kb": 17.5537109375,
+      "timestamp": "2025-12-19T23:27:07.020952"
+    },
+    "01-Departamentos\\Risk-Controls\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0244140625,
+      "timestamp": "2025-12-19T23:27:07.075517"
+    },
+    "01-Departamentos\\Risk-Controls\\circuit_breakers.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.033203125,
+      "timestamp": "2025-12-19T23:27:07.108622"
+    },
+    "01-Departamentos\\Risk-Controls\\risk_engine.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0478515625,
+      "timestamp": "2025-12-19T23:27:07.155383"
+    },
+    "01-Departamentos\\Risk-Controls\\risk_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 572,
+      "file_size_kb": 22.9501953125,
+      "timestamp": "2025-12-19T23:27:07.158601"
+    },
+    "01-Departamentos\\Risk-Controls\\tier1_validator_v3.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 505,
+      "file_size_kb": 18.8974609375,
+      "timestamp": "2025-12-19T23:27:07.179234"
+    },
+    "01-Departamentos\\Risk-Controls\\tier1_validator_v3_complete.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 875,
+      "file_size_kb": 35.3984375,
+      "timestamp": "2025-12-19T23:27:07.186371"
+    },
+    "01-Departamentos\\Treasury-Capital\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.03515625,
+      "timestamp": "2025-12-19T23:27:07.235476"
+    },
+    "01-Departamentos\\Treasury-Capital\\allocation_engine.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.033203125,
+      "timestamp": "2025-12-19T23:27:07.267084"
+    },
+    "01-Departamentos\\Treasury-Capital\\capital_manager.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0439453125,
+      "timestamp": "2025-12-19T23:27:07.312497"
+    },
+    "01-Departamentos\\Treasury-Capital\\treasury_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 304,
+      "file_size_kb": 12.5615234375,
+      "timestamp": "2025-12-19T23:27:07.315613"
+    },
+    "02-Processos-Chave\\CI-CD\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.033203125,
+      "timestamp": "2025-12-19T23:27:07.339766"
+    },
+    "02-Processos-Chave\\backtesting\\backtest_runner_v3.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1166,
+      "file_size_kb": 45.994140625,
+      "timestamp": "2025-12-19T23:27:07.349928"
+    },
+    "02-Processos-Chave\\CI-CD\\cicdpipeline_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 630,
+      "file_size_kb": 25.2822265625,
+      "timestamp": "2025-12-19T23:27:07.396287"
+    },
+    "02-Processos-Chave\\CI-CD\\stages\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 0,
+      "file_size_kb": 0.0,
+      "timestamp": "2025-12-19T23:27:07.422356"
+    },
+    "02-Processos-Chave\\CI-CD\\stages\\deploy.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.013671875,
+      "timestamp": "2025-12-19T23:27:07.460873"
+    },
+    "02-Processos-Chave\\CI-CD\\stages\\build.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0126953125,
+      "timestamp": "2025-12-19T23:27:07.471422"
+    },
+    "02-Processos-Chave\\CI-CD\\stages\\test.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.01171875,
+      "timestamp": "2025-12-19T23:27:07.488023"
+    },
+    "02-Processos-Chave\\Incident-Response\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0322265625,
+      "timestamp": "2025-12-19T23:27:07.505568"
+    },
+    "02-Processos-Chave\\Incident-Response\\incidentresponse_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 555,
+      "file_size_kb": 21.2509765625,
+      "timestamp": "2025-12-19T23:27:07.542140"
+    },
+    "02-Processos-Chave\\Onboarding\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0166015625,
+      "timestamp": "2025-12-19T23:27:07.574504"
+    },
+    "02-Processos-Chave\\Onboarding\\counterparty_onboarding.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.02734375,
+      "timestamp": "2025-12-19T23:27:07.617057"
+    },
+    "02-Processos-Chave\\Onboarding\\data_onboarding.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0205078125,
+      "timestamp": "2025-12-19T23:27:07.634045"
+    },
+    "02-Processos-Chave\\Onboarding\\onboarding_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 567,
+      "file_size_kb": 23.56640625,
+      "timestamp": "2025-12-19T23:27:07.655634"
+    },
+    "02-Processos-Chave\\Onboarding\\strategy_onboarding.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.02734375,
+      "timestamp": "2025-12-19T23:27:07.663928"
+    },
+    "02-Processos-Chave\\QA-Backtesting\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0322265625,
+      "timestamp": "2025-12-19T23:27:07.695316"
+    },
+    "02-Processos-Chave\\QA-Backtesting\\backtest_engine.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.021484375,
+      "timestamp": "2025-12-19T23:27:07.718827"
+    },
+    "02-Processos-Chave\\QA-Backtesting\\qabacktesting_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 539,
+      "file_size_kb": 22.5654296875,
+      "timestamp": "2025-12-19T23:27:07.766305"
+    },
+    "02-Processos-Chave\\QA-Backtesting\\test_suites\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 0,
+      "file_size_kb": 0.0,
+      "timestamp": "2025-12-19T23:27:07.790663"
+    },
+    "03-Operacoes-Diarias\\Execution-Window\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0224609375,
+      "timestamp": "2025-12-19T23:27:07.808952"
+    },
+    "03-Operacoes-Diarias\\Execution-Window\\executionwindow_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 581,
+      "file_size_kb": 21.8515625,
+      "timestamp": "2025-12-19T23:27:07.811488"
+    },
+    "03-Operacoes-Diarias\\Execution-Window\\throttling.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0234375,
+      "timestamp": "2025-12-19T23:27:07.843308"
+    },
+    "03-Operacoes-Diarias\\Post-Trade\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.03125,
+      "timestamp": "2025-12-19T23:27:07.863415"
+    },
+    "03-Operacoes-Diarias\\Post-Trade\\delta_reports.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.029296875,
+      "timestamp": "2025-12-19T23:27:07.916912"
+    },
+    "03-Operacoes-Diarias\\Post-Trade\\posttradereconciliation_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 815,
+      "file_size_kb": 31.970703125,
+      "timestamp": "2025-12-19T23:27:07.949555"
+    },
+    "03-Operacoes-Diarias\\Pre-Market\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0263671875,
+      "timestamp": "2025-12-19T23:27:07.974010"
+    },
+    "03-Operacoes-Diarias\\Post-Trade\\reconciliation.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0283203125,
+      "timestamp": "2025-12-19T23:27:07.976347"
+    },
+    "03-Operacoes-Diarias\\Pre-Market\\premarketchecklist_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 425,
+      "file_size_kb": 16.3291015625,
+      "timestamp": "2025-12-19T23:27:08.008710"
+    },
+    "03-Operacoes-Diarias\\Pre-Market\\validators\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 0,
+      "file_size_kb": 0.0,
+      "timestamp": "2025-12-19T23:27:08.023341"
+    },
+    "03-Operacoes-Diarias\\Real-Time-Dashboard\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.025390625,
+      "timestamp": "2025-12-19T23:27:08.070223"
+    },
+    "03-Operacoes-Diarias\\Real-Time-Dashboard\\dashboard.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0205078125,
+      "timestamp": "2025-12-19T23:27:08.108718"
+    },
+    "03-Operacoes-Diarias\\Real-Time-Dashboard\\widgets\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 0,
+      "file_size_kb": 0.0,
+      "timestamp": "2025-12-19T23:27:08.141761"
+    },
+    "03-Operacoes-Diarias\\Real-Time-Dashboard\\realtimedashboard_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 734,
+      "file_size_kb": 28.0146484375,
+      "timestamp": "2025-12-19T23:27:08.146494"
+    },
+    "04-Infraestrutura\\api\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 21,
+      "file_size_kb": 0.5634765625,
+      "timestamp": "2025-12-19T23:27:08.171033"
+    },
+    "04-Infraestrutura\\api\\database.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 132,
+      "file_size_kb": 3.9501953125,
+      "timestamp": "2025-12-19T23:27:08.191472"
+    },
+    "04-Infraestrutura\\api\\endpoints\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 22,
+      "file_size_kb": 0.4619140625,
+      "timestamp": "2025-12-19T23:27:08.230324"
+    },
+    "04-Infraestrutura\\api\\endpoints\\strategies.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 203,
+      "file_size_kb": 6.4228515625,
+      "timestamp": "2025-12-19T23:27:08.274507"
+    },
+    "04-Infraestrutura\\api\\main.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 48,
+      "file_size_kb": 0.9912109375,
+      "timestamp": "2025-12-19T23:27:08.299446"
+    },
+    "04-Infraestrutura\\database\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 18,
+      "file_size_kb": 0.3896484375,
+      "timestamp": "2025-12-19T23:27:08.300449"
+    },
+    "04-Infraestrutura\\database\\connection.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 107,
+      "file_size_kb": 2.80859375,
+      "timestamp": "2025-12-19T23:27:08.325621"
+    },
+    "04-Infraestrutura\\database\\models.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 70,
+      "file_size_kb": 2.96484375,
+      "timestamp": "2025-12-19T23:27:08.343210"
+    },
+    "04-Infraestrutura\\ML_MODELS\\MetaLearningAdapter.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 39,
+      "file_size_kb": 1.263671875,
+      "timestamp": "2025-12-19T23:27:08.380775"
+    },
+    "04-Infraestrutura\\ML_MODELS\\PPOExecutionOptimizer.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 41,
+      "file_size_kb": 1.36328125,
+      "timestamp": "2025-12-19T23:27:08.419774"
+    },
+    "04-Infraestrutura\\moduleregistry.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 258,
+      "file_size_kb": 9.216796875,
+      "timestamp": "2025-12-19T23:27:08.452326"
+    },
+    "04-Infraestrutura\\ML_MODELS\\TemporalFusionTransformer.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 172,
+      "file_size_kb": 6.189453125,
+      "timestamp": "2025-12-19T23:27:08.456368"
+    },
+    "04-Infraestrutura\\tools\\cli\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 0,
+      "file_size_kb": 0.0,
+      "timestamp": "2025-12-19T23:27:08.481264"
+    },
+    "04-Infraestrutura\\tools\\cli\\commands\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 0,
+      "file_size_kb": 0.0,
+      "timestamp": "2025-12-19T23:27:08.490820"
+    },
+    "04-Infraestrutura\\tools\\cli\\ncnt_cli.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0146484375,
+      "timestamp": "2025-12-19T23:27:08.523953"
+    },
+    "04-Infraestrutura\\tools\\scripts\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 0,
+      "file_size_kb": 0.0,
+      "timestamp": "2025-12-19T23:27:08.575199"
+    },
+    "04-Infraestrutura\\tools\\scripts\\deploy.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.017578125,
+      "timestamp": "2025-12-19T23:27:08.608672"
+    },
+    "04-Infraestrutura\\tools\\scripts\\backup.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.017578125,
+      "timestamp": "2025-12-19T23:27:08.613671"
+    },
+    "04-Infraestrutura\\tools\\scripts\\monitor.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0244140625,
+      "timestamp": "2025-12-19T23:27:08.644234"
+    },
+    "05-Documentacao\\sops_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 259,
+      "file_size_kb": 9.375,
+      "timestamp": "2025-12-19T23:27:08.644234"
+    },
+    "06-Monitoramento\\Feedback-Loop\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 0,
+      "file_size_kb": 0.0,
+      "timestamp": "2025-12-19T23:27:08.676426"
+    },
+    "06-Monitoramento\\Feedback-Loop\\action_items.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.03125,
+      "timestamp": "2025-12-19T23:27:08.725525"
+    },
+    "06-Monitoramento\\Feedback-Loop\\rca_templates.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.033203125,
+      "timestamp": "2025-12-19T23:27:08.758774"
+    },
+    "06-Monitoramento\\Feedback-Loop\\post_mortem.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.021484375,
+      "timestamp": "2025-12-19T23:27:08.764132"
+    },
+    "06-Monitoramento\\generate_validation_report.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 26,
+      "file_size_kb": 0.802734375,
+      "timestamp": "2025-12-19T23:27:08.794146"
+    },
+    "06-Monitoramento\\feedbackloop_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 483,
+      "file_size_kb": 18.490234375,
+      "timestamp": "2025-12-19T23:27:08.809119"
+    },
+    "06-Monitoramento\\neural_connection_monitor_v2.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 616,
+      "file_size_kb": 25.22265625,
+      "timestamp": "2025-12-19T23:27:08.840053"
+    },
+    "06-Monitoramento\\run_validation_scan.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 34,
+      "file_size_kb": 1.0869140625,
+      "timestamp": "2025-12-19T23:27:08.876005"
+    },
+    "aurora_etapa_b.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 20,
+      "file_size_kb": 0.759765625,
+      "timestamp": "2025-12-19T23:27:08.925781"
+    },
+    "aurora_etapa_a.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 802,
+      "file_size_kb": 30.4052734375,
+      "timestamp": "2025-12-19T23:27:08.930011"
+    },
+    "aurora_etapa_c.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 10,
+      "file_size_kb": 0.2744140625,
+      "timestamp": "2025-12-19T23:27:08.962081"
+    },
+    "aurora_etapa_d.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 10,
+      "file_size_kb": 0.2822265625,
+      "timestamp": "2025-12-19T23:27:08.967619"
+    },
+    "aurora_etapa_e.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 10,
+      "file_size_kb": 0.2587890625,
+      "timestamp": "2025-12-19T23:27:08.999816"
+    },
+    "backups_pre_fix\\04-Infraestrutura\\api\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 8,
+      "file_size_kb": 0.0869140625,
+      "timestamp": "2025-12-19T23:27:09.030781"
+    },
+    "backups_pre_fix\\04-Infraestrutura\\api\\endpoints\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 8,
+      "file_size_kb": 0.099609375,
+      "timestamp": "2025-12-19T23:27:09.096323"
+    },
+    "backups_pre_fix\\04-Infraestrutura\\api\\endpoints\\strategies.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 203,
+      "file_size_kb": 6.4228515625,
+      "timestamp": "2025-12-19T23:27:09.101894"
+    },
+    "backups_pre_fix\\04-Infraestrutura\\api\\main.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 48,
+      "file_size_kb": 0.9912109375,
+      "timestamp": "2025-12-19T23:27:09.134220"
+    },
+    "backups_pre_fix\\06-Monitoramento\\feedbackloop_module.py": {
+      "status": "syntax_error",
+      "operational": false,
+      "error": "  File \"C:\\Users\\Lenovo\\Projects\\Aurora\\backups_pre_fix\\06-Monitoramento\\feedbackloop_module.py\", line 477\n    print(\"\\n5. \\U0001f4b0 DEMONSTRANDO ALO\n          ^\nSyntaxError: unterminated string literal (detected at line 477)\n",
+      "timestamp": "2025-12-19T23:27:09.140898"
+    },
+    "backups_pre_fix\\main_ncnt.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 58,
+      "file_size_kb": 1.5068359375,
+      "timestamp": "2025-12-19T23:27:09.173758"
+    },
+    "backups_pre_fix\\ncnt_system_complete.py": {
+      "status": "syntax_error",
+      "operational": false,
+      "error": "  File \"C:\\Users\\Lenovo\\Projects\\Aurora\\backups_pre_fix\\ncnt_system_complete.py\", line 7849\n    print(\"\\n5. \\U0001f4b0 DEMONSTRANDO ALO\n          ^\nSyntaxError: unterminated string literal (detected at line 7849)\n",
+      "timestamp": "2025-12-19T23:27:09.228345"
+    },
+    "backups_pre_fix\\system_core\\ncnt_orchestrator_complete.py": {
+      "status": "syntax_error",
+      "operational": false,
+      "error": "  File \"C:\\Users\\Lenovo\\Projects\\Aurora\\backups_pre_fix\\system_core\\ncnt_orchestrator_complete.py\", line 213\n    print(\"\\n5. \\U0001f4b0 DEMONSTRANDO ALO\n          ^\nSyntaxError: unterminated string literal (detected at line 213)\n",
+      "timestamp": "2025-12-19T23:27:09.261281"
+    },
+    "complete_integration.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 215,
+      "file_size_kb": 7.0439453125,
+      "timestamp": "2025-12-19T23:27:09.262281"
+    },
+    "create_structure.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 227,
+      "file_size_kb": 9.1396484375,
+      "timestamp": "2025-12-19T23:27:09.288337"
+    },
+    "executive_presentation.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 511,
+      "file_size_kb": 18.322265625,
+      "timestamp": "2025-12-19T23:27:09.291585"
+    },
+    "fase2_ativar_nucleo_tier0.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 99,
+      "file_size_kb": 3.21875,
+      "timestamp": "2025-12-19T23:27:09.317782"
+    },
+    "fase3_migracao_massa.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 279,
+      "file_size_kb": 8.9736328125,
+      "timestamp": "2025-12-19T23:27:09.385467"
+    },
+    "fix_all_8_modules.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 495,
+      "file_size_kb": 16.1181640625,
+      "timestamp": "2025-12-19T23:27:09.418330"
+    },
+    "fase4_validacao_final.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 122,
+      "file_size_kb": 3.9814453125,
+      "timestamp": "2025-12-19T23:27:09.429198"
+    },
+    "legacy_backup\\complete_integration.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 215,
+      "file_size_kb": 7.0439453125,
+      "timestamp": "2025-12-19T23:27:09.442260"
+    },
+    "integrate_ncnt.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 183,
+      "file_size_kb": 6.111328125,
+      "timestamp": "2025-12-19T23:27:09.445263"
+    },
+    "legacy_backup\\compliance_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 502,
+      "file_size_kb": 19.0458984375,
+      "timestamp": "2025-12-19T23:27:09.463343"
+    },
+    "legacy_backup\\coreengine_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 188,
+      "file_size_kb": 6.7109375,
+      "timestamp": "2025-12-19T23:27:09.526756"
+    },
+    "legacy_backup\\feedbackloop_module.py": {
+      "status": "syntax_error",
+      "operational": false,
+      "error": "  File \"C:\\Users\\Lenovo\\Projects\\Aurora\\legacy_backup\\feedbackloop_module.py\", line 477\n    print(\"\\n5. \\U0001f4b0 DEMONSTRANDO ALO\n          ^\nSyntaxError: unterminated string literal (detected at line 477)\n",
+      "timestamp": "2025-12-19T23:27:09.561791"
+    },
+    "legacy_backup\\governance_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 190,
+      "file_size_kb": 6.845703125,
+      "timestamp": "2025-12-19T23:27:09.575409"
+    },
+    "legacy_backup\\incidentresponse_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 555,
+      "file_size_kb": 21.2509765625,
+      "timestamp": "2025-12-19T23:27:09.593608"
+    },
+    "legacy_backup\\integrate_ncnt.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 183,
+      "file_size_kb": 6.111328125,
+      "timestamp": "2025-12-19T23:27:09.593608"
+    },
+    "legacy_backup\\moduleregistry.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 258,
+      "file_size_kb": 9.216796875,
+      "timestamp": "2025-12-19T23:27:09.606477"
+    },
+    "legacy_backup\\ncnt_base.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 220,
+      "file_size_kb": 7.779296875,
+      "timestamp": "2025-12-19T23:27:09.667691"
+    },
+    "legacy_backup\\ncnt_orchestrator_complete.py": {
+      "status": "syntax_error",
+      "operational": false,
+      "error": "  File \"C:\\Users\\Lenovo\\Projects\\Aurora\\legacy_backup\\ncnt_orchestrator_complete.py\", line 213\n    print(\"\\n5. \\U0001f4b0 DEMONSTRANDO ALO\n          ^\nSyntaxError: unterminated string literal (detected at line 213)\n",
+      "timestamp": "2025-12-19T23:27:09.711304"
+    },
+    "legacy_backup\\ncnt_scan.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 524,
+      "file_size_kb": 21.0400390625,
+      "timestamp": "2025-12-19T23:27:09.736664"
+    },
+    "legacy_backup\\risk_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 572,
+      "file_size_kb": 22.9501953125,
+      "timestamp": "2025-12-19T23:27:09.751754"
+    },
+    "legacy_backup\\posttradereconciliation_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 815,
+      "file_size_kb": 31.970703125,
+      "timestamp": "2025-12-19T23:27:09.758262"
+    },
+    "legacy_backup\\sops_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 259,
+      "file_size_kb": 9.375,
+      "timestamp": "2025-12-19T23:27:09.758262"
+    },
+    "legacy_backup\\strategy_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 231,
+      "file_size_kb": 8.5078125,
+      "timestamp": "2025-12-19T23:27:09.824306"
+    },
+    "legacy_backup\\treasury_module.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 304,
+      "file_size_kb": 12.5615234375,
+      "timestamp": "2025-12-19T23:27:09.874892"
+    },
+    "main.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 53,
+      "file_size_kb": 1.4609375,
+      "timestamp": "2025-12-19T23:27:09.901870"
+    },
+    "main_ncnt.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 58,
+      "file_size_kb": 1.5068359375,
+      "timestamp": "2025-12-19T23:27:09.917986"
+    },
+    "modules\\connectors\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0244140625,
+      "timestamp": "2025-12-19T23:27:09.926515"
+    },
+    "modules\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 17,
+      "file_size_kb": 0.3046875,
+      "timestamp": "2025-12-19T23:27:09.926515"
+    },
+    "modules\\connectors\\data_connector.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0205078125,
+      "timestamp": "2025-12-19T23:27:09.984646"
+    },
+    "modules\\connectors\\execution_connector.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.025390625,
+      "timestamp": "2025-12-19T23:27:10.041669"
+    },
+    "modules\\connectors\\risk_connector.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.0205078125,
+      "timestamp": "2025-12-19T23:27:10.059770"
+    },
+    "modules\\connectors\\strategy_connector.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1,
+      "file_size_kb": 0.02734375,
+      "timestamp": "2025-12-19T23:27:10.075353"
+    },
+    "modules\\ncnt_base.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 220,
+      "file_size_kb": 7.779296875,
+      "timestamp": "2025-12-19T23:27:10.088938"
+    },
+    "modules\\interfaces.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 185,
+      "file_size_kb": 6.7060546875,
+      "timestamp": "2025-12-19T23:27:10.088938"
+    },
+    "modules\\ncnt_module_template.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1126,
+      "file_size_kb": 44.40625,
+      "timestamp": "2025-12-19T23:27:10.150877"
+    },
+    "modules\\ncnt_module_template_v2.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 1133,
+      "file_size_kb": 44.52734375,
+      "timestamp": "2025-12-19T23:27:10.223439"
+    },
+    "ncnt_scan.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 524,
+      "file_size_kb": 21.0400390625,
+      "timestamp": "2025-12-19T23:27:10.231008"
+    },
+    "system_core\\__init__.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 18,
+      "file_size_kb": 0.3681640625,
+      "timestamp": "2025-12-19T23:27:10.260628"
+    },
+    "ncnt_wrapper_generator.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 262,
+      "file_size_kb": 9.998046875,
+      "timestamp": "2025-12-19T23:27:10.264634"
+    },
+    "system_core\\message_bus.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 109,
+      "file_size_kb": 3.9306640625,
+      "timestamp": "2025-12-19T23:27:10.311728"
+    },
+    "ncnt_system_complete.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 7855,
+      "file_size_kb": 314.9326171875,
+      "timestamp": "2025-12-19T23:27:10.315245"
+    },
+    "system_core\\ncnt_orchestrator_complete.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 219,
+      "file_size_kb": 8.5302734375,
+      "timestamp": "2025-12-19T23:27:10.387908"
+    },
+    "system_core\\orchestrator.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 118,
+      "file_size_kb": 3.9658203125,
+      "timestamp": "2025-12-19T23:27:10.390533"
+    },
+    "tests\\test_strategies.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 210,
+      "file_size_kb": 7.8212890625,
+      "timestamp": "2025-12-19T23:27:10.417107"
+    },
+    "system_core\\registry.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 90,
+      "file_size_kb": 3.240234375,
+      "timestamp": "2025-12-19T23:27:10.421117"
+    },
+    "visual_presentation.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 273,
+      "file_size_kb": 8.896484375,
+      "timestamp": "2025-12-19T23:27:10.464267"
+    },
+    "validate_239_modules.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 293,
+      "file_size_kb": 10.9921875,
+      "timestamp": "2025-12-19T23:27:10.475918"
+    },
+    "wrappers_v2\\__init___wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9404296875,
+      "timestamp": "2025-12-19T23:27:10.545912"
+    },
+    "visual_presentation_simple.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 270,
+      "file_size_kb": 8.6513671875,
+      "timestamp": "2025-12-19T23:27:10.551943"
+    },
+    "wrappers_v2\\ab_testing_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9599609375,
+      "timestamp": "2025-12-19T23:27:10.576158"
+    },
+    "wrappers_v2\\allocation_engine_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0166015625,
+      "timestamp": "2025-12-19T23:27:10.581186"
+    },
+    "wrappers_v2\\alpha_momentum_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0048828125,
+      "timestamp": "2025-12-19T23:27:10.626879"
+    },
+    "wrappers_v2\\api_gateway_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.970703125,
+      "timestamp": "2025-12-19T23:27:10.642614"
+    },
+    "wrappers_v2\\audit_trail_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9697265625,
+      "timestamp": "2025-12-19T23:27:10.709072"
+    },
+    "wrappers_v2\\audit_system_complete_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0283203125,
+      "timestamp": "2025-12-19T23:27:10.711738"
+    },
+    "wrappers_v2\\aurora_etapa_a_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 244,
+      "file_size_kb": 8.7607421875,
+      "timestamp": "2025-12-19T23:27:10.731380"
+    },
+    "wrappers_v2\\backtest_engine_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0009765625,
+      "timestamp": "2025-12-19T23:27:10.740277"
+    },
+    "wrappers_v2\\backtest_runner_v3_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.021484375,
+      "timestamp": "2025-12-19T23:27:10.780944"
+    },
+    "wrappers_v2\\base_strategy_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9970703125,
+      "timestamp": "2025-12-19T23:27:10.810169"
+    },
+    "wrappers_v2\\build_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9208984375,
+      "timestamp": "2025-12-19T23:27:10.881852"
+    },
+    "wrappers_v2\\breakout_detection_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0361328125,
+      "timestamp": "2025-12-19T23:27:10.887388"
+    },
+    "wrappers_v2\\capital_manager_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0009765625,
+      "timestamp": "2025-12-19T23:27:10.908236"
+    },
+    "wrappers_v2\\cicdpipeline_module_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0234375,
+      "timestamp": "2025-12-19T23:27:10.918294"
+    },
+    "wrappers_v2\\circuit_breakers_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.005859375,
+      "timestamp": "2025-12-19T23:27:10.949409"
+    },
+    "wrappers_v2\\complete_integration_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0068359375,
+      "timestamp": "2025-12-19T23:27:10.977988"
+    },
+    "wrappers_v2\\complexity_guard_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9892578125,
+      "timestamp": "2025-12-19T23:27:11.043690"
+    },
+    "wrappers_v2\\compliance_module_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0166015625,
+      "timestamp": "2025-12-19T23:27:11.052289"
+    },
+    "wrappers_v2\\connection_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.955078125,
+      "timestamp": "2025-12-19T23:27:11.075525"
+    },
+    "wrappers_v2\\core_engine_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.970703125,
+      "timestamp": "2025-12-19T23:27:11.083580"
+    },
+    "wrappers_v2\\coreengine_module_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.017578125,
+      "timestamp": "2025-12-19T23:27:11.109732"
+    },
+    "wrappers_v2\\counterparty_onboarding_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0595703125,
+      "timestamp": "2025-12-19T23:27:11.138429"
+    },
+    "wrappers_v2\\create_structure_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9755859375,
+      "timestamp": "2025-12-19T23:27:11.196277"
+    },
+    "wrappers_v2\\dashboard_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9609375,
+      "timestamp": "2025-12-19T23:27:11.204290"
+    },
+    "wrappers_v2\\data_layer_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.962890625,
+      "timestamp": "2025-12-19T23:27:11.238672"
+    },
+    "wrappers_v2\\data_onboarding_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9970703125,
+      "timestamp": "2025-12-19T23:27:11.240863"
+    },
+    "wrappers_v2\\delta_reports_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9833984375,
+      "timestamp": "2025-12-19T23:27:11.271788"
+    },
+    "wrappers_v2\\deploy_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9287109375,
+      "timestamp": "2025-12-19T23:27:11.291314"
+    },
+    "wrappers_v2\\executive_presentation_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0224609375,
+      "timestamp": "2025-12-19T23:27:11.351261"
+    },
+    "wrappers_v2\\executionwindow_module_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0595703125,
+      "timestamp": "2025-12-19T23:27:11.355259"
+    },
+    "wrappers_v2\\fix_report_errors_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9970703125,
+      "timestamp": "2025-12-19T23:27:11.383798"
+    },
+    "wrappers_v2\\feedbackloop_module_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.015625,
+      "timestamp": "2025-12-19T23:27:11.383798"
+    },
+    "wrappers_v2\\generate_complete_report_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0517578125,
+      "timestamp": "2025-12-19T23:27:11.407550"
+    },
+    "wrappers_v2\\generate_ultra_complete_report_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0986328125,
+      "timestamp": "2025-12-19T23:27:11.438752"
+    },
+    "wrappers_v2\\genesis_includes_v3_complete_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0830078125,
+      "timestamp": "2025-12-19T23:27:11.497435"
+    },
+    "wrappers_v2\\genesis_includes_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9892578125,
+      "timestamp": "2025-12-19T23:27:11.504433"
+    },
+    "wrappers_v2\\incidentresponse_module_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.06640625,
+      "timestamp": "2025-12-19T23:27:11.528012"
+    },
+    "wrappers_v2\\governance_module_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9970703125,
+      "timestamp": "2025-12-19T23:27:11.529016"
+    },
+    "wrappers_v2\\innovationlab_module_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0380859375,
+      "timestamp": "2025-12-19T23:27:11.547467"
+    },
+    "wrappers_v2\\integrate_ncnt_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9599609375,
+      "timestamp": "2025-12-19T23:27:11.578974"
+    },
+    "wrappers_v2\\integration_gate_v2_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0126953125,
+      "timestamp": "2025-12-19T23:27:11.642253"
+    },
+    "wrappers_v2\\integration_gate_v3_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0126953125,
+      "timestamp": "2025-12-19T23:27:11.644248"
+    },
+    "wrappers_v2\\interface_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9716796875,
+      "timestamp": "2025-12-19T23:27:11.687510"
+    },
+    "wrappers_v2\\main_ncnt_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9208984375,
+      "timestamp": "2025-12-19T23:27:11.690943"
+    },
+    "wrappers_v2\\main_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9033203125,
+      "timestamp": "2025-12-19T23:27:11.708655"
+    },
+    "wrappers_v2\\mean_reversion_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0048828125,
+      "timestamp": "2025-12-19T23:27:11.741475"
+    },
+    "wrappers_v2\\models_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.923828125,
+      "timestamp": "2025-12-19T23:27:11.794301"
+    },
+    "wrappers_v2\\moduleregistry_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9775390625,
+      "timestamp": "2025-12-19T23:27:11.796327"
+    },
+    "wrappers_v2\\ncnt_base_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9287109375,
+      "timestamp": "2025-12-19T23:27:11.839512"
+    },
+    "wrappers_v2\\ncnt_cli_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9404296875,
+      "timestamp": "2025-12-19T23:27:11.841511"
+    },
+    "wrappers_v2\\ncnt_orchestrator_complete_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0654296875,
+      "timestamp": "2025-12-19T23:27:11.854076"
+    },
+    "wrappers_v2\\ncnt_scan_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9208984375,
+      "timestamp": "2025-12-19T23:27:11.881652"
+    },
+    "wrappers_v2\\ncnt_system_complete_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0068359375,
+      "timestamp": "2025-12-19T23:27:11.936754"
+    },
+    "wrappers_v2\\onboarding_module_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0126953125,
+      "timestamp": "2025-12-19T23:27:11.943766"
+    },
+    "wrappers_v2\\posttradereconciliation_module_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.1162109375,
+      "timestamp": "2025-12-19T23:27:11.990872"
+    },
+    "wrappers_v2\\order_management_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.009765625,
+      "timestamp": "2025-12-19T23:27:11.990872"
+    },
+    "wrappers_v2\\premarketchecklist_module_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0771484375,
+      "timestamp": "2025-12-19T23:27:11.999240"
+    },
+    "wrappers_v2\\prototypes_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9599609375,
+      "timestamp": "2025-12-19T23:27:12.026212"
+    },
+    "wrappers_v2\\realtimedashboard_module_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.078125,
+      "timestamp": "2025-12-19T23:27:12.082727"
+    },
+    "wrappers_v2\\qabacktesting_module_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0400390625,
+      "timestamp": "2025-12-19T23:27:12.083728"
+    },
+    "wrappers_v2\\reg_tracker_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9697265625,
+      "timestamp": "2025-12-19T23:27:12.136692"
+    },
+    "wrappers_v2\\reconciliation_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9912109375,
+      "timestamp": "2025-12-19T23:27:12.140027"
+    },
+    "wrappers_v2\\regulatory_context_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0048828125,
+      "timestamp": "2025-12-19T23:27:12.140027"
+    },
+    "wrappers_v2\\report_generator_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0087890625,
+      "timestamp": "2025-12-19T23:27:12.166720"
+    },
+    "wrappers_v2\\restore_executive_report_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0517578125,
+      "timestamp": "2025-12-19T23:27:12.235949"
+    },
+    "wrappers_v2\\risk_engine_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.966796875,
+      "timestamp": "2025-12-19T23:27:12.237969"
+    },
+    "wrappers_v2\\risk_module_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.966796875,
+      "timestamp": "2025-12-19T23:27:12.288619"
+    },
+    "wrappers_v2\\run_complete_audit_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0048828125,
+      "timestamp": "2025-12-19T23:27:12.288619"
+    },
+    "wrappers_v2\\smart_routing_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.986328125,
+      "timestamp": "2025-12-19T23:27:12.291625"
+    },
+    "wrappers_v2\\sops_module_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9521484375,
+      "timestamp": "2025-12-19T23:27:12.302686"
+    },
+    "wrappers_v2\\strategy_module_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.001953125,
+      "timestamp": "2025-12-19T23:27:12.373698"
+    },
+    "wrappers_v2\\strategies_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9599609375,
+      "timestamp": "2025-12-19T23:27:12.373698"
+    },
+    "wrappers_v2\\strategy_onboarding_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0283203125,
+      "timestamp": "2025-12-19T23:27:12.436286"
+    },
+    "wrappers_v2\\test_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9130859375,
+      "timestamp": "2025-12-19T23:27:12.442288"
+    },
+    "wrappers_v2\\strategy_template_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0439453125,
+      "timestamp": "2025-12-19T23:27:12.444287"
+    },
+    "wrappers_v2\\test_module_v2_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9736328125,
+      "timestamp": "2025-12-19T23:27:12.445292"
+    },
+    "wrappers_v2\\tier1_validator_v3_complete_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.091796875,
+      "timestamp": "2025-12-19T23:27:12.523907"
+    },
+    "wrappers_v2\\throttling_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9658203125,
+      "timestamp": "2025-12-19T23:27:12.525414"
+    },
+    "wrappers_v2\\visual_presentation_simple_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0537109375,
+      "timestamp": "2025-12-19T23:27:12.588184"
+    },
+    "wrappers_v2\\treasury_module_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.0009765625,
+      "timestamp": "2025-12-19T23:27:12.589181"
+    },
+    "wrappers_v2\\tier1_validator_v3_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 2.021484375,
+      "timestamp": "2025-12-19T23:27:12.589181"
+    },
+    "wrappers_v2\\visual_presentation_wrapper.py": {
+      "status": "operational",
+      "operational": true,
+      "lines_of_code": 61,
+      "file_size_kb": 1.9990234375,
+      "timestamp": "2025-12-19T23:27:12.589181"
+    }
+  },
+  "summary": {
+    "success_rate_percentage": 98.17518248175182,
+    "validation_date": "2025-12-19 23:27:12",
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "system_platform": "win32"
+  }
+}

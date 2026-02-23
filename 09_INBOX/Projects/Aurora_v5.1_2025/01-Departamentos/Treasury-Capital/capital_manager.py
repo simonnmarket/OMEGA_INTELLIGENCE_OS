@@ -1,0 +1,1 @@
+# Gestão de Capital (Reservas, ROI tracking)

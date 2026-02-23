@@ -1,0 +1,222 @@
+//+------------------------------------------------------------------+
+//| Market Profile Category - Enhanced Implementation                  |
+//+------------------------------------------------------------------+
+
+// 1. Estruturas Avançadas de Market Profile
+struct ProfileStructure {
+    double valueAreaHigh;
+    double valueAreaLow;
+    double poc;                    
+    double[] volumeNodes;
+    double[] priceNodes;
+    string[] tpoLetters;
+    datetime initialBalance;
+    bool isBalanced;
+    double deviation;
+};
+
+struct TPOData {
+    int letterCount;
+    double[] prices;
+    int[] frequency;
+    string currentLetter;
+    datetime periodStart;
+};
+
+struct PatternMetrics {
+    bool isSinglePrint;
+    bool isPoorHigh;
+    bool isPoorLow;
+    bool isBalanced;
+    bool isBreakoutProfile;
+    double confidence;
+};
+
+// 2. Implementação Atualizada da Categoria
+class CMarketProfileCategory : public CBaseCategoryAnalyzer {
+private:
+    // Componentes principais
+    ProfileStructure m_profile;
+    TPOData m_tpo;
+    PatternMetrics m_patterns;
+    CValueAreaCalculator* m_valueCalculator;
+    CProfilePatternAnalyzer* m_patternAnalyzer;
+    CTPOAnalyzer* m_tpoAnalyzer;
+    CProfileMemoryManager* m_memoryManager;
+    
+    // Constantes de performance
+    const int UPDATE_INTERVAL = 1800; // 30 minutos
+    const double MEMORY_THRESHOLD = 45.0; // MB
+    const double MIN_PATTERN_CONFIDENCE = 0.89;
+    
+public:
+    CMarketProfileCategory() : CBaseCategoryAnalyzer("MarketProfile") {
+        m_valueCalculator = new CValueAreaCalculator();
+        m_patternAnalyzer = new CProfilePatternAnalyzer();
+        m_tpoAnalyzer = new CTPOAnalyzer();
+        m_memoryManager = new CProfileMemoryManager();
+    }
+    
+    ~CMarketProfileCategory() {
+        delete m_valueCalculator;
+        delete m_patternAnalyzer;
+        delete m_tpoAnalyzer;
+        delete m_memoryManager;
+    }
+    
+    virtual bool Initialize() override {
+        if(!CBaseCategoryAnalyzer::Initialize()) return false;
+        
+        if(!ValidateTimeframe()) return false;
+        if(!InitializeBuffers()) return false;
+        if(!ConfigureProfile()) return false;
+        
+        return true;
+    }
+    
+    virtual bool Update() override {
+        if(!ValidateState()) return false;
+        if(!m_memoryManager.ValidateMemoryUsage()) {
+            m_memoryManager.OptimizeMemory();
+        }
+        
+        UpdateProfile();
+        GenerateProfileSignals();
+        
+        return true;
+    }
+    
+    virtual bool Validate() override {
+        return ValidateProfile() && ValidatePatterns();
+    }
+
+private:
+    void UpdateProfile() {
+        // Atualizar Value Area
+        ValueAreaMetrics* metrics = m_valueCalculator.CalculateValueArea();
+        m_profile.valueAreaHigh = metrics.high;
+        m_profile.valueAreaLow = metrics.low;
+        m_profile.poc = metrics.poc;
+        
+        // Atualizar TPO
+        m_tpoAnalyzer.UpdateTPO();
+        
+        // Analisar Padrões
+        PatternMetrics* patterns = m_patternAnalyzer.AnalyzePattern();
+        m_patterns = *patterns;
+        
+        // Otimizar Profile
+        OptimizeProfile();
+    }
+    
+    void GenerateProfileSignals() {
+        InsightSignal signal;
+        
+        // Value Area Signal
+        if(IsValueAreaSignal()) {
+            signal.categoryName = "MarketProfile";
+            signal.signalName = "ValueArea";
+            signal.strength = CalculateVASignalStrength();
+            signal.confidence = m_patterns.confidence;
+            signal.timestamp = TimeCurrent();
+            signal.description = "Value Area Trading Opportunity";
+            signal.isValid = true;
+            
+            AddSignal(signal);
+        }
+        
+        // TPO Pattern Signal
+        if(IsTPOPatternSignal()) {
+            signal.categoryName = "MarketProfile";
+            signal.signalName = "TPOPattern";
+            signal.strength = CalculateTPOSignalStrength();
+            signal.confidence = m_patterns.confidence;
+            signal.timestamp = TimeCurrent();
+            signal.description = GenerateTPOPatternDescription();
+            signal.isValid = true;
+            
+            AddSignal(signal);
+        }
+        
+        // Profile Pattern Signal
+        if(IsProfilePatternSignal()) {
+            signal.categoryName = "MarketProfile";
+            signal.signalName = "ProfilePattern";
+            signal.strength = CalculatePatternStrength();
+            signal.confidence = m_patterns.confidence;
+            signal.timestamp = TimeCurrent();
+            signal.description = GeneratePatternDescription();
+            signal.isValid = true;
+            
+            AddSignal(signal);
+        }
+    }
+    
+    bool IsValueAreaSignal() {
+        return m_patterns.isBalanced && 
+               fabs(m_profile.deviation) < 0.2;
+    }
+    
+    bool IsTPOPatternSignal() {
+        return m_patterns.isSinglePrint || 
+               m_patterns.isPoorHigh || 
+               m_patterns.isPoorLow;
+    }
+    
+    bool IsProfilePatternSignal() {
+        return m_patterns.isBreakoutProfile && 
+               m_patterns.confidence >= MIN_PATTERN_CONFIDENCE;
+    }
+    
+    double CalculateVASignalStrength() {
+        return (m_patterns.confidence * 0.4 +
+                (1.0 - fabs(m_profile.deviation)) * 0.3 +
+                (m_patterns.isBalanced ? 0.3 : 0.0));
+    }
+    
+    double CalculateTPOSignalStrength() {
+        double strength = 0;
+        
+        if(m_patterns.isSinglePrint) strength += 0.4;
+        if(m_patterns.isPoorHigh) strength += 0.3;
+        if(m_patterns.isPoorLow) strength += 0.3;
+        
+        return strength * m_patterns.confidence;
+    }
+    
+    string GenerateTPOPatternDescription() {
+        string desc = "TPO Pattern: ";
+        
+        if(m_patterns.isSinglePrint) desc += "Single Print ";
+        if(m_patterns.isPoorHigh) desc += "Poor High ";
+        if(m_patterns.isPoorLow) desc += "Poor Low ";
+        
+        return desc;
+    }
+    
+    void OptimizeProfile() {
+        // Otimização de memória periódica
+        if(IsCriticalMemoryUsage()) {
+            m_memoryManager.OptimizeMemory();
+        }
+        
+        // Otimização de performance
+        CompressProfileData();
+        OptimizeArrays();
+    }
+    
+    bool ValidateProfile() {
+        if(!ValidateValueArea()) return false;
+        if(!ValidateTPOStructure()) return false;
+        if(!ValidatePatterns()) return false;
+        
+        return true;
+    }
+    
+    void AddSignal(const InsightSignal &signal) {
+        int size = ArraySize(m_signals);
+        ArrayResize(m_signals, size + 1);
+        m_signals[size] = signal;
+        m_state.signalCount++;
+    }
+};

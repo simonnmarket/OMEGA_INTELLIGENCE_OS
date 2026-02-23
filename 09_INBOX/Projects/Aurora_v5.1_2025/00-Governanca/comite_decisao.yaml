@@ -1,0 +1,6 @@
+# Comitê de Decisão
+members:
+  tech_lead: Decisões técnicas/arquitetura
+  risk_officer: Aprovações de risco
+  compliance: Aprovações regulatórias
+  capital_manager: Alocações de capital

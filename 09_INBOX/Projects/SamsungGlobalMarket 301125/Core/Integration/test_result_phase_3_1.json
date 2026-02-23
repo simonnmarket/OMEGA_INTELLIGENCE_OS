@@ -1,0 +1,18 @@
+{
+  "function": "_integrate_crypto_module()",
+  "passed": true,
+  "timestamp": "2025-11-02T19:39:05.995426",
+  "details": {
+    "crypto_module_integrated": true,
+    "strategies_files_found": {
+      "mean_reversion": true,
+      "triangular_arbitrage": true,
+      "momentum": true,
+      "breakout": true,
+      "funding_rate_arbitrage": true,
+      "liquidity_mining": true
+    },
+    "total_strategies": 6,
+    "files_found_count": 6
+  }
+}

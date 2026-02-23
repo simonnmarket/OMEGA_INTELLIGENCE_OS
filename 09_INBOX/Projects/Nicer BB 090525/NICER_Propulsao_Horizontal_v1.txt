@@ -1,0 +1,97 @@
+
+DOCUMENTAÇÃO OFICIAL DO SISTEMA DE PROPULSÃO HORIZONTAL CONTÍNUA – PROJETO NICER PROPULSAO HORIZONTAL
+===============================================================================================
+
+Versão: 1.0
+Finalidade: Estudar, medir e controlar o movimento horizontal de um sistema com impulso passado, baseado em fundamentos da física clássica, relativística e dinâmicas complexas.
+Proposta: Modelo para ser integrado a sistemas autônomos de navegação ou robôs de mercado baseados em zonas de estabilidade e propulsão passada.
+
+1. HIPÓTESE FUNDAMENTAL
+-----------------------
+O sistema (foguete horizontal) foi lançado com impulso prévio. A partir deste momento, ele:
+- Não possui mais entrada ativa de energia (sem combustível novo).
+- Está sujeito a forças externas e internas.
+- Busca manter sua estabilidade e trajetória, enfrentando oscilações naturais e zonas de instabilidade.
+
+2. VARIÁVEIS FUNDAMENTAIS
+--------------------------
+| Símbolo | Nome                             | Unidade  |
+|---------|----------------------------------|----------|
+| v       | Velocidade horizontal            | m/s      |
+| a       | Aceleração (horizontal)          | m/s²     |
+| m       | Massa do foguete                 | kg       |
+| F_r     | Força resultante                 | N        |
+| μ       | Resistência do meio              | N·s/m    |
+| t       | Tempo decorrido                  | s        |
+| x(t)    | Posição horizontal               | m        |
+| E       | Energia interna disponível       | J        |
+| ω       | Frequência de oscilação          | rad/s    |
+| A       | Amplitude da oscilação           | m        |
+| S       | Estado de estabilidade (0 a 1)   | —        |
+
+3. MODELOS MATEMÁTICOS
+------------------------
+
+3.1. Movimento com Impulso Passado (Inércia)
+    Se o impulso inicial I = F * Δt já foi fornecido, a velocidade inicial v₀ será:
+    v₀ = I / m
+
+    A posição ao longo do tempo (ignorando forças externas):
+    x(t) = v₀ * t
+
+3.2. Movimento com Resistência
+    F_r = -μ * v
+    Pela segunda lei de Newton:
+    ma = - (μ * v) => a = - (μ/m) * v
+
+    Solução:
+    v(t) = v₀ * e^(-μt/m)
+    x(t) = (m/μ) * v₀ * (1 - e^(-μt/m))
+
+3.3. Oscilações Harmônicas
+    y(t) = A * cos(ωt + φ)
+    Oscilações amortecidas:
+    y(t) = A * e^(-βt) * cos(ωt + φ)
+    ω = sqrt(k/m), se houver rigidez no sistema
+
+3.4. Energia e Entropia
+    Energia cinética inicial:
+    E_k = (1/2) * m * v₀²
+
+    Perda de energia:
+    dE/dt = -μ * v²
+
+    Estado de estabilidade (S):
+    S(t) = E(t) / E_k
+
+3.5. Estabilidade Dinâmica
+    Estabilidade(t) = 1 - (|Δa| + |Δω| + ΔS) / C
+
+3.6. Teoria do Caos
+    Mapa logístico:
+    x_{n+1} = r * x_n * (1 - x_n)
+
+4. DEFINIÇÃO DE ZONAS (CORE / BUFFER)
+--------------------------------------
+| Zona      | Critério                              | Ação                   |
+|-----------|----------------------------------------|-----------------------|
+| CORE      | S > 0.75                               | Tomar decisões        |
+| BUFFER    | 0.4 < S < 0.75                         | Aguardar comportamento|
+| CRITICAL  | S < 0.4                                | Ativar modo segurança |
+
+5. FÓRMULAS PARA ENGENHEIROS
+------------------------------
+Função de estabilidade:
+Stab(t) = e^(-μt/m) * [1 - (|ω|/ω_max) - (ΔE / E_k)]
+
+Posição futura:
+x(t+Δt) = x(t) + v(t)Δt + (1/2)a(t)(Δt)²
+
+6. APLICAÇÃO EM SIMULADORES OU ROBÔS DE MERCADO
+-------------------------------------------------
+- Cada zona representa um nível de volatilidade e decisão.
+- O “foguete” pode ser mapeado como um ativo.
+- As fórmulas podem medir: força de tendência, consistência do movimento, energia do mercado.
+
+DOCUMENTO FINALIZADO - PRONTO PARA APRESENTAÇÃO
+===============================================

@@ -1,0 +1,35 @@
+FROM python:3.11-slim AS builder
+
+RUN apt-get update && apt-get install -y \
+    gcc g++ libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY requirements.core.txt .
+RUN pip install --no-cache-dir -r requirements.core.txt
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN groupadd -r aurora && useradd -r -g aurora aurora -s /bin/false \
+    && chown -R aurora:aurora /app \
+    && chmod -R 550 /app
+
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+
+COPY --chown=aurora:aurora src/ ./src/
+COPY --chown=aurora:aurora config/ ./config/
+COPY --chown=aurora:aurora scripts/healthcheck.py ./scripts/
+
+USER aurora
+
+# HEALTHCHECK SEM SHELL INJECTION
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD ["python", "/app/scripts/healthcheck.py"]
+
+EXPOSE 8081 9091
+
+CMD ["python", "-m", "src.main"]
+

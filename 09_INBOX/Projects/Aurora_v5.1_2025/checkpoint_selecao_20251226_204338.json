@@ -1,0 +1,199 @@
+{
+  "metadata": {
+    "projeto": "AURORA v5.1",
+    "etapa": "ARCH-001 - BLOCO 2",
+    "timestamp": "2025-12-26T20:43:38.126422",
+    "sessao_id": "ARCH001_B2_20251226_204338",
+    "criticidade": "BACKUP_CRITICO",
+    "dependencias": [
+      "checkpoint_analise_*.json"
+    ],
+    "input": "checkpoint_analise_20251226_201607.json",
+    "outputs": [
+      "backup_pre_arch001_*.zip",
+      "checkpoint_selecao_*.json"
+    ],
+    "status": "COMPLETO"
+  },
+  "fase_backup": {
+    "status": "COMPLETO",
+    "backup_dir": "backup_pre_arch001_20251226_204338",
+    "backup_zip": "backup_pre_arch001_20251226_204338.zip",
+    "arquivos_backupeados": [
+      {
+        "arquivo": "arch001_executor_completo.py",
+        "tamanho_bytes": 38970,
+        "hash_md5": "e7164add16061761c114b476b93a132b",
+        "timestamp_copia": "2025-12-26T20:43:38.152709"
+      },
+      {
+        "arquivo": "arch001_fase1_identificar.py",
+        "tamanho_bytes": 2907,
+        "hash_md5": "c46c33d82c38d8ce3b7ef57460ee188e",
+        "timestamp_copia": "2025-12-26T20:43:38.156959"
+      },
+      {
+        "arquivo": "AURORA_TEST_MODE_NO_STOPS.py",
+        "tamanho_bytes": 40124,
+        "hash_md5": "c064d0a8e37638774e164dafd8efeea7",
+        "timestamp_copia": "2025-12-26T20:43:38.161003"
+      },
+      {
+        "arquivo": "bloco1_analise_identificacao.py",
+        "tamanho_bytes": 18673,
+        "hash_md5": "d2f10d8e6bf334f1dbb24fd08e9eb756",
+        "timestamp_copia": "2025-12-26T20:43:38.164150"
+      },
+      {
+        "arquivo": "executar_arch001_simples.py",
+        "tamanho_bytes": 2855,
+        "hash_md5": "1bc5268355acef5ded0b557e557434f8",
+        "timestamp_copia": "2025-12-26T20:43:38.166153"
+      },
+      {
+        "arquivo": "HANTEC_STOPS_DISCOVERY.py",
+        "tamanho_bytes": 12049,
+        "hash_md5": "b22f7b1a60d3f78c79034765137b4179",
+        "timestamp_copia": "2025-12-26T20:43:38.168153"
+      },
+      {
+        "arquivo": "MT5_EXECUTOR_PROFISSIONAL.py",
+        "tamanho_bytes": 11023,
+        "hash_md5": "c17f3086f3a4cc8a4e45af0802f5bb13",
+        "timestamp_copia": "2025-12-26T20:43:38.172373"
+      },
+      {
+        "arquivo": "SOLUCAO_DEFINITIVA_MT5.py",
+        "tamanho_bytes": 7406,
+        "hash_md5": "eaab7c0352b684d4691938002dd98d62",
+        "timestamp_copia": "2025-12-26T20:43:38.175375"
+      },
+      {
+        "arquivo": "04-Infraestrutura\\mt5_executor.py",
+        "tamanho_bytes": 27601,
+        "hash_md5": "6ead1ece55da9169d5979f9a67edf112",
+        "timestamp_copia": "2025-12-26T20:43:38.177368"
+      },
+      {
+        "arquivo": "04-Infraestrutura\\MT5_STOPS_FIX.py",
+        "tamanho_bytes": 10540,
+        "hash_md5": "b8c67b17ec40f5ab03f6d55a341265e9",
+        "timestamp_copia": "2025-12-26T20:43:38.179369"
+      },
+      {
+        "arquivo": "TEMPLATE_AGENTE_EXTERNO.yaml",
+        "tipo": "RELACIONADO",
+        "tamanho_bytes": 4771
+      },
+      {
+        "arquivo": "TEMPLATE_PLANO_ACAO.yaml",
+        "tipo": "RELACIONADO",
+        "tamanho_bytes": 10022
+      },
+      {
+        "arquivo": "TEMPLATE_AGENTE_EXTERNO_V2.yaml",
+        "tipo": "RELACIONADO",
+        "tamanho_bytes": 9816
+      },
+      {
+        "arquivo": "EXEMPLO_TEMPLATE_PREENCHIDO.yaml",
+        "tipo": "RELACIONADO",
+        "tamanho_bytes": 5061
+      },
+      {
+        "arquivo": "requirements.txt",
+        "tipo": "RELACIONADO",
+        "tamanho_bytes": 353
+      }
+    ],
+    "hash_backup": "fefcb074bad89b3a5b03c8c18fa264ed2bd54e1c1a09da18bd74fb582f41709d",
+    "tamanho_backup_mb": 0.05,
+    "timestamp_backup": "2025-12-26T20:43:38.217022",
+    "tamanho_total_bytes": 202171,
+    "total_arquivos": 15
+  },
+  "fase_selecao": {
+    "status": "SELECIONADO",
+    "executor_principal": ".\\04-Infraestrutura\\mt5_executor.py",
+    "executores_candidatos": [
+      {
+        "arquivo": ".\\04-Infraestrutura\\mt5_executor.py",
+        "pontos_totais": 420,
+        "detalhes": {
+          "score_funcional": 120,
+          "tamanho": 100,
+          "nome_padrao": 100,
+          "diretorio_padrao": 50,
+          "complexidade": 50
+        }
+      },
+      {
+        "arquivo": ".\\arch001_executor_completo.py",
+        "pontos_totais": 360,
+        "detalhes": {
+          "score_funcional": 180,
+          "tamanho": 100,
+          "nome_padrao": 20,
+          "diretorio_padrao": 10,
+          "complexidade": 50
+        }
+      },
+      {
+        "arquivo": ".\\bloco1_analise_identificacao.py",
+        "pontos_totais": 340,
+        "detalhes": {
+          "score_funcional": 180,
+          "tamanho": 100,
+          "nome_padrao": 20,
+          "diretorio_padrao": 10,
+          "complexidade": 30
+        }
+      },
+      {
+        "arquivo": ".\\MT5_EXECUTOR_PROFISSIONAL.py",
+        "pontos_totais": 320,
+        "detalhes": {
+          "score_funcional": 100,
+          "tamanho": 100,
+          "nome_padrao": 80,
+          "diretorio_padrao": 10,
+          "complexidade": 30
+        }
+      },
+      {
+        "arquivo": ".\\AURORA_TEST_MODE_NO_STOPS.py",
+        "pontos_totais": 300,
+        "detalhes": {
+          "score_funcional": 120,
+          "tamanho": 100,
+          "nome_padrao": 20,
+          "diretorio_padrao": 10,
+          "complexidade": 50
+        }
+      }
+    ],
+    "criterios_selecao": {
+      "score_funcional": "0-200",
+      "tamanho": "0-100",
+      "nome_padrao": "0-100",
+      "diretorio_padrao": "0-50",
+      "complexidade": "0-50"
+    },
+    "score_detalhado": {
+      "score_funcional": 120,
+      "tamanho": 100,
+      "nome_padrao": 100,
+      "diretorio_padrao": 50,
+      "complexidade": 50
+    },
+    "timestamp_selecao": "2025-12-26T20:43:38.221545",
+    "pontuacao_total": 420
+  },
+  "estatisticas": {
+    "inicio_execucao": "2025-12-26T20:43:38.126422",
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "diretorio_execucao": "C:\\Users\\Lenovo\\Projects\\Aurora",
+    "espaco_livre_gb": 171.99950408935547,
+    "fim_execucao": "2025-12-26T20:43:38.223561"
+  }
+}

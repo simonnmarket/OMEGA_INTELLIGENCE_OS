@@ -1,0 +1,177 @@
+# agent_alpha.py - Quantum Dependency Scanner v3.0
+import os
+import re
+import json
+import time
+import networkx as nx
+from datetime import datetime
+import hashlib
+import threading
+
+class AgentAlpha:
+    def __init__(self, root_dir="MQL5/", output_path="MQL5/HTML/dependencies.json"):
+        self.root_dir = root_dir
+        self.output_path = output_path
+        self.graph = None
+        self.running = False
+        self.lock = threading.Lock()
+
+    def scan_all_files(self):
+        """Escaneia todos os arquivos .mqh e .mq5"""
+        files = []
+        for folder, _, filenames in os.walk(self.root_dir):
+            for file in filenames:
+                if file.endswith(('.mqh', '.mq5')):
+                    files.append(os.path.join(folder, file))
+        return files
+
+    def extract_includes(self, file_path):
+        """Extrai #include com regex"""
+        includes = []
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+                matches = re.findall(r'#include\s+[<"](.+?)[">]', content)
+                includes.extend(matches)
+        except:
+            pass
+        return includes
+
+    def calculate_sha3(self, file_path):
+        """Calcula SHA3-256 do arquivo"""
+        try:
+            with open(file_path, 'rb') as f:
+                data = f.read()
+                return hashlib.sha3_256(data).hexdigest()
+        except:
+            return "ERROR"
+
+    def check_file_integrity(self, file_path):
+        """Verifica integridade do arquivo"""
+        if not os.path.exists(file_path):
+            return {"exists": False, "integrity": 0.0, "sha3": "NOT_FOUND"}
+        
+        current_sha3 = self.calculate_sha3(file_path)
+        integrity = 1.0 if current_sha3 != "ERROR" else 0.8
+        
+        return {
+            "exists": True,
+            "integrity": integrity,
+            "sha3": current_sha3,
+            "last_modified": datetime.fromtimestamp(os.path.getmtime(file_path)).isoformat()
+        }
+
+    def classify_tier(self, file_path):
+        """Classifica o nível do arquivo"""
+        if "CORE" in file_path:
+            return "CORE"
+        elif "include/security" in file_path.lower():
+            return "SECURITY"
+        elif "include/intelligence" in file_path.lower():
+            return "INTELLIGENCE"
+        elif "AUDITOR" in file_path:
+            return "AUDITOR"
+        elif "EXPERT" in file_path:
+            return "EXPERT"
+        else:
+            return "UTILS"
+
+    def build_dependency_graph(self):
+        """Constrói o grafo de dependências com metadados"""
+        G = nx.DiGraph()
+        all_files = self.scan_all_files()
+        
+        # Adiciona nós com metadados
+        for file in all_files:
+            file_id = os.path.basename(file)
+            integrity = self.check_file_integrity(file)
+            
+            G.add_node(file_id, 
+                      file_path=file,
+                      type=self.classify_tier(file),
+                      status="GREEN" if integrity["exists"] else "RED",
+                      integrity=integrity["integrity"],
+                      sha3=integrity["sha3"],
+                      last_modified=integrity["last_modified"],
+                      timestamp=datetime.now().isoformat())
+        
+        # Adiciona arestas (dependências)
+        for file in all_files:
+            file_id = os.path.basename(file)
+            includes = self.extract_includes(file)
+            for inc in includes:
+                target_id = os.path.basename(inc)
+                target_path = os.path.join("MQL5/", inc.replace('\\', '/'))
+                exists = os.path.exists(target_path)
+                
+                G.add_edge(file_id, target_id, 
+                          include_path=inc,
+                          status="GREEN" if exists else "RED",
+                          error_type="INCLUDE_NOT_FOUND" if not exists else "",
+                          resolution_time=15.0 if exists else 0.0)
+        
+        return G
+
+    def export_to_json(self):
+        """Exporta para JSON com metadados completos"""
+        with self.lock:
+            data = {
+                "metadata": {
+                    "generated_at": datetime.now().isoformat(),
+                    "total_files": len(self.graph.nodes),
+                    "total_dependencies": len(self.graph.edges),
+                    "system_status": "APPROVED" if all(self.graph.nodes[n]["status"] == "GREEN" for n in self.graph.nodes) else "CRITICAL"
+                },
+                "nodes": [],
+                "links": []
+            }
+            
+            for n in self.graph.nodes:
+                node_data = {
+                    "id": n,
+                    "type": self.graph.nodes[n]["type"],
+                    "status": self.graph.nodes[n]["status"],
+                    "integrity": self.graph.nodes[n]["integrity"],
+                    "sha3": self.graph.nodes[n]["sha3"],
+                    "last_modified": self.graph.nodes[n]["last_modified"]
+                }
+                data["nodes"].append(node_data)
+            
+            for u, v in self.graph.edges:
+                edge_data = {
+                    "source": u,
+                    "target": v,
+                    "status": self.graph[u][v]["status"],
+                    "error_type": self.graph[u][v].get("error_type", ""),
+                    "resolution_time": self.graph[u][v]["resolution_time"]
+                }
+                data["links"].append(edge_data)
+            
+            with open(self.output_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=2)
+            print(f"[AGENT_ALPHA] dependencies.json gerado em {self.output_path}")
+
+    def run_continuous_scan(self):
+        """Executa escaneamento contínuo"""
+        print("[AGENT_ALPHA] Iniciando escaneamento contínuo...")
+        self.running = True
+        while self.running:
+            try:
+                self.graph = self.build_dependency_graph()
+                self.export_to_json()
+                time.sleep(5)  # Atualiza a cada 5 segundos
+            except Exception as e:
+                print(f"[AGENT_ALPHA] Erro no escaneamento: {e}")
+                time.sleep(5)
+
+    def stop(self):
+        """Para o escaneamento contínuo"""
+        self.running = False
+
+if __name__ == "__main__":
+    agent = AgentAlpha()
+    try:
+        agent.run_continuous_scan()
+    except KeyboardInterrupt:
+        agent.stop()
+        print("[AGENT_ALPHA] Escaneamento interrompido.")

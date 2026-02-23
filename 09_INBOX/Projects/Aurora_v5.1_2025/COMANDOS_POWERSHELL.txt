@@ -1,0 +1,60 @@
+================================================================================
+COMANDOS POWERSHELL - AURORA v5.1
+================================================================================
+
+📁 DIRETÓRIO DO PROJETO:
+   C:\Users\Lenovo\Projects\Aurora
+
+🔧 CAMINHO DO POWERSHELL:
+   C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+
+================================================================================
+COMANDOS PRINCIPAIS
+================================================================================
+
+1. NAVEGAR PARA O PROJETO:
+   cd C:\Users\Lenovo\Projects\Aurora
+
+2. EXECUTAR TESTE RÁPIDO (2 ciclos, sem confirmação):
+   python AURORA_TEST_MODE_NO_STOPS.py --quick --auto
+
+3. EXECUTAR TESTE ESTENDIDO (10 ciclos, sem confirmação):
+   python AURORA_TEST_MODE_NO_STOPS.py --extended --auto
+
+4. EXECUTAR EM MODO SIMULAÇÃO:
+   python AURORA_TEST_MODE_NO_STOPS.py --simulation --quick
+
+5. TESTAR EXECUTOR PROFISSIONAL:
+   python MT5_EXECUTOR_PROFISSIONAL.py
+
+6. VERIFICAR SÍMBOLOS MT5:
+   python SOLUCAO_DEFINITIVA_MT5.py
+
+================================================================================
+COMANDOS ÚTEIS
+================================================================================
+
+# Verificar se Python está instalado
+python --version
+
+# Verificar se MT5 está conectado
+python -c "import MetaTrader5 as mt5; print('✅ MT5 OK' if mt5.initialize() else '❌ MT5 FALHA'); mt5.shutdown()"
+
+# Listar arquivos Python do projeto
+Get-ChildItem -Recurse -Filter "*.py" | Select-Object FullName
+
+# Ver logs recentes
+Get-Content aurora_test_mode.log -Tail 50
+
+# Limpar arquivos de teste
+Remove-Item aurora_test_report_*.json
+Remove-Item simbolos_mt5_mapeamento_*.txt
+
+================================================================================
+EXECUÇÃO RÁPIDA (COPIE E COLE)
+================================================================================
+
+cd C:\Users\Lenovo\Projects\Aurora; python AURORA_TEST_MODE_NO_STOPS.py --quick --auto
+
+================================================================================
+

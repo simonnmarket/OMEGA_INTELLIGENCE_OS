@@ -1,0 +1,87 @@
+{
+  "report_timestamp": "2025-11-24T07:00:00+0100",
+  "project_path": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\Numeia",
+  "checks": {
+    "code_integrity": {
+      "executor_emergency_v3.1.py": {
+        "status": "OK",
+        "content": "File exists, size: 354 bytes",
+        "path": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\Numeia\\executor_emergency_v3.1.py",
+        "size": 354
+      },
+      "backtest_intelligence_validation_v3.6.py": {
+        "status": "OK",
+        "content": "File exists, size: 423 bytes",
+        "path": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\Numeia\\backtest_intelligence_validation_v3.6.py",
+        "size": 423
+      },
+      "executor_serial_v2.py": {
+        "status": "OK",
+        "content": "File exists, size: 256 bytes",
+        "path": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\Numeia\\executor_serial_v2.py",
+        "size": 256
+      }
+    },
+    "dependencies": {
+      "status": "OK",
+      "content": {
+        "MetaTrader5": "installed",
+        "pandas": "installed",
+        "numpy": "installed",
+        "pydantic": "installed"
+      }
+    },
+    "pandas_available": true,
+    "mt5_available": true,
+    "configuration": {
+      "status": "OK",
+      "content": {
+        "TRADING_SYMBOLS": ["XAUUSD"],
+        "ORDER_VOLUME": 0.02,
+        "EXECUTION_CYCLE_SECONDS": 15,
+        "MAPeriodFast": 20,
+        "MAPeriodSlow": 50
+      },
+      "path": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\config.json"
+    },
+    "mt5_connection": {
+      "status": "OK",
+      "content": {
+        "account_login": 510065181,
+        "account_server": "HantecMarketsMU-MT5",
+        "terminal_connected": true,
+        "trade_allowed": true
+      }
+    },
+    "logging_system": {
+      "status": "OK",
+      "content": "File exists, size: >0 bytes",
+      "path": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\Numeia\\numeia_execution.jsonl"
+    },
+    "heartbeat_system": {
+      "status": "OK",
+      "content": "File exists",
+      "path": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\Numeia\\executor_heartbeat.tmp"
+    },
+    "backtest_status": {
+      "validation_results": {
+        "status": "MISSING",
+        "content": null,
+        "path": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\Numeia\\backtest_validation_results_v3.6.csv"
+      },
+      "comparison_results": {
+        "status": "MISSING",
+        "content": null,
+        "path": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\Numeia\\validation_comparison_v3.6.csv"
+      },
+      "decision": null
+    }
+  },
+  "execution_readiness": "READY",
+  "blockers": [],
+  "critical_findings": {
+    "backtest_not_executed": true,
+    "recommendation": "Executar backtest_intelligence_validation_v3.6.py antes da abertura do mercado para obter decisão binária (APPROVE/REJECT)"
+  }
+}
+

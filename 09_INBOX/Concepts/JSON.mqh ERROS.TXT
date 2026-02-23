@@ -1,0 +1,116 @@
+JSON.mqh			
+'CJAVal' - unexpected token, probably type is missing?	JSON.mqh	23	5
+'m_root' - semicolon expected	JSON.mqh	23	21
+'CJAVal' - unexpected token, probably type is missing?	JSON.mqh	66	5
+'&' - semicolon expected	JSON.mqh	66	20
+name expected	JSON.mqh	71	5
+'&' - semicolon expected	JSON.mqh	71	56
+'}' - expressions are not allowed on a global scope	JSON.mqh	74	5
+'private' - unexpected token, probably type is missing?	JSON.mqh	96	1
+'CJAVal' - unexpected token, probably type is missing?	JSON.mqh	97	42
+'&' - semicolon expected	JSON.mqh	97	48
+'if' - expressions are not allowed on a global scope	JSON.mqh	100	9
+'switch' - expressions are not allowed on a global scope	JSON.mqh	106	9
+'}' - expressions are not allowed on a global scope	JSON.mqh	122	5
+declaration without type	JSON.mqh	124	43
+'&' - comma expected	JSON.mqh	124	49
+declaration without type	JSON.mqh	177	42
+'&' - comma expected	JSON.mqh	177	48
+declaration without type	JSON.mqh	214	43
+'&' - comma expected	JSON.mqh	214	49
+declaration without type	JSON.mqh	266	43
+'&' - comma expected	JSON.mqh	266	49
+declaration without type	JSON.mqh	305	41
+'&' - comma expected	JSON.mqh	305	47
+declaration without type	JSON.mqh	323	41
+'&' - comma expected	JSON.mqh	323	47
+'}' - expressions are not allowed on a global scope	JSON.mqh	350	1
+undeclared identifier	JSON.mqh	44	9
+undeclared identifier	JSON.mqh	45	14
+',' - unexpected token	JSON.mqh	45	28
+'pos' - some operator expected	JSON.mqh	45	25
+'(' - unbalanced left parenthesis	JSON.mqh	45	12
+undeclared identifier	JSON.mqh	45	30
+')' - unexpected token	JSON.mqh	45	36
+')' - unexpected token	JSON.mqh	45	37
+undeclared identifier	JSON.mqh	56	16
+implicit conversion from 'unknown' to 'string'	JSON.mqh	56	16
+undeclared identifier	JSON.mqh	78	9
+'[' - array required	JSON.mqh	78	15
+undeclared identifier	JSON.mqh	83	9
+'[' - array required	JSON.mqh	83	15
+undeclared identifier	JSON.mqh	88	9
+'[' - array required	JSON.mqh	88	15
+undeclared identifier	JSON.mqh	93	16
+'[' - array required	JSON.mqh	93	22
+implicit conversion from 'unknown' to 'string'	JSON.mqh	93	16
+undeclared identifier	JSON.mqh	126	9
+undeclared identifier	JSON.mqh	130	32
+implicit conversion from 'number' to 'string'	JSON.mqh	130	32
+undeclared identifier	JSON.mqh	138	20
+'key' - some operator expected	JSON.mqh	138	20
+expression has no effect	JSON.mqh	138	13
+undeclared identifier	JSON.mqh	139	35
+undeclared identifier	JSON.mqh	141	17
+',' - unexpected token	JSON.mqh	141	29
+'pos' - some operator expected	JSON.mqh	141	26
+')' - unexpected token	JSON.mqh	141	60
+undeclared identifier	JSON.mqh	146	36
+implicit conversion from 'number' to 'string'	JSON.mqh	146	36
+undeclared identifier	JSON.mqh	148	17
+',' - unexpected token	JSON.mqh	148	29
+'pos' - some operator expected	JSON.mqh	148	26
+')' - unexpected token	JSON.mqh	148	63
+undeclared identifier	JSON.mqh	153	20
+'val' - some operator expected	JSON.mqh	153	20
+expression has no effect	JSON.mqh	153	13
+undeclared identifier	JSON.mqh	154	18
+',' - unexpected token	JSON.mqh	154	32
+'pos' - some operator expected	JSON.mqh	154	29
+'(' - unbalanced left parenthesis	JSON.mqh	154	16
+undeclared identifier	JSON.mqh	154	34
+')' - unexpected token	JSON.mqh	154	37
+')' - unexpected token	JSON.mqh	154	38
+undeclared identifier	JSON.mqh	157	13
+'[' - array required	JSON.mqh	157	19
+undeclared identifier	JSON.mqh	157	35
+undeclared identifier	JSON.mqh	160	45
+implicit conversion from 'number' to 'string'	JSON.mqh	160	45
+undeclared identifier	JSON.mqh	169	17
+',' - unexpected token	JSON.mqh	169	29
+'pos' - some operator expected	JSON.mqh	169	26
+')' - unexpected token	JSON.mqh	169	73
+undeclared identifier	JSON.mqh	179	9
+undeclared identifier	JSON.mqh	183	32
+implicit conversion from 'number' to 'string'	JSON.mqh	183	32
+undeclared identifier	JSON.mqh	191	20
+'val' - some operator expected	JSON.mqh	191	20
+expression has no effect	JSON.mqh	191	13
+undeclared identifier	JSON.mqh	192	18
+',' - unexpected token	JSON.mqh	192	32
+'pos' - some operator expected	JSON.mqh	192	29
+'(' - unbalanced left parenthesis	JSON.mqh	192	16
+undeclared identifier	JSON.mqh	192	34
+')' - unexpected token	JSON.mqh	192	37
+')' - unexpected token	JSON.mqh	192	38
+undeclared identifier	JSON.mqh	194	13
+undeclared identifier	JSON.mqh	197	45
+implicit conversion from 'number' to 'string'	JSON.mqh	197	45
+undeclared identifier	JSON.mqh	206	17
+',' - unexpected token	JSON.mqh	206	29
+'pos' - some operator expected	JSON.mqh	206	26
+')' - unexpected token	JSON.mqh	206	74
+undeclared identifier	JSON.mqh	218	32
+implicit conversion from 'number' to 'string'	JSON.mqh	218	32
+undeclared identifier	JSON.mqh	220	45
+implicit conversion from 'number' to 'string'	JSON.mqh	220	45
+undeclared identifier	JSON.mqh	223	17
+undeclared identifier	JSON.mqh	228	42
+implicit conversion from 'number' to 'string'	JSON.mqh	228	42
+initialization of variable skipped by 'case' label, use { }	JSON.mqh	251	28
+undeclared identifier	JSON.mqh	251	54
+implicit conversion from 'number' to 'string'	JSON.mqh	251	54
+undeclared identifier	JSON.mqh	256	21
+',' - unexpected token	JSON.mqh	256	33
+'pos' - some operator expected	JSON.mqh	256	30
+101 errors, 14 warnings		100	14

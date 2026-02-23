@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURORA v5.1 - Dashboard de Governança</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #333; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); padding: 30px; }
+        .header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 3px solid #667eea; }
+        .header h1 { color: #667eea; font-size: 2.5em; margin-bottom: 10px; }
+        .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .kpi-card { color: white; padding: 25px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .kpi-card.backlog { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .kpi-card.active { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .kpi-card.inactive { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .kpi-card.completed { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+        .kpi-card .value { font-size: 3em; font-weight: bold; }
+        .section-title { font-size: 1.5em; color: #667eea; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #eee; }
+        .checklist-item { background: #f8f9fa; padding: 15px; margin-bottom: 10px; border-radius: 5px; border-left: 4px solid #667eea; }
+        .checklist-item.emergencia { border-left-color: #dc3545; }
+        .checklist-item.critico { border-left-color: #fd7e14; }
+        .checklist-item.alto { border-left-color: #ffc107; }
+        .status-badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; }
+        .status-pendente { background: #ffeaa7; color: #d63031; }
+        .status-andamento { background: #74b9ff; color: #0984e3; }
+        .status-concluido { background: #55efc4; color: #00b894; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏛️ AURORA v5.1 - Dashboard de Governança</h1>
+            <div class="subtitle">Sistema de Governança Institucional - Monitoramento em Tempo Real</div>
+        </div>
+        
+        <div class="kpis">
+            <div class="kpi-card backlog">
+                <h3>Backlog</h3>
+                <div class="value">237</div>
+                <div class="percentage">94.0%</div>
+            </div>
+            <div class="kpi-card active">
+                <h3>Active</h3>
+                <div class="value">5</div>
+                <div class="percentage">2.0%</div>
+            </div>
+            <div class="kpi-card inactive">
+                <h3>Inactive</h3>
+                <div class="value">0</div>
+                <div class="percentage">0.0%</div>
+            </div>
+            <div class="kpi-card completed">
+                <h3>Completed</h3>
+                <div class="value">10</div>
+                <div class="percentage">4.0%</div>
+            </div>
+        </div>
+        
+        <div class="checklist">
+            <h2 class="section-title">🚀 CHECKLIST DE CORREÇÃO - 15 ITENS</h2>
+            
+            <div class="checklist-item emergencia">
+                <strong>CRIT-001</strong> - Corrigir U+FEFF BOM
+                <span class="status-badge status-concluido">✅ CONCLUÍDO</span>
+            </div>
+            
+            <div class="checklist-item emergencia">
+                <strong>SEC-001</strong> - Remover Command Injection (visual_presentation.py)
+                <span class="status-badge status-concluido">✅ CONCLUÍDO</span>
+            </div>
+            
+            <div class="checklist-item emergencia">
+                <strong>SEC-002</strong> - Remover Command Injection (visual_presentation_simple.py)
+                <span class="status-badge status-concluido">✅ CONCLUÍDO</span>
+            </div>
+            
+            <div class="checklist-item emergencia">
+                <strong>ARCH-001</strong> - Consolidar Executores MT5
+                <span class="status-badge status-andamento">🔄 EM ANDAMENTO</span>
+            </div>
+            
+            <div class="checklist-item emergencia">
+                <strong>ARCH-002</strong> - Definir Ponto de Entrada Único
+                <span class="status-badge status-pendente">PENDENTE</span>
+            </div>
+            
+            <div class="checklist-item emergencia">
+                <strong>ARCH-003</strong> - Consolidar Validador de Risco
+                <span class="status-badge status-pendente">PENDENTE</span>
+            </div>
+            
+            <div class="checklist-item critico">
+                <strong>COMP-001</strong> - Ativar Quantum Firewall
+                <span class="status-badge status-pendente">PENDENTE</span>
+            </div>
+            
+            <div class="checklist-item critico">
+                <strong>FUNC-001</strong> - Configurar Database
+                <span class="status-badge status-pendente">PENDENTE</span>
+            </div>
+            
+            <div class="checklist-item critico">
+                <strong>FUNC-002</strong> - Testar Fluxo E2E Completo
+                <span class="status-badge status-pendente">PENDENTE</span>
+            </div>
+            
+            <div class="checklist-item critico">
+                <strong>RISK-001</strong> - Implementar Kill Switch
+                <span class="status-badge status-pendente">PENDENTE</span>
+            </div>
+            
+            <div class="checklist-item critico">
+                <strong>ARCH-004</strong> - Definir Ordem de Execução
+                <span class="status-badge status-pendente">PENDENTE</span>
+            </div>
+            
+            <div class="checklist-item alto">
+                <strong>FUNC-003</strong> - Integrar Estratégias com Executor
+                <span class="status-badge status-pendente">PENDENTE</span>
+            </div>
+            
+            <div class="checklist-item alto">
+                <strong>FUNC-004</strong> - Implementar Circuit Breakers
+                <span class="status-badge status-pendente">PENDENTE</span>
+            </div>
+            
+            <div class="checklist-item alto">
+                <strong>PERF-001</strong> - Otimizar Performance do Validador
+                <span class="status-badge status-pendente">PENDENTE</span>
+            </div>
+            
+            <div class="checklist-item alto">
+                <strong>DOC-001</strong> - Documentar Fluxo de Correção
+                <span class="status-badge status-pendente">PENDENTE</span>
+            </div>
+        </div>
+        
+        <div class="footer" style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 2px solid #eee; color: #666;">
+            <p><strong>Total de Módulos:</strong> 252 | <strong>Última Atualização:</strong> 2025-12-26</p>
+            <p><strong>Status:</strong> ✅ ETAPA 1 CONCLUÍDA | <strong>Próxima Ação:</strong> ARCH-001 (Consolidar Executores MT5)</p>
+            <p><strong>Progresso Dia 1:</strong> ✅ 3/3 itens concluídos (100%) - CRIT-001, SEC-001, SEC-002</p>
+            <p><strong>Validação Red Team:</strong> ✅ APROVADO (100/100) - 0 vulnerabilidades críticas</p>
+        </div>
+    </div>
+    
+    <script>
+        // Auto-refresh a cada 30 segundos
+        setInterval(function() {
+            location.reload();
+        }, 30000);
+    </script>
+</body>
+</html>
+

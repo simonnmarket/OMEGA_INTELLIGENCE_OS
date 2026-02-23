@@ -1,0 +1,15 @@
+{
+  "report_type": "NEURAL_CONNECTION_HEALTH_REPORT",
+  "timestamp": "2025-12-16T01:21:40.638944",
+  "monitor_config": {
+    "scan_interval": 30,
+    "monitoring_active": true
+  },
+  "system_summary": {
+    "status": "NO_DATA",
+    "message": "Nenhum scan executado"
+  },
+  "detailed_reports": {},
+  "recent_alerts": [],
+  "checksum": "91f878ec332960d81431890365a608d3"
+}

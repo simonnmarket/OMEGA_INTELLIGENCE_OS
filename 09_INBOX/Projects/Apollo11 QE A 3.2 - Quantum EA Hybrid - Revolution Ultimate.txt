@@ -1,0 +1,207 @@
+//+------------------------------------------------------------------+
+//| Apollo11 QE A 3.2 - Quantum EA Hybrid - Revolution Ultimate      |
+//+------------------------------------------------------------------+
+#property strict
+#property script_show_inputs
+
+input double LotsRiskPercent = 1.0;        // % do saldo a arriscar
+input double ATR_Multiplier = 1.5;         // Multiplicador do ATR para SL
+input int    ATR_Period = 14;
+input int    RSI_Period = 14;
+input int    RSI_Overbought = 70;
+input int    RSI_Oversold = 30;
+input ENUM_TIMEFRAMES TrendTF = PERIOD_H4;
+input int    FastEMA = 9;
+input int    SlowEMA = 21;
+input double BreakEvenPips = 20;
+input double TrailStartPips = 15;
+input double TrailStepPips = 5;
+input int    Slippage = 3;
+input double MaxSpread = 15;
+input ulong  MagicNumber = 11032025;
+input string TradeStart = "09:00";
+input string TradeEnd = "18:00";
+
+double atrCurrent;
+double riskLot;
+
+//+------------------------------------------------------------------+
+//| Expert initialization                                            |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+   return INIT_SUCCEEDED;
+}
+
+//+------------------------------------------------------------------+
+//| Expert tick function                                             |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+   if(!TerminalInfoInteger(TERMINAL_TRADE_ALLOWED)) return;
+
+   datetime now = TimeCurrent();
+   string timeStr = TimeToString(now, TIME_MINUTES);
+   if(timeStr < TradeStart || timeStr > TradeEnd) return;
+
+   double spread = (SymbolInfoDouble(_Symbol, SYMBOL_ASK) - SymbolInfoDouble(_Symbol, SYMBOL_BID)) / _Point;
+   if(spread > MaxSpread) return;
+
+   // Atualiza ATR
+   atrCurrent = GetATR(_Symbol, PERIOD_H1, ATR_Period);
+
+   riskLot = CalculateLotSize();
+
+   double emaFast = GetEMA(_Symbol, TrendTF, FastEMA, 0);
+   double emaSlow = GetEMA(_Symbol, TrendTF, SlowEMA, 0);
+
+   bool isTrendUp = emaFast > emaSlow;
+   bool isTrendDown = emaFast < emaSlow;
+
+   double rsi = GetRSI(_Symbol, PERIOD_H1, RSI_Period, 0);
+
+   // Se não há posição
+   if(!PositionSelect(_Symbol))
+   {
+      if(isTrendUp && rsi < RSI_Oversold)
+      {
+         double sl = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_BID) - ATR_Multiplier * atrCurrent, _Digits);
+         double tp = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_BID) + ATR_Multiplier * 2 * atrCurrent, _Digits);
+         tradeBuy(riskLot, sl, tp);
+      }
+
+      if(isTrendDown && rsi > RSI_Overbought)
+      {
+         double sl = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_ASK) + ATR_Multiplier * atrCurrent, _Digits);
+         double tp = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_ASK) - ATR_Multiplier * 2 * atrCurrent, _Digits);
+         tradeSell(riskLot, sl, tp);
+      }
+   }
+
+   ManageOpenPositions();
+}
+
+//+------------------------------------------------------------------+
+//| Indicadores customizados                                         |
+//+------------------------------------------------------------------+
+double GetATR(string symbol, ENUM_TIMEFRAMES tf, int period)
+{
+   double buffer[];
+   if(CopyBuffer(iATR(symbol, tf, period), 0, 0, 1, buffer) > 0)
+      return buffer[0];
+   return 0;
+}
+
+double GetEMA(string symbol, ENUM_TIMEFRAMES tf, int period, int shift)
+{
+   double buffer[];
+   if(CopyBuffer(iMA(symbol, tf, period, 0, MODE_EMA, PRICE_CLOSE), 0, shift, 1, buffer) > 0)
+      return buffer[0];
+   return 0;
+}
+
+double GetRSI(string symbol, ENUM_TIMEFRAMES tf, int period, int shift)
+{
+   double buffer[];
+   if(CopyBuffer(iRSI(symbol, tf, period, PRICE_CLOSE), 0, shift, 1, buffer) > 0)
+      return buffer[0];
+   return 0;
+}
+
+//+------------------------------------------------------------------+
+//| Cálculo de lote baseado em risco                                 |
+//+------------------------------------------------------------------+
+double CalculateLotSize()
+{
+   double balance;
+   if(!AccountInfoDouble(ACCOUNT_BALANCE, balance)) return 0;
+   double risk = balance * LotsRiskPercent / 100.0;
+   double pipValue;
+   SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE, pipValue);
+   double slPips = ATR_Multiplier * atrCurrent / _Point;
+   double lot = risk / (slPips * pipValue);
+   return NormalizeDouble(lot, 2);
+}
+
+//+------------------------------------------------------------------+
+//| Operações de compra e venda                                      |
+//+------------------------------------------------------------------+
+void tradeBuy(double lot, double sl, double tp)
+{
+   MqlTradeRequest request = {};
+   MqlTradeResult result = {};
+   request.action = TRADE_ACTION_DEAL;
+   request.symbol = _Symbol;
+   request.volume = lot;
+   request.type = ORDER_TYPE_BUY;
+   request.price = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+   request.sl = sl;
+   request.tp = tp;
+   request.deviation = Slippage;
+   request.magic = MagicNumber;
+   request.type_filling = ORDER_FILLING_IOC;
+   OrderSend(request, result);
+}
+
+void tradeSell(double lot, double sl, double tp)
+{
+   MqlTradeRequest request = {};
+   MqlTradeResult result = {};
+   request.action = TRADE_ACTION_DEAL;
+   request.symbol = _Symbol;
+   request.volume = lot;
+   request.type = ORDER_TYPE_SELL;
+   request.price = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+   request.sl = sl;
+   request.tp = tp;
+   request.deviation = Slippage;
+   request.magic = MagicNumber;
+   request.type_filling = ORDER_FILLING_IOC;
+   OrderSend(request, result);
+}
+
+//+------------------------------------------------------------------+
+//| Modificação de SL para trailing/break-even                       |
+//+------------------------------------------------------------------+
+void ManageOpenPositions()
+{
+   if(!PositionSelect(_Symbol)) return;
+
+   ulong ticket = PositionGetInteger(POSITION_TICKET);
+   double openPrice = PositionGetDouble(POSITION_PRICE_OPEN);
+   double sl = PositionGetDouble(POSITION_SL);
+   double currentPrice = (PositionGetInteger(POSITION_TYPE)==POSITION_TYPE_BUY)
+                           ? SymbolInfoDouble(_Symbol, SYMBOL_BID)
+                           : SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+   double profitPips = (PositionGetInteger(POSITION_TYPE)==POSITION_TYPE_BUY)
+                       ? (currentPrice - openPrice) / _Point
+                       : (openPrice - currentPrice) / _Point;
+
+   // Break Even
+   if(profitPips >= BreakEvenPips)
+   {
+      double newSL = openPrice;
+      ModifyPosition(ticket, newSL);
+   }
+
+   // Trailing Stop
+   if(profitPips >= TrailStartPips)
+   {
+      double newSL = (PositionGetInteger(POSITION_TYPE)==POSITION_TYPE_BUY)
+                     ? currentPrice - TrailStepPips * _Point
+                     : currentPrice + TrailStepPips * _Point;
+      ModifyPosition(ticket, NormalizeDouble(newSL, _Digits));
+   }
+}
+
+void ModifyPosition(ulong ticket, double newSL)
+{
+   MqlTradeRequest request = {};
+   MqlTradeResult result = {};
+   request.action = TRADE_ACTION_SLTP;
+   request.position = ticket;
+   request.symbol = _Symbol;
+   request.sl = newSL;
+   request.tp = PositionGetDouble(POSITION_TP);
+   OrderSend(request, result);
+}

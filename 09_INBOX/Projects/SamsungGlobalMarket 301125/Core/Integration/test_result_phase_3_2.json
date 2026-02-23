@@ -1,0 +1,15 @@
+{
+  "function": "_integrate_equities_module()",
+  "passed": true,
+  "timestamp": "2025-11-02T19:47:03.917909",
+  "details": {
+    "equities_module_integrated": true,
+    "strategies_files_found": {
+      "pairs_trading": true,
+      "volatility_arbitrage": true,
+      "sector_rotation": true
+    },
+    "total_strategies": 3,
+    "files_found_count": 3
+  }
+}

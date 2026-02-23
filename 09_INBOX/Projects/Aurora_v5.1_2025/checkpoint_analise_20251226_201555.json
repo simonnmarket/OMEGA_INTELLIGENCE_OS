@@ -1,0 +1,751 @@
+{
+  "metadata": {
+    "projeto": "AURORA v5.1",
+    "etapa": "ARCH-001 - BLOCO 1",
+    "timestamp": "2025-12-26T20:15:55.398741",
+    "sessao_id": "ARCH001_B1_20251226_201555",
+    "criticidade": "ANALISE",
+    "dependencias": [
+      "Nenhuma"
+    ],
+    "output_esperado": "checkpoint_analise.json",
+    "status": "COMPLETO"
+  },
+  "fase_analise": {
+    "status": "COMPLETO",
+    "executores_encontrados": [
+      {
+        "arquivo": ".\\arch001_executor_completo.py",
+        "nome": "arch001_executor_completo.py",
+        "diretorio": ".",
+        "tamanho_bytes": 38970,
+        "linhas": 876,
+        "encontrado_por": "CONTEUDO",
+        "padroes_detectados": [
+          "import MetaTrader5",
+          "import mt5",
+          "mt5.initialize",
+          "mt5.symbol_select",
+          "mt5.order_send",
+          "MT5_TIMEOUT",
+          "MT5_DEVIATION"
+        ],
+        "hash_md5": "e7164add16061761c114b476b93a132b"
+      },
+      {
+        "arquivo": ".\\arch001_fase1_identificar.py",
+        "nome": "arch001_fase1_identificar.py",
+        "diretorio": ".",
+        "tamanho_bytes": 2907,
+        "linhas": 79,
+        "encontrado_por": "CONTEUDO",
+        "padroes_detectados": [
+          "import MetaTrader5",
+          "import mt5",
+          "mt5.initialize",
+          "mt5.order_send",
+          "MT5_TIMEOUT",
+          "MT5_DEVIATION"
+        ],
+        "hash_md5": "c46c33d82c38d8ce3b7ef57460ee188e"
+      },
+      {
+        "arquivo": ".\\AURORA_TEST_MODE_NO_STOPS.py",
+        "nome": "AURORA_TEST_MODE_NO_STOPS.py",
+        "diretorio": ".",
+        "tamanho_bytes": 40124,
+        "linhas": 939,
+        "encontrado_por": "CONTEUDO",
+        "padroes_detectados": [
+          "import MetaTrader5",
+          "mt5.initialize"
+        ],
+        "hash_md5": "c064d0a8e37638774e164dafd8efeea7"
+      },
+      {
+        "arquivo": ".\\bloco1_analise_identificacao.py",
+        "nome": "bloco1_analise_identificacao.py",
+        "diretorio": ".",
+        "tamanho_bytes": 18517,
+        "linhas": 429,
+        "encontrado_por": "CONTEUDO",
+        "padroes_detectados": [
+          "import MetaTrader5",
+          "import mt5",
+          "mt5.initialize",
+          "mt5.symbol_select",
+          "mt5.order_send",
+          "MT5_TIMEOUT",
+          "MT5_DEVIATION"
+        ],
+        "hash_md5": "d309084c6023faad3198d66f176b99f4"
+      },
+      {
+        "arquivo": ".\\executar_arch001_simples.py",
+        "nome": "executar_arch001_simples.py",
+        "diretorio": ".",
+        "tamanho_bytes": 2855,
+        "linhas": 78,
+        "encontrado_por": "CONTEUDO",
+        "padroes_detectados": [
+          "import MetaTrader5",
+          "import mt5",
+          "mt5.initialize",
+          "mt5.order_send"
+        ],
+        "hash_md5": "1bc5268355acef5ded0b557e557434f8"
+      },
+      {
+        "arquivo": ".\\HANTEC_STOPS_DISCOVERY.py",
+        "nome": "HANTEC_STOPS_DISCOVERY.py",
+        "diretorio": ".",
+        "tamanho_bytes": 12049,
+        "linhas": 306,
+        "encontrado_por": "CONTEUDO",
+        "padroes_detectados": [
+          "import MetaTrader5",
+          "mt5.initialize",
+          "mt5.order_send"
+        ],
+        "hash_md5": "b22f7b1a60d3f78c79034765137b4179"
+      },
+      {
+        "arquivo": ".\\MT5_EXECUTOR_PROFISSIONAL.py",
+        "nome": "MT5_EXECUTOR_PROFISSIONAL.py",
+        "diretorio": ".",
+        "tamanho_bytes": 11023,
+        "linhas": 298,
+        "encontrado_por": "NOME",
+        "padroes_detectados": [
+          "import MetaTrader5",
+          "mt5.initialize",
+          "mt5.symbol_select"
+        ],
+        "hash_md5": "c17f3086f3a4cc8a4e45af0802f5bb13"
+      },
+      {
+        "arquivo": ".\\SOLUCAO_DEFINITIVA_MT5.py",
+        "nome": "SOLUCAO_DEFINITIVA_MT5.py",
+        "diretorio": ".",
+        "tamanho_bytes": 7406,
+        "linhas": 214,
+        "encontrado_por": "CONTEUDO",
+        "padroes_detectados": [
+          "import MetaTrader5",
+          "mt5.initialize",
+          "mt5.symbol_select",
+          "mt5.order_send"
+        ],
+        "hash_md5": "eaab7c0352b684d4691938002dd98d62"
+      },
+      {
+        "arquivo": ".\\04-Infraestrutura\\mt5_executor.py",
+        "nome": "mt5_executor.py",
+        "diretorio": ".\\04-Infraestrutura",
+        "tamanho_bytes": 27601,
+        "linhas": 664,
+        "encontrado_por": "NOME",
+        "padroes_detectados": [
+          "import MetaTrader5",
+          "mt5.initialize"
+        ],
+        "hash_md5": "6ead1ece55da9169d5979f9a67edf112"
+      },
+      {
+        "arquivo": ".\\04-Infraestrutura\\MT5_STOPS_FIX.py",
+        "nome": "MT5_STOPS_FIX.py",
+        "diretorio": ".\\04-Infraestrutura",
+        "tamanho_bytes": 10540,
+        "linhas": 250,
+        "encontrado_por": "NOME",
+        "padroes_detectados": [
+          "import MetaTrader5"
+        ],
+        "hash_md5": "b8c67b17ec40f5ab03f6d55a341265e9"
+      }
+    ],
+    "analise_funcional": {
+      ".\\arch001_executor_completo.py": {
+        "arquivo": ".\\arch001_executor_completo.py",
+        "funcionalidades": {
+          "order_send": true,
+          "positions_get": true,
+          "orders_get": true,
+          "symbol_info": true,
+          "account_info": true,
+          "initialize": true,
+          "shutdown": true,
+          "has_stops": true,
+          "has_limits": true,
+          "has_deviation": true,
+          "has_magic": true,
+          "has_comment": true,
+          "has_slippage": true,
+          "has_timeout": true,
+          "has_retry": true,
+          "has_logging": true,
+          "has_error_handling": true,
+          "has_validation": true
+        },
+        "classes": [
+          {
+            "nome": "\" in linha and \"",
+            "linha": 268
+          },
+          {
+            "nome": "\")[1].split",
+            "linha": 269
+          }
+        ],
+        "funcoes": [
+          {
+            "nome": "setup_logging",
+            "linha": 82
+          },
+          {
+            "nome": "log",
+            "linha": 97
+          },
+          {
+            "nome": "identificar_executores_mt5",
+            "linha": 115
+          },
+          {
+            "nome": "analisar_funcionalidades_executores",
+            "linha": 217
+          },
+          {
+            "nome": "\" in linha and \"",
+            "linha": 276
+          },
+          {
+            "nome": "criar_backup_completo",
+            "linha": 313
+          },
+          {
+            "nome": "executar_consolidacao_cirurgica",
+            "linha": 391
+          },
+          {
+            "nome": "atualizar_referencias_executor",
+            "linha": 468
+          },
+          {
+            "nome": "validar_consolidacao",
+            "linha": 518
+          },
+          {
+            "nome": "gerar_relatorio_final",
+            "linha": 633
+          },
+          {
+            "nome": "gerar_resumo_textual",
+            "linha": 701
+          },
+          {
+            "nome": "executar_arch001_completo",
+            "linha": 741
+          },
+          {
+            "nome": "contar_linhas",
+            "linha": 786
+          },
+          {
+            "nome": "calcular_hash_arquivo",
+            "linha": 794
+          },
+          {
+            "nome": "calcular_hash_diretorio",
+            "linha": 812
+          },
+          {
+            "nome": "main",
+            "linha": 827
+          }
+        ],
+        "dependencias": [],
+        "complexidade": 877,
+        "score_funcional": 18,
+        "erro_analise": "name 'kw' is not defined"
+      },
+      ".\\arch001_fase1_identificar.py": {
+        "arquivo": ".\\arch001_fase1_identificar.py",
+        "funcionalidades": {
+          "order_send": true,
+          "positions_get": false,
+          "orders_get": false,
+          "symbol_info": false,
+          "account_info": false,
+          "initialize": true,
+          "shutdown": false,
+          "has_stops": false,
+          "has_limits": false,
+          "has_deviation": true,
+          "has_magic": false,
+          "has_comment": false,
+          "has_slippage": false,
+          "has_timeout": true,
+          "has_retry": false,
+          "has_logging": false,
+          "has_error_handling": true,
+          "has_validation": false
+        },
+        "classes": [],
+        "funcoes": [],
+        "dependencias": [],
+        "complexidade": 80,
+        "score_funcional": 5,
+        "erro_analise": "name 'kw' is not defined"
+      },
+      ".\\AURORA_TEST_MODE_NO_STOPS.py": {
+        "arquivo": ".\\AURORA_TEST_MODE_NO_STOPS.py",
+        "funcionalidades": {
+          "order_send": true,
+          "positions_get": true,
+          "orders_get": false,
+          "symbol_info": true,
+          "account_info": true,
+          "initialize": true,
+          "shutdown": true,
+          "has_stops": false,
+          "has_limits": false,
+          "has_deviation": true,
+          "has_magic": true,
+          "has_comment": true,
+          "has_slippage": false,
+          "has_timeout": false,
+          "has_retry": false,
+          "has_logging": true,
+          "has_error_handling": true,
+          "has_validation": true
+        },
+        "classes": [],
+        "funcoes": [
+          {
+            "nome": "shutdown",
+            "linha": 256
+          },
+          {
+            "nome": "log_cycle",
+            "linha": 474
+          },
+          {
+            "nome": "print_real_time_status",
+            "linha": 502
+          },
+          {
+            "nome": "run_extended_test",
+            "linha": 674
+          },
+          {
+            "nome": "stop",
+            "linha": 756
+          },
+          {
+            "nome": "main",
+            "linha": 766
+          }
+        ],
+        "dependencias": [],
+        "complexidade": 940,
+        "score_funcional": 12,
+        "erro_analise": "name 'kw' is not defined"
+      },
+      ".\\bloco1_analise_identificacao.py": {
+        "arquivo": ".\\bloco1_analise_identificacao.py",
+        "funcionalidades": {
+          "order_send": true,
+          "positions_get": true,
+          "orders_get": true,
+          "symbol_info": true,
+          "account_info": true,
+          "initialize": true,
+          "shutdown": true,
+          "has_stops": true,
+          "has_limits": true,
+          "has_deviation": true,
+          "has_magic": true,
+          "has_comment": true,
+          "has_slippage": true,
+          "has_timeout": true,
+          "has_retry": true,
+          "has_logging": true,
+          "has_error_handling": true,
+          "has_validation": true
+        },
+        "classes": [
+          {
+            "nome": "\" in linha and \"",
+            "linha": 252
+          },
+          {
+            "nome": "\")[1].split",
+            "linha": 253
+          }
+        ],
+        "funcoes": [
+          {
+            "nome": "setup_logging",
+            "linha": 52
+          },
+          {
+            "nome": "log",
+            "linha": 65
+          },
+          {
+            "nome": "identificar_executores_mt5",
+            "linha": 87
+          },
+          {
+            "nome": "analisar_funcionalidades_executores",
+            "linha": 198
+          },
+          {
+            "nome": "\" in linha and \"",
+            "linha": 261
+          },
+          {
+            "nome": "gerar_checkpoint_analise",
+            "linha": 303
+          },
+          {
+            "nome": "contar_linhas",
+            "linha": 322
+          },
+          {
+            "nome": "calcular_hash_arquivo",
+            "linha": 330
+          },
+          {
+            "nome": "executar_analise_completa",
+            "linha": 348
+          },
+          {
+            "nome": "main",
+            "linha": 389
+          }
+        ],
+        "dependencias": [],
+        "complexidade": 430,
+        "score_funcional": 18,
+        "erro_analise": "name 'kw' is not defined"
+      },
+      ".\\executar_arch001_simples.py": {
+        "arquivo": ".\\executar_arch001_simples.py",
+        "funcionalidades": {
+          "order_send": true,
+          "positions_get": false,
+          "orders_get": false,
+          "symbol_info": false,
+          "account_info": false,
+          "initialize": true,
+          "shutdown": false,
+          "has_stops": false,
+          "has_limits": false,
+          "has_deviation": false,
+          "has_magic": false,
+          "has_comment": false,
+          "has_slippage": false,
+          "has_timeout": false,
+          "has_retry": false,
+          "has_logging": false,
+          "has_error_handling": true,
+          "has_validation": false
+        },
+        "classes": [],
+        "funcoes": [],
+        "dependencias": [],
+        "complexidade": 79,
+        "score_funcional": 3,
+        "erro_analise": "name 'kw' is not defined"
+      },
+      ".\\HANTEC_STOPS_DISCOVERY.py": {
+        "arquivo": ".\\HANTEC_STOPS_DISCOVERY.py",
+        "funcionalidades": {
+          "order_send": true,
+          "positions_get": false,
+          "orders_get": false,
+          "symbol_info": true,
+          "account_info": false,
+          "initialize": true,
+          "shutdown": true,
+          "has_stops": true,
+          "has_limits": true,
+          "has_deviation": true,
+          "has_magic": true,
+          "has_comment": true,
+          "has_slippage": false,
+          "has_timeout": false,
+          "has_retry": false,
+          "has_logging": true,
+          "has_error_handling": true,
+          "has_validation": false
+        },
+        "classes": [],
+        "funcoes": [
+          {
+            "nome": "test_all_cryptos",
+            "linha": 174
+          },
+          {
+            "nome": "generate_recommendation",
+            "linha": 206
+          }
+        ],
+        "dependencias": [],
+        "complexidade": 307,
+        "score_funcional": 11,
+        "erro_analise": "name 'kw' is not defined"
+      },
+      ".\\MT5_EXECUTOR_PROFISSIONAL.py": {
+        "arquivo": ".\\MT5_EXECUTOR_PROFISSIONAL.py",
+        "funcionalidades": {
+          "order_send": true,
+          "positions_get": false,
+          "orders_get": false,
+          "symbol_info": true,
+          "account_info": true,
+          "initialize": true,
+          "shutdown": true,
+          "has_stops": false,
+          "has_limits": false,
+          "has_deviation": true,
+          "has_magic": true,
+          "has_comment": true,
+          "has_slippage": false,
+          "has_timeout": false,
+          "has_retry": false,
+          "has_logging": true,
+          "has_error_handling": true,
+          "has_validation": false
+        },
+        "classes": [],
+        "funcoes": [
+          {
+            "nome": "shutdown",
+            "linha": 255
+          },
+          {
+            "nome": "main",
+            "linha": 261
+          }
+        ],
+        "dependencias": [],
+        "complexidade": 299,
+        "score_funcional": 10,
+        "erro_analise": "name 'kw' is not defined"
+      },
+      ".\\SOLUCAO_DEFINITIVA_MT5.py": {
+        "arquivo": ".\\SOLUCAO_DEFINITIVA_MT5.py",
+        "funcionalidades": {
+          "order_send": true,
+          "positions_get": false,
+          "orders_get": false,
+          "symbol_info": true,
+          "account_info": false,
+          "initialize": true,
+          "shutdown": true,
+          "has_stops": false,
+          "has_limits": false,
+          "has_deviation": true,
+          "has_magic": true,
+          "has_comment": true,
+          "has_slippage": false,
+          "has_timeout": false,
+          "has_retry": false,
+          "has_logging": true,
+          "has_error_handling": true,
+          "has_validation": false
+        },
+        "classes": [],
+        "funcoes": [
+          {
+            "nome": "main",
+            "linha": 146
+          }
+        ],
+        "dependencias": [],
+        "complexidade": 215,
+        "score_funcional": 9,
+        "erro_analise": "name 'kw' is not defined"
+      },
+      ".\\04-Infraestrutura\\mt5_executor.py": {
+        "arquivo": ".\\04-Infraestrutura\\mt5_executor.py",
+        "funcionalidades": {
+          "order_send": true,
+          "positions_get": true,
+          "orders_get": false,
+          "symbol_info": true,
+          "account_info": true,
+          "initialize": true,
+          "shutdown": true,
+          "has_stops": false,
+          "has_limits": false,
+          "has_deviation": true,
+          "has_magic": true,
+          "has_comment": true,
+          "has_slippage": false,
+          "has_timeout": true,
+          "has_retry": false,
+          "has_logging": true,
+          "has_error_handling": true,
+          "has_validation": false
+        },
+        "classes": [
+          {
+            "nome": "OrderType",
+            "linha": 49
+          }
+        ],
+        "funcoes": [],
+        "dependencias": [],
+        "complexidade": 665,
+        "score_funcional": 12,
+        "erro_analise": "name 'kw' is not defined"
+      },
+      ".\\04-Infraestrutura\\MT5_STOPS_FIX.py": {
+        "arquivo": ".\\04-Infraestrutura\\MT5_STOPS_FIX.py",
+        "funcionalidades": {
+          "order_send": true,
+          "positions_get": false,
+          "orders_get": false,
+          "symbol_info": true,
+          "account_info": false,
+          "initialize": false,
+          "shutdown": false,
+          "has_stops": true,
+          "has_limits": true,
+          "has_deviation": true,
+          "has_magic": true,
+          "has_comment": true,
+          "has_slippage": false,
+          "has_timeout": false,
+          "has_retry": false,
+          "has_logging": true,
+          "has_error_handling": true,
+          "has_validation": true
+        },
+        "classes": [],
+        "funcoes": [],
+        "dependencias": [],
+        "complexidade": 251,
+        "score_funcional": 10,
+        "erro_analise": "name 'kw' is not defined"
+      }
+    },
+    "diretorios_verificados": [
+      ".\\backup_definitivo_pre_correcao\\backups_pre_fix\\06-Monitoramento",
+      ".\\backup_definitivo_pre_correcao\\02-Processos-Chave\\backtesting",
+      ".\\04-Infraestrutura\\database",
+      ".\\01-Departamentos\\Innovation-Lab",
+      ".\\04-Infraestrutura\\api",
+      ".\\01-Departamentos\\AGENTS",
+      ".\\02-Processos-Chave\\CI-CD\\stages",
+      ".\\backup_definitivo_pre_correcao\\backups_pre_fix\\04-Infraestrutura\\api\\endpoints",
+      ".\\backups_pre_fix",
+      "./04-Infraestrutura\\ML_MODELS",
+      ".\\01-Departamentos\\Execution-Trading\\strategy_modules\\templates",
+      ".\\backup_definitivo_pre_correcao\\03-Operacoes-Diarias\\Real-Time-Dashboard",
+      ".\\backup_definitivo_pre_correcao\\01-Departamentos\\Execution-Trading\\strategy_modules\\implementations",
+      ".\\backup_definitivo_pre_correcao\\04-Infraestrutura\\database",
+      ".\\modules",
+      ".\\04-Infraestrutura",
+      ".\\02-Processos-Chave\\QA-Backtesting",
+      ".\\03-Operacoes-Diarias\\Post-Trade",
+      ".\\backup_definitivo_pre_correcao\\02-Processos-Chave\\Onboarding",
+      "./04-Infraestrutura\\tools\\scripts",
+      ".\\backup_definitivo_pre_correcao\\02-Processos-Chave\\CI-CD",
+      ".\\backup_definitivo_pre_correcao",
+      "./04-Infraestrutura\\database",
+      ".\\04-Infraestrutura\\tools\\cli\\commands",
+      ".\\02-Processos-Chave\\Incident-Response",
+      ".\\04-Infraestrutura\\tools\\scripts",
+      ".\\03-Operacoes-Diarias\\Pre-Market\\validators",
+      "./04-Infraestrutura\\tools\\cli",
+      ".\\backup_definitivo_pre_correcao\\05-Documentacao",
+      ".\\backup_definitivo_pre_correcao\\06-Monitoramento",
+      ".\\system_core",
+      ".\\06-Monitoramento\\Feedback-Loop",
+      ".\\backups_pre_fix\\system_core",
+      ".\\01-Departamentos\\Execution-Trading\\strategy_modules\\implementations",
+      ".\\04-Infraestrutura\\ML_MODELS",
+      ".\\backup_definitivo_pre_correcao\\01-Departamentos\\Engineering-Infra",
+      ".\\backup_definitivo_pre_correcao\\00-Governanca",
+      ".\\06-Monitoramento",
+      ".\\backup_definitivo_pre_correcao\\02-Processos-Chave\\QA-Backtesting\\test_suites",
+      ".\\backup_definitivo_pre_correcao\\04-Infraestrutura\\tools\\scripts",
+      ".\\03-Operacoes-Diarias\\Real-Time-Dashboard",
+      ".\\backup_definitivo_pre_correcao\\01-Departamentos\\Execution-Trading\\strategies",
+      ".\\backup_definitivo_pre_correcao\\04-Infraestrutura\\tools\\cli",
+      ".\\legacy_backup",
+      ".\\02-Processos-Chave\\QA-Backtesting\\test_suites",
+      ".\\backups_pre_fix\\04-Infraestrutura\\api",
+      ".\\backup_definitivo_pre_correcao\\04-Infraestrutura",
+      ".\\backup_definitivo_pre_correcao\\04-Infraestrutura\\api",
+      ".\\backup_definitivo_pre_correcao\\06-Monitoramento\\Feedback-Loop",
+      ".\\temp",
+      ".\\01-Departamentos\\Execution-Trading\\strategies",
+      "./04-Infraestrutura\\tools\\cli\\commands",
+      ".\\02-Processos-Chave\\backtesting",
+      ".\\backup_definitivo_pre_correcao\\03-Operacoes-Diarias\\Execution-Window",
+      ".\\backup_definitivo_pre_correcao\\backups_pre_fix\\04-Infraestrutura\\api",
+      ".\\backup_definitivo_pre_correcao\\backups_pre_fix\\system_core",
+      ".\\backup_definitivo_pre_correcao\\03-Operacoes-Diarias\\Pre-Market\\validators",
+      ".\\05-Documentacao",
+      ".\\backup_definitivo_pre_correcao\\02-Processos-Chave\\CI-CD\\stages",
+      "./system_core",
+      ".\\04-Infraestrutura\\tools\\cli",
+      ".\\backup_definitivo_pre_correcao\\01-Departamentos\\AGENTS",
+      ".\\backup_definitivo_pre_correcao\\backups_pre_fix",
+      ".\\01-Departamentos\\Treasury-Capital",
+      ".\\backup_definitivo_pre_correcao\\04-Infraestrutura\\api\\endpoints",
+      "./04-Infraestrutura\\api",
+      ".\\01-Departamentos\\Risk-Controls",
+      ".\\backup_definitivo_pre_correcao\\01-Departamentos\\Execution-Trading\\strategy_modules\\templates",
+      ".\\wrappers_v2",
+      ".\\backup_definitivo_pre_correcao\\04-Infraestrutura\\tools\\cli\\commands",
+      ".\\modules\\connectors",
+      ".\\backup_definitivo_pre_correcao\\01-Departamentos\\Execution-Trading\\strategy_modules",
+      ".\\03-Operacoes-Diarias\\Execution-Window",
+      ".\\00-Governanca",
+      ".\\backup_definitivo_pre_correcao\\02-Processos-Chave\\Incident-Response",
+      ".\\backup_definitivo_pre_correcao\\03-Operacoes-Diarias\\Post-Trade",
+      ".\\backup_definitivo_pre_correcao\\03-Operacoes-Diarias\\Real-Time-Dashboard\\widgets",
+      ".\\backup_definitivo_pre_correcao\\01-Departamentos\\Risk-Controls",
+      ".\\01-Departamentos\\Execution-Trading",
+      ".\\backup_definitivo_pre_correcao\\02-Processos-Chave\\QA-Backtesting",
+      ".\\tests",
+      ".\\backup_definitivo_pre_correcao\\04-Infraestrutura\\ML_MODELS",
+      ".\\02-Processos-Chave\\Onboarding",
+      ".\\backup_definitivo_pre_correcao\\01-Departamentos\\Compliance-Audit",
+      ".\\backup_definitivo_pre_correcao\\01-Departamentos\\Innovation-Lab",
+      ".\\backup_definitivo_pre_correcao\\03-Operacoes-Diarias\\Pre-Market",
+      ".\\backup_definitivo_pre_correcao\\01-Departamentos\\Treasury-Capital",
+      ".\\02-Processos-Chave\\CI-CD",
+      ".\\backups_pre_fix\\04-Infraestrutura\\api\\endpoints",
+      ".\\01-Departamentos\\Engineering-Infra",
+      ".\\03-Operacoes-Diarias\\Real-Time-Dashboard\\widgets",
+      "./04-Infraestrutura",
+      ".\\01-Departamentos\\Compliance-Audit",
+      "./04-Infraestrutura\\api\\endpoints",
+      ".\\backup_definitivo_pre_correcao\\01-Departamentos\\Execution-Trading",
+      ".\\03-Operacoes-Diarias\\Pre-Market",
+      ".\\backups_pre_fix\\06-Monitoramento",
+      ".\\01-Departamentos\\Execution-Trading\\strategy_modules",
+      ".\\04-Infraestrutura\\api\\endpoints",
+      "."
+    ],
+    "total_encontrados": 10,
+    "recomendacoes_analise": [
+      "Consolidar 10 executores em um único",
+      "Manter como principal: .\\arch001_executor_completo.py"
+    ]
+  },
+  "estatisticas": {
+    "inicio_analise": "2025-12-26T20:15:55.398741",
+    "diretorio_execucao": "C:\\Users\\Lenovo\\Projects\\Aurora",
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "hash_self": "d309084c6023faad3198d66f176b99f4",
+    "fim_analise": "2025-12-26T20:15:55.653727"
+  }
+}

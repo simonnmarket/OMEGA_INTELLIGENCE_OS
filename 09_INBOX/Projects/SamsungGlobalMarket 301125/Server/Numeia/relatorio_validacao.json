@@ -1,0 +1,147 @@
+{
+  "status": "SUCESSO",
+  "timestamp": "2025-11-21T11:43:04.781967",
+  "resumo": {
+    "total_testes": 26,
+    "total_erros": 0,
+    "total_avisos": 0
+  },
+  "detalhes": {
+    "timestamp": "2025-11-21T11:43:04.781967",
+    "testes": [
+      {
+        "tipo": "[INFO]",
+        "mensagem": "=== TESTE 1: Validação de Sintaxe Python ===",
+        "timestamp": "2025-11-21T11:43:04.782966"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Sintaxe válida: numeia_executor_v2.py",
+        "timestamp": "2025-11-21T11:43:04.790966"
+      },
+      {
+        "tipo": "[INFO]",
+        "mensagem": "=== TESTE 2: Validação de Imports ===",
+        "timestamp": "2025-11-21T11:43:04.790966"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Import OK: os",
+        "timestamp": "2025-11-21T11:43:04.790966"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Import OK: json",
+        "timestamp": "2025-11-21T11:43:04.791983"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Import OK: logging",
+        "timestamp": "2025-11-21T11:43:04.810965"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Import OK: threading",
+        "timestamp": "2025-11-21T11:43:04.810965"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Import OK: time",
+        "timestamp": "2025-11-21T11:43:04.810965"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Import OK: signal",
+        "timestamp": "2025-11-21T11:43:04.813968"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Import OK: sys",
+        "timestamp": "2025-11-21T11:43:04.813968"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Import OK: queue",
+        "timestamp": "2025-11-21T11:43:04.825965"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Import OK: concurrent.futures",
+        "timestamp": "2025-11-21T11:43:04.835969"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Import OK: typing",
+        "timestamp": "2025-11-21T11:43:04.836969"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Import OK: pydantic",
+        "timestamp": "2025-11-21T11:43:05.740329"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Import OK: MetaTrader5",
+        "timestamp": "2025-11-21T11:43:06.173252"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Import OK: prometheus_client",
+        "timestamp": "2025-11-21T11:43:06.436078"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Import OK: requests",
+        "timestamp": "2025-11-21T11:43:06.738082"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Import OK: numpy",
+        "timestamp": "2025-11-21T11:43:06.739079"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Import OK: pandas",
+        "timestamp": "2025-11-21T11:43:08.246625"
+      },
+      {
+        "tipo": "[INFO]",
+        "mensagem": "=== TESTE 3: Validação de Configuração ===",
+        "timestamp": "2025-11-21T11:43:08.246625"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Configuração válida (Pydantic)",
+        "timestamp": "2025-11-21T11:43:08.605831"
+      },
+      {
+        "tipo": "[INFO]",
+        "mensagem": "=== TESTE 4: Teste de Configuração Inválida ===",
+        "timestamp": "2025-11-21T11:43:08.606828"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Configuração inválida corretamente rejeitada: ValidationError",
+        "timestamp": "2025-11-21T11:43:08.608840"
+      },
+      {
+        "tipo": "[INFO]",
+        "mensagem": "=== TESTE 5: Validação de Estrutura de Arquivos ===",
+        "timestamp": "2025-11-21T11:43:08.608840"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Arquivo encontrado: numeia_executor_v2.py",
+        "timestamp": "2025-11-21T11:43:08.609829"
+      },
+      {
+        "tipo": "[OK]",
+        "mensagem": "Arquivo encontrado: __init__.py",
+        "timestamp": "2025-11-21T11:43:08.609829"
+      }
+    ],
+    "erros": [],
+    "avisos": []
+  },
+  "recomendacoes": []
+}

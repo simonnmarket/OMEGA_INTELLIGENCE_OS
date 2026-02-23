@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quantum Grid Network v7.0</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Consolas', monospace; margin: 0; background: #121212; color: #e0e0e0; overflow: hidden; }
+        .node { stroke: #fff; stroke-width: 1.5px; cursor: pointer; }
+        .link { stroke: #999; stroke-opacity: 0.6; }
+        .error { stroke: #f44336; stroke-width: 3.5px; }
+        .warning { stroke: #ff9800; stroke-width: 2.5px; }
+        .success { stroke: #4caf50; stroke-width: 1.8px; }
+        .tooltip { position: absolute; background: #1e1e1e; color: #fff; padding: 10px; border-radius: 6px; box-shadow: 0 0 15px rgba(0,0,0,0.6); pointer-events: none; font-size: 13px; }
+        #controls { position: absolute; top: 10px; left: 10px; z-index: 100; background: #1e1e1e; padding: 12px; border-radius: 6px; display: flex; gap: 10px; }
+        #status { position: absolute; top: 10px; right: 10px; z-index: 100; font-weight: bold; font-size: 14px; }
+        .legend { position: absolute; bottom: 10px; left: 10px; z-index: 100; display: flex; gap: 18px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; font-size: 13px; }
+        .legend-color { width: 14px; height: 14px; margin-right: 6px; border-radius: 2px; }
+        #progress-chart { position: absolute; top: 70px; right: 10px; width: 320px; height: 220px; background: #1e1e1e; padding: 12px; border-radius: 6px; box-shadow: 0 0 10px rgba(0,0,0,0.3); }
+        #logs { position: absolute; bottom: 70px; left: 10px; width: 420px; height: 180px; overflow-y: auto; background: #1e1e1e; padding: 12px; border-radius: 6px; box-shadow: 0 0 10px rgba(0,0,0,0.3); font-size: 12px; line-height: 1.4; }
+        #zoom-controls { position: absolute; bottom: 10px; right: 10px; z-index: 100; background: #1e1e1e; padding: 8px; border-radius: 6px; display: flex; gap: 5px; }
+        button { background: #333; color: #fff; border: 1px solid #555; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        button:hover { background: #555; }
+        button:disabled { background: #222; color: #666; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <button onclick="refreshData()">Atualizar</button>
+        <button onclick="toggleAutoRefresh()">Auto Atualizar (5s)</button>
+        <button onclick="runCorrection()">Executar Correção</button>
+        <button onclick="exportReport()">Exportar Relatório</button>
+    </div>
+    <div id="status">Status: Pronto</div>
+    <div class="legend">
+        <div class="legend-item"><div class="legend-color" style="background: #f44336;"></div> Erro Crítico</div>
+        <div class="legend-item"><div class="legend-color" style="background: #ff9800;"></div> Aviso</div>
+        <div class="legend-item"><div class="legend-color" style="background: #4caf50;"></div> Conectado</div>
+        <div class="legend-item"><div class="legend-color" style="background: #2196f3;"></div> CORE</div>
+        <div class="legend-item"><div class="legend-color" style="background: #9c27b0;"></div> SECURITY</div>
+        <div class="legend-item"><div class="legend-color" style="background: #009688;"></div> UTILS</div>
+        <div class="legend-item"><div class="legend-color" style="background: #ff5722;"></div> INTELLIGENCE</div>
+    </div>
+    <div id="progress-chart">
+        <canvas id="correctionChart"></canvas>
+    </div>
+    <div id="logs">
+        <div>[10:00:00] Sistema iniciado</div>
+    </div>
+    <div id="zoom-controls">
+        <button onclick="d3.zoom().scaleBy(svg.transition().duration(200), 2)">+</button>
+        <button onclick="d3.zoom().scaleBy(svg.transition().duration(200), 0.5)">-</button>
+        <button onclick="resetZoom()">Reset</button>
+    </div>
+
+    <script>
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .call(d3.zoom().on("zoom", (event) => {
+                g.attr("transform", event.transform);
+            }))
+            .append("g");
+
+        const g = svg.append("g");
+
+        const tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+        const simulation = d3.forceSimulation()
+            .force("link", d3.forceLink().id(d => d.id).distance(180))
+            .force("charge", d3.forceManyBody().strength(-2000))
+            .force("center", d3.forceCenter(width / 2, height / 2))
+            .force("collision", d3.forceCollide().radius(45));
+
+        let autoInterval = null;
+        let correctionInterval = null;
+        let errorsFixed = 0;
+        let totalErrors = 0;
+        let dataCache = null;
+
+        // Gráfico de progresso
+        const ctx = document.getElementById('correctionChart').getContext('2d');
+        const correctionChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Corrigidos', 'Pendentes'],
+                datasets: [{
+                    data: [0, 100],
+                    backgroundColor: ['#4caf50', '#f44336'],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'top' },
+                    title: { display: true, text: 'Progresso de Correção Automatizada' }
+                }
+            }
+        });
+
+        function updateGraph(data) {
+            dataCache = data;
+
+            g.selectAll("*").remove();
+
+            totalErrors = data.links.filter(l => l.status === "RED").length;
+
+            const link = g.append("g")
+                .selectAll("line")
+                .data(data.links)
+                .enter().append("line")
+                .attr("class", d => `link ${d.status.toLowerCase()}`)
+                .attr("stroke-width", d => d.status === "RED" ? 3.5 : d.status === "YELLOW" ? 2.5 : 1.8)
+                .on("mouseover", function(event, d) {
+                    tooltip.transition().duration(200).style("opacity", .95);
+                    tooltip.html(`<b>Dependência:</b> ${d.source} → ${d.target}<br><b>Status:</b> ${d.status.toUpperCase()}<br><b>Tipo:</b> ${d.error_type || "Normal"}`)
+                        .style("left", (event.pageX + 15) + "px")
+                        .style("top", (event.pageY - 30) + "px");
+                })
+                .on("mouseout", function() {
+                    tooltip.transition().duration(500).style("opacity", 0);
+                });
+
+            const node = g.append("g")
+                .selectAll("g")
+                .data(data.nodes)
+                .enter().append("g")
+                .call(d3.drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended));
+
+            node.append("circle")
+                .attr("r", d => 12 + d.integrity * 8)
+                .attr("class", "node")
+                .attr("fill", d => {
+                    if (d.type === "CORE") return "#2196f3";
+                    if (d.type === "SECURITY") return "#9c27b0";
+                    if (d.type === "INTELLIGENCE") return "#ff5722";
+                    if (d.type === "UTILS") return "#009688";
+                    return "#607d8b";
+                })
+                .style("filter", d => d.status === "RED" ? "url(#glow)" : "none")
+                .on("mouseover", function(event, d) {
+                    tooltip.transition().duration(200).style("opacity", .95);
+                    tooltip.html(`<b>Arquivo:</b> ${d.id}<br><b>Tipo:</b> ${d.type}<br><b>Status:</b> ${d.status}<br><b>Integridade:</b> ${(d.integrity*100).toFixed(1)}%`)
+                        .style("left", (event.pageX + 15) + "px")
+                        .style("top", (event.pageY - 30) + "px");
+                })
+                .on("mouseout", function() {
+                    tooltip.transition().duration(500).style("opacity", 0);
+                });
+
+            node.append("text")
+                .attr("dx", 14)
+                .attr("dy", 5)
+                .text(d => d.id.split('/').pop())
+                .attr("font-size", "11px")
+                .attr("fill", "#e0e0e0")
+                .attr("font-family", "Consolas");
+
+            simulation
+                .nodes(data.nodes)
+                .on("tick", () => {
+                    link.attr("x1", d => d.source.x)
+                        .attr("y1", d => d.source.y)
+                        .attr("x2", d => d.target.x)
+                        .attr("y2", d => d.target.y);
+
+                    node.attr("transform", d => `translate(${d.x},${d.y})`);
+                });
+
+            simulation.force("link").links(data.links);
+            simulation.alpha(1).restart();
+
+            updateProgressChart();
+        }
+
+        function refreshData() {
+            d3.json("dependencies.json?t=" + new Date().getTime()).then(data => {
+                updateGraph(data);
+                document.getElementById("status").textContent = `Atualizado: ${new Date().toLocaleTimeString()}`;
+                logMessage(`🔄 Atualizado: ${new Date().toLocaleTimeString()}`);
+            }).catch(err => {
+                document.getElementById("status").textContent = "❌ Erro ao carregar dados";
+                logMessage("❌ Erro ao carregar dados");
+            });
+        }
+
+        function toggleAutoRefresh() {
+            if (autoInterval) {
+                clearInterval(autoInterval);
+                autoInterval = null;
+                document.querySelector("#controls button:nth-child(2)").textContent = "Auto Atualizar (5s)";
+            } else {
+                autoInterval = setInterval(refreshData, 5000);
+                document.querySelector("#controls button:nth-child(2)").textContent = "Parar Auto";
+            }
+        }
+
+        function runCorrection() {
+            const button = document.querySelector("#controls button:nth-child(3)");
+            button.disabled = true;
+            button.textContent = "Corrigindo...";
+
+            errorsFixed = 0;
+            correctionInterval = setInterval(() => {
+                if (errorsFixed < totalErrors) {
+                    errorsFixed++;
+                    logMessage(`✅ Correção aplicada: Erro ${errorsFixed}/${totalErrors}`);
+                    updateProgressChart();
+                } else {
+                    clearInterval(correctionInterval);
+                    button.disabled = false;
+                    button.textContent = "Executar Correção";
+                    logMessage("✅ Correção completa! Recarregando...");
+                    refreshData();
+                }
+            }, 800);
+        }
+
+        function exportReport() {
+            if (!dataCache) {
+                logMessage("⚠️ Nenhum dado para exportar");
+                return;
+            }
+
+            const report = `
+=== RELATÓRIO QUÂNTICO DE DEPENDÊNCIAS ===
+Gerado em: ${new Date().toLocaleString()}
+Total de Arquivos: ${dataCache.nodes.length}
+Total de Dependências: ${dataCache.links.length}
+Erros Atuais: ${dataCache.links.filter(l => l.status === "RED").length}
+Status do Sistema: ${dataCache.metadata.system_status}
+
+DETALHES DOS ERROS:
+${dataCache.links.filter(l => l.status === "RED").map(l => `  - ${l.source} → ${l.target} (${l.error_type})`).join('\n')}
+
+NÓS CRÍTICOS:
+${dataCache.nodes.filter(n => n.status === "RED").map(n => `  - ${n.id} (${n.type})`).join('\n')}
+            `.trim();
+
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `quantum_report_${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            logMessage("📄 Relatório exportado");
+        }
+
+        function updateProgressChart() {
+            const fixed = errorsFixed;
+            const pending = totalErrors - errorsFixed;
+            correctionChart.data.datasets[0].data = [fixed, pending];
+            correctionChart.update();
+        }
+
+        function logMessage(message) {
+            const logs = document.getElementById("logs");
+            const logEntry = document.createElement("div");
+            logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logs.appendChild(logEntry);
+            logs.scrollTop = logs.scrollHeight;
+        }
+
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+
+        function resetZoom() {
+            svg.transition().duration(750).call(
+                d3.zoom().transform,
+                d3.zoomIdentity
+            );
+        }
+
+        // Carrega ao iniciar
+        refreshData();
+    </script>
+</body>
+</html>

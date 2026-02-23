@@ -1,0 +1,8 @@
+NICER
+Neutron star Interior Composition Explorer
+
+NASA’s NICER (Neutron star Interior Composition Explorer) is an X-ray telescope that studies neutron stars, black holes, and other phenomena from its home aboard the International Space Station. NICER also demonstrated the use of galactic pulsars as navigational beacons for future deep-space exploration missions.
+
+Explorador da Composição Interior de Estrelas de Nêutrons
+
+O NICER (Neutron star Interior Composition Explorer) da NASA é um telescópio de raios X que estuda estrelas de nêutrons, buracos negros e outros fenômenos a bordo da Estação Espacial Internacional. O NICER também demonstrou o uso de pulsares galácticos como faróis de navegação para futuras missões de exploração do espaço profundo.

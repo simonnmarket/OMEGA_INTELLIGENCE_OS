@@ -1,0 +1,137 @@
+{
+  "timestamp": "2025-12-26T21:06:18.740022",
+  "teste": "INTEGRIDADE_BLOCO_2",
+  "status_geral": "REPROVADO_CRITICO",
+  "pontos_verificacao": [
+    {
+      "nome": "CHECKPOINT BLOCO 2 GERADO",
+      "status": "REPROVADO",
+      "erro": "Checkpoint não é do BLOCO 2: arch-001 - bloco 2"
+    },
+    {
+      "nome": "ARQUIVOS BACKUP CRIADOS",
+      "status": "APROVADO",
+      "arquivos_encontrados": 3,
+      "arquivos_validos": 3,
+      "exemplos": [
+        {
+          "nome": "backup_pre_arch001_20251226_204338.zip",
+          "tamanho_kb": 52.861328125,
+          "modificacao": "2025-12-26T20:43:38.213518"
+        },
+        {
+          "nome": "backup_pre_arch001_20251226_204338.zip",
+          "tamanho_kb": 52.861328125,
+          "modificacao": "2025-12-26T20:43:38.213518"
+        },
+        {
+          "nome": "backup_pre_arch001_20251226_204338.zip",
+          "tamanho_kb": 52.861328125,
+          "modificacao": "2025-12-26T20:43:38.213518"
+        }
+      ]
+    },
+    {
+      "nome": "ESTRUTURA DE DADOS VÁLIDA",
+      "status": "APROVADO",
+      "checkpoint": "checkpoint_selecao_20251226_204338.json",
+      "tamanho_dados_kb": 4.5107421875,
+      "campos_presentes": [
+        "metadata",
+        "fase_backup",
+        "fase_selecao",
+        "estatisticas"
+      ],
+      "tem_executor": true,
+      "executor_principal": ".\\04-Infraestrutura\\mt5_executor.py",
+      "tem_backup": true,
+      "backup_zip": "backup_pre_arch001_20251226_204338.zip"
+    },
+    {
+      "nome": "HASHES DE INTEGRIDADE",
+      "status": "APROVADO",
+      "arquivos_com_hash": 1,
+      "exemplos_hash": [
+        "checkpoint_selecao_20251226_204338.json"
+      ],
+      "hash_checkpoint_principal": "23aada814481e53f..."
+    },
+    {
+      "nome": "METADADOS COMPLETOS",
+      "status": "APROVADO",
+      "pontuacao_metadados": 4,
+      "campos_presentes": [
+        "timestamp",
+        "etapa",
+        "status",
+        "projeto"
+      ],
+      "arquivo": "checkpoint_selecao_20251226_204338.json",
+      "observacao": "Metadados completos, timestamp não verificado"
+    },
+    {
+      "nome": "LOGS DE EXECUÇÃO",
+      "status": "APROVADO",
+      "logs_encontrados": 5,
+      "arquivos_python_recentes": 1,
+      "exemplos_logs": [
+        {
+          "nome": "backup_selecao_20251226_204338.log",
+          "tamanho_kb": 4.208984375,
+          "modificacao": "2025-12-26T20:43:38.229558"
+        },
+        {
+          "nome": "aurora_etapa_a.log",
+          "tamanho_kb": 0.1162109375,
+          "modificacao": "2025-12-17T00:36:21.189152"
+        }
+      ],
+      "exemplos_arquivos": [
+        "bloco2_backup_selecao.py"
+      ]
+    },
+    {
+      "nome": "ESTATÍSTICAS VÁLIDAS",
+      "status": "APROVADO",
+      "arquivo": "checkpoint_selecao_20251226_204338.json",
+      "estatisticas_encontradas": [
+        "estatisticas"
+      ],
+      "valores_validos": 0
+    },
+    {
+      "nome": "CONFIGURAÇÕES PRESERVADAS",
+      "status": "APROVADO",
+      "configs_encontradas": 1,
+      "tem_configs_json": false,
+      "lista_configs": [
+        "requirements.txt"
+      ]
+    },
+    {
+      "nome": "SCRIPTS FUNCIONAIS",
+      "status": "APROVADO",
+      "scripts_encontrados": 3,
+      "python_funcional": true,
+      "scripts": [
+        "bloco2_backup_selecao.py",
+        "teste_extremo_arch001.py",
+        "bloco1_analise_identificacao.py"
+      ]
+    },
+    {
+      "nome": "PREPARAÇÃO BLOCO 3",
+      "status": "APROVADO",
+      "indicadores_encontrados": 3,
+      "estrutura_pronta_bloco3": true,
+      "indicadores": [
+        "Executor principal selecionado: .\\04-Infraestrutura\\mt5_executor.py",
+        "Backup criado: backup_pre_arch001_20251226_204338.zip",
+        "Executor principal definido para BLOCO 3"
+      ]
+    }
+  ],
+  "pontuacao": 9,
+  "total_pontos": 10,
+  "criticos_aprovados": false
+}

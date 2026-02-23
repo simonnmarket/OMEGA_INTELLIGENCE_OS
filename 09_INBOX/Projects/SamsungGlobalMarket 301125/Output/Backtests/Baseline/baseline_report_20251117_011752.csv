@@ -1,0 +1,41 @@
+METRIC,VALUE,UNIT,DESCRIPTION
+BASELINE_SUMMARY,,,
+strategy,Mean_Reversion_Bollinger_Bands,,Estratégia de baseline
+symbol,EURUSD,,Símbolo testado
+timeframe,H1,,Timeframe usado
+years_of_data,10,anos,Período de dados históricos
+walk_forward_periods,15,períodos,Número de períodos validados
+,,,
+AGGREGATE_METRICS,,,
+total_trades,776,trades,Total de trades executados
+win_rate,0.5580,ratio,Taxa de acerto
+profit_factor,0.76,ratio,Lucro total / Perda total
+total_return,-49209.00,USD,Retorno total acumulado
+sharpe_ratio,-1.42,ratio,Sharpe ratio anualizado
+max_drawdown,67141.00,USD,Maior queda do equity
+max_drawdown_pct,14854.20,%,Max drawdown percentual
+expected_value,-63.41,USD,Valor esperado por trade
+,,,
+WALK_FORWARD_AVERAGES,,,
+avg_win_rate,0.5086,ratio,Win rate médio (Walk-Forward)
+avg_sharpe_ratio,-77.46,ratio,Sharpe ratio médio (Walk-Forward)
+avg_total_return,-2246.60,USD,Retorno total médio (Walk-Forward)
+avg_max_drawdown,4897.13,USD,Max drawdown médio (Walk-Forward)
+,,,
+WALK_FORWARD_PERIODS,,,
+period,start_date,end_date,trades,win_rate,total_return,sharpe_ratio,max_drawdown
+1,2017-11-23,2018-05-22,55,0.6000,-4196.00,-1.85,5041.00
+2,2018-05-22,2018-11-18,53,0.5472,-4285.00,-2.25,7577.00
+3,2018-11-18,2019-05-17,57,0.5789,49.00,0.03,6002.00
+4,2019-05-17,2019-11-13,55,0.4364,-11645.00,-7.60,11980.00
+5,2019-11-13,2020-05-11,22,0.3636,-683.00,-0.45,6762.00
+6,2020-05-11,2020-11-07,2,0.0000,-4164.00,-1139.68,2111.00
+7,2020-11-07,2021-05-06,2,0.5000,-413.00,-1.77,0.00
+9,2021-11-02,2022-05-01,4,0.7500,3504.00,6.94,2409.00
+10,2022-05-01,2022-10-28,3,0.3333,-1566.00,-2.97,2781.00
+11,2022-10-28,2023-04-26,1,1.0000,2623.00,0.00,0.00
+12,2023-04-26,2023-10-23,16,0.1250,-4722.00,-9.03,6063.00
+13,2023-10-23,2024-04-20,57,0.4386,-11068.00,-5.16,14091.00
+14,2024-04-20,2024-10-17,56,0.7143,1936.00,1.31,1794.00
+15,2024-10-17,2025-04-15,58,0.5690,-1653.00,-0.80,4677.00
+16,2025-04-15,2025-10-12,55,0.6727,2584.00,1.34,2169.00

@@ -1,0 +1,69 @@
+{
+  "timestamp": "2025-12-26T23:02:27.037532",
+  "arquivos_criticos": [
+    {
+      "arquivo": "ARCH001_EXECUTOR_FINAL_20251226_230100.py",
+      "tamanho_kb": 12.8798828125,
+      "hash": "26c109d7d338851f...",
+      "status": "OK",
+      "timestamp": "2025-12-26T23:02:27.039428"
+    },
+    {
+      "arquivo": "configuracao_arch001_20251226_225836.json",
+      "tamanho_kb": 1.6640625,
+      "hash": "4d1faecb1c55ea4e...",
+      "status": "OK",
+      "timestamp": "2025-12-26T23:02:27.040428"
+    },
+    {
+      "arquivo": "configuracao_arch001_20251226_230100.json",
+      "tamanho_kb": 1.6640625,
+      "hash": "ab77a6beae0ca865...",
+      "status": "OK",
+      "timestamp": "2025-12-26T23:02:27.040428"
+    },
+    {
+      "arquivo": "checkpoint_analise_20251226_201555.json",
+      "tamanho_kb": 24.2568359375,
+      "hash": "2cab088f12581e26...",
+      "status": "OK",
+      "timestamp": "2025-12-26T23:02:27.043945"
+    },
+    {
+      "arquivo": "checkpoint_analise_20251226_201607.json",
+      "tamanho_kb": 27.0966796875,
+      "hash": "91f89a7a21beffbf...",
+      "status": "OK",
+      "timestamp": "2025-12-26T23:02:27.044946"
+    },
+    {
+      "arquivo": "checkpoint_consolidacao_20251226_213652.json",
+      "tamanho_kb": 2.6611328125,
+      "hash": "44a945b3dee64dd6...",
+      "status": "OK",
+      "timestamp": "2025-12-26T23:02:27.044946"
+    },
+    {
+      "arquivo": "checkpoint_final_arch001_20251226_230100.json",
+      "tamanho_kb": 6.4560546875,
+      "hash": "f220e209f0eaa751...",
+      "status": "OK",
+      "timestamp": "2025-12-26T23:02:27.044946"
+    },
+    {
+      "arquivo": "checkpoint_selecao_20251226_204338.json",
+      "tamanho_kb": 6.0712890625,
+      "hash": "23aada814481e53f...",
+      "status": "OK",
+      "timestamp": "2025-12-26T23:02:27.044946"
+    },
+    {
+      "arquivo": "backup_pre_arch001_20251226_204338.zip",
+      "tamanho_kb": 52.861328125,
+      "hash": "fefcb074bad89b3a...",
+      "status": "OK",
+      "timestamp": "2025-12-26T23:02:27.047050"
+    }
+  ],
+  "status_geral": "ESTAVEL"
+}

@@ -1,0 +1,56 @@
+{
+  "name": "Hub",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nome do hub (FOREX, CRYPTO, METALS, etc.)"
+    },
+    "segment": {
+      "type": "string",
+      "enum": ["Fiat", "Digital", "Commodity", "Index", "Fixed Income", "Energy"],
+      "description": "Segmento do mercado"
+    },
+    "volatility_profile": {
+      "type": "number",
+      "description": "Perfil de volatilidade (0.0 - 5.0)"
+    },
+    "active_agents": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Agentes ativos neste hub"
+    },
+    "allocated_capital": {
+      "type": "number",
+      "description": "Capital alocado em USD"
+    },
+    "current_pnl": {
+      "type": "number",
+      "description": "PnL atual em USD"
+    },
+    "toxicity_level": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"],
+      "default": "LOW",
+      "description": "Nível de toxicidade do mercado"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ACTIVE", "STANDBY", "LOCKED", "EMERGENCY_SHUTDOWN"],
+      "default": "ACTIVE",
+      "description": "Status operacional do hub"
+    },
+    "latency_p99": {
+      "type": "number",
+      "description": "Latência p99 em millisegundos"
+    },
+    "last_execution": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Último timestamp de execução"
+    }
+  },
+  "required": ["name", "segment", "volatility_profile"]
+}

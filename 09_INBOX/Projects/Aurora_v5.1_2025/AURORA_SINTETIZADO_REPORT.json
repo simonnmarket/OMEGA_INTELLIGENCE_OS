@@ -1,0 +1,39 @@
+{
+  "generation_date": "2025-12-25T12:43:45.354624",
+  "documents": {
+    "consolidated": {
+      "file": "AURORA_COMPLETE_TECHNICAL_DOCUMENT.md",
+      "size_kb": 170.37,
+      "lines": 5632,
+      "hash": "9f845168d16bcc2d2c061112c5186a88b3143646e7fb2764a059f583979f2c56"
+    },
+    "synthesized": {
+      "file": "AURORA_SISTEMA_SINTETIZADO_V5.1.md",
+      "size_kb": 11.27,
+      "lines": 435,
+      "hash": "9b25e3e7d0b1b4d8afa63f889395a1fa823bff313a8d97dab264dc2ebeb42331"
+    },
+    "final": {
+      "file": "AURORA_SISTEMA_SINTETIZADO_FINAL_V5.1.md",
+      "size_kb": 13.14,
+      "lines": 506,
+      "hash": "d2404d7e7b0bb934c16e0ae2170a8557f5d5b5ece142afec8f85b9811b9488ea"
+    }
+  },
+  "system_verification": {
+    "module_count": {
+      "found": 252,
+      "expected": 252,
+      "status": "VERIFIED"
+    },
+    "hierarchical_structure": {
+      "tier_00": "EXISTS",
+      "tier_01": "EXISTS",
+      "tier_02": "EXISTS",
+      "tier_03": "EXISTS",
+      "tier_04": "EXISTS",
+      "tier_05": "EXISTS",
+      "tier_06": "EXISTS"
+    }
+  }
+}

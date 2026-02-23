@@ -1,0 +1,1 @@
+# Interface padrão para todas as estratégias

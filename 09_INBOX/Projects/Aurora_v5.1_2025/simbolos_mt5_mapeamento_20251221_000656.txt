@@ -1,0 +1,8 @@
+MAPEAMENTO DE SÍMBOLOS MT5
+==================================================
+
+BTCUSD → BTCMXN [❌ FALHA]
+ETHUSD → ETHMXN [❌ FALHA]
+XRPUSD → XRPJPY [❌ FALHA]
+BNBUSD → AirBnb [❌ FALHA]
+SOLUSD → SolarEdge [❌ FALHA]

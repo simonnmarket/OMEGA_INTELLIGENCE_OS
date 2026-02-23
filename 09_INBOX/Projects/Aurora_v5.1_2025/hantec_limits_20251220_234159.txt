@@ -1,0 +1,24 @@
+HANTEC LIMITS DISCOVERY RESULTS
+==================================================
+
+BTCUSD:
+  Status: FOUND
+  Min Points: 1000
+  Min Distance: $10.00000
+  Message: Mínimo: 1000 pontos (10.00000)
+
+ETHUSD:
+  Status: FAILED_ALL
+  Message: Nenhuma configuração funcionou
+
+BNBUSD:
+  Status: FAILED_ALL
+  Message: Nenhuma configuração funcionou
+
+SOLUSD:
+  Status: FAILED_ALL
+  Message: Nenhuma configuração funcionou
+
+XRPUSD:
+  Status: FAILED_ALL
+  Message: Nenhuma configuração funcionou

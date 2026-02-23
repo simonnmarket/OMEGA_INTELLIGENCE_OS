@@ -1,0 +1,77 @@
+//+------------------------------------------------------------------+
+//|                                        OrderFlowAnalyzer.mqh     |
+//|            Análise de Fluxo de Ordens - Big Players Detector     |
+//+------------------------------------------------------------------+
+#property strict
+
+#include <Utils/Log.mqh>
+#include <Config/GlobalConfig.mqh>
+
+class OrderFlowAnalyzer {
+private:
+   string symbol;
+   int depth;
+
+public:
+   OrderFlowAnalyzer(string _symbol, int _depth=10) {
+      symbol = _symbol;
+      depth = _depth;
+   }
+
+   struct OrderFlowData {
+      double bid_volume;
+      double ask_volume;
+      double delta_volume;
+      double bid_imbalance;
+      double ask_imbalance;
+   };
+
+   OrderFlowData Analyze() {
+      MqlBookInfo book[];
+      OrderFlowData data;
+      ArrayInitialize(book, 0);
+
+      if (!BookGet(book)) {
+         Log::Error("OrderFlowAnalyzer: Falha ao obter book de ofertas");
+         return data;
+      }
+
+      double total_bid = 0, total_ask = 0;
+
+      for (int i = 0; i < ArraySize(book) && i < depth; i++) {
+         if (book[i].type == BOOK_TYPE_SELL)
+            total_ask += book[i].volume;
+         else if (book[i].type == BOOK_TYPE_BUY)
+            total_bid += book[i].volume;
+      }
+
+      data.bid_volume = total_bid;
+      data.ask_volume = total_ask;
+      data.delta_volume = total_bid - total_ask;
+
+      double total = total_bid + total_ask;
+      if (total > 0) {
+         data.bid_imbalance = total_bid / total;
+         data.ask_imbalance = total_ask / total;
+      }
+
+      return data;
+   }
+
+   bool IsBuyerDominant() {
+      OrderFlowData flow = Analyze();
+      return (flow.bid_imbalance > 0.6);
+   }
+
+   bool IsSellerDominant() {
+      OrderFlowData flow = Analyze();
+      return (flow.ask_imbalance > 0.6);
+   }
+
+   void DebugPrint() {
+      OrderFlowData flow = Analyze();
+      Log::Info("OrderFlowAnalyzer: Bid: " + DoubleToString(flow.bid_volume, 2) +
+                " | Ask: " + DoubleToString(flow.ask_volume, 2) +
+                " | Delta: " + DoubleToString(flow.delta_volume, 2));
+   }
+};

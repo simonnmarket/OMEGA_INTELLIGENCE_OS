@@ -1,0 +1,26 @@
+{
+    "EMERGENCY_MODE_ENABLED": true,
+    "MAX_PARALLEL_WORKERS": 10,
+    "EXECUTION_CYCLE_SECONDS": 15,
+    "MAX_LATENCY_MS_P95": 300,
+    "MAX_FAILURE_RATE": 1.5,
+    "ROLLBACK_WINDOW_SECONDS": 600,
+    "NOTIFICATION_WEBHOOK_URL": null,
+    "TRADING_SYMBOLS": [
+        "EURUSD", 
+        "GBPUSD"
+    ],
+    "RISK_PARAMETERS": {
+        "max_daily_drawdown": 0.02,
+        "max_position_size_pct": 0.1,
+        "kelly_fraction": 0.25,
+        "correlation_threshold": 0.7,
+        "max_sector_exposure": 0.3
+    },
+    "MONITORING": {
+        "prometheus_port": 8000,
+        "health_check_interval": 60,
+        "order_timeout_seconds": 10
+    }
+}
+

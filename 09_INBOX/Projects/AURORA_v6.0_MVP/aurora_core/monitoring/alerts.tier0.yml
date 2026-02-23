@@ -1,0 +1,63 @@
+groups:
+  - name: tier0_critical_alerts
+    rules:
+      - alert: CircuitBreakerOpen
+        expr: circuit_breaker_state{state="OPEN"} == 1
+        for: 1m
+        labels:
+          severity: critical
+          tier: "0"
+        annotations:
+          summary: "Circuit Breaker opened for {{ $labels.component }}"
+          description: "Component {{ $labels.component }} has entered OPEN state. Requires investigation."
+
+      - alert: VaultSecretsUnavailable
+        expr: vault_secrets_available == 0
+        for: 30s
+        labels:
+          severity: critical
+          tier: "0"
+        annotations:
+          summary: "Vault secrets unavailable"
+          description: "Cannot access secrets from HashiCorp Vault. System may be unable to authenticate."
+
+      - alert: RedlockUnavailable
+        expr: redlock_available_nodes < 2
+        for: 1m
+        labels:
+          severity: warning
+          tier: "0"
+        annotations:
+          summary: "Redis cluster degraded"
+          description: "Only {{ $value }} Redis nodes available. Distributed locking may be compromised."
+
+      - alert: APIRateLimitExceeded
+        expr: rate(api_requests_total[5m]) > 100
+        for: 2m
+        labels:
+          severity: warning
+          tier: "0"
+        annotations:
+          summary: "API rate limit exceeded"
+          description: "High API request rate detected: {{ $value }} requests/minute"
+
+      - alert: HighLatency
+        expr: http_request_duration_seconds{quantile="0.95"} > 0.5
+        for: 5m
+        labels:
+          severity: warning
+          tier: "0"
+        annotations:
+          summary: "High API latency detected"
+          description: "95th percentile latency is {{ $value }}s, exceeding 500ms threshold"
+
+      - alert: RiskEngineHalted
+        expr: risk_engine_state{state="HALTED"} == 1
+        for: 0s
+        labels:
+          severity: critical
+          tier: "0"
+        annotations:
+          summary: "Risk Engine has halted trading"
+          description: "Risk Engine entered HALTED state. All trading operations suspended."
+

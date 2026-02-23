@@ -1,0 +1,262 @@
+//+------------------------------------------------------------------+
+//|                                                      QMPRS_v6.mq5 |
+//|                        Copyright 2025, QMPRS Research Group      |
+//|                                             https://www.qmprs.org |
+//+------------------------------------------------------------------+
+#property copyright "QMPRS Research Group"
+#property link      "https://www.qmprs.org"
+#property version   "6.0"
+#property description "Quantum Market Pattern Recognition System v6.0"
+#property strict
+
+#include <QMPRS/DataProcessor.mqh>
+#include <QMPRS/FeatureExtractor.mqh>
+#include <QMPRS/TopologicalAnalyzer.mqh>
+#include <QMPRS/QuantumEmbedder.mqh>
+#include <TensorFlowMT5.mqh>
+
+//--- Input parameters
+input group "General"
+input int      InpMagicNumber = 2025;      // Magic Number
+input double   InpLotSize = 0.1;           // Lot Size
+input int      InpSlippage = 3;            // Slippage (points)
+
+input group "Trading Parameters"
+input int      InpHoldPeriod = 5;          // Holding period (bars)
+input int      InpSequenceLength = 21;     // LSTM sequence length
+input int      InpRetrainInterval = 63;    // Retrain interval (bars)
+
+input group "Risk Management"
+input double   InpStopLoss = 0.02;         // SL (2%)
+input double   InpTakeProfit = 0.04;       // TP (4%)
+input int      InpMaxOrders = 3;           // Maximum simultaneous orders
+
+//--- Global variables
+CDataProcessor     data_processor;
+CFeatureExtractor  feature_extractor;
+CTopologicalAnalyzer topological_analyzer;
+CQuantumEmbedder   quantum_embedder;
+CTensorFlowMT5     tensorflow_model;
+
+int retrain_counter = 0;
+datetime last_retrain_time = 0;
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                   |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+    // Initialize components
+    if(!data_processor.Init(Symbol(), Period(), InpSequenceLength * 3))
+        return INIT_FAILED;
+    
+    if(!feature_extractor.Init())
+        return INIT_FAILED;
+    
+    if(!topological_analyzer.Init())
+        return INIT_FAILED;
+    
+    if(!quantum_embedder.Init())
+        return INIT_FAILED;
+    
+    // Load TensorFlow model
+    if(!tensorflow_model.LoadModel("qmprs_model.pb"))
+    {
+        Print("Error loading TensorFlow model");
+        return INIT_FAILED;
+    }
+    
+    Print("QMPRS v6.0 initialized successfully");
+    return INIT_SUCCEEDED;
+}
+
+//+------------------------------------------------------------------+
+//| Expert deinitialization function                                 |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason)
+{
+    // Cleanup resources
+    tensorflow_model.Shutdown();
+}
+
+//+------------------------------------------------------------------+
+//| Expert tick function                                             |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+    // Check if it's time to retrain
+    if(ShouldRetrain())
+    {
+        RetrainModel();
+    }
+    
+    // Generate trading signal
+    int signal = GenerateSignal();
+    
+    // Execute trading logic
+    ExecuteTrading(signal);
+}
+
+//+------------------------------------------------------------------+
+//| Check if model should be retrained                               |
+//+------------------------------------------------------------------+
+bool ShouldRetrain()
+{
+    datetime current_time = iTime(Symbol(), Period(), 0);
+    
+    // Retrain based on time interval
+    if(current_time - last_retrain_time >= InpRetrainInterval * PeriodSeconds())
+    {
+        return true;
+    }
+    
+    // Retrain based on market regime change
+    if(DetectRegimeChange())
+    {
+        return true;
+    }
+    
+    return false;
+}
+
+//+------------------------------------------------------------------+
+//| Retrain the model with latest data                               |
+//+------------------------------------------------------------------+
+void RetrainModel()
+{
+    Print("Starting model retraining...");
+    
+    // Collect historical data
+    double close_prices[];
+    int bars = InpSequenceLength * 10; // 10x sequence length for training
+    CopyClose(Symbol(), Period(), 0, bars, close_prices);
+    ArrayReverse(close_prices);
+    
+    // Extract features
+    double features[];
+    feature_extractor.ExtractFeatures(close_prices, features);
+    
+    // Add topological features
+    double topological_features[];
+    topological_analyzer.Analyze(close_prices, topological_features);
+    ArrayConcatenate(features, topological_features);
+    
+    // Add quantum-inspired features
+    double quantum_features[];
+    quantum_embedder.Embed(features, quantum_features);
+    ArrayConcatenate(features, quantum_features);
+    
+    // Prepare training data
+    double training_data[], labels[];
+    PrepareTrainingData(features, training_data, labels);
+    
+    // Retrain model
+    if(tensorflow_model.Retrain(training_data, labels))
+    {
+        Print("Model retrained successfully");
+        last_retrain_time = iTime(Symbol(), Period(), 0);
+    }
+    else
+    {
+        Print("Model retraining failed");
+    }
+}
+
+//+------------------------------------------------------------------+
+//| Generate trading signal                                          |
+//+------------------------------------------------------------------+
+int GenerateSignal()
+{
+    // Get recent price data
+    double recent_prices[];
+    CopyClose(Symbol(), Period(), 0, InpSequenceLength, recent_prices);
+    ArrayReverse(recent_prices);
+    
+    // Extract features for prediction
+    double features[];
+    feature_extractor.ExtractFeatures(recent_prices, features);
+    
+    // Add topological features
+    double topological_features[];
+    topological_analyzer.Analyze(recent_prices, topological_features);
+    ArrayConcatenate(features, topological_features);
+    
+    // Add quantum-inspired features
+    double quantum_features[];
+    quantum_embedder.Embed(features, quantum_features);
+    ArrayConcatenate(features, quantum_features);
+    
+    // Make prediction
+    double prediction = tensorflow_model.Predict(features);
+    
+    // Convert prediction to signal
+    if(prediction > 0.6) return 1;      // Buy
+    if(prediction < 0.4) return -1;     // Sell
+    
+    return 0;                           // Neutral
+}
+
+//+------------------------------------------------------------------+
+//| Execute trading based on signal                                  |
+//+------------------------------------------------------------------+
+void ExecuteTrading(int signal)
+{
+    // Check maximum orders
+    if(CountOrders() >= InpMaxOrders)
+        return;
+    
+    // Close opposite positions
+    if(signal == 1) CloseSellPositions();
+    if(signal == -1) CloseBuyPositions();
+    
+    // Open new position
+    if(signal == 1 && CountBuyPositions() == 0)
+    {
+        OpenBuyPosition();
+    }
+    else if(signal == -1 && CountSellPositions() == 0)
+    {
+        OpenSellPosition();
+    }
+}
+
+//+------------------------------------------------------------------+
+//| Open buy position                                                |
+//+------------------------------------------------------------------+
+void OpenBuyPosition()
+{
+    double sl = CalculateStopLoss(ORDER_TYPE_BUY);
+    double tp = CalculateTakeProfit(ORDER_TYPE_BUY);
+    
+    MqlTradeRequest request = {0};
+    MqlTradeResult result = {0};
+    
+    request.action = TRADE_ACTION_DEAL;
+    request.symbol = Symbol();
+    request.volume = InpLotSize;
+    request.type = ORDER_TYPE_BUY;
+    request.price = SymbolInfoDouble(Symbol(), SYMBOL_ASK);
+    request.sl = sl;
+    request.tp = tp;
+    request.deviation = InpSlippage;
+    request.magic = InpMagicNumber;
+    request.comment = "QMPRS v6.0 BUY";
+    
+    OrderSend(request, result);
+}
+
+//+------------------------------------------------------------------+
+//| Calculate stop loss                                              |
+//+------------------------------------------------------------------+
+double CalculateStopLoss(ENUM_ORDER_TYPE order_type)
+{
+    double current_price = order_type == ORDER_TYPE_BUY ? 
+                          SymbolInfoDouble(Symbol(), SYMBOL_ASK) : 
+                          SymbolInfoDouble(Symbol(), SYMBOL_BID);
+    
+    double sl_points = InpStopLoss * current_price;
+    
+    return order_type == ORDER_TYPE_BUY ? 
+           current_price - sl_points : 
+           current_price + sl_points;
+}

@@ -1,0 +1,296 @@
+{
+  "report": {
+    "timestamp": "2025-12-16T12:20:00.527854",
+    "total_modules": 49,
+    "v2_modules": 4,
+    "v1_modules": 1,
+    "standalone_modules": 44,
+    "wrappers": 82,
+    "integration_score": 175.51,
+    "risk_score": 15,
+    "compliance_status": "PASS",
+    "tier0_ready": true
+  },
+  "modules": {
+    "modules\\interfaces.py": {
+      "status": "v1.0",
+      "size": 6867
+    },
+    "modules\\ncnt_base.py": {
+      "status": "standalone",
+      "size": 7966
+    },
+    "modules\\ncnt_module_template.py": {
+      "status": "v2.0",
+      "size": 45472
+    },
+    "modules\\ncnt_module_template_v2.py": {
+      "status": "v2.0",
+      "size": 45596
+    },
+    "modules\\__init__.py": {
+      "status": "standalone",
+      "size": 312
+    },
+    "modules\\connectors\\data_connector.py": {
+      "status": "standalone",
+      "size": 21
+    },
+    "modules\\connectors\\execution_connector.py": {
+      "status": "standalone",
+      "size": 26
+    },
+    "modules\\connectors\\risk_connector.py": {
+      "status": "standalone",
+      "size": 21
+    },
+    "modules\\connectors\\strategy_connector.py": {
+      "status": "standalone",
+      "size": 28
+    },
+    "modules\\connectors\\__init__.py": {
+      "status": "standalone",
+      "size": 25
+    },
+    "00-Governanca\\audit_system_complete.py": {
+      "status": "standalone",
+      "size": 41901
+    },
+    "00-Governanca\\complete_activation_final.py": {
+      "status": "v2.0",
+      "size": 5768
+    },
+    "00-Governanca\\complexity_guard.py": {
+      "status": "standalone",
+      "size": 16668
+    },
+    "00-Governanca\\fix_report_errors.py": {
+      "status": "standalone",
+      "size": 6546
+    },
+    "00-Governanca\\generate_complete_report.py": {
+      "status": "standalone",
+      "size": 29431
+    },
+    "00-Governanca\\generate_ultra_complete_report.py": {
+      "status": "standalone",
+      "size": 45466
+    },
+    "00-Governanca\\genesis_includes.py": {
+      "status": "standalone",
+      "size": 8848
+    },
+    "00-Governanca\\genesis_includes_v3_complete.py": {
+      "status": "standalone",
+      "size": 26700
+    },
+    "00-Governanca\\governance_module.py": {
+      "status": "standalone",
+      "size": 7010
+    },
+    "00-Governanca\\integration_gate_v2.py": {
+      "status": "standalone",
+      "size": 16021
+    },
+    "00-Governanca\\integration_gate_v3.py": {
+      "status": "standalone",
+      "size": 35457
+    },
+    "00-Governanca\\regulatory_context.py": {
+      "status": "standalone",
+      "size": 7666
+    },
+    "00-Governanca\\restore_executive_report.py": {
+      "status": "standalone",
+      "size": 13304
+    },
+    "00-Governanca\\run_complete_audit.py": {
+      "status": "standalone",
+      "size": 3468
+    },
+    "00-Governanca\\test_module_v2.py": {
+      "status": "v2.0",
+      "size": 5503
+    },
+    "00-Governanca\\__init__.py": {
+      "status": "standalone",
+      "size": 16
+    },
+    "04-Infraestrutura\\moduleregistry.py": {
+      "status": "standalone",
+      "size": 9438
+    },
+    "04-Infraestrutura\\api\\main.py": {
+      "status": "standalone",
+      "size": 1015
+    },
+    "04-Infraestrutura\\api\\__init__.py": {
+      "status": "standalone",
+      "size": 89
+    },
+    "04-Infraestrutura\\api\\endpoints\\strategies.py": {
+      "status": "standalone",
+      "size": 6577
+    },
+    "04-Infraestrutura\\api\\endpoints\\__init__.py": {
+      "status": "standalone",
+      "size": 102
+    },
+    "04-Infraestrutura\\database\\connection.py": {
+      "status": "standalone",
+      "size": 2876
+    },
+    "04-Infraestrutura\\database\\models.py": {
+      "status": "standalone",
+      "size": 3036
+    },
+    "04-Infraestrutura\\database\\__init__.py": {
+      "status": "standalone",
+      "size": 399
+    },
+    "04-Infraestrutura\\tools\\cli\\ncnt_cli.py": {
+      "status": "standalone",
+      "size": 15
+    },
+    "04-Infraestrutura\\tools\\cli\\__init__.py": {
+      "status": "standalone",
+      "size": 0
+    },
+    "04-Infraestrutura\\tools\\cli\\commands\\__init__.py": {
+      "status": "standalone",
+      "size": 0
+    },
+    "04-Infraestrutura\\tools\\scripts\\backup.py": {
+      "status": "standalone",
+      "size": 18
+    },
+    "04-Infraestrutura\\tools\\scripts\\deploy.py": {
+      "status": "standalone",
+      "size": 18
+    },
+    "04-Infraestrutura\\tools\\scripts\\monitor.py": {
+      "status": "standalone",
+      "size": 25
+    },
+    "04-Infraestrutura\\tools\\scripts\\__init__.py": {
+      "status": "standalone",
+      "size": 0
+    },
+    "06-Monitoramento\\feedbackloop_module.py": {
+      "status": "standalone",
+      "size": 18682
+    },
+    "06-Monitoramento\\generate_validation_report.py": {
+      "status": "standalone",
+      "size": 822
+    },
+    "06-Monitoramento\\neural_connection_monitor_v2.py": {
+      "status": "standalone",
+      "size": 25828
+    },
+    "06-Monitoramento\\run_validation_scan.py": {
+      "status": "standalone",
+      "size": 1113
+    },
+    "06-Monitoramento\\Feedback-Loop\\action_items.py": {
+      "status": "standalone",
+      "size": 32
+    },
+    "06-Monitoramento\\Feedback-Loop\\post_mortem.py": {
+      "status": "standalone",
+      "size": 22
+    },
+    "06-Monitoramento\\Feedback-Loop\\rca_templates.py": {
+      "status": "standalone",
+      "size": 34
+    },
+    "06-Monitoramento\\Feedback-Loop\\__init__.py": {
+      "status": "standalone",
+      "size": 0
+    }
+  },
+  "wrappers": [
+    "ab_testing_wrapper.py",
+    "allocation_engine_wrapper.py",
+    "alpha_momentum_wrapper.py",
+    "api_gateway_wrapper.py",
+    "audit_system_complete_wrapper.py",
+    "audit_trail_wrapper.py",
+    "backtest_engine_wrapper.py",
+    "backtest_runner_v3_wrapper.py",
+    "base_strategy_wrapper.py",
+    "breakout_detection_wrapper.py",
+    "build_wrapper.py",
+    "capital_manager_wrapper.py",
+    "cicdpipeline_module_wrapper.py",
+    "circuit_breakers_wrapper.py",
+    "complete_integration_wrapper.py",
+    "complexity_guard_wrapper.py",
+    "compliance_module_wrapper.py",
+    "connection_wrapper.py",
+    "coreengine_module_wrapper.py",
+    "core_engine_wrapper.py",
+    "counterparty_onboarding_wrapper.py",
+    "create_structure_wrapper.py",
+    "dashboard_wrapper.py",
+    "data_layer_wrapper.py",
+    "data_onboarding_wrapper.py",
+    "delta_reports_wrapper.py",
+    "deploy_wrapper.py",
+    "executionwindow_module_wrapper.py",
+    "executive_presentation_wrapper.py",
+    "feedbackloop_module_wrapper.py",
+    "fix_report_errors_wrapper.py",
+    "generate_complete_report_wrapper.py",
+    "generate_ultra_complete_report_wrapper.py",
+    "genesis_includes_v3_complete_wrapper.py",
+    "genesis_includes_wrapper.py",
+    "governance_module_wrapper.py",
+    "incidentresponse_module_wrapper.py",
+    "innovationlab_module_wrapper.py",
+    "integrate_ncnt_wrapper.py",
+    "integration_gate_v2_wrapper.py",
+    "integration_gate_v3_wrapper.py",
+    "interface_wrapper.py",
+    "main_ncnt_wrapper.py",
+    "main_wrapper.py",
+    "mean_reversion_wrapper.py",
+    "models_wrapper.py",
+    "moduleregistry_wrapper.py",
+    "ncnt_base_wrapper.py",
+    "ncnt_cli_wrapper.py",
+    "ncnt_orchestrator_complete_wrapper.py",
+    "ncnt_scan_wrapper.py",
+    "ncnt_system_complete_wrapper.py",
+    "onboarding_module_wrapper.py",
+    "order_management_wrapper.py",
+    "posttradereconciliation_module_wrapper.py",
+    "premarketchecklist_module_wrapper.py",
+    "prototypes_wrapper.py",
+    "qabacktesting_module_wrapper.py",
+    "realtimedashboard_module_wrapper.py",
+    "reconciliation_wrapper.py",
+    "regulatory_context_wrapper.py",
+    "reg_tracker_wrapper.py",
+    "report_generator_wrapper.py",
+    "restore_executive_report_wrapper.py",
+    "risk_engine_wrapper.py",
+    "risk_module_wrapper.py",
+    "run_complete_audit_wrapper.py",
+    "smart_routing_wrapper.py",
+    "sops_module_wrapper.py",
+    "strategies_wrapper.py",
+    "strategy_module_wrapper.py",
+    "strategy_onboarding_wrapper.py",
+    "strategy_template_wrapper.py",
+    "test_module_v2_wrapper.py",
+    "test_wrapper.py",
+    "throttling_wrapper.py",
+    "tier1_validator_v3_complete_wrapper.py",
+    "tier1_validator_v3_wrapper.py",
+    "treasury_module_wrapper.py",
+    "visual_presentation_simple_wrapper.py",
+    "visual_presentation_wrapper.py",
+    "__init___wrapper.py"
+  ]
+}

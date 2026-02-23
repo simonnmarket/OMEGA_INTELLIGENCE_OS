@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "project": "AURORA v6.0 MVP",
+  "created": "17-01-2026 22:30:00",
+  "timezone": "Europe/Berlin",
+  "date_format": "DD-MM-YYYY",
+  "auto_backup": true,
+  "backup_interval_minutes": 30,
+  "protocol_level": "RED",
+  "structure": {
+    "CEO": "Decisoes estrategicas e validacao",
+    "CQO": "Qualidade e padroes",
+    "CTO": "Arquitetura e tecnologia",
+    "TECH_LEAD": "Implementacao"
+  },
+  "protocols_active": [
+    "MODO_CRITICO_v3.0",
+    "PROTOCOLO_VERMELHO",
+    "AIC_TIER0_RULES_v4",
+    "PROTOCOLO_OMEGA"
+  ]
+}
+

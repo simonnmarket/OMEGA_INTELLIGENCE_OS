@@ -1,0 +1,2088 @@
+{
+    "relatorio_timestamp": "2025-11-26T21:37:47.361384Z",
+    "periodo_analisado": "24_horas",
+    "resumo_executivo": {
+        "status_sistema": "COM_PROBLEMAS",
+        "avaliacao_performance": "NEGATIVA",
+        "recomendacao_acao": "REVISAR_ESTRATEGIA"
+    },
+    "detalhes_metricas": {
+        "relatorio_ordens_executadas": {
+            "total_ordens_executadas": 855,
+            "ordens_por_symbol": {
+                "GBPUSD": {
+                    "executadas": 4,
+                    "lucro_total": 0.0
+                },
+                "USDCAD": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "USDCHF": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "USDJPY": {
+                    "executadas": 4,
+                    "lucro_total": 0.0
+                },
+                "XAGUSD": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "XAGAUD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "XAGEUR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "XAGGBP": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "AUDNZD": {
+                    "executadas": 4,
+                    "lucro_total": 0.0
+                },
+                "AUDCHF": {
+                    "executadas": 4,
+                    "lucro_total": 0.0
+                },
+                "AUDJPY": {
+                    "executadas": 4,
+                    "lucro_total": 0.0
+                },
+                "CADCHF": {
+                    "executadas": 4,
+                    "lucro_total": 0.0
+                },
+                "CADJPY": {
+                    "executadas": 4,
+                    "lucro_total": 0.0
+                },
+                "CHFJPY": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "EURAUD": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "EURCAD": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "EURCHF": {
+                    "executadas": 5,
+                    "lucro_total": 0.0
+                },
+                "EURJPY": {
+                    "executadas": 5,
+                    "lucro_total": 0.0
+                },
+                "GBPJPY": {
+                    "executadas": 4,
+                    "lucro_total": 0.0
+                },
+                "NZDJPY": {
+                    "executadas": 4,
+                    "lucro_total": 0.0
+                },
+                "EURNZD": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "GBPCAD": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "GBPCHF": {
+                    "executadas": 4,
+                    "lucro_total": 0.0
+                },
+                "GBPAUD": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "GBPNZD": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "NZDCHF": {
+                    "executadas": 4,
+                    "lucro_total": 0.0
+                },
+                "EURPLN": {
+                    "executadas": 5,
+                    "lucro_total": -1.99
+                },
+                "GBPSGD": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "SGDJPY": {
+                    "executadas": 5,
+                    "lucro_total": 0.0
+                },
+                "USDDKK": {
+                    "executadas": 4,
+                    "lucro_total": -0.6
+                },
+                "USDHKD": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "MXNJPY": {
+                    "executadas": 4,
+                    "lucro_total": 0.0
+                },
+                "USIndex": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "Bilibili": {
+                    "executadas": 1,
+                    "lucro_total": -0.17
+                },
+                "ChargePoint": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "InvescoKBW": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "iSharesGCE": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "iQiYI": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "JumiaTech": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "LucidGroup": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "MarathonPG": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "NoahHold": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "Palantir": {
+                    "executadas": 4,
+                    "lucro_total": 0.34999999999999987
+                },
+                "RiotBlock": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "StoneCo": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "VFCorp": {
+                    "executadas": 2,
+                    "lucro_total": -0.17
+                },
+                "Weibo": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "AAL": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "AT&T": {
+                    "executadas": 3,
+                    "lucro_total": -0.17
+                },
+                "BeyondMeat": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "Peloton": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ASEGroup": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "ChimeraInv": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "Ford": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "FuelCell": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "Goodyear": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "Macys": {
+                    "executadas": 3,
+                    "lucro_total": -0.17
+                },
+                "ManU": {
+                    "executadas": 1,
+                    "lucro_total": -0.17
+                },
+                "Mattel": {
+                    "executadas": 3,
+                    "lucro_total": -0.17
+                },
+                "Momo": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "NorwegianC": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "TEGNA": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "Teva": {
+                    "executadas": 3,
+                    "lucro_total": -0.17
+                },
+                "Tilray": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "Vipshop": {
+                    "executadas": 2,
+                    "lucro_total": -0.17
+                },
+                "Rivian": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "Robinhood": {
+                    "executadas": 4,
+                    "lucro_total": -0.51
+                },
+                "Xpeng": {
+                    "executadas": 1,
+                    "lucro_total": -0.17
+                },
+                "Sunrun": {
+                    "executadas": 3,
+                    "lucro_total": 0.69
+                },
+                "AgilentTec": {
+                    "executadas": 2,
+                    "lucro_total": -0.34
+                },
+                "Albemarle": {
+                    "executadas": 3,
+                    "lucro_total": -0.51
+                },
+                "AlerianMLP": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "Ally": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "Amgen": {
+                    "executadas": 2,
+                    "lucro_total": 0.09
+                },
+                "ARKFintech": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "ARKGenomic": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "ARKIndust": {
+                    "executadas": 3,
+                    "lucro_total": -0.08000000000000002
+                },
+                "ARKInnov": {
+                    "executadas": 3,
+                    "lucro_total": 0.5199999999999999
+                },
+                "Biogen": {
+                    "executadas": 2,
+                    "lucro_total": -0.53
+                },
+                "BoydGaming": {
+                    "executadas": 4,
+                    "lucro_total": -0.51
+                },
+                "BostonSci": {
+                    "executadas": 1,
+                    "lucro_total": -0.17
+                },
+                "BMS": {
+                    "executadas": 3,
+                    "lucro_total": -0.17
+                },
+                "C3.AI": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "Carrier": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "CVSHealth": {
+                    "executadas": 2,
+                    "lucro_total": -0.17
+                },
+                "CboeGlobal": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "Chipotle": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "Colgate": {
+                    "executadas": 2,
+                    "lucro_total": -0.17
+                },
+                "Conagra": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "Constellat": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "CRISPR": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "D.R.Horton": {
+                    "executadas": 2,
+                    "lucro_total": 0.5199999999999999
+                },
+                "DaVita": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "Diamondbac": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "DocuSign": {
+                    "executadas": 2,
+                    "lucro_total": -0.17
+                },
+                "EA": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "EnergySPDR": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "Equifax": {
+                    "executadas": 2,
+                    "lucro_total": -0.47
+                },
+                "Etsy": {
+                    "executadas": 4,
+                    "lucro_total": -0.51
+                },
+                "Fastly": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "FedEx": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "Fortinet": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "GlobalPay": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "GlobalXE": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "Hilton": {
+                    "executadas": 2,
+                    "lucro_total": -0.17
+                },
+                "Honeywell": {
+                    "executadas": 2,
+                    "lucro_total": -0.34
+                },
+                "Huazhu": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "Humana": {
+                    "executadas": 3,
+                    "lucro_total": -0.8400000000000001
+                },
+                "iSharePHLX": {
+                    "executadas": 4,
+                    "lucro_total": -0.5
+                },
+                "JD.com": {
+                    "executadas": 2,
+                    "lucro_total": -0.17
+                },
+                "Kellogg": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "Kohls": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "KraftHeinz": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "LBrands": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "LKQCorp": {
+                    "executadas": 1,
+                    "lucro_total": -0.17
+                },
+                "LamResearc": {
+                    "executadas": 3,
+                    "lucro_total": -0.08000000000000002
+                },
+                "Lockheed": {
+                    "executadas": 2,
+                    "lucro_total": -0.17
+                },
+                "Loews": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "Lowes": {
+                    "executadas": 4,
+                    "lucro_total": -0.51
+                },
+                "MarvellTec": {
+                    "executadas": 4,
+                    "lucro_total": 0.34999999999999987
+                },
+                "MetLife": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "Moderna": {
+                    "executadas": 3,
+                    "lucro_total": 0.09
+                },
+                "Motorola": {
+                    "executadas": 3,
+                    "lucro_total": -0.58
+                },
+                "MorganStan": {
+                    "executadas": 4,
+                    "lucro_total": -0.4700000000000001
+                },
+                "NXPSemi": {
+                    "executadas": 2,
+                    "lucro_total": -0.17
+                },
+                "NewOrient": {
+                    "executadas": 1,
+                    "lucro_total": -0.26
+                },
+                "NuveenNAS": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ONEOK": {
+                    "executadas": 3,
+                    "lucro_total": -0.17
+                },
+                "Otis": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "PaloAlto": {
+                    "executadas": 2,
+                    "lucro_total": 0.5199999999999999
+                },
+                "PennNation": {
+                    "executadas": 3,
+                    "lucro_total": -0.17
+                },
+                "PepsiCo": {
+                    "executadas": 4,
+                    "lucro_total": -0.34
+                },
+                "Pinterest": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "ROKU": {
+                    "executadas": 4,
+                    "lucro_total": -0.51
+                },
+                "Salesforce": {
+                    "executadas": 2,
+                    "lucro_total": -0.39
+                },
+                "ScottsMira": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "Shopify": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "SiliconMot": {
+                    "executadas": 2,
+                    "lucro_total": 0.69
+                },
+                "SolarEdge": {
+                    "executadas": 1,
+                    "lucro_total": 0.69
+                },
+                "Snowflake": {
+                    "executadas": 1,
+                    "lucro_total": 0.09
+                },
+                "Southwest": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "SpiritAero": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "SPDR_Oil": {
+                    "executadas": 4,
+                    "lucro_total": -0.51
+                },
+                "Square": {
+                    "executadas": 4,
+                    "lucro_total": -0.51
+                },
+                "Starbucks": {
+                    "executadas": 4,
+                    "lucro_total": -0.51
+                },
+                "Tapestry": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "TexasInstr": {
+                    "executadas": 4,
+                    "lucro_total": 0.009999999999999953
+                },
+                "Textron": {
+                    "executadas": 4,
+                    "lucro_total": -0.6200000000000001
+                },
+                "TradeDesk": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "Trip.com": {
+                    "executadas": 1,
+                    "lucro_total": -0.17
+                },
+                "Travelers": {
+                    "executadas": 2,
+                    "lucro_total": -0.45000000000000007
+                },
+                "TripAdvis": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "Twilio": {
+                    "executadas": 1,
+                    "lucro_total": -0.17
+                },
+                "UPS": {
+                    "executadas": 1,
+                    "lucro_total": -0.17
+                },
+                "Upstart": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "Valero": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "Vertex": {
+                    "executadas": 2,
+                    "lucro_total": -0.17
+                },
+                "Viasat": {
+                    "executadas": 4,
+                    "lucro_total": 0.5199999999999999
+                },
+                "WesternDig": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "WynnResort": {
+                    "executadas": 1,
+                    "lucro_total": -0.28
+                },
+                "YUM": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "ZimmerHold": {
+                    "executadas": 3,
+                    "lucro_total": -0.51
+                },
+                "3M": {
+                    "executadas": 3,
+                    "lucro_total": -0.54
+                },
+                "AirBnb": {
+                    "executadas": 2,
+                    "lucro_total": -0.34
+                },
+                "AlphabetA": {
+                    "executadas": 1,
+                    "lucro_total": -0.17
+                },
+                "AlphabetC": {
+                    "executadas": 1,
+                    "lucro_total": -0.17
+                },
+                "Amazon": {
+                    "executadas": 3,
+                    "lucro_total": 0.009999999999999953
+                },
+                "Amex": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "Apple": {
+                    "executadas": 2,
+                    "lucro_total": -0.34
+                },
+                "BAC": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "Berkshire": {
+                    "executadas": 3,
+                    "lucro_total": -0.51
+                },
+                "BestBuy": {
+                    "executadas": 4,
+                    "lucro_total": -0.51
+                },
+                "Boeing": {
+                    "executadas": 4,
+                    "lucro_total": 0.34999999999999987
+                },
+                "Citigroup": {
+                    "executadas": 3,
+                    "lucro_total": 0.43999999999999995
+                },
+                "CocaCola": {
+                    "executadas": 3,
+                    "lucro_total": -0.17
+                },
+                "Delta": {
+                    "executadas": 2,
+                    "lucro_total": 0.43999999999999995
+                },
+                "EBAY": {
+                    "executadas": 2,
+                    "lucro_total": -0.34
+                },
+                "GM": {
+                    "executadas": 2,
+                    "lucro_total": -0.17
+                },
+                "HomeDepot": {
+                    "executadas": 2,
+                    "lucro_total": -0.34
+                },
+                "Intel": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "iShareRuss": {
+                    "executadas": 3,
+                    "lucro_total": 0.51
+                },
+                "JPMorgan": {
+                    "executadas": 4,
+                    "lucro_total": -0.51
+                },
+                "Johnson&J": {
+                    "executadas": 1,
+                    "lucro_total": -0.17
+                },
+                "McDonalds": {
+                    "executadas": 4,
+                    "lucro_total": -0.51
+                },
+                "Merck&co": {
+                    "executadas": 3,
+                    "lucro_total": -0.51
+                },
+                "Meta": {
+                    "executadas": 2,
+                    "lucro_total": 0.41999999999999993
+                },
+                "Microsoft": {
+                    "executadas": 4,
+                    "lucro_total": 0.009999999999999953
+                },
+                "Nike": {
+                    "executadas": 2,
+                    "lucro_total": 0.17999999999999997
+                },
+                "Netflix": {
+                    "executadas": 4,
+                    "lucro_total": -0.51
+                },
+                "Oracle": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "PayPal": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "Pfizer": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "PowerQQQ": {
+                    "executadas": 4,
+                    "lucro_total": -0.51
+                },
+                "P&G": {
+                    "executadas": 2,
+                    "lucro_total": -0.34
+                },
+                "Raytheon": {
+                    "executadas": 4,
+                    "lucro_total": -0.45000000000000007
+                },
+                "SPDR_DOW": {
+                    "executadas": 3,
+                    "lucro_total": -0.08000000000000002
+                },
+                "SPDR_SP500": {
+                    "executadas": 4,
+                    "lucro_total": -0.51
+                },
+                "Tesla": {
+                    "executadas": 3,
+                    "lucro_total": -0.43000000000000005
+                },
+                "UBER": {
+                    "executadas": 3,
+                    "lucro_total": 0.43999999999999995
+                },
+                "UnitedAir": {
+                    "executadas": 3,
+                    "lucro_total": -0.51
+                },
+                "VISA": {
+                    "executadas": 1,
+                    "lucro_total": 0.09
+                },
+                "Verizon": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "Walmart": {
+                    "executadas": 3,
+                    "lucro_total": 0.17999999999999997
+                },
+                "WaltDisney": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "WellsFargo": {
+                    "executadas": 3,
+                    "lucro_total": 0.09
+                },
+                "Zoom": {
+                    "executadas": 2,
+                    "lucro_total": -0.34
+                },
+                "Alcoa": {
+                    "executadas": 3,
+                    "lucro_total": 0.35
+                },
+                "Apache": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "BakerHughe": {
+                    "executadas": 3,
+                    "lucro_total": -0.17
+                },
+                "DXCTech": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "Devon": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "Dropbox": {
+                    "executadas": 1,
+                    "lucro_total": -0.17
+                },
+                "Freeport": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "GE": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "Halliburtn": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "MGMResorts": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "Occidental": {
+                    "executadas": 3,
+                    "lucro_total": -0.17
+                },
+                "Draftkings": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "Reddit": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "EURUSD": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "AUDUSD": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "NZDUSD": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "AUDCAD": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "NZDCAD": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "KornitDig": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "Lyft": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "AlignTech": {
+                    "executadas": 1,
+                    "lucro_total": -0.29
+                },
+                "ConocoPhil": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "EOGResourc": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "Exelon": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "Marriott": {
+                    "executadas": 2,
+                    "lucro_total": -0.17
+                },
+                "Mastercard": {
+                    "executadas": 1,
+                    "lucro_total": -0.17
+                },
+                "Paycom": {
+                    "executadas": 1,
+                    "lucro_total": -0.17
+                },
+                "Schlumberg": {
+                    "executadas": 1,
+                    "lucro_total": -0.17
+                },
+                "Wayfair": {
+                    "executadas": 2,
+                    "lucro_total": -0.34
+                },
+                "Wintrust": {
+                    "executadas": 1,
+                    "lucro_total": -0.17
+                },
+                "XPOLogist": {
+                    "executadas": 2,
+                    "lucro_total": -0.17
+                },
+                "AMD": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "Chevron": {
+                    "executadas": 2,
+                    "lucro_total": -0.34
+                },
+                "NVIDIA": {
+                    "executadas": 3,
+                    "lucro_total": -0.34
+                },
+                "UnitedHeal": {
+                    "executadas": 2,
+                    "lucro_total": -0.17
+                },
+                "DrPepper": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "EsteeLaud": {
+                    "executadas": 2,
+                    "lucro_total": -0.67
+                },
+                "DOGUSD": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "LNKUSD": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "AVAXUSD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "CRVUSD": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "XAUUSD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "EURHUF": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "EURNOK": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "EURSEK": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "USDCNH": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "USDCZK": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "USDHUF": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "USDILS": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "USDNOK": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "USDPLN": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "USDSEK": {
+                    "executadas": 3,
+                    "lucro_total": 0.0
+                },
+                "USDSGD": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "EURGBP": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "EURSGD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ES35": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "EU50": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "FR40": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "GER40": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "UK100": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "US100": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "US500": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "NET25": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "CHShares": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "AU200": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "US30": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "USDBRL": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "USDZAR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "GBPBRL": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "NZDTHB": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BAER.SWX": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "EQQQ-USD.SWX": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ALV.ETR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "CON.ETR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "DB1.ETR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "IFX.ETR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "LHA.ETR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "RHM.ETR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "SAP.ETR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "VOW.ETR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "VOW3.ETR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ANTO.LSE": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BARC.LSE": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "CSPX.LSE": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "GSK.LSE": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "HSBA.LSE": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ASML.AMS": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BESI.AMS": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "CCEP.AMS": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "MC.PAR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "OR.PAR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "RMS.PAR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "SGO.PAR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "SU.PAR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "AENA.MAD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "CLNX.MAD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "COL.MAD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ELE.MAD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "GRF.MAD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "IBE.MAD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "SAN.MAD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ERIC-B.STO": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "NOKIA.HEL": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ALW.LSE": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ETHUSD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "LTCUSD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ETHAUD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ETHCAD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ETHCHF": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ETHEUR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ETHGBP": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ETHTHB": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BATUSD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BNBUSD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "COMPUSD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "LNKJPY": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "LRCUSD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "LTCJPY": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "SANDUSD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "SOLUSD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ETHJPY": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BTCCNH": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BTCSGD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ETHCNH": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ETHSGD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BTCMXN": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ETHMXN": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BTCUSD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BTCAUD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BTCCAD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BTCEUR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BTCTHB": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BTCJPY": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "USDTRY": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "DBK.ETR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "DHL.ETR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "CCH.LSE": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "IWDA.LSE": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "RR.LSE": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "SHEL.LSE": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "VOD.LSE": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ABN.AMS": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "SHELL.AMS": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BNP.PAR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "AMS.MAD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BBVA.MAD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "MTS.MAD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "NTGY.MAD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "REP.MAD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "SAB.MAD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "EQQQ.MTA": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "UCG.MTA": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "SunPower": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "Fubotv": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "LibertyASEq": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "Nektar": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "Senseonic": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "Blackrock": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "Chubb": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "Cloudflare": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "Coinbase": {
+                    "executadas": 2,
+                    "lucro_total": -0.17
+                },
+                "Costco": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "JinkoSolar": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "KARS": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "MercadoLib": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "RalphLaure": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "SeagateTec": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "Spotify": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "Take-Two": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "CAT": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "Goldmans": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "IBM": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "SW20": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ADAUSD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BCHUSD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "DOTUSD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "XRPUSD": {
+                    "executadas": 2,
+                    "lucro_total": -0.17
+                },
+                "AAVEUSD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BCHJPY": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "KSMUSD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "MANAUSD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "UNIUSD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "XRPJPY": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "AUDCNH": {
+                    "executadas": 2,
+                    "lucro_total": -2.45
+                },
+                "NZDCNH": {
+                    "executadas": 3,
+                    "lucro_total": -2.45
+                },
+                "US2000": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "SIKA.SWX": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ADS.ETR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ENR.ETR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "HEI.ETR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "MTX.ETR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "PAH3.ETR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "SPX.LSE": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "BIRG.DUB": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "AALB.AMS": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "AIR.PAR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "CAP.PAR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ENGI.PAR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "GLE.PAR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "SAF.PAR": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ITX.MAD": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "ISP.MTA": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "1800Flower": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "Snap": {
+                    "executadas": 2,
+                    "lucro_total": 0.0
+                },
+                "AFM": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "Ameriprise": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "AutoZone": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "USOIL+": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "UKOIL+": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "Omnicom": {
+                    "executadas": 1,
+                    "lucro_total": -0.17
+                },
+                "Alibaba": {
+                    "executadas": 1,
+                    "lucro_total": -0.16
+                },
+                "Exxon": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                },
+                "QUALCOMM": {
+                    "executadas": 1,
+                    "lucro_total": 0.35
+                },
+                "US.OilFund": {
+                    "executadas": 1,
+                    "lucro_total": 0.0
+                }
+            },
+            "timeline_execucao": [
+                {
+                    "timestamp": "2025-11-26T18:34:26.235903",
+                    "symbol": "ALW.LSE",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:27.246826",
+                    "symbol": "AU200",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:28.272503",
+                    "symbol": "ES35",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:29.292750",
+                    "symbol": "EU50",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:30.313021",
+                    "symbol": "FR40",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:31.341590",
+                    "symbol": "GER40",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:32.358580",
+                    "symbol": "UK100",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:33.375490",
+                    "symbol": "US100",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:34.390220",
+                    "symbol": "US30",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:35.404531",
+                    "symbol": "US500",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:37.433431",
+                    "symbol": "CAD60",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:38.453406",
+                    "symbol": "SW20",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:39.466129",
+                    "symbol": "NET25",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:40.484866",
+                    "symbol": "USFang",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:43.525784",
+                    "symbol": "BCHUSD",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:44.756713",
+                    "symbol": "DOGUSD",
+                    "ticket": 114269383,
+                    "resultado": "EXECUTADA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:46.782427",
+                    "symbol": "ETHUSD",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:48.040379",
+                    "symbol": "LNKUSD",
+                    "ticket": 114269391,
+                    "resultado": "EXECUTADA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:52.118534",
+                    "symbol": "ETHAUD",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:53.144706",
+                    "symbol": "ETHCAD",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:54.170030",
+                    "symbol": "ETHCHF",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:55.194231",
+                    "symbol": "ETHEUR",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:56.217696",
+                    "symbol": "ETHGBP",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:57.246550",
+                    "symbol": "ETHTHB",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:58.272507",
+                    "symbol": "AAVEUSD",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:34:59.519410",
+                    "symbol": "AVAXUSD",
+                    "ticket": 114269446,
+                    "resultado": "EXECUTADA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:35:00.546826",
+                    "symbol": "BATUSD",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:35:01.566741",
+                    "symbol": "BCHJPY",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:35:02.586609",
+                    "symbol": "BNBUSD",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:35:03.604516",
+                    "symbol": "COMPUSD",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:35:04.824447",
+                    "symbol": "CRVUSD",
+                    "ticket": 114269490,
+                    "resultado": "EXECUTADA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:35:06.871576",
+                    "symbol": "LNKJPY",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:35:17.000515",
+                    "symbol": "ETHJPY",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:35:18.015210",
+                    "symbol": "BTCCNH",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:35:20.042489",
+                    "symbol": "ETHCNH",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:35:21.061663",
+                    "symbol": "ETHSGD",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:35:23.092496",
+                    "symbol": "ETHMXN",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:35:24.108417",
+                    "symbol": "BTCUSD",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:35:25.132712",
+                    "symbol": "BTCAUD",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:35:26.145397",
+                    "symbol": "BTCCAD",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:35:27.162540",
+                    "symbol": "BTCEUR",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:35:28.184291",
+                    "symbol": "BTCTHB",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T18:35:29.202893",
+                    "symbol": "BTCJPY",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T22:16:27.340280",
+                    "symbol": "EURUSD",
+                    "ticket": 114312854,
+                    "resultado": "EXECUTADA"
+                },
+                {
+                    "timestamp": "2025-11-26T22:16:28.573809",
+                    "symbol": "AUDUSD",
+                    "ticket": 114312856,
+                    "resultado": "EXECUTADA"
+                },
+                {
+                    "timestamp": "2025-11-26T22:16:30.739957",
+                    "symbol": "GBPUSD",
+                    "ticket": 114312861,
+                    "resultado": "EXECUTADA"
+                },
+                {
+                    "timestamp": "2025-11-26T22:16:31.905627",
+                    "symbol": "NZDUSD",
+                    "ticket": 114312864,
+                    "resultado": "EXECUTADA"
+                },
+                {
+                    "timestamp": "2025-11-26T22:16:35.951760",
+                    "symbol": "XAUUSD",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T22:16:37.964913",
+                    "symbol": "XAUEUR",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                },
+                {
+                    "timestamp": "2025-11-26T22:16:40.012141",
+                    "symbol": "XAUJPY",
+                    "ticket": null,
+                    "resultado": "FALHA"
+                }
+            ]
+        },
+        "metricas_performance": {
+            "taxa_execucao_sucesso": 47.806354009077154,
+            "frequencia_operacoes": 13.166666666666666,
+            "resultado_financeiro": {
+                "lucro_prejuizo_total": -36.25000000000016,
+                "lucro_prejuizo_medio_por_trade": -0.04239766081871364,
+                "maior_trade_lucro": 0.69,
+                "maior_trade_prejuizo": -2.45,
+                "sharpe_ratio": -0.23580689975199579,
+                "maximum_drawdown": 36.25000000000023
+            },
+            "exposicao_mercado": {
+                "posicoes_abertas_atual": 57,
+                "max_posicoes_simultaneas": 57,
+                "exposicao_total_percent": 114.0
+            }
+        },
+        "analise_eficacia_estrategia": {
+            "sinais_gerados_vs_executados": {
+                "total_sinais_BUY_gerados": 796,
+                "sinais_BUY_que_viraram_ordens": 802,
+                "taxa_conversao_sinal_ordem": 100.75376884422111,
+                "acertos_quando_MA5_MA20_alinhadas": 32,
+                "erros_quando_MA5_MA20_alinhadas": 770,
+                "eficacia_estrategia_MA": 3.99002493765586
+            },
+            "performance_condicoes_entrada": {
+                "total_sinais_BUY_gerados": 796,
+                "sinais_BUY_que_viraram_ordens": 802,
+                "taxa_conversao_sinal_ordem": 100.75376884422111,
+                "acertos_quando_MA5_MA20_alinhadas": 32,
+                "erros_quando_MA5_MA20_alinhadas": 770,
+                "eficacia_estrategia_MA": 3.99002493765586
+            }
+        },
+        "contexto_mercado": {
+            "volatilidade_media": {
+                "BARC.LSE": 0.0005,
+                "Bilibili": 0.0005,
+                "Alibaba": 0.0005,
+                "NET25": 0.0005,
+                "CON.ETR": 0.0005
+            },
+            "regime_mercado": {
+                "tendencia_geral": "MISTA",
+                "horarios_operacao": [
+                    "00:00-23:59"
+                ],
+                "condicoes_spread": {
+                    "spread_medio": 0.00012,
+                    "spread_maximo": 0.00045
+                }
+            }
+        },
+        "metricas_validacao_hipoteses": {
+            "H1_taxa_execucao": "FALHA",
+            "H2_lucratividade": "FALHA",
+            "H3_consistencia": "SUCESSO",
+            "H4_risco_controlado": "FALHA"
+        },
+        "sistema_saude": {
+            "conectividade_mt5": {
+                "tempo_uptime": 24.0,
+                "reconexoes_necessarias": 0,
+                "estabilidade_conexao": "ALTA"
+            },
+            "performance_tecnica": {
+                "tempo_resposta_analise": 0.015,
+                "taxa_erros_excecoes": 52.193645990922846,
+                "estabilidade_execucao": "BAIXA"
+            }
+        }
+    },
+    "analise_ceo_cientifica": {
+        "pontos_fortes": [
+            "Taxa de Conversão Sinal/Ordem (100.75%) robusta"
+        ],
+        "pontos_fracos": [
+            "Estabilidade de Execução: BAIXA",
+            "Alto Spread Máximo (0.0004) em momentos de execução",
+            "Taxa de Erros Elevada (52.19%)"
+        ],
+        "oportunidades_otimizacao": [
+            "Otimizar filtros secundários para aumentar taxa de conversão de sinais",
+            "Aumentar frequência de operações mantendo risco controlado",
+            "Melhorar estabilidade de conexão para reduzir reconexões"
+        ],
+        "riscos_identificados": [
+            "Risco de Exceção (Taxa de Erros: 52.19%) pode levar a perdas não controladas"
+        ]
+    }
+}

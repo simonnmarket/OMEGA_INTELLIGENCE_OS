@@ -1,0 +1,14 @@
+[
+  {
+    "channel": "https://t.me/crypto_news",
+    "timestamp": "2025-11-20 15:00:43.570487",
+    "message": "Placeholder message from https://t.me/crypto_news",
+    "source": "telegram"
+  },
+  {
+    "channel": "https://discord.com/channels/123456789/987654321",
+    "timestamp": "2025-11-20 15:00:43.570487",
+    "message": "Placeholder message from https://discord.com/channels/123456789/987654321",
+    "source": "discord"
+  }
+]

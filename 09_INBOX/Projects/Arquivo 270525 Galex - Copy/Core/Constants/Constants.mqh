@@ -1,0 +1,153 @@
+//+------------------------------------------------------------------+
+//|                                                  Constants.mqh |
+//|                                  Copyright 2024, GALEX Trading System |
+//|                                                                     |
+//+------------------------------------------------------------------+
+#property copyright "GALEX Trading System"
+#property link      "https://www.galex.com"
+#property version   "1.00"
+#property strict
+
+// Constantes gerais
+#define GALEX_VERSION "1.0.0"
+#define GALEX_AUTHOR "GALEX Trading System"
+#define GALEX_COPYRIGHT "Copyright 2024"
+#define GALEX_LINK "https://www.galex.com"
+
+// Constantes de tempo
+#define SECONDS_IN_MINUTE 60
+#define SECONDS_IN_HOUR 3600
+#define SECONDS_IN_DAY 86400
+#define MINUTES_IN_HOUR 60
+#define HOURS_IN_DAY 24
+#define DAYS_IN_WEEK 7
+#define DAYS_IN_MONTH 30
+#define DAYS_IN_YEAR 365
+
+// Constantes matemáticas
+#define PI 3.14159265358979323846
+#define E 2.71828182845904523536
+#define SQRT2 1.41421356237309504880
+#define SQRT3 1.73205080756887729352
+#define GOLDEN_RATIO 1.61803398874989484820
+
+// Constantes físicas
+#define GRAVITATIONAL_CONSTANT 6.67430e-11
+#define SPEED_OF_LIGHT 299792458.0
+#define PLANCK_CONSTANT 6.62607015e-34
+#define BOLTZMANN_CONSTANT 1.380649e-23
+#define AVOGADRO_CONSTANT 6.02214076e23
+
+// Constantes de mercado
+#define DEFAULT_MAGIC_NUMBER 11041982
+#define DEFAULT_SLIPPAGE 3
+#define DEFAULT_STOP_LEVEL 10
+#define DEFAULT_FREEZE_LEVEL 10
+#define DEFAULT_EXPIRATION 0
+#define DEFAULT_ARROW_COLOR clrNONE
+#define DEFAULT_COMMENT "GALEX"
+
+// Constantes de risco
+#define DEFAULT_RISK_PERCENT 1.0
+#define DEFAULT_MAX_LOTS 1.0
+#define DEFAULT_MIN_LOTS 0.01
+#define DEFAULT_LOT_STEP 0.01
+#define DEFAULT_STOP_LOSS_POINTS 150
+#define DEFAULT_TAKE_PROFIT_POINTS 300
+#define DEFAULT_TRAILING_STOP 50
+#define DEFAULT_TRAILING_STEP 10
+#define DEFAULT_BREAKEVEN_POINTS 30
+#define DEFAULT_BREAKEVEN_PROFIT 10
+
+// Constantes de análise técnica
+#define DEFAULT_ATR_PERIOD 14
+#define DEFAULT_ATR_STOP_LOSS_MULT 2.0
+#define DEFAULT_ATR_TAKE_PROFIT_MULT 3.0
+#define DEFAULT_RSI_PERIOD 14
+#define DEFAULT_RSI_OVERBOUGHT 70
+#define DEFAULT_RSI_OVERSOLD 30
+#define DEFAULT_MACD_FAST_EMA 12
+#define DEFAULT_MACD_SLOW_EMA 26
+#define DEFAULT_MACD_SIGNAL 9
+#define DEFAULT_BB_PERIOD 20
+#define DEFAULT_BB_DEVIATION 2.0
+#define DEFAULT_MA_PERIOD 200
+#define DEFAULT_MA_SHIFT 0
+#define DEFAULT_MA_METHOD MODE_SMA
+
+// Constantes de física
+#define DEFAULT_GRAVITATIONAL_FORCE 9.81
+#define DEFAULT_DRAG_COEFFICIENT 0.47
+#define DEFAULT_AIR_DENSITY 1.225
+#define DEFAULT_FUEL_CONSUMPTION 0.1
+#define DEFAULT_THRUST 1000.0
+#define DEFAULT_MASS 1000.0
+#define DEFAULT_VELOCITY 0.0
+#define DEFAULT_ACCELERATION 0.0
+#define DEFAULT_ANGLE 0.0
+#define DEFAULT_HEIGHT 0.0
+
+// Constantes de trajetória
+#define DEFAULT_TRAJECTORY_ANGLE 45.0
+#define DEFAULT_TRAJECTORY_DISTANCE 0.0
+#define DEFAULT_TRAJECTORY_HEIGHT 0.0
+#define DEFAULT_TRAJECTORY_TIME 0.0
+#define DEFAULT_TRAJECTORY_RANGE 0.0
+#define DEFAULT_TRAJECTORY_APOGEE 0.0
+#define DEFAULT_TRAJECTORY_PERIGEE 0.0
+#define DEFAULT_TRAJECTORY_ECCENTRICITY 0.0
+#define DEFAULT_TRAJECTORY_PERIOD 0.0
+#define DEFAULT_TRAJECTORY_INCLINATION 0.0
+
+// Constantes de análise de mercado
+#define DEFAULT_TREND_STRENGTH 0.0
+#define DEFAULT_MOMENTUM 0.0
+#define DEFAULT_VOLATILITY 0.0
+#define DEFAULT_VOLUME_FLOW 0.0
+#define DEFAULT_PRICE_ACTION 0.0
+#define DEFAULT_SUPPORT_LEVEL 0.0
+#define DEFAULT_RESISTANCE_LEVEL 0.0
+#define DEFAULT_PIVOT_POINT 0.0
+#define DEFAULT_FIBONACCI_LEVEL 0.0
+#define DEFAULT_ICHIMOKU_CLOUD 0.0
+
+// Constantes de atividade institucional
+#define DEFAULT_VOLUME_PULSE 0.0
+#define DEFAULT_ENERGY_FLOW 0.0
+#define DEFAULT_COSMIC_FREQUENCY 0.0
+#define DEFAULT_NEURAL_CONFIDENCE 0.0
+#define DEFAULT_VOLUME_THRESHOLD 0.0
+#define DEFAULT_PRICE_THRESHOLD 0.0
+#define DEFAULT_LOOKBACK_PERIOD 100
+#define DEFAULT_ACTIVITY_TYPE "NONE"
+
+// Constantes de logging
+#define DEFAULT_LOG_FILE "GALEX_Log.txt"
+#define DEFAULT_LOG_LEVEL LOG_LEVEL_INFO
+#define DEFAULT_LOG_BUFFER_SIZE 1000
+#define DEFAULT_LOG_CONSOLE true
+#define DEFAULT_LOG_FILE_OUTPUT true
+
+// Constantes de erro
+#define ERROR_INIT_FAILED -1
+#define ERROR_INVALID_PARAMETER -2
+#define ERROR_INSUFFICIENT_MEMORY -3
+#define ERROR_INVALID_HANDLE -4
+#define ERROR_INVALID_FUNCTION -5
+#define ERROR_INVALID_INDEX -6
+#define ERROR_INVALID_VALUE -7
+#define ERROR_INVALID_TYPE -8
+#define ERROR_INVALID_OPERATION -9
+#define ERROR_INVALID_STATE -10
+
+// Constantes de sucesso
+#define SUCCESS 0
+#define SUCCESS_INIT 1
+#define SUCCESS_UPDATE 2
+#define SUCCESS_EXECUTE 3
+#define SUCCESS_CALCULATE 4
+#define SUCCESS_ANALYZE 5
+#define SUCCESS_DETECT 6
+#define SUCCESS_MANAGE 7
+#define SUCCESS_LOG 8
+#define SUCCESS_CLEANUP 9 

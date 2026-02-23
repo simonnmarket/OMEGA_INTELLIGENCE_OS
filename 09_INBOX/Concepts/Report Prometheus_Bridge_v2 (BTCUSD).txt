@@ -1,0 +1,1660 @@
+2025.10.04 18:04:30.912	Prometheus_Bridge_v2 (BTCUSD,H1)	[PROMETHEUS_V3] Initializing Enterprise Edition...
+2025.10.04 18:04:30.912	Prometheus_Bridge_v2 (BTCUSD,H1)	[PROMETHEUS_V3] Initialization complete. Trading: BTCUSD
+2025.10.04 18:04:30.912	Prometheus_Bridge_v2 (BTCUSD,H1)	[PROMETHEUS_V3] Timer set to 5s
+2025.10.04 18:04:35.081	Prometheus_Bridge_v2 (BTCUSD,H1)	[PROMETHEUS_V3] Deinitializing. Reason: 3
+2025.10.04 18:04:35.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[PROMETHEUS_V3] Initializing Enterprise Edition...
+2025.10.04 18:04:35.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[PROMETHEUS_V3] Initialization complete. Trading: BTCUSD
+2025.10.04 18:04:35.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[PROMETHEUS_V3] Timer set to 5s
+2025.10.04 18:04:35.429	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:04:35.430	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:04:35.430	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:04:35.430	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:04:35.430	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:04:35.430	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:04:35.430	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:04:35.430	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:04:35.430	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:04:35.431	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:04:35.431	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:04:35.431	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:04:35.431	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:04:36.932	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:04:39.877	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:04:39.877	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:04:39.877	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:04:39.878	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:04:39.878	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:04:39.878	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:04:39.878	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:04:39.878	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:04:39.878	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:04:39.879	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:04:39.880	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:04:39.880	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:04:39.880	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:04:41.378	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:04:44.568	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:04:44.568	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:04:44.568	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:04:44.568	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:04:44.568	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:04:44.569	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:04:44.569	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:04:44.569	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:04:44.569	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:04:44.569	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:04:44.570	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:04:44.570	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:04:44.570	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:04:46.071	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:04:49.987	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:04:49.987	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:04:49.987	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:04:49.988	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:04:49.988	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:04:49.988	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:04:49.988	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:04:49.988	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:04:49.988	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:04:49.988	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:04:49.990	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:04:49.990	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:04:49.990	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:04:51.487	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:04:54.784	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:04:54.784	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:04:54.784	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:04:54.785	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:04:54.785	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:04:54.785	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:04:54.785	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:04:54.785	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:04:54.785	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:04:54.785	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:04:54.787	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:04:54.787	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:04:54.787	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:04:56.283	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:04:59.597	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:04:59.597	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:04:59.597	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:04:59.598	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:04:59.598	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:04:59.598	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:04:59.598	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:04:59.598	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:04:59.598	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:04:59.599	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:04:59.601	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:04:59.601	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:04:59.601	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:05:01.094	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:05:05.117	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:05:05.117	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:05.117	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:05:05.117	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:05:05.117	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:05:05.117	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:05:05.117	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:05:05.118	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:05.118	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:05:05.118	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:05:05.119	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:05:05.119	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:05:05.119	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:05:06.610	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:05:09.961	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:05:09.961	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:09.961	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:05:09.962	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:05:09.962	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:05:09.962	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:05:09.962	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:05:09.962	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:09.962	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:05:09.962	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:05:09.963	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:05:09.963	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:05:09.963	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:05:11.464	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:05:15.003	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:05:15.003	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:15.003	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:05:15.003	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:05:15.003	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:05:15.004	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:05:15.004	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:05:15.004	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:15.004	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:05:15.004	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:05:15.006	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:05:15.006	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:05:15.006	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:05:16.503	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:05:20.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:05:20.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:20.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:05:20.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:05:20.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:05:20.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:05:20.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:05:20.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:20.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:05:20.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:05:20.114	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:05:20.114	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:05:20.114	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:05:21.620	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:05:24.718	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:05:24.718	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:24.718	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:05:24.718	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:05:24.718	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:05:24.719	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:05:24.719	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:05:24.719	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:24.719	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:05:24.719	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:05:24.721	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:05:24.721	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:05:24.721	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:05:26.227	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:05:30.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:05:30.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:30.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:05:30.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:05:30.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:05:30.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:05:30.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:05:30.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:30.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:05:30.097	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:05:30.098	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:05:30.098	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:05:30.098	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:05:31.606	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:05:35.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:05:35.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:35.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:05:35.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:05:35.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:05:35.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:05:35.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:05:35.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:35.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:05:35.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:05:35.113	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:05:35.113	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:05:35.113	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:05:36.616	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:05:39.817	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:05:39.817	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:39.817	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:05:39.818	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:05:39.818	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:05:39.818	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:05:39.818	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:05:39.818	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:39.818	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:05:39.818	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:05:39.821	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:05:39.821	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:05:39.821	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:05:41.313	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:05:44.801	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:05:44.801	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:44.801	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:05:44.801	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:05:44.801	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:05:44.802	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:05:44.802	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:05:44.802	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:44.802	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:05:44.802	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:05:44.804	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:05:44.804	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:05:44.804	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:05:46.302	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:05:49.875	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:05:49.875	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:49.875	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:05:49.875	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:05:49.875	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:05:49.876	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:05:49.876	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:05:49.876	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:49.876	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:05:49.877	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:05:49.877	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:05:49.878	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:05:49.878	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:05:51.381	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:05:55.114	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:05:55.114	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:55.114	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:05:55.114	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:05:55.114	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:05:55.114	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:05:55.114	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:05:55.115	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:05:55.115	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:05:55.115	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:05:55.117	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:05:55.117	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:05:55.117	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:05:56.618	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:06:00.422	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:06:00.422	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:00.422	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:06:00.423	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:06:00.423	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:06:00.423	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:06:00.423	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:06:00.423	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:00.423	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:06:00.423	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:06:00.424	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:06:00.424	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:06:00.424	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:06:01.925	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:06:04.893	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:06:04.893	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:04.893	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:06:04.894	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:06:04.894	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:06:04.894	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:06:04.894	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:06:04.894	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:04.894	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:06:04.894	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:06:04.895	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:06:04.895	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:06:04.895	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:06:06.394	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:06:10.119	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:06:10.119	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:10.119	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:06:10.120	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:06:10.120	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:06:10.120	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:06:10.120	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:06:10.120	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:10.120	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:06:10.121	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:06:10.123	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:06:10.124	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:06:10.124	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:06:11.626	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:06:14.784	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:06:14.784	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:14.784	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:06:14.785	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:06:14.785	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:06:14.785	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:06:14.785	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:06:14.785	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:14.785	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:06:14.785	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:06:14.786	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:06:14.786	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:06:14.786	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:06:16.291	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:06:19.579	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:06:19.579	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:19.579	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:06:19.580	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:06:19.580	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:06:19.580	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:06:19.580	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:06:19.580	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:19.580	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:06:19.580	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:06:19.581	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:06:19.581	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:06:19.581	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:06:21.084	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:06:24.795	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:06:24.795	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:24.795	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:06:24.796	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:06:24.796	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:06:24.796	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:06:24.796	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:06:24.796	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:24.796	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:06:24.797	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:06:24.799	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:06:24.799	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:06:24.799	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:06:26.310	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:06:29.579	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:06:29.579	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:29.579	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:06:29.580	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:06:29.580	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:06:29.580	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:06:29.580	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:06:29.580	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:29.580	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:06:29.581	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:06:29.583	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:06:29.583	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:06:29.583	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:06:31.091	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:06:34.823	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:06:34.823	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:34.823	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:06:34.824	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:06:34.824	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:06:34.824	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:06:34.824	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:06:34.824	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:34.824	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:06:34.825	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:06:34.827	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:06:34.827	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:06:34.827	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:06:36.319	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:06:39.646	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:06:39.646	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:39.646	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:06:39.647	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:06:39.647	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:06:39.647	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:06:39.647	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:06:39.648	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:39.648	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:06:39.648	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:06:39.649	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:06:39.649	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:06:39.649	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:06:41.140	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:06:44.816	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:06:44.816	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:44.816	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:06:44.817	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:06:44.817	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:06:44.817	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:06:44.818	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:06:44.818	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:44.818	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:06:44.818	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:06:44.820	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:06:44.820	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:06:44.820	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:06:46.324	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:06:50.523	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:06:50.523	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:50.523	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:06:50.523	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:06:50.523	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:06:50.523	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:06:50.523	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:06:50.523	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:50.523	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:06:50.523	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:06:50.524	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:06:50.524	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:06:50.524	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:06:52.026	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:06:55.118	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:06:55.118	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:55.118	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:06:55.119	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:06:55.119	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:06:55.119	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:06:55.119	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:06:55.119	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:55.119	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:06:55.120	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:06:55.121	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:06:55.122	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:06:55.122	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:06:56.621	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:06:59.734	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:06:59.734	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:59.734	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:06:59.734	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:06:59.734	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:06:59.734	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:06:59.735	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:06:59.735	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:06:59.735	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:06:59.735	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:06:59.737	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:06:59.737	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:06:59.737	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:07:01.241	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:07:04.630	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:07:04.630	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:04.630	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:07:04.631	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:07:04.631	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:07:04.631	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:07:04.631	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:07:04.631	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:04.631	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:07:04.631	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:07:04.633	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:07:04.633	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:07:04.633	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:07:06.128	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:07:09.749	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:07:09.749	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:09.749	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:07:09.749	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:07:09.749	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:07:09.749	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:07:09.750	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:07:09.750	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:09.750	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:07:09.750	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:07:09.752	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:07:09.752	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:07:09.752	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:07:11.257	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:07:15.122	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:07:15.122	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:15.122	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:07:15.123	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:07:15.123	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:07:15.123	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:07:15.123	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:07:15.123	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:15.123	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:07:15.124	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:07:15.126	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:07:15.126	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:07:15.126	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:07:16.626	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:07:19.781	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:07:19.781	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:19.781	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:07:19.781	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:07:19.781	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:07:19.782	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:07:19.782	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:07:19.782	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:19.782	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:07:19.782	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:07:19.782	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:07:19.782	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:07:19.782	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:07:21.291	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:07:24.682	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:07:24.682	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:24.682	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:07:24.683	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:07:24.683	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:07:24.683	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:07:24.683	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:07:24.683	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:24.683	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:07:24.684	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:07:24.687	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:07:24.687	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:07:24.687	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:07:26.196	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:07:29.782	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:07:29.782	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:29.782	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:07:29.783	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:07:29.783	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:07:29.783	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:07:29.783	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:07:29.783	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:29.783	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:07:29.784	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:07:29.785	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:07:29.786	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:07:29.786	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:07:31.295	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:07:36.080	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:07:36.080	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:36.080	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:07:36.081	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:07:36.081	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:07:36.081	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:07:36.081	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:07:36.081	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:36.081	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:07:36.082	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:07:36.084	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:07:36.084	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:07:36.084	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:07:37.591	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:07:40.879	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:07:40.879	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:40.879	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:07:40.880	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:07:40.880	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:07:40.880	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:07:40.880	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:07:40.880	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:40.880	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:07:40.881	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:07:40.882	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:07:40.882	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:07:40.882	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:07:42.387	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:07:45.883	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:07:45.883	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:45.883	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:07:45.884	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:07:45.884	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:07:45.884	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:07:45.884	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:07:45.884	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:45.884	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:07:45.884	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:07:45.885	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:07:45.885	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:07:45.886	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:07:47.387	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:07:51.221	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:07:51.221	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:51.221	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:07:51.222	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:07:51.222	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:07:51.222	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:07:51.222	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:07:51.222	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:51.222	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:07:51.223	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:07:51.225	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:07:51.225	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:07:51.225	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:07:52.726	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:07:57.879	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:07:57.879	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:57.879	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:07:57.879	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:07:57.879	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:07:57.879	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:07:57.879	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:07:57.879	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:07:57.879	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:07:57.879	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:07:57.880	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:07:57.880	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:07:57.880	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:07:59.388	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:08:02.706	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:08:02.706	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:02.706	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:08:02.706	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:08:02.706	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:08:02.706	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:08:02.706	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:08:02.706	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:02.706	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:08:02.706	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:08:02.707	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:08:02.707	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:08:02.707	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:08:04.208	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:08:07.582	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:08:07.582	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:07.582	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:08:07.583	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:08:07.583	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:08:07.583	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:08:07.583	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:08:07.584	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:07.584	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:08:07.584	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:08:07.586	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:08:07.586	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:08:07.586	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:08:09.090	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:08:15.116	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:08:15.116	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:15.116	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:08:15.117	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:08:15.117	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:08:15.117	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:08:15.117	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:08:15.118	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:15.118	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:08:15.118	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:08:15.120	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:08:15.120	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:08:15.120	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:08:16.618	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:08:20.590	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:08:20.590	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:20.590	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:08:20.590	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:08:20.590	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:08:20.590	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:08:20.590	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:08:20.590	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:20.590	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:08:20.591	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:08:20.591	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:08:20.591	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:08:20.591	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:08:22.088	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:08:26.481	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:08:26.482	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:26.482	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:08:26.483	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:08:26.483	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:08:26.483	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:08:26.484	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:08:26.484	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:26.484	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:08:26.484	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:08:26.487	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:08:26.487	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:08:26.487	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:08:27.985	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:08:30.963	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:08:30.963	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:30.963	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:08:30.964	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:08:30.964	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:08:30.964	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:08:30.964	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:08:30.964	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:30.964	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:08:30.964	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:08:30.966	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:08:30.966	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:08:30.966	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:08:32.467	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:08:36.782	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:08:36.782	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:36.782	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:08:36.783	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:08:36.783	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:08:36.783	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:08:36.783	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:08:36.783	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:36.783	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:08:36.785	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:08:36.787	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:08:36.787	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:08:36.787	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:08:38.282	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:08:41.705	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:08:41.705	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:41.705	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:08:41.706	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:08:41.706	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:08:41.706	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:08:41.706	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:08:41.706	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:41.706	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:08:41.707	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:08:41.709	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:08:41.709	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:08:41.709	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:08:43.214	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:08:47.091	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:08:47.091	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:47.091	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:08:47.092	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:08:47.092	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:08:47.092	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:08:47.092	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:08:47.092	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:47.092	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:08:47.092	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:08:47.094	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:08:47.094	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:08:47.094	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:08:48.599	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:08:52.303	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:08:52.303	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:52.303	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:08:52.304	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:08:52.304	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:08:52.304	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:08:52.304	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:08:52.304	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:52.304	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:08:52.304	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:08:52.306	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:08:52.306	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:08:52.306	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:08:53.800	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:08:56.682	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:08:56.683	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:56.683	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:08:56.683	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:08:56.683	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:08:56.683	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:08:56.684	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:08:56.684	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:08:56.684	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:08:56.684	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:08:56.687	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:08:56.687	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:08:56.687	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:08:58.183	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:09:01.587	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:09:01.587	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:01.587	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:09:01.587	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:09:01.587	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:09:01.587	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:09:01.587	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:09:01.588	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:01.588	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:09:01.588	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:09:01.589	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:09:01.589	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:09:01.589	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:09:03.079	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:09:06.590	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:09:06.591	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:06.591	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:09:06.591	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:09:06.591	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:09:06.592	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:09:06.592	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:09:06.592	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:06.592	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:09:06.592	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:09:06.593	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:09:06.593	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:09:06.593	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:09:08.092	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:09:11.710	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:09:11.710	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:11.710	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:09:11.711	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:09:11.711	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:09:11.711	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:09:11.711	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:09:11.711	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:11.711	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:09:11.712	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:09:11.714	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:09:11.714	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:09:11.714	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:09:13.205	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:09:16.751	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:09:16.752	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:16.752	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:09:16.752	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:09:16.752	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:09:16.752	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:09:16.753	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:09:16.753	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:16.753	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:09:16.753	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:09:16.755	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:09:16.755	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:09:16.755	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:09:18.258	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:09:21.738	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:09:21.738	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:21.738	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:09:21.739	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:09:21.739	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:09:21.739	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:09:21.739	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:09:21.740	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:21.740	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:09:21.740	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:09:21.742	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:09:21.743	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:09:21.743	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:09:23.242	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:09:26.700	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:09:26.700	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:26.700	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:09:26.700	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:09:26.700	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:09:26.700	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:09:26.700	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:09:26.700	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:26.700	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:09:26.701	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:09:26.702	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:09:26.702	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:09:26.702	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:09:28.191	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:09:31.723	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:09:31.723	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:31.723	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:09:31.724	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:09:31.724	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:09:31.724	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:09:31.724	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:09:31.724	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:31.724	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:09:31.725	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:09:31.727	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:09:31.727	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:09:31.727	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:09:33.229	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:09:36.695	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:09:36.695	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:36.695	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:09:36.696	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:09:36.696	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:09:36.696	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:09:36.696	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:09:36.696	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:36.696	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:09:36.696	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:09:36.699	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:09:36.699	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:09:36.699	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:09:38.192	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:09:41.840	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:09:41.841	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:41.841	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:09:41.841	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:09:41.841	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:09:41.842	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:09:41.842	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:09:41.842	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:41.842	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:09:41.842	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:09:41.844	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:09:41.844	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:09:41.844	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:09:43.353	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:09:46.629	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:09:46.629	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:46.629	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:09:46.629	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:09:46.629	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:09:46.629	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:09:46.630	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:09:46.630	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:46.630	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:09:46.631	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:09:46.633	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:09:46.633	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:09:46.633	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:09:48.134	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:09:51.953	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:09:51.953	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:51.953	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:09:51.954	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:09:51.954	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:09:51.954	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:09:51.955	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:09:51.955	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:51.955	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:09:51.955	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:09:51.957	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:09:51.957	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:09:51.957	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:09:53.455	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:09:56.767	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:09:56.767	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:56.767	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:09:56.767	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:09:56.767	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:09:56.768	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:09:56.768	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:09:56.768	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:09:56.768	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:09:56.769	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:09:56.772	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:09:56.772	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:09:56.772	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:09:58.277	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:10:01.767	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:10:01.767	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:01.767	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:10:01.767	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:10:01.767	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:10:01.767	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:10:01.768	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:10:01.768	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:01.768	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:10:01.768	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:10:01.770	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:10:01.770	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:10:01.770	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:10:03.266	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:10:06.595	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:10:06.595	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:06.595	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:10:06.596	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:10:06.596	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:10:06.596	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:10:06.596	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:10:06.596	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:06.596	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:10:06.596	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:10:06.597	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:10:06.597	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:10:06.597	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:10:08.108	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:10:12.384	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:10:12.384	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:12.384	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:10:12.385	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:10:12.385	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:10:12.385	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:10:12.385	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:10:12.385	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:12.385	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:10:12.385	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:10:12.387	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:10:12.387	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:10:12.387	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:10:13.880	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:10:17.185	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:10:17.185	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:17.185	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:10:17.186	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:10:17.186	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:10:17.186	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:10:17.187	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:10:17.187	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:17.187	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:10:17.187	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:10:17.188	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:10:17.188	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:10:17.188	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:10:18.689	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:10:21.776	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:10:21.776	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:21.776	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:10:21.777	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:10:21.777	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:10:21.777	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:10:21.777	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:10:21.777	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:21.777	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:10:21.777	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:10:21.778	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:10:21.778	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:10:21.778	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:10:23.273	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:10:26.816	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:10:26.816	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:26.816	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:10:26.817	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:10:26.817	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:10:26.817	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:10:26.817	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:10:26.817	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:26.817	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:10:26.818	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:10:26.820	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:10:26.820	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:10:26.820	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:10:28.317	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:10:31.687	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:10:31.687	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:31.687	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:10:31.688	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:10:31.688	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:10:31.688	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:10:31.688	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:10:31.688	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:31.688	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:10:31.688	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:10:31.690	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:10:31.690	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:10:31.690	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:10:33.202	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:10:37.163	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:10:37.163	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:37.163	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:10:37.163	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:10:37.163	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:10:37.163	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:10:37.164	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:10:37.164	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:37.164	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:10:37.164	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:10:37.166	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:10:37.166	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:10:37.166	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:10:38.661	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:10:41.821	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:10:41.821	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:41.821	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:10:41.822	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:10:41.822	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:10:41.822	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:10:41.822	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:10:41.822	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:41.822	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:10:41.823	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:10:41.825	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:10:41.825	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:10:41.825	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:10:43.322	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:10:47.136	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:10:47.137	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:47.137	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:10:47.138	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:10:47.138	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:10:47.138	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:10:47.138	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:10:47.138	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:47.138	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:10:47.139	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:10:47.141	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:10:47.141	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:10:47.141	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:10:48.648	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:10:51.602	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:10:51.602	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:51.602	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:10:51.603	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:10:51.603	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:10:51.603	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:10:51.603	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:10:51.603	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:51.603	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:10:51.603	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:10:51.605	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:10:51.605	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:10:51.605	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:10:53.103	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:10:56.611	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:10:56.611	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:56.611	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:10:56.612	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:10:56.612	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:10:56.612	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:10:56.612	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:10:56.612	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:10:56.612	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:10:56.612	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:10:56.614	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:10:56.614	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:10:56.614	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:10:58.109	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:11:01.741	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:11:01.742	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:01.742	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:11:01.742	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:11:01.742	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:11:01.742	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:11:01.742	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:11:01.742	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:01.742	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:11:01.743	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:11:01.744	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:11:01.744	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:11:01.744	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:11:03.235	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:11:07.084	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:11:07.084	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:07.084	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:11:07.084	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:11:07.084	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:11:07.084	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:11:07.084	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:11:07.084	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:07.084	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:11:07.085	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:11:07.085	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:11:07.085	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:11:07.085	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:11:08.592	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:11:11.585	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:11:11.585	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:11.585	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:11:11.586	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:11:11.586	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:11:11.586	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:11:11.586	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:11:11.586	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:11.586	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:11:11.586	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:11:11.588	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:11:11.588	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:11:11.588	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:11:13.080	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:11:16.585	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:11:16.585	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:16.585	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:11:16.586	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:11:16.586	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:11:16.586	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:11:16.586	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:11:16.586	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:16.586	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:11:16.587	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:11:16.587	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:11:16.587	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:11:16.587	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:11:18.077	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:11:21.788	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:11:21.788	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:21.788	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:11:21.788	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:11:21.788	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:11:21.789	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:11:21.789	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:11:21.789	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:21.789	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:11:21.789	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:11:21.790	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:11:21.790	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:11:21.790	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:11:23.283	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:11:26.983	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:11:26.983	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:26.983	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:11:26.983	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:11:26.983	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:11:26.983	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:11:26.983	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:11:26.983	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:26.983	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:11:26.983	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:11:26.984	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:11:26.984	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:11:26.984	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:11:28.492	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:11:32.391	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:11:32.391	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:32.391	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:11:32.391	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:11:32.391	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:11:32.391	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:11:32.391	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:11:32.391	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:32.392	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:11:32.392	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:11:32.396	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:11:32.396	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:11:32.396	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:11:33.905	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:11:37.117	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:11:37.117	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:37.117	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:11:37.118	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:11:37.118	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:11:37.118	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:11:37.118	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:11:37.118	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:37.118	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:11:37.118	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:11:37.120	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:11:37.120	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:11:37.120	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:11:38.609	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:11:41.830	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:11:41.830	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:41.830	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:11:41.831	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:11:41.831	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:11:41.831	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:11:41.831	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:11:41.831	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:41.831	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:11:41.832	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:11:41.834	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:11:41.834	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:11:41.834	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:11:43.339	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:11:47.052	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:11:47.052	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:47.052	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:11:47.053	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:11:47.053	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:11:47.053	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:11:47.053	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:11:47.053	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:47.053	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:11:47.054	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:11:47.055	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:11:47.055	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:11:47.055	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:11:48.562	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:11:51.790	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:11:51.790	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:51.790	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:11:51.790	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:11:51.790	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:11:51.790	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:11:51.791	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:11:51.791	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:11:51.791	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:11:51.791	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:11:51.792	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:11:51.792	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:11:51.792	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:11:53.286	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:12:00.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:12:00.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:00.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:12:00.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:12:00.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:12:00.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:12:00.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:12:00.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:00.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:12:00.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:12:00.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:12:00.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:12:00.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:12:01.612	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:12:05.110	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:12:05.110	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:05.110	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:12:05.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:12:05.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:12:05.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:12:05.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:12:05.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:05.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:12:05.111	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:12:05.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:12:05.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:12:05.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:12:06.620	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:12:10.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:12:10.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:10.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:12:10.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:12:10.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:12:10.113	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:12:10.113	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:12:10.113	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:10.113	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:12:10.113	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:12:10.115	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:12:10.115	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:12:10.115	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:12:11.616	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:12:16.615	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:12:16.615	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:16.615	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:12:16.616	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:12:16.616	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:12:16.616	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:12:16.617	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:12:16.617	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:16.617	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:12:16.617	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:12:16.619	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:12:16.619	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:12:16.619	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:12:18.124	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:12:19.810	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:12:19.811	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:19.811	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:12:19.812	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:12:19.812	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:12:19.812	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:12:19.812	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:12:19.812	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:19.812	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:12:19.812	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:12:19.814	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:12:19.814	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:12:19.814	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:12:21.318	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:12:24.809	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:12:24.809	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:24.809	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:12:24.810	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:12:24.810	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:12:24.810	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:12:24.810	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:12:24.810	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:24.810	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:12:24.810	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:12:24.812	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:12:24.812	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:12:24.812	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:12:26.321	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:12:30.104	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:12:30.104	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:30.104	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:12:30.105	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:12:30.105	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:12:30.105	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:12:30.105	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:12:30.105	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:30.105	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:12:30.105	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:12:30.106	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:12:30.106	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:12:30.106	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:12:31.607	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:12:35.115	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:12:35.115	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:35.115	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:12:35.116	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:12:35.116	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:12:35.116	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:12:35.116	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:12:35.116	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:35.116	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:12:35.117	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:12:35.119	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:12:35.119	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:12:35.119	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:12:36.620	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:12:39.668	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:12:39.668	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:39.668	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:12:39.669	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:12:39.669	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:12:39.669	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:12:39.669	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:12:39.669	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:39.669	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:12:39.669	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:12:39.671	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:12:39.671	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:12:39.671	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:12:41.159	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:12:44.601	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:12:44.601	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:44.601	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:12:44.602	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:12:44.602	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:12:44.602	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:12:44.602	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:12:44.602	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:44.602	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:12:44.602	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:12:44.603	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:12:44.604	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:12:44.604	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:12:46.106	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:12:50.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:12:50.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:50.112	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:12:50.113	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:12:50.113	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:12:50.113	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:12:50.113	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:12:50.113	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:50.113	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:12:50.114	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:12:50.116	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:12:50.116	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:12:50.116	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:12:51.616	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:12:54.782	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:12:54.782	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:54.782	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:12:54.783	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:12:54.783	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:12:54.783	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:12:54.784	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:12:54.784	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:54.784	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:12:54.784	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:12:54.786	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:12:54.786	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:12:54.786	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:12:56.284	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:12:59.677	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:12:59.677	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:59.677	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:12:59.678	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:12:59.678	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:12:59.678	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:12:59.678	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:12:59.678	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:12:59.678	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:12:59.678	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:12:59.680	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:12:59.680	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:12:59.680	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:13:01.186	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:13:04.772	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:13:04.772	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:04.772	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:13:04.772	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:13:04.772	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:13:04.772	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:13:04.772	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:13:04.772	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:04.772	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:13:04.773	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:13:04.773	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:13:04.773	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:13:04.773	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:13:06.268	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:13:10.095	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:13:10.095	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:10.095	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:13:10.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:13:10.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:13:10.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:13:10.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:13:10.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:10.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:13:10.096	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:13:10.098	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:13:10.098	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:13:10.098	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:13:11.608	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:13:14.603	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:13:14.604	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:14.604	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:13:14.604	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:13:14.604	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:13:14.604	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:13:14.604	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:13:14.604	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:14.604	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:13:14.604	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:13:14.605	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:13:14.605	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:13:14.605	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:13:16.094	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:13:19.715	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:13:19.715	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:19.715	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:13:19.716	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:13:19.716	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:13:19.716	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:13:19.717	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:13:19.717	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:19.717	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:13:19.717	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:13:19.719	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:13:19.719	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:13:19.719	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:13:21.231	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:13:24.798	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:13:24.798	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:24.798	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:13:24.798	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:13:24.798	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:13:24.798	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:13:24.799	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:13:24.799	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:24.799	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:13:24.799	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:13:24.800	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:13:24.801	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:13:24.801	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:13:26.298	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:13:29.656	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:13:29.656	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:29.656	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:13:29.656	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:13:29.656	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:13:29.656	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:13:29.656	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:13:29.656	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:29.656	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:13:29.656	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:13:29.658	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:13:29.658	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:13:29.658	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:13:31.157	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:13:35.026	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:13:35.026	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:35.026	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:13:35.026	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:13:35.026	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:13:35.026	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:13:35.027	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:13:35.027	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:35.027	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:13:35.027	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:13:35.028	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:13:35.028	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:13:35.028	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:13:36.530	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:13:39.887	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:13:39.887	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:39.887	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:13:39.888	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:13:39.888	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:13:39.888	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:13:39.888	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:13:39.888	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:39.888	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:13:39.888	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:13:39.889	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:13:39.889	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:13:39.889	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:13:41.387	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:13:44.723	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:13:44.723	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:44.723	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:13:44.723	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:13:44.723	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:13:44.723	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:13:44.723	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:13:44.723	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:44.723	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:13:44.724	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:13:44.724	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:13:44.724	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:13:44.724	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:13:46.228	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:13:49.890	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:13:49.890	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:49.890	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:13:49.890	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:13:49.890	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:13:49.890	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:13:49.891	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:13:49.891	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:49.891	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:13:49.891	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:13:49.892	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:13:49.892	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:13:49.892	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:13:51.400	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:13:54.588	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:13:54.588	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:54.588	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:13:54.588	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:13:54.588	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:13:54.588	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:13:54.589	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:13:54.589	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:54.589	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:13:54.589	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:13:54.589	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:13:54.589	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:13:54.589	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:13:56.080	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:13:59.818	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:13:59.818	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:59.818	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:13:59.819	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:13:59.819	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:13:59.819	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:13:59.819	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:13:59.819	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:13:59.819	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:13:59.820	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:13:59.821	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:13:59.821	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:13:59.821	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:14:01.321	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:14:04.597	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:14:04.597	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:14:04.597	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:14:04.598	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:14:04.598	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:14:04.598	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:14:04.598	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:14:04.598	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:14:04.598	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:14:04.598	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:14:04.598	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:14:04.598	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:14:04.599	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:14:06.097	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:14:09.799	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:14:09.799	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:14:09.799	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:14:09.800	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:14:09.800	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:14:09.800	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:14:09.800	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:14:09.800	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:14:09.800	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:14:09.800	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:14:09.801	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:14:09.801	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:14:09.801	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:14:11.309	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:14:14.741	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:14:14.741	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:14:14.741	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:14:14.742	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:14:14.742	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:14:14.742	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:14:14.743	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:14:14.743	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:14:14.743	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:14:14.743	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:14:14.744	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:14:14.744	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:14:14.744	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:14:16.237	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:14:20.100	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:14:20.100	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:14:20.100	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:14:20.101	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:14:20.101	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:14:20.101	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:14:20.101	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:14:20.101	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:14:20.101	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:14:20.102	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:14:20.103	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:14:20.103	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:14:20.103	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:14:21.600	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:14:24.751	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:14:24.751	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:14:24.751	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:14:24.752	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:14:24.752	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:14:24.752	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:14:24.752	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:14:24.752	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:14:24.752	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:14:24.752	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:14:24.754	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:14:24.754	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:14:24.754	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:14:26.251	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:14:29.821	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD
+2025.10.04 18:14:29.821	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting to create: AIRequest.BTCUSD.tmp
+2025.10.04 18:14:29.821	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Common path: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\
+2025.10.04 18:14:29.822	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File handle created successfully: 1
+2025.10.04 18:14:29.822	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Payload written, length: 106
+2025.10.04 18:14:29.822	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File flushed
+2025.10.04 18:14:29.822	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File closed
+2025.10.04 18:14:29.822	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Temp file exists after write: AIRequest.BTCUSD.tmp
+2025.10.04 18:14:29.822	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Attempting absolute move: C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.tmp -> C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\Common\Files\AIRequest.BTCUSD.json
+2025.10.04 18:14:29.823	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Deleted existing final file: AIRequest.BTCUSD.json
+2025.10.04 18:14:29.824	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] File copy successful
+2025.10.04 18:14:29.824	Prometheus_Bridge_v2 (BTCUSD,M5)	[BRIDGE_DEBUG] Final file exists: true
+2025.10.04 18:14:29.824	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Request written for BTCUSD
+2025.10.04 18:14:31.314	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] No AIResponse yet for BTCUSD
+2025.10.04 18:14:35.016	Prometheus_Bridge_v2 (BTCUSD,M5)	[CYCLE] Start for BTCUSD

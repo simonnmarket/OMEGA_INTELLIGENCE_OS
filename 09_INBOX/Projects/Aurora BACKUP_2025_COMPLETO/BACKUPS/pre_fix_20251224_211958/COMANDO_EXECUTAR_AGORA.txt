@@ -1,0 +1,62 @@
+================================================================================
+COMANDO COMPLETO PARA EXECUTAR NO POWERSHELL
+================================================================================
+
+COPIE E COLE ESTE COMANDO:
+
+cd C:\Users\Lenovo\Projects\Aurora; python AURORA_TEST_MODE_NO_STOPS.py --extended
+
+================================================================================
+OU EXECUTE PASSO A PASSO:
+================================================================================
+
+cd C:\Users\Lenovo\Projects\Aurora
+python AURORA_TEST_MODE_NO_STOPS.py --extended
+
+================================================================================
+O QUE ESTE COMANDO FAZ:
+================================================================================
+
+✅ Executa teste ESTENDIDO (10 ciclos)
+✅ Intervalo de 30 segundos entre ciclos
+✅ Duração total: ~5 minutos
+✅ Ordens REAIS na conta DEMO
+✅ Monitoramento completo em tempo real
+
+================================================================================
+O QUE VOCÊ VERÁ:
+================================================================================
+
+1. Confirmação para enviar ordens REAIS
+2. Conexão MT5 estabelecida
+3. Estratégias analisando mercado
+4. Sinais sendo gerados (quando houver condições)
+5. Ordens executadas no MT5
+6. Status em tempo real a cada ciclo
+7. Relatório final completo
+
+================================================================================
+MONITORAMENTO:
+================================================================================
+
+POWERSHELL:
+- Status a cada ciclo
+- Sinais gerados
+- Ordens executadas
+- Taxa de sucesso
+
+METATRADER 5:
+- Abra o terminal MT5
+- Vá para aba "Trade"
+- Ordens aparecerão com comentário "AURORA_TEST_NO_STOPS"
+- Você verá posições abertas em tempo real
+
+================================================================================
+ARQUIVOS GERADOS:
+================================================================================
+
+• aurora_test_mode.log - Log completo
+• aurora_test_report_TIMESTAMP.json - Relatório final
+
+================================================================================
+

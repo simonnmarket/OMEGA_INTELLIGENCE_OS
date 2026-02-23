@@ -1,0 +1,1001 @@
+# ============================================================================
+# 🤝 SISTEMA DE CONSENSO PONDERADO
+# ============================================================================
+
+class ConsensusEngine:
+    """Motor de consenso com pesos dinâmicos"""
+    
+    def __init__(self):
+        self.agent_weights = {
+            # Agentes Especializados (peso maior)
+            "Agent_XAUUSD": 2.0,
+            "Agent_EURUSD": 2.0,
+            "Agent_GBPUSD": 2.0,
+            "Agent_USDJPY": 2.0,
+            "Agent_XAGUSD": 2.0,
+            "Agent_BTCUSD": 2.0,
+            "Agent_ETHUSD": 2.0,
+            "Agent_US500": 2.0,
+            "Agent_US30": 2.0,
+            "Agent_NAS100": 2.0,
+            "Agent_UK100": 2.0,
+            "Agent_AUDUSD": 2.0,
+            "Agent_USDCAD": 2.0,
+            "Agent_NZDUSD": 2.0,
+            "Agent_USDCHF": 2.0,
+            
+            # C-Level (pesos base)
+            "CEO": 1.0,
+            "CFO": 0.5,  # Reduzido por instabilidade
+            "CTO": 1.0,
+            "CIO": 0.5,  # Reduzido por instabilidade
+            "COO": 1.0,
+            "CKO": 1.5,  # Aumentado por bom desempenho
+            "CMO": 1.0
+        }
+        
+        self.min_consensus_percent = 0.286  # 28.6% = 2 votos de 7 (para testes)
+        self.performance_tracker = {}
+        self.consensus_history = []
+        
+    def calculate_consensus(self, votes: List[AgentVote]) -> Dict[str, Any]:
+        """Calcular consenso ponderado"""
+        
+        # Filtrar votos válidos
+        valid_votes = [v for v in votes if v.should_count_in_consensus()]
+        
+        if not valid_votes:
+            return {
+                "decision": "NO_CONSENSUS",
+                "confidence": 0.0,
+                "reason": "Nenhum voto válido",
+                "details": {}
+            }
+        
+        # Calcular pesos totais
+        total_weight = sum(self.agent_weights.get(v.agent_name, 1.0) for v in valid_votes)
+        
+        # Calcular scores ponderados
+        buy_score = sum(
+            v.confidence * self.agent_weights.get(v.agent_name, 1.0)
+            for v in valid_votes if v.decision == "BUY"
+        )
+        
+        sell_score = sum(
+            v.confidence * self.agent_weights.get(v.agent_name, 1.0)
+            for v in valid_votes if v.decision == "SELL"
+        )
+        
+        hold_score = sum(
+            v.confidence * self.agent_weights.get(v.agent_name, 1.0)
+            for v in valid_votes if v.decision == "HOLD"
+        )
+        
+        # Determinar direção
+        scores = {
+            "BUY": buy_score,
+            "SELL": sell_score,
+            "HOLD": hold_score
+        }
+        
+        decision = max(scores, key=scores.get)
+        winning_score = scores[decision]
+        
+        # Calcular porcentagem de consenso
+        consensus_percent = winning_score / total_weight if total_weight > 0 else 0.0
+        
+        # Verificar se atinge threshold mínimo
+        if consensus_percent < self.min_consensus_percent:
+            decision = "HOLD"
+            consensus_percent = hold_score / total_weight if total_weight > 0 else 0.0
+        
+        # Coletar detalhes dos votos
+        vote_details = []
+        for vote in valid_votes:
+            vote_details.append({
+                "agent": vote.agent_name,
+                "decision": vote.decision,
+                "confidence": vote.confidence,
+                "weight": self.agent_weights.get(vote.agent_name, 1.0),
+                "reason": vote.reason[:100]  # Truncar para log
+            })
+        
+        result = {
+            "decision": decision,
+            "confidence": consensus_percent,
+            "consensus_percent": consensus_percent,
+            "required_percent": self.min_consensus_percent,
+            "total_weight": total_weight,
+            "scores": scores,
+            "vote_count": len(valid_votes),
+            "vote_details": vote_details,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        
+        # Registrar no histórico
+        self.consensus_history.append(result)
+        if len(self.consensus_history) > 1000:
+            self.consensus_history = self.consensus_history[-1000:]
+        
+        return result
+    
+    def update_weights_based_on_performance(self, performance_data: Dict[str, float]):
+        """Atualizar pesos baseado em performance histórica"""
+        for agent_name, accuracy in performance_data.items():
+            if agent_name in self.agent_weights:
+                # Ajustar peso baseado na accuracy
+                if accuracy > 0.6:  # Bom desempenho
+                    new_weight = min(self.agent_weights[agent_name] * 1.1, 3.0)
+                elif accuracy < 0.4:  # Desempenho ruim
+                    new_weight = max(self.agent_weights[agent_name] * 0.9, 0.1)
+                else:
+                    continue
+                
+                self.agent_weights[agent_name] = new_weight
+                logger.debug(f"Peso atualizado: {agent_name}: {new_weight:.2f}")
+    
+    def adjust_consensus_threshold(self, market_condition: str):
+        """Ajustar threshold de consenso baseado em condições de mercado"""
+        thresholds = {
+            "HIGH_VOLATILITY": 0.429,  # 42.9% = 3 votos
+            "NORMAL": 0.286,          # 28.6% = 2 votos
+            "LOW_VOLATILITY": 0.571,   # 57.1% = 4 votos
+            "CRISIS": 0.714           # 71.4% = 5 votos
+        }
+        
+        self.min_consensus_percent = thresholds.get(market_condition, 0.286)
+        logger.info(f"Threshold ajustado para {market_condition}: {self.min_consensus_percent:.1%}")
+
+# ============================================================================
+# 🛡️ RISK ENGINE ADAPTATIVO
+# ============================================================================
+
+class RiskEngine:
+    """Motor de risco com modos adaptativos"""
+    
+    def __init__(self):
+        self.modes = {
+            "EXPLORATION": {
+                "block_trades": False,
+                "max_risk_score": 0.9,
+                "position_size_multiplier": 0.5,
+                "action": "LOG_ONLY"
+            },
+            "VALIDATION": {
+                "block_trades": True,
+                "max_risk_score": 0.7,
+                "position_size_multiplier": 0.8,
+                "action": "BLOCK_HIGH_RISK",
+                "require_override": False
+            },
+            "PRODUCTION": {
+                "block_trades": True,
+                "max_risk_score": 0.5,
+                "position_size_multiplier": 1.0,
+                "action": "FULL_PROTECTION",
+                "require_override": True,
+                "human_approval": True
+            }
+        }
+        
+        self.current_mode = "EXPLORATION"
+        self.risk_history = []
+        self.max_drawdown = 0.15  # 15%
+        self.max_position_per_symbol = 0.02  # 2% por símbolo
+        self.max_correlation = 0.7  # Correlação máxima entre posições
+        
+    def calculate_risk_score(self, trade_signal: TradeSignal, portfolio_state: Dict) -> float:
+        """Calcular score de risco para um trade"""
+        risk_factors = []
+        
+        # Fator 1: Confiança do sinal
+        confidence_factor = 1.0 - trade_signal.weighted_confidence
+        risk_factors.append(confidence_factor * 0.3)
+        
+        # Fator 2: Volatilidade do ativo
+        volatility = trade_signal.agents_votes[0].reason if trade_signal.agents_votes else "N/A"
+        if "volatility" in volatility.lower():
+            volatility_factor = 0.4
+        else:
+            volatility_factor = 0.1
+        risk_factors.append(volatility_factor)
+        
+        # Fator 3: Concentração no símbolo
+        symbol = trade_signal.symbol
+        symbol_exposure = portfolio_state.get("symbol_exposure", {}).get(symbol, 0.0)
+        concentration_factor = min(symbol_exposure / self.max_position_per_symbol, 1.0) * 0.3
+        risk_factors.append(concentration_factor)
+        
+        # Fator 4: Drawdown atual
+        current_dd = portfolio_state.get("current_drawdown", 0.0)
+        drawdown_factor = min(current_dd / self.max_drawdown, 1.0) * 0.4
+        risk_factors.append(drawdown_factor)
+        
+        # Calcular score final
+        risk_score = sum(risk_factors) / len(risk_factors)
+        
+        # Ajustar baseado no modo
+        mode_multiplier = {
+            "EXPLORATION": 0.7,
+            "VALIDATION": 1.0,
+            "PRODUCTION": 1.3
+        }.get(self.current_mode, 1.0)
+        
+        final_score = min(risk_score * mode_multiplier, 1.0)
+        
+        return final_score
+    
+    def validate_trade(self, trade_signal: TradeSignal, portfolio_state: Dict) -> Tuple[bool, str, Dict]:
+        """Validar trade baseado em regras de risco"""
+        risk_score = self.calculate_risk_score(trade_signal, portfolio_state)
+        mode_config = self.modes[self.current_mode]
+        
+        # Registrar avaliação de risco
+        risk_record = {
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "symbol": trade_signal.symbol,
+            "action": trade_signal.action,
+            "risk_score": risk_score,
+            "mode": self.current_mode,
+            "portfolio_state": portfolio_state
+        }
+        self.risk_history.append(risk_record)
+        
+        # Verificar regras de risco
+        violations = []
+        
+        # Regra 1: Score de risco máximo
+        if risk_score > mode_config["max_risk_score"]:
+            violations.append(f"Risk score {risk_score:.2f} > {mode_config['max_risk_score']}")
+        
+        # Regra 2: Drawdown máximo
+        current_dd = portfolio_state.get("current_drawdown", 0.0)
+        if current_dd > self.max_drawdown:
+            violations.append(f"Drawdown {current_dd:.1%} > {self.max_drawdown:.1%}")
+        
+        # Regra 3: Concentração por símbolo
+        symbol = trade_signal.symbol
+        symbol_exposure = portfolio_state.get("symbol_exposure", {}).get(symbol, 0.0)
+        if symbol_exposure > self.max_position_per_symbol:
+            violations.append(f"Symbol exposure {symbol_exposure:.1%} > {self.max_position_per_symbol:.1%}")
+        
+        # Tomar decisão baseada no modo
+        if violations and mode_config["block_trades"]:
+            reason = f"Risk violations: {', '.join(violations)}"
+            return False, reason, {"risk_score": risk_score, "violations": violations}
+        elif violations:
+            # Em modo EXPLORATION, apenas logar
+            reason = f"Risk warnings (executing anyway): {', '.join(violations)}"
+            return True, reason, {"risk_score": risk_score, "violations": violations, "warning": True}
+        else:
+            return True, "Trade validated", {"risk_score": risk_score}
+    
+    def calculate_position_size(self, trade_signal: TradeSignal, portfolio_value: float) -> float:
+        """Calcular tamanho da posição baseado em risco"""
+        mode_config = self.modes[self.current_mode]
+        base_size = portfolio_value * 0.01  # 1% base
+        
+        # Ajustar por confiança
+        confidence_adjustment = trade_signal.weighted_confidence * 2  # 0-2x
+        
+        # Ajustar por modo
+        mode_adjustment = mode_config["position_size_multiplier"]
+        
+        # Ajustar por risco
+        portfolio_state = {"current_drawdown": 0.0, "symbol_exposure": {}}
+        risk_score = self.calculate_risk_score(trade_signal, portfolio_state)
+        risk_adjustment = 1.0 - (risk_score * 0.5)  # Reduzir 50% no máximo
+        
+        final_size = base_size * confidence_adjustment * mode_adjustment * risk_adjustment
+        
+        # Garantir limites
+        min_size = portfolio_value * 0.001  # 0.1% mínimo
+        max_size = portfolio_value * 0.02   # 2% máximo
+        
+        return max(min_size, min(final_size, max_size))
+    
+    def set_mode(self, mode: str):
+        """Alterar modo de operação do risk engine"""
+        if mode in self.modes:
+            self.current_mode = mode
+            logger.info(f"Risk Engine mode changed to: {mode}")
+            return True
+        else:
+            logger.error(f"Invalid risk mode: {mode}")
+            return False
+
+# ============================================================================
+# 💸 MT5 INTEGRATION COM CIRCUIT BREAKER
+# ============================================================================
+
+class ResilientMT5Executor:
+    """Executor MT5 com circuit breaker e fallback"""
+    
+    def __init__(self, login: int, password: str, server: str):
+        self.login = login
+        self.password = password
+        self.server = server
+        self.connected = False
+        
+        # Circuit breaker configuration
+        self.circuit_breaker = {
+            "failure_count": 0,
+            "max_failures": 3,
+            "tripped": False,
+            "trip_time": None,
+            "recovery_timeout": 300  # 5 minutos
+        }
+        
+        # Retry configuration
+        self.retry_config = {
+            "max_retries": 3,
+            "base_delay": 1.0,
+            "max_delay": 30.0,
+            "backoff_factor": 2.0
+        }
+        
+        # Fallback brokers
+        self.fallback_brokers = []
+        
+        logger.info(f"MT5 Executor inicializado para servidor: {server}")
+    
+    async def connect(self) -> bool:
+        """Conectar ao MT5 com circuit breaker"""
+        
+        # Verificar circuit breaker
+        if self.circuit_breaker["tripped"]:
+            if not self._should_reset_circuit():
+                logger.warning("⏸️ Circuit breaker ativo - conexão bloqueada")
+                return False
+            else:
+                self._reset_circuit()
+        
+        # Tentar conexão com retry
+        for attempt in range(self.retry_config["max_retries"]):
+            try:
+                logger.info(f"Tentativa de conexão MT5 ({attempt + 1}/{self.retry_config['max_retries']})")
+                
+                # Inicializar MT5
+                if not mt5.initialize():
+                    error = mt5.last_error()
+                    logger.warning(f"MT5 initialize falhou: {error}")
+                    raise ConnectionError(f"MT5 initialize failed: {error}")
+                
+                # Fazer login
+                authorized = mt5.login(
+                    login=self.login,
+                    password=self.password,
+                    server=self.server
+                )
+                
+                if not authorized:
+                    error = mt5.last_error()
+                    logger.warning(f"MT5 login falhou: {error}")
+                    raise ConnectionError(f"MT5 login failed: {error}")
+                
+                # Conexão bem sucedida
+                self.connected = True
+                self._record_success()
+                
+                account_info = mt5.account_info()
+                logger.info("✅ MT5 conectado com sucesso", 
+                          account=account_info.login,
+                          balance=account_info.balance,
+                          server=account_info.server)
+                
+                return True
+                
+            except Exception as e:
+                logger.error(f"❌ Conexão MT5 falhou (tentativa {attempt + 1}): {str(e)}")
+                
+                # Última tentativa falhou
+                if attempt == self.retry_config["max_retries"] - 1:
+                    self._record_failure()
+                    return False
+                
+                # Esperar antes de retry (exponential backoff)
+                delay = min(
+                    self.retry_config["base_delay"] * (self.retry_config["backoff_factor"] ** attempt),
+                    self.retry_config["max_delay"]
+                )
+                await asyncio.sleep(delay)
+        
+        return False
+    
+    async def execute_order(self, symbol: str, action: str, volume: float, 
+                          sl: Optional[float] = None, tp: Optional[float] = None) -> Dict[str, Any]:
+        """Executar ordem com todas as proteções"""
+        
+        if not self.connected:
+            if not await self.connect():
+                raise ConnectionError("MT5 não conectado e falha ao reconectar")
+        
+        # Resolver símbolo (suffixes)
+        resolved_symbol = await self._resolve_symbol(symbol)
+        if not resolved_symbol:
+            raise ValueError(f"Símbolo não encontrado: {symbol}")
+        
+        # Obter tick atual
+        tick = mt5.symbol_info_tick(resolved_symbol)
+        if tick is None:
+            raise RuntimeError(f"Não foi possível obter tick para {resolved_symbol}")
+        
+        # Determinar preço
+        price = tick.ask if action == "BUY" else tick.bid
+        
+        # Preparar request
+        request = {
+            "action": mt5.TRADE_ACTION_DEAL,
+            "symbol": resolved_symbol,
+            "volume": volume,
+            "type": mt5.ORDER_TYPE_BUY if action == "BUY" else mt5.ORDER_TYPE_SELL,
+            "price": price,
+            "deviation": 10,  # 10 points
+            "magic": 1984000,  # ID Omega
+            "comment": f"AURORA_OMEGA_{action}",
+            "type_time": mt5.ORDER_TIME_GTC,
+            "type_filling": mt5.ORDER_FILLING_IOC,
+        }
+        
+        if sl:
+            request["sl"] = sl
+        if tp:
+            request["tp"] = tp
+        
+        # Verificação prévia (CRITICAL)
+        check_result = mt5.order_check(request)
+        if check_result.retcode != mt5.TRADE_RETCODE_DONE:
+            logger.error("❌ Order check falhou", 
+                        retcode=check_result.retcode,
+                        comment=check_result.comment)
+            raise ValueError(f"Order check failed: {check_result.comment}")
+        
+        # Executar ordem
+        result = mt5.order_send(request)
+        
+        # Registrar resultado
+        if result.retcode == mt5.TRADE_RETCODE_DONE:
+            logger.info("💸 Ordem executada com sucesso",
+                       symbol=resolved_symbol,
+                       action=action,
+                       volume=volume,
+                       price=price,
+                       order_id=result.order,
+                       position_id=result.position_id)
+            
+            # Registrar confirmação explícita
+            await self._log_confirmation(resolved_symbol, action, volume, price, result.order)
+            
+            self._record_success()
+            
+            return {
+                "success": True,
+                "order_id": result.order,
+                "position_id": result.position_id,
+                "price": price,
+                "volume": volume,
+                "symbol": resolved_symbol,
+                "action": action,
+                "timestamp": datetime.now(timezone.utc).isoformat()
+            }
+        else:
+            logger.error("❌ Falha na execução da ordem",
+                        retcode=result.retcode,
+                        comment=result.comment)
+            
+            self._record_failure()
+            
+            return {
+                "success": False,
+                "error_code": result.retcode,
+                "error_message": result.comment,
+                "symbol": resolved_symbol,
+                "action": action
+            }
+    
+    async def _resolve_symbol(self, base_symbol: str) -> Optional[str]:
+        """Resolver símbolo com suffixes diferentes"""
+        candidates = [
+            base_symbol,
+            base_symbol + "m",      # FXTM/MetaQuotes demo
+            base_symbol + ".pro",   # IC Markets
+            base_symbol[:3] + "/" + base_symbol[3:],  # XAU/USD format
+            base_symbol[:3] + base_symbol[3:].lower(),  # XAUusd
+        ]
+        
+        for symbol in candidates:
+            if mt5.symbol_select(symbol, True):
+                info = mt5.symbol_info(symbol)
+                if info and info.visible and info.trade_mode != mt5.SYMBOL_TRADE_MODE_DISABLED:
+                    return symbol
+        
+        return None
+    
+    def _record_success(self):
+        """Registrar sucesso e resetar circuit breaker"""
+        self.circuit_breaker["failure_count"] = 0
+        self.circuit_breaker["tripped"] = False
+        self.circuit_breaker["trip_time"] = None
+    
+    def _record_failure(self):
+        """Registrar falha e verificar circuit breaker"""
+        self.circuit_breaker["failure_count"] += 1
+        
+        if self.circuit_breaker["failure_count"] >= self.circuit_breaker["max_failures"]:
+            self.circuit_breaker["tripped"] = True
+            self.circuit_breaker["trip_time"] = datetime.now(timezone.utc)
+            logger.warning(f"🔌 Circuit breaker ativado para MT5")
+    
+    def _should_reset_circuit(self) -> bool:
+        """Verificar se circuit breaker deve ser resetado"""
+        if not self.circuit_breaker["tripped"] or not self.circuit_breaker["trip_time"]:
+            return True
+        
+        time_elapsed = (datetime.now(timezone.utc) - self.circuit_breaker["trip_time"]).total_seconds()
+        return time_elapsed >= self.circuit_breaker["recovery_timeout"]
+    
+    def _reset_circuit(self):
+        """Resetar circuit breaker"""
+        self.circuit_breaker.update({
+            "failure_count": 0,
+            "tripped": False,
+            "trip_time": None
+        })
+        logger.info("🔄 Circuit breaker resetado para MT5")
+    
+    async def _log_confirmation(self, symbol: str, action: str, volume: float, price: float, order_id: int):
+        """Registrar confirmação explícita da execução"""
+        log_dir = Path("logs")
+        log_dir.mkdir(exist_ok=True)
+        
+        log_file = log_dir / f"executions_{datetime.now(timezone.utc).date().isoformat()}.csv"
+        
+        # Verificar se precisa escrever header
+        write_header = not log_file.exists()
+        
+        with open(log_file, "a") as f:
+            if write_header:
+                f.write("timestamp,symbol,action,volume,price,order_id,status\n")
+            
+            timestamp = datetime.now(timezone.utc).isoformat()
+            f.write(f"{timestamp},{symbol},{action},{volume},{price:.5f},{order_id},EXECUTED\n")
+            
+            # Linha de confirmação explícita (✅)
+            f.write(f"✅ EXECUTION CONFIRMED: {symbol} {action} {volume} @ {price:.5f} | Order: {order_id} | Time: {timestamp}\n")
+        
+        logger.debug("📝 Confirmação registrada", file=str(log_file))
+    
+    async def shutdown(self):
+        """Desligar conexão MT5"""
+        if self.connected:
+            mt5.shutdown()
+            self.connected = False
+            logger.info("🔌 Conexão MT5 fechada")
+
+# ============================================================================
+# 🎯 ORCHESTRATOR PRINCIPAL
+# ============================================================================
+
+class AuroraOrchestrator:
+    """Orquestrador principal do sistema Aurora Omega"""
+    
+    def __init__(self, config_path: Optional[str] = None):
+        self.config = self._load_config(config_path)
+        self.omega_protocol = OmegaProtocol()
+        self.zeromq_bus = ZeroMQBus()
+        self.consensus_engine = ConsensusEngine()
+        self.risk_engine = RiskEngine()
+        self.mt5_executor = None
+        self.agents = {}
+        self.running = False
+        self.portfolio_state = {
+            "balance": 10000.0,  # Placeholder
+            "positions": {},
+            "current_drawdown": 0.0,
+            "symbol_exposure": {}
+        }
+        
+        # Inicializar agentes
+        self._initialize_agents()
+        
+        # Configurar modo baseado em configuração
+        mode = self.config.get("mode", "EXPLORATION")
+        self.risk_engine.set_mode(mode)
+        
+        if mode == "EXPLORATION":
+            self.consensus_engine.min_consensus_percent = 0.286  # 28.6%
+        elif mode == "VALIDATION":
+            self.consensus_engine.min_consensus_percent = 0.429  # 42.9%
+        else:  # PRODUCTION
+            self.consensus_engine.min_consensus_percent = 0.571  # 57.1%
+    
+    def _load_config(self, config_path: Optional[str]) -> Dict[str, Any]:
+        """Carregar configuração do sistema"""
+        default_config = {
+            "mode": "EXPLORATION",
+            "symbols": [
+                "XAUUSD", "EURUSD", "GBPUSD", "USDJPY", "XAGUSD",
+                "BTCUSD", "ETHUSD", "US500", "US30", "NAS100",
+                "UK100", "AUDUSD", "USDCAD", "NZDUSD", "USDCHF"
+            ],
+            "cycle_interval_sec": 30,
+            "max_agents": 20,
+            "mt5_login": None,
+            "mt5_password": None,
+            "mt5_server": "MetaQuotes-Demo",
+            "dashboard_enabled": True,
+            "dashboard_port": 8501,
+            "dashboard_host": "0.0.0.0",
+            "log_level": "INFO"
+        }
+        
+        if config_path and Path(config_path).exists():
+            try:
+                with open(config_path, 'r') as f:
+                    user_config = json.load(f)
+                # Mesclar configurações
+                default_config.update(user_config)
+                logger.info(f"Configuração carregada: {config_path}")
+            except Exception as e:
+                logger.error(f"Erro ao carregar configuração: {e}")
+        
+        return default_config
+    
+    def _initialize_agents(self):
+        """Inicializar todos os agentes"""
+        symbols = self.config.get("symbols", [])
+        
+        # Configuração base para agentes
+        base_config = {
+            "execution_threshold": 0.7,
+            "max_position": 100000.0,
+            "order_size": 1.0,
+            "cycle_interval_sec": self.config.get("cycle_interval_sec", 30),
+            "weight": 2.0  # Peso maior para especializados
+        }
+        
+        # Criar agentes especializados
+        for symbol in symbols[:15]:  # Máximo 15 especializados
+            if "XAU" in symbol:
+                agent = XAUUSDAgent(symbol, base_config)
+            elif "EUR" in symbol:
+                agent = EURUSDAgent(symbol, base_config)
+            elif "BTC" in symbol or "ETH" in symbol:
+                agent = BTCUSDAgent(symbol, base_config)
+            else:
+                agent = AutonomousAssetAgent(symbol, base_config)
+            
+            self.agents[agent.name] = agent
+        
+        # Criar agentes C-Level
+        clevel_config = base_config.copy()
+        clevel_config["weight"] = 1.0  # Peso base
+        
+        clevel_agents = [
+            ("CEO", CEAgent),
+            ("CKO", CKOAgent),
+            # Adicionar outros C-Level conforme necessário
+        ]
+        
+        for name, agent_class in clevel_agents:
+            agent = agent_class(clevel_config)
+            self.agents[agent.name] = agent
+        
+        logger.info(f"✅ {len(self.agents)} agentes inicializados")
+    
+    async def initialize_mt5(self):
+        """Inicializar conexão MT5 se configurado"""
+        login = self.config.get("mt5_login")
+        password = self.config.get("mt5_password")
+        server = self.config.get("mt5_server")
+        
+        if login and password:
+            self.mt5_executor = ResilientMT5Executor(login, password, server)
+            connected = await self.mt5_executor.connect()
+            
+            if connected:
+                logger.info("✅ MT5 integrado e pronto")
+                return True
+            else:
+                logger.warning("⚠️ MT5 não conectado - sistema operará em modo simulação")
+                return False
+        else:
+            logger.info("ℹ️ MT5 não configurado - operando em modo simulação")
+            return False
+    
+    async def start(self):
+        """Iniciar sistema completo"""
+        try:
+            logger.info("🚀 INICIANDO AURORA OMEGA v8.0")
+            
+            # 1. Ativar Protocolo Omega
+            omega_status = self.omega_protocol.activate()
+            logger.info("⚡ Protocolo Omega ativado", status=omega_status)
+            
+            # 2. Inicializar ZeroMQ Bus
+            await self.zeromq_bus.initialize()
+            
+            # 3. Inicializar MT5 (se configurado)
+            mt5_ready = await self.initialize_mt5()
+            
+            # 4. Iniciar loop principal
+            self.running = True
+            logger.info("🔄 Iniciando loop principal de trading")
+            
+            cycle_count = 0
+            while self.running:
+                try:
+                    await self._trading_cycle()
+                    cycle_count += 1
+                    
+                    # Log a cada 10 ciclos
+                    if cycle_count % 10 == 0:
+                        logger.info(f"📊 Ciclo {cycle_count} completado")
+                    
+                    # Intervalo entre ciclos
+                    interval = self.config.get("cycle_interval_sec", 30)
+                    await asyncio.sleep(interval)
+                    
+                except KeyboardInterrupt:
+                    logger.info("🛑 Interrupção por teclado detectada")
+                    break
+                except Exception as e:
+                    logger.error(f"❌ Erro no ciclo de trading: {e}")
+                    await asyncio.sleep(5)  # Esperar antes de retry
+            
+            # Desligamento gracioso
+            await self.shutdown()
+            
+        except Exception as e:
+            logger.error(f"💥 Erro fatal ao iniciar sistema: {e}")
+            await self.emergency_shutdown()
+    
+    async def _trading_cycle(self):
+        """Executar um ciclo completo de trading"""
+        # Para cada símbolo configurado
+        for symbol in self.config.get("symbols", []):
+            try:
+                # 1. Coletar dados de mercado (simulado por enquanto)
+                market_data = await self._get_market_data(symbol)
+                
+                # 2. Obter votos de todos os agentes
+                votes = await self._collect_agent_votes(symbol, market_data)
+                
+                # 3. Calcular consenso
+                consensus = self.consensus_engine.calculate_consensus(votes)
+                
+                # 4. Criar sinal de trading
+                trade_signal = TradeSignal(
+                    symbol=symbol,
+                    action=consensus["decision"],
+                    confidence=consensus["confidence"],
+                    agents_votes=votes,
+                    timestamp=datetime.now(timezone.utc)
+                )
+                
+                # 5. Validar risco
+                risk_valid, risk_reason, risk_details = self.risk_engine.validate_trade(
+                    trade_signal, self.portfolio_state
+                )
+                
+                # 6. Se aprovado e não for HOLD, executar
+                if risk_valid and consensus["decision"] in ["BUY", "SELL"]:
+                    # Calcular tamanho da posição
+                    position_size = self.risk_engine.calculate_position_size(
+                        trade_signal, self.portfolio_state["balance"]
+                    )
+                    trade_signal.position_size = position_size
+                    
+                    # Executar trade
+                    execution_result = await self._execute_trade(trade_signal)
+                    
+                    # Atualizar estado do portfolio
+                    await self._update_portfolio_state(trade_signal, execution_result)
+                    
+                    # Log detalhado
+                    logger.info("🎯 TRADE EXECUTADO",
+                               symbol=symbol,
+                               action=consensus["decision"],
+                               confidence=f"{consensus['confidence']:.1%}",
+                               consensus=f"{consensus['consensus_percent']:.1%}",
+                               position_size=position_size,
+                               risk_score=risk_details.get('risk_score', 0))
+                
+                else:
+                    # Log de decisão de HOLD ou bloqueio por risco
+                    log_level = "debug" if consensus["decision"] == "HOLD" else "info"
+                    getattr(logger, log_level)("⏸️ Trade não executado",
+                               symbol=symbol,
+                               decision=consensus["decision"],
+                               reason=risk_reason if not risk_valid else "Consenso HOLD",
+                               risk_score=risk_details.get('risk_score', 0))
+                
+                # Pequena pausa entre símbolos
+                await asyncio.sleep(0.1)
+                
+            except Exception as e:
+                logger.error(f"❌ Erro processando {symbol}: {e}")
+                continue
+    
+    async def _get_market_data(self, symbol: str) -> MarketData:
+        """Obter dados de mercado (simulado por enquanto)"""
+        # Em produção, integrar com fonte real de dados
+        import random
+        
+        # Gerar dados simulados
+        base_price = 1800.0 if "XAU" in symbol else 1.1000 if "EUR" in symbol else 100.0
+        price = base_price * (1 + random.uniform(-0.01, 0.01))  # ±1%
+        
+        return MarketData(
+            symbol=symbol,
+            price=price,
+            spread=random.uniform(0.5, 3.0),
+            volume=random.uniform(1000, 10000),
+            ma5=price * (1 + random.uniform(-0.005, 0.005)),
+            ma20=price * (1 + random.uniform(-0.01, 0.01)),
+            volatility_24h=random.uniform(0.5, 2.0)
+        )
+    
+    async def _collect_agent_votes(self, symbol: str, market_data: MarketData) -> List[AgentVote]:
+        """Coletar votos de todos os agentes relevantes"""
+        votes = []
+        
+        # Agente especializado para este símbolo
+        specialized_agent_name = f"Agent_{symbol}"
+        if specialized_agent_name in self.agents:
+            try:
+                vote = await self.agents[specialized_agent_name].analyze(market_data)
+                votes.append(vote)
+            except Exception as e:
+                logger.error(f"❌ Agente {specialized_agent_name} falhou: {e}")
+        
+        # Agentes C-Level (todos votam em todos os símbolos)
+        clevel_agents = ["CEO", "CKO"]  # Adicionar outros conforme implementados
+        for agent_name in clevel_agents:
+            if agent_name in self.agents:
+                try:
+                    vote = await self.agents[agent_name].analyze(market_data)
+                    votes.append(vote)
+                except Exception as e:
+                    logger.error(f"❌ Agente {agent_name} falhou: {e}")
+        
+        return votes
+    
+    async def _execute_trade(self, trade_signal: TradeSignal) -> Dict[str, Any]:
+        """Executar trade através do executor apropriado"""
+        if self.mt5_executor and self.mt5_executor.connected:
+            # Executar via MT5 real
+            try:
+                result = await self.mt5_executor.execute_order(
+                    symbol=trade_signal.symbol,
+                    action=trade_signal.action,
+                    volume=trade_signal.position_size or 0.01
+                )
+                return result
+            except Exception as e:
+                logger.error(f"❌ Execução MT5 falhou: {e}")
+                # Fallback para simulação
+                return await self._simulate_trade_execution(trade_signal)
+        else:
+            # Simular execução
+            return await self._simulate_trade_execution(trade_signal)
+    
+    async def _simulate_trade_execution(self, trade_signal: TradeSignal) -> Dict[str, Any]:
+        """Simular execução de trade (para desenvolvimento/testes)"""
+        import random
+        
+        # Simular execução com 95% de sucesso
+        success = random.random() > 0.05
+        
+        if success:
+            trade_id = random.randint(1000000, 9999999)
+            
+            # Log de confirmação simulada
+            log_dir = Path("logs")
+            log_dir.mkdir(exist_ok=True)
+            
+            log_file = log_dir / f"simulated_executions_{datetime.now(timezone.utc).date().isoformat()}.csv"
+            write_header = not log_file.exists()
+            
+            with open(log_file, "a") as f:
+                if write_header:
+                    f.write("timestamp,symbol,action,volume,price,trade_id,status\n")
+                
+                timestamp = datetime.now(timezone.utc).isoformat()
+                price = trade_signal.agents_votes[0].confidence * 100 if trade_signal.agents_votes else 100.0
+                volume = trade_signal.position_size or 0.01
+                
+                f.write(f"{timestamp},{trade_signal.symbol},{trade_signal.action},{volume},{price:.5f},{trade_id},SIMULATED\n")
+                f.write(f"✅ SIMULATED EXECUTION: {trade_signal.symbol} {trade_signal.action} {volume} @ {price:.5f} | Trade: {trade_id}\n")
+            
+            logger.info("💸 Trade simulado executado",
+                       symbol=trade_signal.symbol,
+                       action=trade_signal.action,
+                       volume=volume,
+                       trade_id=trade_id)
+            
+            return {
+                "success": True,
+                "trade_id": trade_id,
+                "price": price,
+                "volume": volume,
+                "symbol": trade_signal.symbol,
+                "action": trade_signal.action,
+                "simulated": True,
+                "timestamp": timestamp
+            }
+        else:
+            logger.warning("⚠️ Simulação de trade falhou",
+                          symbol=trade_signal.symbol,
+                          action=trade_signal.action)
+            
+            return {
+                "success": False,
+                "error_message": "Simulated execution failed",
+                "symbol": trade_signal.symbol,
+                "simulated": True
+            }
+    
+    async def _update_portfolio_state(self, trade_signal: TradeSignal, execution_result: Dict):
+        """Atualizar estado do portfolio após execução"""
+        if execution_result.get("success"):
+            symbol = trade_signal.symbol
+            action = trade_signal.action
+            volume = execution_result.get("volume", 0.01)
+            price = execution_result.get("price", 0.0)
+            
+            # Calcular valor da posição
+            position_value = volume * price
+            
+            # Atualizar exposição por símbolo
+            if symbol not in self.portfolio_state["symbol_exposure"]:
+                self.portfolio_state["symbol_exposure"][symbol] = 0.0
+            
+            if action == "BUY":
+                self.portfolio_state["symbol_exposure"][symbol] += position_value
+            elif action == "SELL":
+                self.portfolio_state["symbol_exposure"][symbol] -= position_value
+            
+            # Calcular drawdown (simplificado)
+            # Em produção, calcular baseado em histórico real
+            self.portfolio_state["current_drawdown"] = random.uniform(0.0, 0.05)  # Placeholder
+    
+    async def shutdown(self):
+        """Desligamento gracioso do sistema"""
+        logger.info("🛑 Iniciando desligamento gracioso...")
+        self.running = False
+        
+        # Desligar MT5
+        if self.mt5_executor:
+            await self.mt5_executor.shutdown()
+        
+        # Fechar ZeroMQ
+        await self.zeromq_bus.close()
+        
+        logger.info("✅ Sistema desligado com sucesso")
+        
+        # Escrever confirmação final
+        log_dir = Path("logs")
+        log_dir.mkdir(exist_ok=True)
+        
+        status_file = log_dir / "system_status.log"
+        with open(status_file, "a") as f:
+            f.write(f"✅ AURORA OMEGA SESSION COMPLETED AT {datetime.now(timezone.utc).isoformat()}Z\n")
+    
+    async def emergency_shutdown(self):
+        """Desligamento de emergência"""
+        logger.error("🚨 INICIANDO DESLIGAMENTO DE EMERGÊNCIA")
+        
+        # Fechar tudo imediatamente
+        if self.mt5_executor:
+            try:
+                mt5.shutdown()
+            except:
+                pass
+        
+        try:
+            self.zeromq_bus.context.term()
+        except:
+            pass
+        
+        logger.critical("🔴 SISTEMA DESLIGADO EM MODO DE EMERGÊNCIA")

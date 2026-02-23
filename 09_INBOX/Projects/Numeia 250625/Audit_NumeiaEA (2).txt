@@ -1,0 +1,64 @@
+==============================
+AUDITORIA INSTITUCIONAL – NUMEIA EA
+==============================
+
+Data: [Preencher com data atual]
+
+1. ESTRUTURA DE PASTAS E ARQUIVOS
+---------------------------------
+- Núcleo modular bem definido: Core, Agents, Auditor, Utils, Config, Include (Analysis, ExecutionLogic, DecisionEngine, Visuals)
+- Arquivos de análise STO criados corretamente: STOBarULTIMATE.mqh, STOForceHistogram.mqh, STOBarDetector.mqh
+- Arquivos de execução e dashboard presentes
+
+2. NOMENCLATURA E PADRÕES
+-------------------------
+- Todos os arquivos de análise STO seguem padrão de maiúsculas: STOBarULTIMATE, STOForceHistogram, STOBarDetector
+- Funções internas e chamadas respeitam padrão PascalCase
+- **Problema crítico:**
+  - As constantes DEFENSE_BUY_ZONE, DEFENSE_SELL_ZONE, DEFENSE_NONE e o tipo DefenseStatus são utilizadas em:
+    - DefenseOrchestrator.mqh
+    - DefenseDashboard.mq5
+  - **Porém, NÃO estão definidas em nenhum arquivo do projeto** (nem em types.mqh, nem em Analysis, nem em Visuals)
+  - Isso causará erro de compilação e falha de integração entre DefenseOrchestrator e DefenseDashboard
+- Nomes de funções e enums em arquivos STO estão consistentes
+- Pequena inconsistência: AuditLog("stoForceHistogram", ...) usa minúsculo, enquanto outros usam "STOBarULTIMATE", "STOBarDetector" (recomenda-se padronizar para maiúsculo)
+
+3. DEPENDÊNCIAS E INCLUDES
+--------------------------
+- Includes de AuditManager, ArrayObj, Log, etc, estão corretos
+- Includes relativos e absolutos misturados (ex: <Logs/AuditManager.mqh> vs "..\Utils\Log.mqh")
+  - Recomenda-se padronizar para um único estilo (preferencialmente absoluto para projetos grandes)
+- Não há includes circulares detectados
+- Funções de logging institucional presentes e integradas
+
+4. FUNÇÕES E ESTRUTURAS AUSENTES
+--------------------------------
+- **DefenseStatus** (enum ou struct) não existe no projeto
+- **DEFENSE_BUY_ZONE, DEFENSE_SELL_ZONE, DEFENSE_NONE** não existem no projeto
+- Função GetDefenseStatus usada em DefenseDashboard.mq5 não está implementada em nenhum arquivo
+- Isso impede o correto funcionamento dos módulos de defesa e dashboard
+
+5. RECOMENDAÇÕES
+----------------
+- Criar enum DefenseStatus e definir as constantes DEFENSE_BUY_ZONE, DEFENSE_SELL_ZONE, DEFENSE_NONE em um arquivo central (ex: types.mqh ou DefenseAgent.mqh)
+- Implementar a função GetDefenseStatus (provavelmente em DefenseAgent.mqh ou Visuals/DefenseDashboard.mq5)
+- Padronizar nomes de logs para sempre usar o mesmo padrão (ex: "STOForceHistogram")
+- Padronizar includes para um único estilo
+- Revisar todos os módulos que dependem de DefenseStatus e sinais de defesa para garantir integração
+
+6. CHECKLIST DE NOMENCLATURA E INTEGRAÇÃO
+-----------------------------------------
+[ ] Arquivos e funções STO em maiúsculo
+[ ] Constantes DEFENSE_* definidas
+[ ] Enum DefenseStatus definido
+[ ] Função GetDefenseStatus implementada
+[ ] Includes padronizados
+[ ] Logs institucionais padronizados
+
+7. RESUMO FINAL
+---------------
+O projeto está bem modularizado e organizado, mas apresenta falhas críticas de integração entre os módulos de defesa (DefenseOrchestrator, DefenseDashboard) devido à ausência de definições essenciais. Recomenda-se corrigir imediatamente as definições de status e sinais de defesa para garantir compilação e funcionamento pleno do EA.
+
+==============================
+FIM DO RELATÓRIO
+============================== 

@@ -1,0 +1,428 @@
+#property copyright "Sistema Universal de Análise de Mercado"
+#property link      ""
+#property version   "2.0"
+#property strict
+
+#include <Trade\Trade.mqh>
+#include <Trade\PositionInfo.mqh>
+#include <Trade\SymbolInfo.mqh>
+
+// Novos includes para Volume Profile e notícias
+#include <Indicators/VolumeProfile.mqh>
+#include <Utils/NewsCalendar.mqh>
+
+// Enums existentes
+enum ENUM_APOLLO11_SIGNAL {
+   SIGNAL_NONE = 0,
+   SIGNAL_BUY = 1,
+   SIGNAL_SELL = 2
+};
+
+enum ENUM_APOLLO11_CONFIDENCE {
+   CONFIDENCE_LOW = 0,
+   CONFIDENCE_MEDIUM = 1,
+   CONFIDENCE_HIGH = 2
+};
+
+// Estruturas existentes
+struct QuantumState {
+   double amplitude;
+   double phase;
+   double energy;
+   double entropy;
+   double coherence;
+   double entanglement;
+   double probability;
+   double uncertainty; // Nova: mede incerteza quântica
+   double oscillator;  // Nova: oscilador quântico
+   void Init() {
+      amplitude = 0;
+      phase = 0;
+      energy = 0;
+      entropy = 0;
+      coherence = 0;
+      entanglement = 0;
+      probability = 0;
+      uncertainty = 1.0;
+      oscillator = 0;
+   }
+};
+
+struct VolumeAnalysis {
+   double force;
+   double quality;
+   double imbalance;
+   double momentum;
+   double skewness;
+   double kurtosis;
+   double entropy_gradient; // Nova: taxa de mudança da entropia
+   double smart_money_flow; // Nova: estimativa de fluxo institucional
+   void Init() {
+      force = 0;
+      quality = 0;
+      imbalance = 0;
+      momentum = 0;
+      skewness = 0;
+      kurtosis = 0;
+      entropy_gradient = 0;
+      smart_money_flow = 0;
+   }
+};
+
+struct GravitationalAnalysis {
+   double nodal_mass;
+   double escape_velocity;
+   double potential_energy;
+   double gravitational_field;
+   double nodal_distance;
+   double gravitational_pull; // Nova: força de atração aos nós
+   double poc_level;          // Nova: nível do POC do Volume Profile
+   void Init() {
+      nodal_mass = 0;
+      escape_velocity = 0;
+      potential_energy = 0;
+      gravitational_field = 0;
+      nodal_distance = 0;
+      gravitational_pull = 0;
+      poc_level = 0;
+   }
+};
+
+// Constantes
+#define G_MARKET 6.67430e-11
+#define M_PI 3.14159265358979323846
+
+// Variáveis globais (mantidas)
+CTrade trade;
+CPositionInfo positionInfo;
+CSymbolInfo symbolInfo;
+int ma200_handle, ma50_handle, rsi_handle, macd_handle, atr_handle, bbands_handle, volume_handle;
+double vwapValue = 0;
+datetime lastVwapUpdate = 0;
+QuantumState currentState;
+VolumeAnalysis volumeState;
+GravitationalAnalysis gravityState;
+ENUM_APOLLO11_SIGNAL lastSignal = SIGNAL_NONE;
+ENUM_APOLLO11_CONFIDENCE lastConfidence = CONFIDENCE_LOW;
+double lastQuantumScore = 0;
+datetime lastTradeTime = 0;
+int totalTrades = 0, winningTrades = 0;
+double totalProfit = 0;
+
+// Novos handles e objetos
+CVolumeProfile volumeProfile;
+CNewsCalendar newsCalendar;
+
+// Parâmetros de entrada (expandidos)
+input double InitialLots = 0.1;           // Tamanho inicial do lote
+input double MaxLots = 1.0;               // Tamanho máximo do lote
+input double RiskPercent = 2.0;           // Risco por operação (%)
+input int StopLoss = 100;                 // Stop Loss em pontos
+input int TakeProfit = 200;               // Take Profit em pontos
+input bool UseTrailingStop = true;        // Usar Trailing Stop
+input int TrailingStop = 50;              // Trailing Stop em pontos
+input int TrailingStep = 10;              // Trailing Step em pontos
+input bool UseBreakEven = true;           // Usar Break Even
+input int BreakEvenPoints = 50;           // Break Even em pontos
+input int BreakEvenProfit = 20;           // Lucro para Break Even em pontos
+input bool UseTimeFilter = true;          // Usar filtro de horário
+input string StartTime = "07:00";         // Horário de início (Londres)
+input string EndTime = "21:00";           // Horário de fim (NY)
+input bool UseNewsFilter = true;          // Usar filtro de notícias
+input int NewsMinutesBefore = 60;         // Minutos antes da notícia
+input int NewsMinutesAfter = 30;          // Minutos depois da notícia
+input bool UseVolumeFilter = true;        // Usar filtro de volume
+input double MinVolumeForce = 1.1;        // Força mínima do volume
+input bool UseTrendFilter = true;         // Usar filtro de tendência
+input int TrendPeriod = 20;               // Período da tendência
+input double GMarketConstant = 6.67430e-11; // Constante gravitacional
+input double MinEscapeVelocity = 1.5;     // Velocidade de escape mínima
+input double MinProbability = 0.6;        // Probabilidade mínima
+input double CoherenceThreshold = 0.62;   // Limiar de coerência
+input double EntropyThreshold = 3.2;      // Limiar de entropia
+input int MinSessionVolume = 1000;        // Volume mínimo da sessão
+input double ImbalanceThreshold = 0.12;   // Limiar de desequilíbrio
+input double VOL_IDEAL_MIN_PIPS = 7.0;    // Volatilidade mínima (pips)
+input double VOL_IDEAL_MAX_PIPS = 12.0;   // Volatilidade máxima (pips)
+input double AtrMultiplierSL = 1.8;       // Multiplicador ATR para SL
+input double AtrMultiplierTP = 2.2;       // Multiplicador ATR para TP
+// Novos parâmetros
+input double WeightProbCoherence = 0.3;   // Peso da coerência na probabilidade
+input double WeightProbEntanglement = 0.2;// Peso do emaranhamento
+input double WeightProbEnergy = 0.2;      // Peso da energia
+input double WeightProbVolume = 0.15;     // Peso do volume
+input double WeightProbGravity = 0.15;    // Peso da gravidade
+input double UncertaintyThreshold = 0.8;  // Limiar de incerteza quântica
+input double GravitationalPullThreshold = 0.5; // Limiar de atração gravitacional
+input int VolumeProfilePeriod = 20;       // Período para Volume Profile (barras)
+
+// OnInit (atualizado)
+int OnInit() {
+   // Inicialização existente
+   ma200_handle = iMA(_Symbol, PERIOD_CURRENT, 200, 0, MODE_SMA, PRICE_CLOSE);
+   ma50_handle = iMA(_Symbol, PERIOD_CURRENT, 50, 0, MODE_SMA, PRICE_CLOSE);
+   rsi_handle = iRSI(_Symbol, PERIOD_CURRENT, 14, PRICE_CLOSE);
+   macd_handle = iMACD(_Symbol, PERIOD_CURRENT, 12, 26, 9, PRICE_CLOSE);
+   atr_handle = iATR(_Symbol, PERIOD_CURRENT, 14);
+   bbands_handle = iBands(_Symbol, PERIOD_CURRENT, 20, 0, 2, PRICE_CLOSE);
+   volume_handle = iVolumes(_Symbol, PERIOD_CURRENT, VOLUME_TICK);
+   
+   if(ma200_handle == INVALID_HANDLE || ma50_handle == INVALID_HANDLE || 
+      rsi_handle == INVALID_HANDLE || macd_handle == INVALID_HANDLE || 
+      atr_handle == INVALID_HANDLE || bbands_handle == INVALID_HANDLE ||
+      volume_handle == INVALID_HANDLE) {
+      Print("Erro ao inicializar indicadores!");
+      return INIT_FAILED;
+   }
+   
+   // Inicialização do Volume Profile
+   if(!volumeProfile.Init(_Symbol, PERIOD_CURRENT, VolumeProfilePeriod)) {
+      Print("Erro ao inicializar Volume Profile!");
+      return INIT_FAILED;
+   }
+   
+   // Inicialização do calendário de notícias
+   if(!newsCalendar.Init()) {
+      Print("Erro ao inicializar NewsCalendar!");
+      return INIT_FAILED;
+   }
+   
+   currentState.Init();
+   volumeState.Init();
+   gravityState.Init();
+   
+   trade.SetExpertMagicNumber(123456);
+   trade.SetMarginMode();
+   trade.SetTypeFillingBySymbol(_Symbol);
+   trade.SetDeviationInPoints(10);
+   
+   if(!symbolInfo.Name(_Symbol) || !symbolInfo.RefreshRates()) {
+      Print("Erro ao configurar símbolo!");
+      return INIT_FAILED;
+   }
+   
+   Print("Apollo11 Quantum EA 2.0 inicializado!");
+   return INIT_SUCCEEDED;
+}
+
+// OnDeinit (atualizado)
+void OnDeinit(const int reason) {
+   IndicatorRelease(ma200_handle);
+   IndicatorRelease(ma50_handle);
+   IndicatorRelease(rsi_handle);
+   IndicatorRelease(macd_handle);
+   IndicatorRelease(atr_handle);
+   IndicatorRelease(bbands_handle);
+   IndicatorRelease(volume_handle);
+   volumeProfile.Deinit();
+   newsCalendar.Deinit();
+   Print("Apollo11 Quantum EA 2.0 finalizado!");
+}
+
+// CheckTradingConditions (otimizado)
+bool CheckTradingConditions() {
+   // 1. Filtro de horário
+   if(UseTimeFilter) {
+      datetime currentTime = TimeCurrent();
+      string currentTimeStr = TimeToString(currentTime, TIME_MINUTES);
+      if(currentTimeStr < StartTime || currentTimeStr > EndTime) {
+         Print("Fora do horário de trading");
+         return false;
+      }
+      if(UseSessionFilter && !IsHighLiquiditySession(currentTime)) {
+         Print("Sessão de baixa liquidez");
+         return false;
+      }
+   }
+   
+   // 2. Filtro de notícias
+   if(UseNewsFilter && IsNewsTime()) {
+      Print("Período de notícias de alto impacto");
+      return false;
+   }
+   
+   // 3. Filtro de volume
+   if(UseVolumeFilter) {
+      if(volumeState.force < MinVolumeForce) {
+         Print("Força de volume insuficiente: ", volumeState.force);
+         return false;
+      }
+      if(UseSessionFilter && GetSessionVolume() < MinSessionVolume) {
+         Print("Volume de sessão insuficiente");
+         return false;
+      }
+   }
+   
+   // 4. Filtro de tendência
+   if(UseTrendFilter && !IsTrendValid()) {
+      Print("Tendência inválida");
+      return false;
+   }
+   
+   return true;
+}
+
+// IsNewsTime (implementado)
+bool IsNewsTime() {
+   if(!UseNewsFilter) return false;
+   datetime currentTime = TimeCurrent();
+   if(newsCalendar.IsHighImpactEvent(currentTime, NewsMinutesBefore, NewsMinutesAfter)) {
+      return true;
+   }
+   // Fallback: detectar entropia extrema (buraco negro)
+   if(currentState.entropy > EntropyThreshold * 1.5) {
+      Print("Entropia extrema detectada: possível evento de mercado");
+      return true;
+   }
+   return false;
+}
+
+// UpdateGravitationalState (evoluído)
+void UpdateGravitationalState() {
+   double currentPrice;
+   if(!SymbolInfoDouble(_Symbol, SYMBOL_BID, currentPrice)) {
+      Print("Erro ao obter SYMBOL_BID: ", GetLastError());
+      gravityState.Init();
+      return;
+   }
+   
+   double atr[];
+   ArraySetAsSeries(atr, true);
+   if(CopyBuffer(atr_handle, 0, 0, 1, atr) <= 0) {
+      Print("Erro ao obter ATR: ", GetLastError());
+      gravityState.Init();
+      return;
+   }
+   
+   // Calcula o VWAP e o POC do Volume Profile
+   double vwap = CalculateVWAP();
+   gravityState.poc_level = volumeProfile.GetPOCLevel();
+   if(vwap == 0 || gravityState.poc_level == 0) {
+      Print("Erro: VWAP ou POC inválido");
+      gravityState.Init();
+      return;
+   }
+   
+   // Cálculo da massa nodal (incorpora skewness)
+   gravityState.nodal_mass = volumeState.force * atr[0] * (1 + MathAbs(volumeState.skewness));
+   
+   // Cálculo da distância ao nó (usa POC como nó primário)
+   gravityState.nodal_distance = MathAbs(currentPrice - gravityState.poc_level);
+   if(gravityState.nodal_distance < 1e-10) {
+      gravityState.nodal_distance = 1e-10;
+   }
+   
+   // Cálculo do campo gravitacional
+   gravityState.gravitational_field = GMarketConstant * gravityState.nodal_mass / 
+                                     MathPow(gravityState.nodal_distance, 2);
+   
+   // Cálculo da velocidade de escape
+   gravityState.escape_velocity = MathSqrt(2 * GMarketConstant * gravityState.nodal_mass / 
+                                          gravityState.nodal_distance);
+   
+   // Cálculo da energia potencial
+   gravityState.potential_energy = -GMarketConstant * gravityState.nodal_mass * 
+                                  volumeState.force / gravityState.nodal_distance;
+   
+   // Cálculo da força gravitacional
+   gravityState.gravitational_pull = gravityState.gravitational_field * volumeState.smart_money_flow;
+}
+
+// CalculateTransitionProbability (parametrizado)
+double CalculateTransitionProbability() {
+   double probability = 0;
+   probability += WeightProbCoherence * currentState.coherence;
+   probability += WeightProbEntanglement * currentState.entanglement;
+   probability += WeightProbEnergy * (currentState.energy * 1e30);
+   probability += WeightProbVolume * volumeState.force;
+   probability += WeightProbGravity * (1 - gravityState.gravitational_field / 
+                                      (GMarketConstant * gravityState.nodal_mass));
+   // Ajuste por incerteza
+   probability *= (1 - currentState.uncertainty);
+   return MathMin(probability, 1.0);
+}
+
+// CalculateSignal (refinado)
+ENUM_APOLLO11_SIGNAL CalculateSignal() {
+   double ma200[], ma50[], rsi[], macd_main[], macd_signal[], bbands_upper[], bbands_lower[];
+   ArraySetAsSeries(ma200, true);
+   ArraySetAsSeries(ma50, true);
+   ArraySetAsSeries(rsi, true);
+   ArraySetAsSeries(macd_main, true);
+   ArraySetAsSeries(macd_signal, true);
+   ArraySetAsSeries(bbands_upper, true);
+   ArraySetAsSeries(bbands_lower, true);
+   
+   if(CopyBuffer(ma200_handle, 0, 0, 2, ma200) <= 0 ||
+      CopyBuffer(ma50_handle, 0, 0, 2, ma50) <= 0 ||
+      CopyBuffer(rsi_handle, 0, 0, 2, rsi) <= 0 ||
+      CopyBuffer(macd_handle, 0, 0, 2, macd_main) <= 0 ||
+      CopyBuffer(macd_handle, 1, 0, 2, macd_signal) <= 0 ||
+      CopyBuffer(bbands_handle, 1, 0, 2, bbands_upper) <= 0 ||
+      CopyBuffer(bbands_handle, 2, 0, 2, bbands_lower) <= 0) {
+      Print("Erro ao obter dados dos indicadores");
+      return SIGNAL_NONE;
+   }
+   
+   double currentPrice;
+   if(!SymbolInfoDouble(_Symbol, SYMBOL_BID, currentPrice)) {
+      Print("Erro ao obter SYMBOL_BID: ", GetLastError());
+      return SIGNAL_NONE;
+   }
+   
+   // Superposição quântica: calcula probabilidades para compra e venda
+   double buyProbability = 0, sellProbability = 0;
+   if(ma50[0] > ma200[0] && rsi[0] < 70 && macd_main[0] > macd_signal[0]) {
+      buyProbability += 0.3;
+   }
+   if(ma50[0] < ma200[0] && rsi[0] > 30 && macd_main[0] < macd_signal[0]) {
+      sellProbability += 0.3;
+   }
+   if(currentPrice < bbands_upper[0]) buyProbability += 0.2;
+   if(currentPrice > bbands_lower[0]) sellProbability += 0.2;
+   if(volumeState.force > MinVolumeForce) {
+      buyProbability += 0.1;
+      sellProbability += 0.1;
+   }
+   if(volumeState.imbalance > ImbalanceThreshold) buyProbability += 0.15;
+   if(volumeState.imbalance < -ImbalanceThreshold) sellProbability += 0.15;
+   if(currentState.coherence > CoherenceThreshold) {
+      buyProbability += 0.1;
+      sellProbability += 0.1;
+   }
+   if(currentState.probability > MinProbability) {
+      buyProbability += 0.1;
+      sellProbability += 0.1;
+   }
+   if(volumeState.momentum > 0) buyProbability += 0.05;
+   if(volumeState.momentum < 0) sellProbability += 0.05;
+   if(gravityState.escape_velocity > MinEscapeVelocity) {
+      buyProbability += 0.1;
+      sellProbability += 0.1;
+   }
+   if(gravityState.gravitational_pull < GravitationalPullThreshold) {
+      buyProbability += 0.1;
+      sellProbability += 0.1;
+   }
+   if(currentState.uncertainty < UncertaintyThreshold) {
+      buyProbability += 0.1;
+      sellProbability += 0.1;
+   }
+   
+   // Colapso do estado quântico
+   bool bullish = buyProbability > sellProbability &&
+                  currentState.energy > 0 &&
+                  currentState.entropy < EntropyThreshold &&
+                  volumeState.entropy_gradient > 0;
+   bool bearish = sellProbability > buyProbability &&
+                  currentState.energy > 0 &&
+                  currentState.entropy < EntropyThreshold &&
+                  volumeState.entropy_gradient < 0;
+   
+   if(bullish) return SIGNAL_BUY;
+   if(bearish) return SIGNAL_SELL;
+   return SIGNAL_NONE;
+}
+
+// Outras funções (mantidas ou ajustadas conforme necessário)
+// ... [incluir ExecuteTrade, CalculateConfidence, etc., com ajustes similares] ...

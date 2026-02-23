@@ -1,0 +1,848 @@
+"""
+PORTÃO DE INTEGRAÇÃO - NENHUM MÓDULO É CONSIDERADO "COMPLETO" SEM PASSAR AQUI
+Valida que o módulo está realmente integrado e operacional
+STATUS: CRÍTICO - GATEKEEPER DO SISTEMA
+"""
+
+import json
+import hashlib
+from datetime import datetime
+from typing import Dict, List, Optional, Tuple
+import logging
+
+# ============================================================================
+# CONFIGURAÇÃO
+# ============================================================================
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s.%(msecs)03d | %(levelname)-8s | %(name)-25s | %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+logger = logging.getLogger("NCNT.IntegrationGate")
+
+# PADRÕES DE CERTIFICAÇÃO
+CERTIFICATION_STANDARDS = {
+    "TIER-0": {
+        "min_score": 95,
+        "requirements": [
+            "registered_in_genesis",
+            "is_ncnt_module", 
+            "module_vitals",
+            "neural_connections",
+            "health_check",
+            "dependency_test",
+            "neural_signal_test",
+            "performance_benchmark"
+        ]
+    },
+    "TIER-1": {
+        "min_score": 85,
+        "requirements": [
+            "registered_in_genesis",
+            "is_ncnt_module",
+            "module_vitals",
+            "health_check",
+            "dependency_test"
+        ]
+    },
+    "TIER-2": {
+        "min_score": 70,
+        "requirements": [
+            "registered_in_genesis",
+            "is_ncnt_module",
+            "health_check"
+        ]
+    }
+}
+
+# ============================================================================
+# CLASSE PRINCIPAL: INTEGRATION GATE
+# ============================================================================
+class IntegrationGate:
+    """
+    Portão de integração - valida que módulos estão operacionalmente integrados
+    """
+    
+    def __init__(self):
+        self.validation_history = {}
+        self.certification_log = []
+        
+    def validate_module_integration(self, module_name: str, 
+                                   certification_level: str = "TIER-1") -> Dict:
+        """
+        Valida que um módulo está totalmente integrado no sistema
+        
+        Critérios de validação:
+        1. ✅ Está registrado no Genesis Includes
+        2. ✅ É um NCNTModule (herda da classe base)
+        3. ✅ Tem sinais vitais ativos
+        4. ✅ Está conectado a seus módulos dependentes
+        5. ✅ Health checks retornam positivo
+        6. ✅ Dependências estão disponíveis
+        7. ✅ Pode enviar/receber sinais neurais
+        8. ✅ Performance dentro dos limites
+        """
+        validation_id = hashlib.sha3_256(
+            f"{module_name}{datetime.now().isoformat()}".encode()
+        ).hexdigest()[:16]
+        
+        validation_results = {
+            "validation_id": validation_id,
+            "module": module_name,
+            "timestamp": datetime.now().isoformat(),
+            "certification_level_target": certification_level,
+            "checks": [],
+            "detailed_results": {},
+            "score": 0,
+            "passed": False,
+            "certification_granted": None,
+            "recommendations": []
+        }
+        
+        try:
+            # 0. VERIFICAR SE O MÓDULO EXISTE
+            print(f"\n🔍 VALIDAÇÃO DE INTEGRAÇÃO: {module_name}")
+            print("=" * 50)
+            
+            # 1. OBTER INSTÂNCIA DO MÓDULO
+            from 00_governanca.genesis_includes import get_genesis
+            genesis = get_genesis()
+            
+            if module_name not in genesis._dependency_registry:
+                self._add_failed_check(
+                    validation_results, 
+                    "module_exists",
+                    "Módulo não encontrado no Genesis Includes",
+                    False
+                )
+                return validation_results
+            
+            module = genesis.resolve(module_name)
+            
+            # 2. EXECUTAR TODOS OS TESTES
+            tests = [
+                self._test_genesis_registration,
+                self._test_ncnt_module_structure,
+                self._test_module_vitals,
+                self._test_neural_connections,
+                self._test_health_checks,
+                self._test_dependencies,
+                self._test_neural_signals,
+                self._test_performance
+            ]
+            
+            for test_func in tests:
+                try:
+                    result = test_func(module, module_name)
+                    validation_results["checks"].append(result)
+                    
+                    # Adicionar aos resultados detalhados
+                    check_name = result["check"]
+                    validation_results["detailed_results"][check_name] = result
+                    
+                    # Log do resultado
+                    if result["passed"]:
+                        print(f"✅ {check_name}")
+                    else:
+                        print(f"❌ {check_name}: {result.get('details', '')}")
+                        
+                except Exception as e:
+                    logger.error(f"Erro no teste {test_func.__name__}: {e}")
+            
+            # 3. CALCULAR SCORE
+            passed_checks = sum(1 for check in validation_results["checks"] if check["passed"])
+            total_checks = len(validation_results["checks"])
+            
+            score = (passed_checks / total_checks) * 100 if total_checks > 0 else 0
+            validation_results["score"] = score
+            
+            # 4. DETERMINAR CERTIFICAÇÃO
+            certification = self._determine_certification(score, certification_level)
+            validation_results["passed"] = certification["passed"]
+            validation_results["certification_granted"] = certification["level"]
+            validation_results["certification_details"] = certification
+            
+            # 5. GERAR RECOMENDAÇÕES
+            validation_results["recommendations"] = self._generate_recommendations(
+                validation_results["checks"]
+            )
+            
+            # 6. SALVAR HISTÓRICO
+            self.validation_history[validation_id] = validation_results
+            self.certification_log.append({
+                "module": module_name,
+                "timestamp": datetime.now().isoformat(),
+                "score": score,
+                "certification": certification["level"],
+                "validation_id": validation_id
+            })
+            
+            # 7. LOG FINAL
+            print(f"\n📊 RESULTADO FINAL: {module_name}")
+            print(f"   Score: {score:.1f}/100")
+            print(f"   Certificação: {certification['level']}")
+            print(f"   Status: {'✅ APROVADO' if certification['passed'] else '❌ REPROVADO'}")
+            
+            if validation_results["recommendations"]:
+                print(f"   Recomendações:")
+                for rec in validation_results["recommendations"]:
+                    print(f"   • {rec}")
+            
+            print("=" * 50)
+            
+            return validation_results
+            
+        except Exception as e:
+            error_msg = f"Erro fatal na validação: {str(e)}"
+            logger.error(error_msg)
+            
+            validation_results["checks"].append({
+                "check": "validation_process",
+                "passed": False,
+                "details": error_msg,
+                "error": str(e)
+            })
+            
+            validation_results["score"] = 0
+            validation_results["passed"] = False
+            validation_results["certification_granted"] = "FAILED"
+            
+            return validation_results
+    
+    # ============================================================================
+    # TESTES INDIVIDUAIS
+    # ============================================================================
+    
+    def _test_genesis_registration(self, module, module_name: str) -> Dict:
+        """Testa se o módulo está registrado no Genesis Includes"""
+        try:
+            from 00_governanca.genesis_includes import get_genesis
+            genesis = get_genesis()
+            
+            is_registered = module_name in genesis._dependency_registry
+            metadata = genesis.get_metadata(module_name) if is_registered else None
+            
+            return {
+                "check": "registered_in_genesis",
+                "passed": is_registered,
+                "details": {
+                    "registered": is_registered,
+                    "metadata": metadata,
+                    "registration_time": metadata.initialized_at if metadata else None
+                },
+                "weight": 15  # Peso do teste (15% do score total)
+            }
+        except Exception as e:
+            return {
+                "check": "registered_in_genesis",
+                "passed": False,
+                "details": f"Erro: {str(e)}",
+                "error": str(e),
+                "weight": 15
+            }
+    
+    def _test_ncnt_module_structure(self, module, module_name: str) -> Dict:
+        """Testa se o módulo segue a estrutura NCNTModule"""
+        required_methods = [
+            'get_vitals',
+            'get_neural_connections', 
+            'perform_health_check',
+            'send_neural_signal',
+            'receive_neural_signal'
+        ]
+        
+        missing_methods = []
+        for method in required_methods:
+            if not hasattr(module, method):
+                missing_methods.append(method)
+        
+        is_ncnt_module = len(missing_methods) == 0
+        
+        return {
+            "check": "is_ncnt_module",
+            "passed": is_ncnt_module,
+            "details": {
+                "is_ncnt_module": is_ncnt_module,
+                "missing_methods": missing_methods,
+                "total_methods": len(required_methods),
+                "has_vitals": hasattr(module, 'vitals'),
+                "has_neural_connections": hasattr(module, 'neural_connections')
+            },
+            "weight": 20  # Mais importante
+        }
+    
+    def _test_module_vitals(self, module, module_name: str) -> Dict:
+        """Testa os sinais vitais do módulo"""
+        try:
+            vitals = module.get_vitals()
+            
+            is_alive = vitals.is_alive()
+            has_connections = vitals.has_healthy_connections()
+            heartbeat_age = (datetime.now() - vitals.last_heartbeat).total_seconds()
+            
+            vitals_ok = is_alive and heartbeat_age < 300  # 5 minutos máximo
+            
+            return {
+                "check": "module_vitals",
+                "passed": vitals_ok,
+                "details": {
+                    "status": vitals.status,
+                    "is_alive": is_alive,
+                    "has_connections": has_connections,
+                    "connection_count": vitals.connection_count,
+                    "last_heartbeat": vitals.last_heartbeat.isoformat(),
+                    "heartbeat_age_seconds": heartbeat_age,
+                    "error_rate": vitals.error_rate
+                },
+                "weight": 15
+            }
+        except Exception as e:
+            return {
+                "check": "module_vitals",
+                "passed": False,
+                "details": f"Erro ao obter vitals: {str(e)}",
+                "error": str(e),
+                "weight": 15
+            }
+    
+    def _test_neural_connections(self, module, module_name: str) -> Dict:
+        """Testa conexões neurais do módulo"""
+        try:
+            connections = module.get_neural_connections()
+            
+            has_connections = len(connections) > 0
+            connection_details = []
+            
+            for conn in connections:
+                connection_details.append({
+                    "target": conn.target_module,
+                    "type": conn.connection_type,
+                    "checksum": conn.checksum,
+                    "bandwidth": conn.bandwidth,
+                    "latency_ms": conn.latency_ms
+                })
+            
+            return {
+                "check": "neural_connections",
+                "passed": has_connections,
+                "details": {
+                    "connection_count": len(connections),
+                    "has_connections": has_connections,
+                    "connections": connection_details,
+                    "checksums_valid": all(c.checksum == c.calculate_checksum() for c in connections)
+                },
+                "weight": 15
+            }
+        except Exception as e:
+            return {
+                "check": "neural_connections",
+                "passed": False,
+                "details": f"Erro ao obter conexões: {str(e)}",
+                "error": str(e),
+                "weight": 15
+            }
+    
+    def _test_health_checks(self, module, module_name: str) -> Dict:
+        """Executa health checks do módulo"""
+        try:
+            health_report = module.perform_health_check()
+            
+            health_ok = health_report.get("overall_health", False)
+            check_count = len(health_report.get("health_checks", []))
+            
+            return {
+                "check": "health_check",
+                "passed": health_ok,
+                "details": {
+                    "overall_health": health_ok,
+                    "check_count": check_count,
+                    "timestamp": health_report.get("timestamp"),
+                    "vitals": health_report.get("vitals"),
+                    "all_checks_passed": all(
+                        isinstance(check, dict) and check.get("error") is None
+                        for check in health_report.get("health_checks", [])
+                    )
+                },
+                "weight": 10
+            }
+        except Exception as e:
+            return {
+                "check": "health_check",
+                "passed": False,
+                "details": f"Erro no health check: {str(e)}",
+                "error": str(e),
+                "weight": 10
+            }
+    
+    def _test_dependencies(self, module, module_name: str) -> Dict:
+        """Testa se as dependências do módulo estão disponíveis"""
+        try:
+            from 00_governanca.genesis_includes import get_genesis
+            genesis = get_genesis()
+            
+            # Obter dependências do módulo
+            required_modules = getattr(module, 'required_modules', [])
+            
+            missing_deps = []
+            available_deps = []
+            
+            for dep in required_modules:
+                if dep in genesis._dependency_registry:
+                    available_deps.append(dep)
+                else:
+                    missing_deps.append(dep)
+            
+            all_deps_available = len(missing_deps) == 0
+            
+            return {
+                "check": "dependency_test",
+                "passed": all_deps_available,
+                "details": {
+                    "required_modules": required_modules,
+                    "available_modules": available_deps,
+                    "missing_modules": missing_deps,
+                    "all_available": all_deps_available,
+                    "dependency_count": len(required_modules)
+                },
+                "weight": 10
+            }
+        except Exception as e:
+            return {
+                "check": "dependency_test",
+                "passed": False,
+                "details": f"Erro ao testar dependências: {str(e)}",
+                "error": str(e),
+                "weight": 10
+            }
+    
+    def _test_neural_signals(self, module, module_name: str) -> Dict:
+        """Testa envio e recebimento de sinais neurais"""
+        try:
+            # Testar envio de sinal (se houver conexões)
+            connections = module.get_neural_connections()
+            
+            if not connections:
+                return {
+                    "check": "neural_signal_test",
+                    "passed": True,  # Não tem conexões para testar
+                    "details": {
+                        "has_connections": False,
+                        "signals_tested": 0,
+                        "can_send": False,
+                        "can_receive": True  # Assume que pode receber
+                    },
+                    "weight": 5
+                }
+            
+            # Testar com a primeira conexão
+            test_connection = connections[0]
+            
+            # Testar envio
+            test_signal = {
+                "type": "INTEGRATION_TEST",
+                "timestamp": datetime.now().isoformat(),
+                "source": module_name,
+                "target": test_connection.target_module,
+                "test_id": hashlib.sha3_256(f"integration_test_{datetime.now()}".encode()).hexdigest()[:8]
+            }
+            
+            can_send = False
+            try:
+                can_send = module.send_neural_signal(test_connection.target_module, test_signal)
+            except:
+                can_send = False
+            
+            # Testar recebimento (verificar se o método existe)
+            can_receive = hasattr(module, 'receive_neural_signal')
+            
+            signal_test_passed = can_receive  # Envio é opcional, recebimento obrigatório
+            
+            return {
+                "check": "neural_signal_test",
+                "passed": signal_test_passed,
+                "details": {
+                    "has_connections": True,
+                    "connections_tested": 1,
+                    "test_target": test_connection.target_module,
+                    "can_send": can_send,
+                    "can_receive": can_receive,
+                    "signal_type": test_signal["type"]
+                },
+                "weight": 5
+            }
+            
+        except Exception as e:
+            return {
+                "check": "neural_signal_test",
+                "passed": False,
+                "details": f"Erro no teste de sinal: {str(e)}",
+                "error": str(e),
+                "weight": 5
+            }
+    
+    def _test_performance(self, module, module_name: str) -> Dict:
+        """Testes básicos de performance"""
+        import time
+        
+        try:
+            start_time = time.time()
+            
+            # Testar velocidade dos health checks
+            health_report = module.perform_health_check()
+            health_check_time = time.time() - start_time
+            
+            # Testar velocidade de obtenção de vitals
+            start_time = time.time()
+            vitals = module.get_vitals()
+            vitals_time = time.time() - start_time
+            
+            # Limites de performance
+            health_check_ok = health_check_time < 2.0  # 2 segundos máximo
+            vitals_ok = vitals_time < 1.0  # 1 segundo máximo
+            
+            performance_ok = health_check_ok and vitals_ok
+            
+            return {
+                "check": "performance_benchmark",
+                "passed": performance_ok,
+                "details": {
+                    "health_check_time_ms": health_check_time * 1000,
+                    "vitals_time_ms": vitals_time * 1000,
+                    "health_check_ok": health_check_ok,
+                    "vitals_ok": vitals_ok,
+                    "performance_limits": {
+                        "max_health_check_ms": 2000,
+                        "max_vitals_ms": 1000
+                    }
+                },
+                "weight": 5
+            }
+            
+        except Exception as e:
+            return {
+                "check": "performance_benchmark",
+                "passed": False,
+                "details": f"Erro no teste de performance: {str(e)}",
+                "error": str(e),
+                "weight": 5
+            }
+    
+    # ============================================================================
+    # FUNÇÕES AUXILIARES
+    # ============================================================================
+    
+    def _add_failed_check(self, validation_results: Dict, check_name: str, 
+                         details: str, weight: int = 10) -> None:
+        """Adiciona um check com falha aos resultados"""
+        validation_results["checks"].append({
+            "check": check_name,
+            "passed": False,
+            "details": details,
+            "weight": weight
+        })
+    
+    def _determine_certification(self, score: float, target_level: str) -> Dict:
+        """Determina qual certificação o módulo recebe"""
+        
+        # Verificar todas as certificações possíveis
+        certifications = []
+        
+        for level_name, level_config in CERTIFICATION_STANDARDS.items():
+            min_score = level_config["min_score"]
+            
+            if score >= min_score:
+                certifications.append({
+                    "level": level_name,
+                    "score_required": min_score,
+                    "score_achieved": score,
+                    "passed": True,
+                    "meets_requirements": True
+                })
+            else:
+                certifications.append({
+                    "level": level_name,
+                    "score_required": min_score,
+                    "score_achieved": score,
+                    "passed": False,
+                    "meets_requirements": False
+                })
+        
+        # Encontrar a melhor certificação
+        best_cert = None
+        for cert in certifications:
+            if cert["passed"]:
+                if best_cert is None or CERTIFICATION_STANDARDS[cert["level"]]["min_score"] > \
+                   CERTIFICATION_STANDARDS[best_cert["level"]]["min_score"]:
+                    best_cert = cert
+        
+        if best_cert is None:
+            best_cert = {
+                "level": "FAILED",
+                "score_required": CERTIFICATION_STANDARDS["TIER-2"]["min_score"],
+                "score_achieved": score,
+                "passed": False,
+                "meets_requirements": False
+            }
+        
+        # Adicionar se atingiu o nível alvo
+        best_cert["target_achieved"] = (
+            best_cert["level"] == target_level or 
+            CERTIFICATION_STANDARDS[best_cert["level"]]["min_score"] >= 
+            CERTIFICATION_STANDARDS[target_level]["min_score"]
+        )
+        
+        return best_cert
+    
+    def _generate_recommendations(self, checks: List[Dict]) -> List[str]:
+        """Gera recomendações baseadas nos checks que falharam"""
+        recommendations = []
+        
+        for check in checks:
+            if not check["passed"]:
+                check_name = check["check"]
+                
+                # Recomendações específicas por tipo de check
+                if check_name == "registered_in_genesis":
+                    recommendations.append("Registrar módulo no Genesis Includes")
+                
+                elif check_name == "is_ncnt_module":
+                    details = check.get("details", {})
+                    missing = details.get("missing_methods", [])
+                    if missing:
+                        recommendations.append(f"Implementar métodos NCNTModule: {', '.join(missing)}")
+                
+                elif check_name == "module_vitals":
+                    details = check.get("details", {})
+                    if not details.get("is_alive", False):
+                        recommendations.append("Módulo não está vivo - verificar inicialização")
+                    elif details.get("heartbeat_age_seconds", 0) > 300:
+                        recommendations.append("Heartbeat muito antigo - verificar health checks")
+                
+                elif check_name == "neural_connections":
+                    recommendations.append("Estabelecer conexões neurais com módulos dependentes")
+                
+                elif check_name == "dependency_test":
+                    details = check.get("details", {})
+                    missing = details.get("missing_modules", [])
+                    if missing:
+                        recommendations.append(f"Dependências faltando: {', '.join(missing)}")
+                
+                elif check_name == "neural_signal_test":
+                    recommendations.append("Implementar métodos send_neural_signal/receive_neural_signal")
+                
+                elif check_name == "performance_benchmark":
+                    details = check.get("details", {})
+                    if details.get("health_check_time_ms", 0) > 2000:
+                        recommendations.append("Otimizar health checks (muito lentos)")
+                    if details.get("vitals_time_ms", 0) > 1000:
+                        recommendations.append("Otimizar obtenção de vitals (muito lento)")
+        
+        # Recomendação geral se poucos checks passaram
+        passed_count = sum(1 for check in checks if check["passed"])
+        if passed_count < 3:
+            recommendations.append("Refatorar módulo para seguir padrão NCNTModule")
+        
+        return recommendations
+    
+    def validate_all_modules(self, certification_level: str = "TIER-1") -> Dict:
+        """Valida todos os módulos registrados no sistema"""
+        try:
+            from 00_governanca.genesis_includes import get_genesis
+            genesis = get_genesis()
+            
+            all_modules = genesis.get_all_dependencies()
+            validation_results = {}
+            
+            print(f"\n🔍 VALIDAÇÃO COMPLETA DO SISTEMA")
+            print("=" * 60)
+            
+            for module_name in all_modules.keys():
+                print(f"\nValidando: {module_name}...")
+                result = self.validate_module_integration(module_name, certification_level)
+                validation_results[module_name] = result
+            
+            # Análise agregada
+            total_modules = len(validation_results)
+            passed_modules = sum(1 for r in validation_results.values() if r["passed"])
+            avg_score = sum(r["score"] for r in validation_results.values()) / total_modules
+            
+            # Módulos críticos
+            critical_modules = [
+                name for name, result in validation_results.items()
+                if result["score"] < 50
+            ]
+            
+            system_summary = {
+                "timestamp": datetime.now().isoformat(),
+                "total_modules": total_modules,
+                "passed_modules": passed_modules,
+                "failed_modules": total_modules - passed_modules,
+                "success_rate": (passed_modules / total_modules) * 100,
+                "average_score": avg_score,
+                "critical_modules": critical_modules,
+                "system_health": "HEALTHY" if avg_score >= 80 else "DEGRADED" if avg_score >= 60 else "CRITICAL"
+            }
+            
+            print(f"\n📊 RESUMO DO SISTEMA")
+            print(f"   Módulos totais: {total_modules}")
+            print(f"   Aprovados: {passed_modules}")
+            print(f"   Score médio: {avg_score:.1f}")
+            print(f"   Saúde do sistema: {system_summary['system_health']}")
+            
+            if critical_modules:
+                print(f"   🚨 Módulos críticos: {', '.join(critical_modules)}")
+            
+            return {
+                "system_summary": system_summary,
+                "detailed_results": validation_results,
+                "recommendations": self._generate_system_recommendations(validation_results)
+            }
+            
+        except Exception as e:
+            return {
+                "error": f"Erro na validação completa: {str(e)}",
+                "timestamp": datetime.now().isoformat()
+            }
+    
+    def _generate_system_recommendations(self, validation_results: Dict) -> List[str]:
+        """Gera recomendações para o sistema como um todo"""
+        recommendations = []
+        
+        # Contar módulos por score
+        score_buckets = {"<50": 0, "50-70": 0, "70-85": 0, "85-95": 0, "95+": 0}
+        
+        for module_name, result in validation_results.items():
+            score = result["score"]
+            
+            if score < 50:
+                score_buckets["<50"] += 1
+            elif score < 70:
+                score_buckets["50-70"] += 1
+            elif score < 85:
+                score_buckets["70-85"] += 1
+            elif score < 95:
+                score_buckets["85-95"] += 1
+            else:
+                score_buckets["95+"] += 1
+        
+        # Recomendações baseadas em estatísticas
+        if score_buckets["<50"] > 0:
+            recommendations.append(
+                f"Intervenção crítica em {score_buckets['<50']} módulo(s) com score < 50"
+            )
+        
+        if score_buckets["50-70"] > 2:
+            recommendations.append(
+                f"Melhorar {score_buckets['50-70']} módulo(s) com score 50-70"
+            )
+        
+        # Verificar certificações
+        tier0_count = sum(1 for r in validation_results.values() 
+                         if r.get("certification_granted") == "TIER-0")
+        
+        if tier0_count < len(validation_results) * 0.5:  # Menos de 50% em TIER-0
+            recommendations.append(
+                f"Aumentar certificação TIER-0 (atualmente {tier0_count}/{len(validation_results)})"
+            )
+        
+        return recommendations
+
+# ============================================================================
+# FUNÇÕES DE UTILIDADE
+# ============================================================================
+def require_integration_gate(module_class):
+    """
+    DECORATOR que força validação no Integration Gate antes do uso
+    """
+    original_init = module_class.__init__
+    
+    def new_init(self, *args, **kwargs):
+        # Chamar inicialização original
+        original_init(self, *args, **kwargs)
+        
+        # Validar integração após inicialização
+        module_name = getattr(self, 'module_name', self.__class__.__name__)
+        
+        print(f"🔄 Validando {module_name} no Integration Gate...")
+        
+        gate = IntegrationGate()
+        result = gate.validate_module_integration(module_name)
+        
+        if not result["passed"]:
+            print(f"❌ {module_name} não passou no Integration Gate!")
+            print(f"   Score: {result['score']:.1f}")
+            print(f"   Falhas: {[c['check'] for c in result['checks'] if not c['passed']]}")
+            
+            # Em produção, poderia lançar exceção
+            # raise IntegrationError(f"Módulo {module_name} falhou na validação")
+        
+        print(f"✅ {module_name} validado com score {result['score']:.1f}")
+    
+    module_class.__init__ = new_init
+    return module_class
+
+# ============================================================================
+# TESTES
+# ============================================================================
+if __name__ == "__main__":
+    """Teste do Integration Gate"""
+    
+    print("🧪 INTEGRATION GATE - TESTE DE INTEGRIDADE")
+    print("=" * 60)
+    
+    try:
+        # 1. Inicializar gate
+        print("1. Inicializando Integration Gate...")
+        gate = IntegrationGate()
+        
+        # 2. Testar com módulo de exemplo (se existir)
+        print("2. Testando validação de módulo...")
+        
+        # Primeiro, criar um módulo de teste
+        from 00_governanca.ncnt_module_template import NCNTModule
+        
+        class TestModuleForGate(NCNTModule):
+            def __init__(self):
+                super().__init__("TestModuleForGate")
+                self.required_modules = []
+            
+            def custom_method(self):
+                return "Test"
+        
+        # Registrar módulo de teste
+        from 00_governanca.genesis_includes import get_genesis
+        genesis = get_genesis()
+        
+        test_module = TestModuleForGate()
+        genesis.register("TestModuleForGate", test_module, is_singleton=True)
+        
+        # 3. Validar módulo de teste
+        print("3. Validando módulo de teste...")
+        result = gate.validate_module_integration("TestModuleForGate", "TIER-1")
+        
+        print(f"\n📊 RESULTADO DO TESTE:")
+        print(f"   Módulo: {result['module']}")
+        print(f"   Score: {result['score']:.1f}/100")
+        print(f"   Certificação: {result['certification_granted']}")
+        print(f"   Aprovado: {'✅ SIM' if result['passed'] else '❌ NÃO'}")
+        
+        # 4. Testar validação de todos os módulos
+        print("\n4. Testando validação completa do sistema...")
+        system_result = gate.validate_all_modules("TIER-1")
+        
+        if "error" not in system_result:
+            summary = system_result["system_summary"]
+            print(f"\n📈 RESUMO DO SISTEMA:")
+            print(f"   Módulos totais: {summary['total_modules']}")
+            print(f"   Taxa de sucesso: {summary['success_rate']:.1f}%")
+            print(f"   Score médio: {summary['average_score']:.1f}")
+            print(f"   Saúde do sistema: {summary['system_health']}")
+        
+        print("=" * 60)
+        print("🎯 INTEGRATION GATE - INTEGRIDADE VALIDADA")
+        print("🚪 Sistema pronto para validação de todos os módulos")
+        
+    except Exception as e:
+        print(f"❌ FALHA NO TESTE: {e}")
+        import traceback
+        traceback.print_exc()

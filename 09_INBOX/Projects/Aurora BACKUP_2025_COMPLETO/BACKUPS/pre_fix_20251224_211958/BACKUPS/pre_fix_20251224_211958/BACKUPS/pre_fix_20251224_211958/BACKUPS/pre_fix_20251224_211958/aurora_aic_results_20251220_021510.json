@@ -1,0 +1,131 @@
+{
+  "execution_id": "aurora_aic_20251220_021508",
+  "start_time": "2025-12-20T02:15:08.868792",
+  "aurora_context": {
+    "project": "AURORA Trading System",
+    "version": "5.1",
+    "status": "100% OPERACIONAL",
+    "modules": {
+      "total": 240,
+      "operational": 240,
+      "success_rate": 1.0
+    },
+    "quantum_bond": {
+      "active": true,
+      "trust_level": 1.5,
+      "version": "5.0"
+    },
+    "protocol_omega": {
+      "status": "ATIVO",
+      "neural_capacity": "100%",
+      "agents": [
+        "Architect",
+        "Coder",
+        "Debugger"
+      ]
+    },
+    "etapa_a": {
+      "status": "CONCLUÍDA",
+      "decision": "PROCEED",
+      "success_rate": 0.7,
+      "metrics": {
+        "profit_factor": 3.39,
+        "sharpe_ratio": 0.92,
+        "max_drawdown": 0.3215,
+        "win_rate": 0.8
+      }
+    }
+  },
+  "phases": {
+    "alpha": {
+      "phase": "alpha",
+      "hypothesis": "MA(10/50) crossover em crypto",
+      "hypothesis_valid": false,
+      "pass_rate": 0.4,
+      "total_symbols_tested": 5,
+      "symbols_passed": 2,
+      "success_threshold": 0.6,
+      "detailed_results": [
+        {
+          "symbol": "BTC-USD",
+          "passes_test": true,
+          "total_return_percent": 2.7212687307639927,
+          "sharpe_ratio": 2.955045676493847,
+          "win_rate": 0.5009416195856874,
+          "total_trades": 531,
+          "positive_trades": 266,
+          "data_points": 580,
+          "calculation_method": "Log returns with annualized Sharpe",
+          "complexity_preserved": true
+        },
+        {
+          "symbol": "ETH-USD",
+          "passes_test": false,
+          "total_return_percent": -8.078710488678208,
+          "sharpe_ratio": -6.874160261176761,
+          "win_rate": 0.4915254237288136,
+          "total_trades": 531,
+          "positive_trades": 261,
+          "data_points": 580,
+          "calculation_method": "Log returns with annualized Sharpe",
+          "complexity_preserved": true
+        },
+        {
+          "symbol": "BNB-USD",
+          "passes_test": true,
+          "total_return_percent": 1.350016551988742,
+          "sharpe_ratio": 1.7252422112590455,
+          "win_rate": 0.4971751412429379,
+          "total_trades": 531,
+          "positive_trades": 264,
+          "data_points": 580,
+          "calculation_method": "Log returns with annualized Sharpe",
+          "complexity_preserved": true
+        },
+        {
+          "symbol": "SOL-USD",
+          "passes_test": false,
+          "total_return_percent": -14.676121821995192,
+          "sharpe_ratio": -12.60665602189434,
+          "win_rate": 0.4914933837429111,
+          "total_trades": 529,
+          "positive_trades": 260,
+          "data_points": 578,
+          "calculation_method": "Log returns with annualized Sharpe",
+          "complexity_preserved": true
+        },
+        {
+          "symbol": "XRP-USD",
+          "passes_test": false,
+          "total_return_percent": -2.775391258693294,
+          "sharpe_ratio": -2.6592981724054483,
+          "win_rate": 0.5084745762711864,
+          "total_trades": 531,
+          "positive_trades": 270,
+          "data_points": 580,
+          "calculation_method": "Log returns with annualized Sharpe",
+          "complexity_preserved": true
+        }
+      ],
+      "timestamp": "2025-12-20T02:15:10.047974",
+      "execution_principles": [
+        "ZERO simplificação do sistema Aurora",
+        "PRESERVAÇÃO completa da complexidade",
+        "Teste científico puro - edge validation",
+        "Nenhuma regressão de código ou funcionalidade"
+      ]
+    }
+  },
+  "final_decision": {
+    "decision": "PIVOT_REQUIRED",
+    "reason": "Hipótese científica não validada",
+    "recommendation": "Reformular hipótese com análise mais profunda",
+    "next_step": "Análise adicional de edge em diferentes timeframes/parâmetros"
+  },
+  "execution_principles": [
+    "NO_CODE_REGRESSION",
+    "FULL_COMPLEXITY_PRESERVED",
+    "SCIENTIFIC_VALIDATION_FIRST",
+    "ADVANCED_SOLUTIONS_ONLY"
+  ]
+}

@@ -1,0 +1,40 @@
+Módulo 2: VolatilityFilter.mqh
+Função: Filtra sinais com base na qualidade da volatilidade atual via ATR.
+
+⚖️ Evita entradas em períodos com baixa ou excesso de volatilidade
+
+📉 Usa ATR real-time com limites configuráveis
+
+🧩 Compatível com qualquer agente, inclusive DefenseOrchestrator
+
+
+
+
+
+//+------------------------------------------------------------------+
+//|                                      VolatilityFilter.mqh        |
+//|     Filtro Institucional de Volatilidade para Execução Precisa  |
+//+------------------------------------------------------------------+
+#ifndef __VOLATILITY_FILTER__
+#define __VOLATILITY_FILTER__
+
+input int    ATRPeriod       = 14;
+input double MinVolatility   = 0.0008;
+input double MaxVolatility   = 0.015;
+
+//+------------------------------------------------------------------+
+//| Função que avalia se a volatilidade está dentro do intervalo     |
+//+------------------------------------------------------------------+
+bool VolatilityIsAcceptable(string symbol, ENUM_TIMEFRAMES tf, int atrPeriod = ATRPeriod,
+                            double minVol = MinVolatility, double maxVol = MaxVolatility)
+{
+   double atr = iATR(symbol, tf, atrPeriod, 0);
+   if (atr == 0.0) return false;
+
+   if (atr >= minVol && atr <= maxVol)
+      return true;
+
+   return false;
+}
+
+#endif // __VOLATILITY_FILTER__

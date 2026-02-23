@@ -1,0 +1,51 @@
+# ============================================
+# .cursorignore - SilverGMarket
+# Otimização de Indexação do Cursor
+# Gerado: 2025-11-30
+# ============================================
+
+# === AMBIENTE VIRTUAL PYTHON ===
+venv/
+.venv/
+env/
+.env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# === ARQUIVOS COMPILADOS MQL5 ===
+*.ex5
+*.ex4
+
+# === LOGS E DADOS TEMPORÁRIOS ===
+logs/
+Logs/
+*.log
+*.tmp
+*.jsonl
+
+# === BACKUPS ===
+Backup/
+Backups/
+*.bak
+*_backup*
+*_old*
+
+# === CONTROLE DE VERSÃO ===
+.git/
+.gitignore
+
+# === ARQUIVOS DE SISTEMA ===
+.vs/
+.vscode/
+*.db
+*.sqlite
+
+# === CACHE ===
+.cache/
+*.cache
+
+# === NODE (se houver) ===
+node_modules/
+

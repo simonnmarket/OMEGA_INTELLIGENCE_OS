@@ -1,0 +1,283 @@
+import os
+import json
+import time
+from pathlib import Path
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import threading
+
+
+def find_common_files_dir() -> Path:
+    env = os.environ.get("MT5_FILES_DIR")
+    if env:
+        p = Path(env)
+        p.mkdir(parents=True, exist_ok=True)
+        return p
+    common = Path.home() / "AppData" / "Roaming" / "MetaQuotes" / "Terminal" / "Common" / "Files"
+    if common.exists():
+        common.mkdir(parents=True, exist_ok=True)
+        return common
+    # fallback local
+    proj_root = Path(__file__).resolve().parents[2]
+    files_dir = proj_root / "MQL5" / "Files"
+    files_dir.mkdir(parents=True, exist_ok=True)
+    return files_dir
+
+
+def clamp(v: float, lo: float, hi: float) -> float:
+    return max(lo, min(hi, v))
+
+
+def safe_read_json(path: Path):
+    try:
+        if not path.exists():
+            return None
+        txt = path.read_text(encoding="utf-8")
+        if not txt.strip():
+            return None
+        return json.loads(txt)
+    except Exception:
+        return None
+
+
+def write_json(path: Path, data: dict) -> None:
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    tmp.replace(path)
+
+
+def classify_symbol(symbol: str) -> str:
+    s = symbol.upper()
+    if s.startswith("XAU") or s.startswith("XAG"):
+        return "metal"
+    if len(s) == 6 and s.isalpha():
+        return "forex"
+    if any(k in s for k in ["BTC", "ETH", "XRP", "ADA", "SOL", "DOT", "LTC"]):
+        return "crypto"
+    if any(k in s for k in ["US500", "US30", "US100", "GER40", "FR40", "UK100", "EU50", "SW20", "US2000"]):
+        return "index"
+    return "other"
+
+
+def aggregate_pnl(pnl: dict) -> dict:
+    # pnl = { timestamp, pnl: [ {symbol, profit} ] }
+    out = {
+        "total": 0.0,
+        "by_class": {},
+        "top_winners": [],
+        "top_losers": [],
+    }
+    items = pnl.get("pnl", []) if isinstance(pnl, dict) else []
+    by_symbol = {}
+    for it in items:
+        sym = str(it.get("symbol", ""))
+        prof = float(it.get("profit", 0.0))
+        by_symbol[sym] = by_symbol.get(sym, 0.0) + prof
+        out["total"] += prof
+    # class aggregation
+    by_class = {}
+    for sym, prof in by_symbol.items():
+        klass = classify_symbol(sym)
+        by_class[klass] = by_class.get(klass, 0.0) + prof
+    out["by_class"] = by_class
+    # ranking
+    ranked = sorted(by_symbol.items(), key=lambda kv: kv[1], reverse=True)
+    out["top_winners"] = ranked[:5]
+    out["top_losers"] = sorted(by_symbol.items(), key=lambda kv: kv[1])[:5]
+    return out
+
+
+def auto_tune_knobs(dashboard: dict, current: dict) -> dict:
+    knobs = dict(current) if isinstance(current, dict) else {}
+    total = float(dashboard.get("total", 0.0))
+    by_class = dashboard.get("by_class", {})
+    # defaults if missing
+    base_conf = float(knobs.get("base_conf", 0.62))
+    base_edge = float(knobs.get("base_edge_bps", 8.0))
+    # global adaptation
+    if total < -10.0:
+        base_conf = clamp(base_conf + 0.02, 0.55, 0.85)
+        base_edge = clamp(base_edge + 1.0, 5.0, 30.0)
+    elif total > 10.0:
+        base_conf = clamp(base_conf - 0.01, 0.50, 0.85)
+        base_edge = clamp(base_edge - 1.0, 5.0, 30.0)
+    knobs["base_conf"] = round(base_conf, 3)
+    knobs["base_edge_bps"] = round(base_edge, 2)
+    # class adaptation
+    def tune(cls_key: str, conf_key: str, edge_key: str, lo_conf: float, lo_edge: float):
+        val = float(by_class.get(cls_key, 0.0))
+        conf = float(knobs.get(conf_key, base_conf))
+        edge = float(knobs.get(edge_key, base_edge))
+        if val < -5.0:
+            conf = clamp(conf + 0.02, lo_conf, 0.90)
+            edge = clamp(edge + 1.0, lo_edge, 40.0)
+        elif val > 5.0:
+            conf = clamp(conf - 0.01, lo_conf, 0.90)
+            edge = clamp(edge - 1.0, lo_edge, 40.0)
+        knobs[conf_key] = round(conf, 3)
+        knobs[edge_key] = round(edge, 2)
+
+    tune("forex",  "forex_conf",  "forex_edge_bps",  0.62, 8.0)
+    tune("crypto", "crypto_conf", "crypto_edge_bps", 0.68, 12.0)
+    tune("index",  "index_conf",  "index_edge_bps",  0.64, 9.0)
+    tune("metal",  "metal_conf",  "metal_edge_bps",  0.64, 9.0)
+    # throttles por classe (adaptação simples por sinal de PnL)
+    def tune_slots(cls_key: str, key: str, base: int):
+        val = float(by_class.get(cls_key, 0.0))
+        cur = int(current.get(key, base)) if isinstance(current, dict) else base
+        if val < -5.0:
+            cur = max(int(cur * 0.8), 5)
+        elif val > 5.0:
+            cur = min(int(cur * 1.1) + 1, 500)
+        knobs[key] = cur
+
+    tune_slots("forex",  "max_forex_per_cycle",  50)
+    tune_slots("crypto", "max_crypto_per_cycle", 20)
+    tune_slots("index",  "max_index_per_cycle",  20)
+    tune_slots("metal",  "max_metal_per_cycle",  20)
+    return knobs
+
+
+def start_metrics_server(files: Path, port: int = 9091):
+    ai_metrics_path = files / "AI_Metrics.json"
+    bridge_metrics_path = files / "Bridge_Metrics.json"
+    dash_path = files / "Dashboard.json"
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            if self.path != "/metrics":
+                self.send_response(404)
+                self.end_headers()
+                return
+            # Build a simple text exposition
+            lines = []
+            try:
+                ai = safe_read_json(ai_metrics_path) or {}
+                lines.append(f"ai_requests_total {int(ai.get('requests', 0))}")
+                lines.append(f"ai_errors_total {int(ai.get('errors_total', 0))}")
+                lines.append(f"ai_avg_proc_ms {float(ai.get('avg_proc_ms', 0.0))}")
+                lines.append(f"ai_avg_confidence {float(ai.get('avg_confidence', 0.0))}")
+            except Exception:
+                pass
+            try:
+                br = safe_read_json(bridge_metrics_path) or {}
+                lines.append(f"bridge_requests_total {int(br.get('requests', 0))}")
+                lines.append(f"bridge_responses_total {int(br.get('responses', 0))}")
+                lines.append(f"bridge_timeouts_total {int(br.get('timeouts_total', 0))}")
+                lines.append(f"bridge_rtt_ms {float(br.get('rtt_ms', 0.0))}")
+            except Exception:
+                pass
+            try:
+                dash = safe_read_json(dash_path) or {}
+                total = float(dash.get('total', 0.0))
+                lines.append(f"pnl_total {total}")
+                byc = dash.get('by_class', {})
+                for k, v in byc.items():
+                    lines.append(f"pnl_by_class{{class=\"{k}\"}} {float(v)}")
+            except Exception:
+                pass
+            data = "\n".join(lines) + "\n"
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain; version=0.0.4")
+            self.send_header("Content-Length", str(len(data)))
+            self.end_headers()
+            self.wfile.write(data.encode('utf-8'))
+
+    def run_server():
+        httpd = HTTPServer(('0.0.0.0', port), Handler)
+        httpd.serve_forever()
+
+    t = threading.Thread(target=run_server, daemon=True)
+    t.start()
+    print(f"[TELEMETRY] Metrics endpoint on :{port} (/metrics)")
+
+
+def main() -> None:
+    files = find_common_files_dir()
+    pnl_path = files / "PnLReport.json"
+    exp_path = files / "ExposureReport.json"
+    ctrl_path = files / "ControlPanel.json"
+    dash_path = files / "Dashboard.json"
+    exec_path = files / "ExecutiveDashboard.json"
+
+    print(f"[TELEMETRY] Watching {files}")
+    # bootstrap ControlPanel.json com Mixer + limites por classe, se não existir
+    if not ctrl_path.exists():
+        defaults = {
+            "op_margin_min": 90,
+            "margin_t1": 120,
+            "margin_t2": 200,
+            "margin_scale_low_pct": 0.25,
+            "margin_scale_mid_pct": 0.50,
+            "base_conf": 0.58,
+            "base_edge_bps": 6,
+            "forex_conf": 0.60,
+            "index_conf": 0.62,
+            "metal_conf": 0.62,
+            "crypto_conf": 0.66,
+            "max_forex_per_cycle": 40,
+            "max_index_per_cycle": 20,
+            "max_metal_per_cycle": 20,
+            "max_crypto_per_cycle": 15,
+            "emergency_stop": 0
+        }
+        write_json(ctrl_path, defaults)
+        print("[TELEMETRY] ControlPanel.json bootstrapped with defaults")
+
+    # start built-in metrics endpoint
+    start_metrics_server(files, port=int(os.environ.get("ORCHESTRA_METRICS_PORT", "9091")))
+
+    last_mtime = 0.0
+    while True:
+        try:
+            time.sleep(2.0)
+            pnl = safe_read_json(pnl_path)
+            if pnl is None:
+                continue
+            mtime = pnl_path.stat().st_mtime
+            if mtime == last_mtime:
+                continue
+            last_mtime = mtime
+            dashboard = aggregate_pnl(pnl)
+            # optional exposure read (not strictly needed for knobs)
+            exposure = safe_read_json(exp_path) or {}
+            dashboard["exposure"] = exposure
+            write_json(dash_path, dashboard)
+            # Executive metrics (simplificado: usa apenas pnl agregado por enquanto)
+            execd = {
+                "daily_pnl": round(dashboard.get("total", 0.0), 2),
+                "by_class": dashboard.get("by_class", {}),
+                "top_winners": dashboard.get("top_winners", []),
+                "top_losers": dashboard.get("top_losers", []),
+            }
+            write_json(exec_path, execd)
+            # read current knobs and adapt
+            current_knobs = safe_read_json(ctrl_path) or {}
+            # Respect telemetry override flag (if set to false, do not overwrite ControlPanel.json)
+            override_enabled = True
+            try:
+                if isinstance(current_knobs, dict):
+                    flag_val = current_knobs.get("telemetry_override", True)
+                    # treat explicit false/0/"false" as False
+                    if isinstance(flag_val, str):
+                        override_enabled = flag_val.strip().lower() not in ("0", "false", "no")
+                    else:
+                        override_enabled = bool(flag_val)
+            except Exception:
+                override_enabled = True
+
+            new_knobs = auto_tune_knobs(dashboard, current_knobs)
+            if override_enabled:
+                # persist only if changed
+                if json.dumps(new_knobs, sort_keys=True) != json.dumps(current_knobs, sort_keys=True):
+                    write_json(ctrl_path, new_knobs)
+                    print(f"[TELEMETRY] ControlPanel.json updated: {new_knobs}")
+        except KeyboardInterrupt:
+            break
+        except Exception:
+            time.sleep(1.0)
+
+
+if __name__ == "__main__":
+    main()
+
+

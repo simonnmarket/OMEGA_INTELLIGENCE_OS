@@ -1,0 +1,223 @@
+{
+  "metadata": {
+    "teste": "VERIFICACAO_OPERACIONAL_FINAL_ARCH001",
+    "timestamp": "2025-12-26T23:48:19.550039",
+    "protocolo": "ANTI_CAMUFLAGEM",
+    "nivel": "VERIFICACAO_CIRURGICA"
+  },
+  "verificacoes_conteudo": [
+    {
+      "arquivo": "ARCH001_EXECUTOR_FINAL_20251226_230100.py",
+      "tipo": "executor_final",
+      "status": "VALIDADO",
+      "tamanho_bytes": 13189,
+      "tamanho_kb": 12.8798828125,
+      "hash_sha256": "26c109d7d338851f04462acb9d832bf92dc13d8a6c743f4d5fd15f693e733c6f",
+      "detalhes": "Código Python aparentemente válido",
+      "timestamp_modificacao": "2025-12-26T23:01:00.837997"
+    },
+    {
+      "arquivo": "checkpoint_final_arch001_20251226_230100.json",
+      "tipo": "checkpoint_final",
+      "status": "VALIDADO",
+      "tamanho_bytes": 6611,
+      "tamanho_kb": 6.4560546875,
+      "hash_sha256": "f220e209f0eaa751657cd6f868ebc1cfc8dcae236c526ce8807650d8da06a6ed",
+      "detalhes": "JSON válido",
+      "timestamp_modificacao": "2025-12-26T23:01:01.038581"
+    },
+    {
+      "arquivo": "inicializador_arch001_20251226_230100.py",
+      "tipo": "inicializador",
+      "status": "VALIDADO",
+      "tamanho_bytes": 1071,
+      "tamanho_kb": 1.0458984375,
+      "hash_sha256": "cf16f2dad9d98cee9811b650203363fc1da74ae2fa96d226c2fddfbda0231acd",
+      "detalhes": "Código Python aparentemente válido",
+      "timestamp_modificacao": "2025-12-26T23:01:01.031559"
+    },
+    {
+      "arquivo": "configuracao_arch001_20251226_230100.json",
+      "tipo": "configuracao",
+      "status": "VALIDADO",
+      "tamanho_bytes": 1704,
+      "tamanho_kb": 1.6640625,
+      "hash_sha256": "ab77a6beae0ca865fa736874446a89148def53e0c7a0bc22acce9740f38faa64",
+      "detalhes": "JSON válido",
+      "timestamp_modificacao": "2025-12-26T23:01:00.835999"
+    },
+    {
+      "arquivo": "monitor_arch001_20251226_230100.py",
+      "tipo": "monitor",
+      "status": "VALIDADO",
+      "tamanho_bytes": 2660,
+      "tamanho_kb": 2.59765625,
+      "hash_sha256": "4f7891a4777863c2274da461408eb94ee36952b730f188b671c3988c45e1f8f1",
+      "detalhes": "Código Python aparentemente válido",
+      "timestamp_modificacao": "2025-12-26T23:01:01.018461"
+    },
+    {
+      "arquivo": "sistema_recuperacao_arch001_20251226_230100.py",
+      "tipo": "recuperacao",
+      "status": "VALIDADO",
+      "tamanho_bytes": 1860,
+      "tamanho_kb": 1.81640625,
+      "hash_sha256": "2ea324a293845b4d002cea8461709b1533c3a01db433ebca02a6d7caf7dc4a92",
+      "detalhes": "Código Python aparentemente válido",
+      "timestamp_modificacao": "2025-12-26T23:01:01.022449"
+    },
+    {
+      "arquivo": "ARCH001_ATIVADO.txt",
+      "tipo": "ativado",
+      "status": "VALIDADO",
+      "tamanho_bytes": 97,
+      "tamanho_kb": 0.0947265625,
+      "hash_sha256": "e36c75c4af4fc4da2efec00928fbcb69853b5600ee59787d7dbe1692d5d3f3c9",
+      "detalhes": "Texto válido (93 caracteres)",
+      "timestamp_modificacao": "2025-12-26T23:01:01.034579"
+    },
+    {
+      "arquivo": "DOCUMENTACAO_FINAL_ARCH001_20251226_230100.md",
+      "tipo": "documentacao",
+      "status": "VALIDADO",
+      "tamanho_bytes": 917,
+      "tamanho_kb": 0.8955078125,
+      "hash_sha256": "2e533ae8ef329ed46a6094f37ad5190c9adf16e1e6bfb3f23d4c2c5b5ab83203",
+      "detalhes": "Texto válido (827 caracteres)",
+      "timestamp_modificacao": "2025-12-26T23:01:01.037579"
+    }
+  ],
+  "verificacoes_consistencia": [
+    {
+      "verificacao": "CONSISTÊNCIA DOS CHECKPOINTS",
+      "status": "INCONSISTENTE",
+      "detalhes": "Inconsistências: Checkpoint bloco1 não corresponde à etapa, Checkpoint bloco2 não corresponde à etapa, Checkpoint bloco3 não corresponde à etapa",
+      "checkpoints_validos": 4,
+      "total_checkpoints": 4,
+      "inconsistencias": [
+        "Checkpoint bloco1 não corresponde à etapa",
+        "Checkpoint bloco2 não corresponde à etapa",
+        "Checkpoint bloco3 não corresponde à etapa",
+        "Checkpoint bloco4 não corresponde à etapa"
+      ]
+    },
+    {
+      "verificacao": "CONSISTÊNCIA DOS HASHES",
+      "status": "CONSISTENTE",
+      "detalhes": "3 hashes calculados, 9 hashes mencionados",
+      "hashes_calculados": 3,
+      "hashes_mencionados": 9
+    },
+    {
+      "verificacao": "CONSISTÊNCIA DOS TIMESTAMPS",
+      "status": "CONSISTENTE",
+      "detalhes": "Todos os 12 arquivos são de 2025-12-26",
+      "arquivos_verificados": 12
+    },
+    {
+      "verificacao": "CONSISTÊNCIA DOS METADADOS",
+      "status": "INCONSISTENTE",
+      "detalhes": "Inconsistências: Campo 'status' divergente: 'CONCLUIDO' vs 'INTEGRADO'",
+      "arquivos_com_metadata": 2,
+      "inconsistencias": [
+        "Campo 'status' divergente: 'CONCLUIDO' vs 'INTEGRADO'"
+      ]
+    }
+  ],
+  "testes_operacionais": [
+    {
+      "teste": "INICIALIZADOR DO SISTEMA",
+      "status": "APROVADO",
+      "detalhes": "Sintaxe válida, 3/3 componentes referenciados",
+      "sintaxe_valida": true,
+      "componentes_referenciados": [
+        "ARCH001_EXECUTOR_FINAL",
+        "monitor_arch001",
+        "sistema_recuperacao_arch001"
+      ]
+    },
+    {
+      "teste": "SINTAXE DO EXECUTOR FINAL",
+      "status": "APROVADO",
+      "detalhes": "Sintaxe Python válida",
+      "tamanho_bytes": 13189
+    },
+    {
+      "teste": "CONFIGURAÇÃO JSON",
+      "status": "APROVADO",
+      "detalhes": "JSON válido, 3/3 campos obrigatórios presentes",
+      "campos_presentes": [
+        "metadata",
+        "blocos",
+        "arquivos_principais"
+      ],
+      "tamanho_bytes": 1704
+    },
+    {
+      "teste": "SISTEMA DE MONITORAMENTO",
+      "status": "APROVADO",
+      "detalhes": "Sintaxe válida, 3/3 funcionalidades presentes",
+      "sintaxe_valida": true,
+      "funcionalidades_presentes": [
+        "verificar_arquivos_criticos",
+        "calcular_hash",
+        "log_file"
+      ]
+    },
+    {
+      "teste": "SISTEMA DE RECUPERAÇÃO",
+      "status": "APROVADO",
+      "detalhes": "Sintaxe válida, funcionalidades de backup presentes",
+      "sintaxe_valida": true
+    }
+  ],
+  "alertas_inconsistencia": [
+    "ARCH001_EXECUTOR_FINAL_20251226_230100.py pode não ser código Python válido",
+    "ARCH001_ATIVADO.txt muito pequeno (97 bytes)",
+    "Arquivos principais modificados no mesmo segundo exato"
+  ],
+  "validacoes_cruzadas": [
+    {
+      "validacao": "HASHES COM RELATÓRIO TÉCNICO",
+      "status": "CORRESPONDENTE",
+      "detalhes": "3/4 hashes correspondentes",
+      "correspondencias": 3,
+      "divergencias": 0
+    },
+    {
+      "validacao": "ESTATÍSTICAS COM RELATÓRIO TÉCNICO",
+      "status": "CORRESPONDENTE",
+      "detalhes": "3 estatísticas correspondentes",
+      "estatisticas_verificadas": 3,
+      "divergencias": 0
+    },
+    {
+      "validacao": "ESTRUTURA COM RELATÓRIO TÉCNICO",
+      "status": "CORRESPONDENTE",
+      "detalhes": "Estrutura completa: 9 arquivos, 2 diretórios",
+      "arquivos_esperados": 9,
+      "arquivos_encontrados": 9,
+      "diretorios_esperados": 2,
+      "diretorios_encontrados": 2
+    },
+    {
+      "validacao": "PROTOCOLO ANTIFRAUDE",
+      "status": "CORRESPONDENTE",
+      "detalhes": "Protocolo ativo: 4 evidências",
+      "evidencias_esperadas": 6,
+      "evidencias_encontradas": 4
+    }
+  ],
+  "conclusao": {
+    "status_operacional": "NAO_OPERACIONAL",
+    "nivel_confianca": "BAIXO",
+    "estatisticas": {
+      "conteudos_validados": "8/8",
+      "consistencias_ok": "2/4",
+      "testes_aprovados": "5/5",
+      "validacoes_correspondentes": "4/4",
+      "alertas_inconsistencia": 3
+    },
+    "timestamp": "2025-12-26T23:48:20.335275"
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "tests": [
+    {
+      "name": "IMPORT_UTILS_VAULT_CLIENT",
+      "status": "PASSED",
+      "message": "Módulo utils.vault_client importa corretamente",
+      "details": "",
+      "timestamp": "2026-01-11T22:56:05.043428"
+    },
+    {
+      "name": "IMPORT_UTILS_REDLOCK_MANAGER",
+      "status": "PASSED",
+      "message": "Módulo utils.redlock_manager importa corretamente",
+      "details": "",
+      "timestamp": "2026-01-11T22:56:05.044427"
+    },
+    {
+      "name": "IMPORT_HEALTH_TIER0_HEALTH",
+      "status": "PASSED",
+      "message": "Módulo health.tier0_health importa corretamente",
+      "details": "",
+      "timestamp": "2026-01-11T22:56:05.202499"
+    },
+    {
+      "name": "IMPORT_AUTH_TIER0_AUTH",
+      "status": "PASSED",
+      "message": "Módulo auth.tier0_auth importa corretamente",
+      "details": "",
+      "timestamp": "2026-01-11T22:56:05.249647"
+    },
+    {
+      "name": "IMPORT_SYSTEM_CORE_ASYNC_ORCHESTRATOR",
+      "status": "PASSED",
+      "message": "Módulo system_core.async_orchestrator importa corretamente",
+      "details": "",
+      "timestamp": "2026-01-11T22:56:05.251646"
+    },
+    {
+      "name": "IMPORT_CONNECTORS_MT5_CONNECTOR_TIER0",
+      "status": "PASSED",
+      "message": "Módulo connectors.mt5_connector_tier0 importa corretamente",
+      "details": "",
+      "timestamp": "2026-01-11T22:56:05.252646"
+    },
+    {
+      "name": "IMPORT_RISK_FINITE_STATE_RISK_TIER0",
+      "status": "PASSED",
+      "message": "Módulo risk.finite_state_risk_tier0 importa corretamente",
+      "details": "",
+      "timestamp": "2026-01-11T22:56:05.263273"
+    },
+    {
+      "name": "IMPORT_EXECUTION_SAFE_EXECUTION_TIER0",
+      "status": "PASSED",
+      "message": "Módulo execution.safe_execution_tier0 importa corretamente",
+      "details": "",
+      "timestamp": "2026-01-11T22:56:05.265798"
+    },
+    {
+      "name": "IMPORT_API_TIER0_ENDPOINTS",
+      "status": "PASSED",
+      "message": "Módulo api.tier0_endpoints importa corretamente",
+      "details": "",
+      "timestamp": "2026-01-11T22:56:05.687397"
+    },
+    {
+      "name": "IMPORT_CONFIG_SETTINGS",
+      "status": "PASSED",
+      "message": "Módulo config.settings importa corretamente",
+      "details": "",
+      "timestamp": "2026-01-11T22:56:05.689388"
+    },
+    {
+      "name": "IMPORT_CONFIG_DATABASE",
+      "status": "PASSED",
+      "message": "Módulo config.database importa corretamente",
+      "details": "",
+      "timestamp": "2026-01-11T22:56:05.690384"
+    },
+    {
+      "name": "VAULT_CLIENT",
+      "status": "PASSED",
+      "message": "Vault client funcional",
+      "details": "Secret: ok",
+      "timestamp": "2026-01-11T22:56:05.693386"
+    },
+    {
+      "name": "REDLOCK_MANAGER",
+      "status": "PASSED",
+      "message": "Redlock manager funcional",
+      "details": "Lock ID: 8619b84e-304f-46...",
+      "timestamp": "2026-01-11T22:56:05.693386"
+    },
+    {
+      "name": "HEALTH_MONITOR",
+      "status": "PASSED",
+      "message": "Health monitor funcional",
+      "details": "Level: DEGRADED, Components: 2",
+      "timestamp": "2026-01-11T22:56:05.693386"
+    },
+    {
+      "name": "CIRCUIT_BREAKER",
+      "status": "PASSED",
+      "message": "Circuit breaker funcional",
+      "details": "Can execute: True, State: CircuitState.CLOSED",
+      "timestamp": "2026-01-11T22:56:05.694383"
+    },
+    {
+      "name": "RISK_ENGINE",
+      "status": "PASSED",
+      "message": "Risk engine funcional",
+      "details": "Approved: True, State: NORMAL",
+      "timestamp": "2026-01-11T22:56:05.694383"
+    },
+    {
+      "name": "MT5_CONNECTOR",
+      "status": "PASSED",
+      "message": "MT5 connector funcional",
+      "details": "Symbol: EURUSD, Bid: 1.08537",
+      "timestamp": "2026-01-11T22:56:05.869071"
+    },
+    {
+      "name": "EXECUTION_ENGINE",
+      "status": "PASSED",
+      "message": "Execution engine funcional",
+      "details": "Status: executed, Trade ID: a190bc71-1272-44cd-8b46-79bd0335b24d",
+      "timestamp": "2026-01-11T22:56:05.977742"
+    },
+    {
+      "name": "SETTINGS_LOAD",
+      "status": "PASSED",
+      "message": "Configurações carregam corretamente",
+      "details": "System: AURORA v6.0 MVP - TIER-0 Integrated v6.0.0-TIER0, Paper trading: True",
+      "timestamp": "2026-01-11T22:56:05.980654"
+    },
+    {
+      "name": "RISK_LIMITS",
+      "status": "PASSED",
+      "message": "Limites de risco adequados",
+      "details": "Max risk per trade: 1.0%",
+      "timestamp": "2026-01-11T22:56:05.980654"
+    },
+    {
+      "name": "DATABASE_CONFIG",
+      "status": "PASSED",
+      "message": "Database config válido",
+      "details": "Todos os caminhos configurados",
+      "timestamp": "2026-01-11T22:56:05.981699"
+    },
+    {
+      "name": "DIRECTORY_STRUCTURE",
+      "status": "PASSED",
+      "message": "Estrutura de diretórios completa",
+      "details": "13 diretórios validados",
+      "timestamp": "2026-01-11T22:56:05.983723"
+    },
+    {
+      "name": "CRITICAL_FILES",
+      "status": "PASSED",
+      "message": "Todos os arquivos críticos presentes",
+      "details": "5 arquivos validados",
+      "timestamp": "2026-01-11T22:56:05.984653"
+    },
+    {
+      "name": "DOCUMENTATION",
+      "status": "PASSED",
+      "message": "Documentação completa",
+      "details": "4 documentos, 42.97 KB total",
+      "timestamp": "2026-01-11T22:56:05.984653"
+    }
+  ],
+  "summary": {
+    "total": 24,
+    "passed": 24,
+    "failed": 0,
+    "warnings": 0
+  },
+  "overall": "PASSED",
+  "success_percent": 100.0,
+  "status": "✅ EXCELENTE",
+  "validation_timestamp": "2026-01-11T22:56:05.989118"
+}

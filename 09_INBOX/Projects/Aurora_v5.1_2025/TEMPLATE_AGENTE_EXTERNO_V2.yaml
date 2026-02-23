@@ -1,0 +1,247 @@
+# 📋 TEMPLATE PARA AGENTES EXTERNOS / CONSELHEIROS - AURORA v5.1 (VERSÃO 2.0)
+# Template híbrido: combina especificação técnica formal com sugestões práticas
+# Este template permite que agentes externos enviem sugestões e atualizações
+# de forma estruturada, que serão processadas automaticamente pelo sistema
+
+# ============================================================================
+# 1. METADATA DO ENVIO
+# ============================================================================
+metadata:
+  document_id: "EXTERNAL-[DATA]-[ID]"
+  document_type: "SUGESTAO"  # SUGESTAO | ESPECIFICACAO_TECNICA | REVISAO | APROVACAO
+  sender_name: "[NOME_DO_AGENTE_EXTERNO]"
+  sender_role: "[CONSELHEIRO/ESPECIALISTA/REVISOR/ARQUITETO]"
+  date: "[YYYY-MM-DD]"
+  version: "2.0"
+  purpose: "SUGESTAO"  # SUGESTAO | ATUALIZACAO | REVISAO | APROVACAO
+  
+  # Campos adicionais para especificações técnicas
+  project_name: "AURORA v5.1"
+  phase_epic: "[Ex: FASE 0: SETUP SEGURANÇA MÁXIMA]"
+  reviewer_name: "[NOME_DO_REVISOR]"  # Se aplicável
+  final_approver: "[NOME_DO_APROVADOR_FINAL]"  # Se aplicável
+
+# ============================================================================
+# 2. CONTEXTO E VALIDAÇÃO
+# ============================================================================
+contexto:
+  sistema_referencia: "AURORA v5.1"
+  total_modulos_sistema: 252
+  versao_governanca: "2.0-enterprise"
+  data_consulta: "[YYYY-MM-DD]"
+  compliance_frameworks: ["MiFID II", "Basel III", "GDPR"]  # Se aplicável
+
+# ============================================================================
+# 3. EXECUTIVE SUMMARY (Para especificações técnicas)
+# ============================================================================
+executive_summary:
+  high_level_goal: |
+    [Descreva em 1-2 frases o objetivo principal. Por que esta especificação existe? Qual problema ela resolve?]
+  
+  success_criteria:
+    - "[Critério de sucesso 1]"
+    - "[Critério de sucesso 2]"
+    - "[Critério de sucesso 3]"
+
+# ============================================================================
+# 4. MÓDULOS AFETADOS
+# ============================================================================
+modulos_afetados:
+  # Lista de módulos que este envio afeta
+  - id: "MOD-XXX"
+    nome: "[NOME_DO_MODULO]"
+    acao: "SUGESTAO"  # SUGESTAO | ATUALIZACAO | REVISAO | APROVACAO
+    status_atual: "BACKLOG"  # BACKLOG | ACTIVE | INACTIVE | COMPLETED
+    status_target: "ACTIVE"  # Status desejado após processamento
+    descricao: |
+      [DESCREVER SUGESTÃO/ATUALIZAÇÃO/REVISÃO DETALHADAMENTE]
+    
+    justificativa: |
+      [EXPLICAR POR QUE ESTA SUGESTÃO/ATUALIZAÇÃO É NECESSÁRIA]
+    
+    impacto_esperado: |
+      [DESCREVER IMPACTO ESPERADO DA MUDANÇA]
+    
+    risco_avaliado: "BAIXO"  # BAIXO | MÉDIO | ALTO
+    prioridade_sugerida: "EVOLUÇÃO"  # CRÍTICO | EMERGÊNCIA | ATIVO | EVOLUÇÃO
+
+# ============================================================================
+# 5. TASK BREAKDOWN (Para especificações técnicas completas)
+# ============================================================================
+task_breakdown:
+  # Lista de tarefas detalhadas (opcional, para especificações técnicas)
+  - id: "0.1"
+    description: "[DESCRIÇÃO DA TAREFA]"
+    requirement_link: "REQ-XXX-001"
+    implementation_details: "[Comando ou detalhes de implementação]"
+    owner: "[OWNER]"
+    reviewer: "[REVIEWER]"
+    status: "Not Started"  # Not Started | In Progress | Blocked | Done | Rejected
+    acceptance_criteria: |
+      [CRITÉRIOS DE ACEITAÇÃO PARA ESTA TAREFA]
+    risk_assessment: |
+      [AVALIAÇÃO DE RISCOS ESPECÍFICA PARA ESTA TAREFA]
+
+# ============================================================================
+# 6. SUGESTÕES DE ATUALIZAÇÃO
+# ============================================================================
+sugestoes:
+  # Sugestões de mudanças no sistema
+  - tipo: "PRIORIDADE"  # PRIORIDADE | BLINDAGEM | PROGRESSO | STATUS | COMPLIANCE
+    modulo_id: "MOD-XXX"
+    valor_anterior: "[VALOR_ATUAL]"
+    valor_sugerido: "[NOVO_VALOR]"
+    justificativa: "[EXPLICAR]"
+  
+  - tipo: "BLINDAGEM"
+    modulo_id: "MOD-XXX"
+    blindagem_tipo: "T"  # T=Testes, H=Homologação, I=Integração
+    valor_sugerido: true  # true ou false
+    justificativa: "[EXPLICAR]"
+  
+  - tipo: "PROGRESSO"
+    modulo_id: "MOD-XXX"
+    valor_sugerido: 75  # 0-100
+    justificativa: "[EXPLICAR]"
+
+# ============================================================================
+# 7. ATUALIZAÇÕES DE STATUS
+# ============================================================================
+atualizacoes_status:
+  # Atualizações de status de módulos
+  - modulo_id: "MOD-XXX"
+    status_atual: "BACKLOG"  # BACKLOG | ACTIVE | INACTIVE | COMPLETED
+    status_sugerido: "ACTIVE"
+    justificativa: |
+      [EXPLICAR POR QUE ESTA MUDANÇA DE STATUS É NECESSÁRIA]
+    
+    testes_aplicados: false  # true se testes foram aplicados
+    cobertura_testes: 0  # Percentual se aplicável
+    observacoes: "[SE HOUVER]"
+
+# ============================================================================
+# 8. TAGS DE COMPLIANCE
+# ============================================================================
+compliance_sugestoes:
+  # Sugestões de tags de compliance
+  - modulo_id: "MOD-XXX"
+    framework: "MiFID II"  # MiFID II | Basel III | SEC Rule 611 | GDPR
+    version: "Artigo 16, 48"
+    justificativa: "[EXPLICAR POR QUE ESTA TAG É NECESSÁRIA]"
+    impact_level: "HIGH"  # HIGH | MEDIUM | LOW
+
+# ============================================================================
+# 9. MILESTONE DEFINITION (Para especificações técnicas)
+# ============================================================================
+milestone:
+  milestone_id: "M-F0"
+  milestone_name: "[NOME DO MILESTONE]"
+  definition_of_done:
+    - "[Critério 1 de conclusão]"
+    - "[Critério 2 de conclusão]"
+    - "[Critério 3 de conclusão]"
+
+# ============================================================================
+# 10. REVIEW & REFUTATION (Para especificações técnicas)
+# ============================================================================
+review:
+  reviewer_analysis:
+    strengths:
+      - "[Ponto forte 1]"
+      - "[Ponto forte 2]"
+    
+    concerns:
+      - "[Preocupação 1]"
+      - "[Preocupação 2]"
+    
+    suggestions:
+      - "[Sugestão 1]"
+      - "[Sugestão 2]"
+  
+  refutation_attempt:
+    - point: "[Ponto de refutação 1]"
+      status: "Refuted"  # Refuted | Valid
+      evidence: "[Evidência]"
+    
+    - point: "[Ponto de refutação 2]"
+      status: "Valid"
+      evidence: "[Evidência]"
+  
+  review_decision: "APPROVED"  # APPROVED | APPROVED_WITH_CONDITIONS | REJECTED | DEFERRED
+  reviewer_signature: "[NOME/ID DO REVIEWER]"
+  review_date: "[YYYY-MM-DD]"
+
+# ============================================================================
+# 11. RISK ASSESSMENT
+# ============================================================================
+risk_assessment:
+  risks:
+    - risk_id: "RISK-001"
+      description: "[DESCRIÇÃO DO RISCO]"
+      probability: "HIGH"  # HIGH | MEDIUM | LOW
+      impact: "HIGH"  # HIGH | MEDIUM | LOW
+      severity: "CRITICAL"  # CRITICAL | HIGH | MEDIUM | LOW
+      mitigation_strategy: "[ESTRATÉGIA DE MITIGAÇÃO]"
+  
+  risk_acceptance:
+    all_risks_identified: true
+    residual_risks_accepted: true
+    contingency_plan_documented: true
+
+# ============================================================================
+# 12. TESTING & VALIDATION
+# ============================================================================
+testing:
+  test_strategy:
+    unit_tests: true
+    integration_tests: true
+    system_tests: true
+    security_tests: true
+    performance_tests: false
+    compliance_tests: true
+  
+  test_results:
+    - test_id: "TEST-001"
+      description: "[DESCRIÇÃO DO TESTE]"
+      status: "PASS"  # PASS | FAIL | SKIP
+      result: "[RESULTADO]"
+      notes: "[NOTAS]"
+
+# ============================================================================
+# 13. OBSERVAÇÕES E RECOMENDAÇÕES
+# ============================================================================
+observacoes: |
+  [ESPAÇO PARA OBSERVAÇÕES GERAIS, RECOMENDAÇÕES, CONCERNS, ETC.]
+
+recomendacoes: |
+  [RECOMENDAÇÕES ESPECÍFICAS PARA O SISTEMA]
+
+# ============================================================================
+# 14. APROVAÇÃO E ASSINATURA
+# ============================================================================
+aprovacao:
+  preparado_por: "[NOME]"
+  data_preparacao: "[YYYY-MM-DD]"
+  revisado_por: "[NOME]"  # Se aplicável
+  data_revisao: "[YYYY-MM-DD]"
+  aprovado_por: "[NOME]"  # Se aplicável
+  data_aprovacao: "[YYYY-MM-DD]"
+  
+  # Status final
+  status: "Draft"  # Draft | In Review | Approved | Rejected
+  
+  # Assinatura digital (será calculada pelo processador)
+  assinatura_digital: ""  # Hash SHA3-256 do conteúdo
+
+# ============================================================================
+# 15. INSTRUÇÕES DE USO
+# ============================================================================
+# 1. Preencha este template com suas sugestões/atualizações/especificações
+# 2. Seções opcionais podem ser omitidas se não aplicáveis
+# 3. Envie o arquivo YAML preenchido
+# 4. O sistema processará automaticamente com validações
+# 5. Você receberá um relatório de processamento
+# 
+# NOTA: Para sugestões simples, preencha apenas seções 1-4, 6-7, 13-14
+#       Para especificações técnicas completas, preencha todas as seções
+

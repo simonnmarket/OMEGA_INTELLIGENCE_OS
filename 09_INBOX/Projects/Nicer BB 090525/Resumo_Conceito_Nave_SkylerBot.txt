@@ -1,0 +1,83 @@
+📌 Resumo do Conceito Atual
+
+Referência Inicial da Viagem:
+- Mínimas e máximas da semana anterior.
+- Spots-chave definidos por:
+  - Quantum VPOC
+  - TPO Profile with Day Stat
+  - Delta Flow Profile
+  - Volume Delta Candles
+  - Volume Profile with Node Detection
+  - MarketProfile Clássico
+
+Conceito Dinâmico de Navegação:
+- Toda nova semana é um novo lançamento da nave.
+- Os obstáculos/zonas detectadas são barreiras construídas com base em volume, delta e fluxo anteriores (semana passada).
+- A nave sobe (alta) ou desce (baixa) conforme encontra resistência/suporte volumétrico.
+
+Primeira Janela de Confirmação: Open Range Breakout (Tom Hougaard + John Murphy):
+- Análise dos primeiros 5–20 minutos da abertura semanal.
+- Direção contrária da primeira vela pode validar ou invalidar rota estimada da nave.
+
+Ferramentas Estatísticas e Técnicas de Suporte à Navegação:
+- Weis Waves, VSA, VWAP, PVSRA, Footprint Charts, VPT.
+- Análises Quantitativas:
+  - Univariada: ex. padrão de volume por candle.
+  - Bivariada: volume vs delta, candle vs movimento.
+  - Multivariada: clustering de eventos, machine learning (Alphas).
+
+Confirmação Multidimensional:
+- Correlação entre moedas e ativos (divergências ou convergências).
+- Padrões de Candlestick como o Hammer como sinal de reforço da trajetória da nave.
+
+✅ Proposta Técnica de Modularização Inicial
+
+1. GravitationalFieldMapper.mqh
+> Constrói o mapa gravitacional da semana anterior.
+- Coleta: VPOC, TPO, Delta Profile, Weis, VWAP etc.
+- Define zonas de "alta densidade" (potencial resistência/suporte).
+- Cria os “tijolos” mencionados, com tags de classificação (absorção, rejeição, reversão).
+
+2. TrajectoryInitializer.mqh
+> Lida com a fase de lançamento da nave.
+- Analisa primeiros 5–20 minutos com lógica ORB e padrões contrários.
+- Compara movimento real vs. projeção gravitacional.
+- Gera rótulo de confirmação ou recalibração.
+
+3. DirectionalValidator.mqh
+> Integra os vetores multivariados:
+- Correlação interativos (moedas, índices).
+- Volume spread vs. preço (VSA).
+- Detecção de novos alphas via thresholds de volatilidade.
+- Ativa ou desativa motores da nave (continua subida ou prepara pouso).
+
+4. CandlePatternReactor.mqh
+> Analisa padrões como Hammer, Engulfing etc. com foco em:
+- Confirmação de impulso.
+- Invalidação de armadilhas de volume.
+
+📈 Exemplo de Estrutura de Dados (Simplificada)
+
+struct GravityNode {
+   double price;
+   double volume;
+   double delta;
+   datetime timestamp;
+   string type; // "rejection", "absorption", "support", "resistance"
+};
+
+struct NavigationPath {
+   GravityNode nodes[];
+   string direction; // "up" or "down"
+   double confidence;
+};
+
+🧠 Próximos Passos
+
+Se você já tiver códigos, esboços ou arquivos que trabalhem com:
+- Volume Profile;
+- TPO, Delta, Weis;
+- Padrões de candle;
+- ORB ou outras estatísticas dos primeiros minutos;
+
+Me envie agora e eu faço a adaptação para esse modelo de navegação tridimensional da Nave Apollo11 – SkylerBot.

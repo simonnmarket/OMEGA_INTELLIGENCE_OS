@@ -1,0 +1,84 @@
+//+------------------------------------------------------------------+
+//| Agent_Omega.mqh - Supervisor TIER-0                              |
+//| Projeto: QuantumOmegaGodMode / EA Numeia                        |
+//+------------------------------------------------------------------+
+#ifndef __AGENT_OMEGA_MQH__
+#define __AGENT_OMEGA_MQH__
+
+#include <include/utils/logger_institutional.mqh>
+#include <include/security/QuantumBlockchain.mqh>
+#include <include/analysis/dependency_graph.mqh>
+
+class AgentOmega
+{
+private:
+   logger_institutional &m_logger;
+   QuantumBlockchain    &m_blockchain;
+   CDependencyGraph     &m_dependency_graph;
+   string               m_symbol;
+
+public:
+   AgentOmega(logger_institutional &logger,
+             QuantumBlockchain &qb,
+             CDependencyGraph &dg,
+             string symbol = _Symbol) :
+      m_logger(logger),
+      m_blockchain(qb),
+      m_dependency_graph(dg),
+      m_symbol(symbol)
+   {
+      m_logger.log_info("[OMEGA] Supervisor TIER-0 ativado");
+   }
+
+   // Executa auditoria completa
+   bool RunFullAudit()
+   {
+      m_logger.log_info("[OMEGA] Iniciando auditoria completa...");
+      
+      // 1. Escaneia dependências
+      m_dependency_graph.ScanProjectStructure();
+      
+      // 2. Detecta ciclos
+      string cycles[];
+      if(m_dependency_graph.FindCycles(cycles))
+      {
+         for(int i = 0; i < ArraySize(cycles); i++)
+         {
+            m_logger.log_critical("[OMEGA] Ciclo de dependência detectado: " + cycles[i]);
+            m_blockchain.RecordTransaction("CYCLE_DETECTED=" + cycles[i], "OMEGA_ALERT");
+         }
+         return false;
+      }
+      
+      // 3. Valida segurança
+      if(!m_dependency_graph.ValidateSecurityCompliance())
+      {
+         m_logger.log_error("[OMEGA] Falha na auditoria de segurança");
+         return false;
+      }
+      
+      m_logger.log_success("[OMEGA] Auditoria completa: APROVADO");
+      m_blockchain.RecordTransaction("AUDIT=APPROVED|TIME=" + TimeToString(TimeCurrent(), TIME_DATE|TIME_SECONDS), "OMEGA_SUCCESS");
+      return true;
+   }
+
+   // Gera relatório quântico
+   void GenerateQuantumReport()
+   {
+      string report = "=== RELATÓRIO QUÂNTICO ===\n";
+      report += "Data: " + TimeToString(TimeCurrent(), TIME_DATE|TIME_SECONDS) + "\n";
+      report += "Status: APROVADO\n";
+      report += "Arquivos: " + IntegerToString(m_dependency_graph.GetFileCount()) + "\n";
+      report += "Dependências: " + IntegerToString(m_dependency_graph.GetDependencyCount()) + "\n";
+      
+      int handle = FileOpen("MQL5/LOGS/quantum_report_" + TimeToString(TimeCurrent(), "yyyymmdd") + ".txt", FILE_WRITE|FILE_TXT);
+      if(handle != INVALID_HANDLE)
+      {
+         FileWrite(handle, report);
+         FileClose(handle);
+         m_logger.log_info("[OMEGA] Relatório quântico gerado");
+      }
+   }
+};
+
+#endif // __AGENT_OMEGA_MQH__

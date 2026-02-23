@@ -1,0 +1,1114 @@
+A — Fluxo operacional (resumo)
+
+Definir alvo público (ex.: ticker “BTC-USD”, exchange orderbook público, ou usuário público X).
+
+Coleta OSINT pública: mídias públicas (X/Twitter público, Reddit público, canais Telegram públicos, YouTube público, posts de Instagram públicos), news, filings (SEC EDGAR), relatórios on-chain (Etherscan, Glassnode, Dune public queries), snapshots de orderbook (exchanges públicas / CCXT), e indicadores de sentimento.
+
+Normalizar & armazenar: armazenar raw (parquet), metadados (Postgres), indexar texto (Elasticsearch).
+
+Enriquecer / vincular: named-entity recognition multilíngue, clustering de contas públicas, linking on-chain addresses a menções públicas (quando disponível e legal).
+
+Gerar sinais: p.ex. “tweet de whale + grande transferência on-chain + spike de volume” → sinal.
+
+Backtest / validação: usar dados históricos públicos e simular execução com slippage/fees.
+
+Paper trading e monitor: só após validação em paper trading com limites de risco.
+
+B — Fontes & técnicas (tudo público/legal)
+
+Mercado/price/order book: CCXT (exchanges), Binance public REST/WebSocket, Coinbase public endpoints, Kaiko (pago), market data via paid feeds (se comprar, ok).
+
+On-chain (cripto): Nodes públicas, Infura/Alchemy (API com chave), Etherscan API (txs públicas), Dune Analytics (queries públicas), Glassnode (pago), Whale Alert (twitter público + API).
+
+Redes sociais públicas:
+
+X/Twitter público: snscrape (scrape público de tweets sem usar credenciais).
+
+Reddit: Pushshift (dump público) + Reddit API (se desejar, com app).
+
+Telegram/YouTube/Discord: apenas canais públicos (Telegram public channels exportáveis; Discord apenas servidores públicos e canais abertos — respeitar TOS).
+
+Notícias & filings: SEC EDGAR (empresa pública), CVM (Brasil), EDGAR RSS, Google News, agregadores.
+
+Comunidades públicas: GitHub public repos (estratégias, configs), Medium, public Discord servers (apenas se canal público), public Telegram channels.
+
+Web archives & Whois: Wayback, whois para tracker de domínios de projetos que ostentam.
+
+Línguas: usar termos de busca em EN / RU / JP / ZH; traduzir queries e executar em motores locais (Google, Bing) e em scrapers de notícias.
+
+C — Queries por idioma (use em motores ou scrapers)
+
+Inglês: whale transfer BTC "sent" "moved" large transfer, big trader Binance "wallet" "dump", orderbook spike "whale".
+
+Russo: кит перевод биткоин крупный перевод, большой трейдер бинанс кошелек.
+
+Japonês: クジラ 転送 ビットコイン 大口, 大口トレーダー バイナンス.
+
+Chinês: 巨鲸 转账 比特币 大额 转账, 大户 交易 所 钱包.
+
+D — Arquitetura de dados mínima (reprodutível)
+
+Raw layer: S3/MinIO — parquet por fonte/date (ex.: tweets/YYYY-MM-DD.parquet).
+
+Metadata / Catalog: Postgres — tabelas: sources, datasets, jobs.
+
+Search / Enrichment: Elasticsearch — index de documentos (textos, títulos, mentions).
+
+Analytics / Backtest: Jupyter + vectorbt / backtrader / zipline, outputs em Parquet/CSV.
+
+Exemplo simples de schema Postgres (pseudocode):
+
+documents(id, source, created_at, author, text, language, raw_json, url)
+
+onchain_events(id, tx_hash, from_addr, to_addr, value, token, timestamp, link)
+
+market_ticks(id, exchange, symbol, ts, bid, ask, last, volume)
+
+signals(id, strategy, ts, payload_json, score)
+
+E — Snippets Python executáveis (coleta pública)
+
+Coletar tweets públicos com snscrape (não usa API oficial — coleta apenas tweets públicos).
+
+# instalar
+pip install snscrape pandas
+# tweets_scrape.py
+import snscrape.modules.twitter as sntwitter
+import pandas as pd
+from datetime import datetime, timedelta
+
+def scrape_tweets(query, max_tweets=1000):
+    tweets = []
+    for i, t in enumerate(sntwitter.TwitterSearchScraper(query).get_items()):
+        if i >= max_tweets:
+            break
+        tweets.append({
+            "id": t.id,
+            "date": t.date,
+            "user": t.user.username,
+            "content": t.content,
+            "url": t.url,
+        })
+    return pd.DataFrame(tweets)
+
+if __name__ == "__main__":
+    # exemplo: buscas por 'whale transfer' e 'BTC'
+    df = scrape_tweets('("whale" OR "whales" OR "large transfer") BTC lang:en', max_tweets=200)
+    print(df.head())
+    df.to_parquet("tweets_btc_whales.parquet", index=False)
+
+Coletar dados de orderbook / trades via CCXT (exchanges públicas)
+
+pip install ccxt pandas
+# ccxt_orderbook_example.py
+import ccxt
+import pandas as pd
+import time
+
+exchange = ccxt.binance()   # público
+symbol = "BTC/USDT"
+
+def fetch_orderbook():
+    ob = exchange.fetch_order_book(symbol)
+    ts = pd.Timestamp.utcnow()
+    top = {
+        "timestamp": ts,
+        "bid": ob['bids'][0][0] if ob['bids'] else None,
+        "ask": ob['asks'][0][0] if ob['asks'] else None,
+        "bid_size": ob['bids'][0][1] if ob['bids'] else None,
+        "ask_size": ob['asks'][0][1] if ob['asks'] else None,
+    }
+    return top
+
+if __name__ == "__main__":
+    rows = []
+    for _ in range(5):
+        rows.append(fetch_orderbook())
+        time.sleep(1)
+    df = pd.DataFrame(rows)
+    print(df)
+    df.to_parquet("orderbook_sample.parquet", index=False)
+
+On-chain: consultar transferências de ETH (Etherscan API — pública, requer API key gratuita)
+
+pip install requests pandas
+# etherscan_transfers.py
+import requests
+import pandas as pd
+
+API_KEY = "YOUR_ETHERSCAN_KEY"  # registre uma chave gratuita em etherscan.io
+address = ""  # opcional: address para filtrar
+
+url = f"https://api.etherscan.io/api?module=account&action=txlist&address={address}&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey={API_KEY}"
+resp = requests.get(url)
+data = resp.json()
+if data['status'] == '1':
+    df = pd.DataFrame(data['result'])
+    df.to_parquet("etherscan_txs.parquet", index=False)
+    print(df.head())
+else:
+    print("No results or rate-limited:", data)
+
+Observação: a API requer uma chave — é legal e pública. Se não quiser chave, usar Dune dashboards públicos ou nodos RPC públicos (Infura/Alchemy com chave).
+
+Agregador simples: correlacionar menção pública + transferência on-chain
+
+Estrutura: para cada tweet com keywords, extrair possíveis endereços (regex), então checar no Etherscan se houve transferência grande perto do timestamp. Isso é ligar pistas públicas, não invasão.
+
+F — Sinais & heurísticas (exemplos concretos)
+
+Whale transfer + public brag within ±1h → sinal de potencial impacto.
+
+Spike de mentions + sentiment positivo + volume on-chain → sinal de momentum.
+
+Orderbook imbalance (large ask/bid) + tweets negativos/positive → possível manipulação ou execução grande.
+
+Rede de contas públicas (clustering) que sempre postam grandes ganhos → monitorar padrões e timestamps de posts vs price moves.
+
+G — Validação / Backtest (o que vou entregar se você quiser)
+
+Implemento 2 estratégias de exemplo (momentum + whale-signal) com:
+
+Recolha histórica pública (yfinance/CCXT/Pushshift/Dune queries).
+
+Backtest com vectorbt (ou backtrader) incluindo slippage/fees.
+
+Relatório: equity curve, drawdown, métricas (Sharpe, maxDD), tabelas de trades.
+
+H — Regras de compliance & checklist curto
+
+Use apenas conteúdo público ou dados que você tenha licença para usar.
+
+Logs de coleta (quem, quando, query) para auditoria.
+
+Respeite rate limits e robots.txt ao fazer scraping.
+
+Para dados pagos, compre a fonte.
+
+Proteja PII: remova dados sensíveis e não tente “desanonimizar” pessoas sem base legal.
+
+I — Próximos passos (escolha um — eu executo já aqui na conversa)
+
+Escolha uma opção que eu já posso começar a entregar nesta resposta (eu não corro nada no background — mas eu posso gerar todo o código, queries, dashboards e instruções agora):
+
+Gerar pipeline completo (código) para coletar: tweets públicos (snscrape), orderbook CCXT (Binance), e on-chain (Etherscan) para um ativo público que você indicar (ex.: BTC/USDT ou AAPL). Eu entrego: scripts, schemas, e README.
+
+Criar 2 estratégias (momentum simples + whale-signal) implementadas em Python com backtest usando dados públicos que eu explico como baixar; incluo código de simulação.
+
+Montar playbook OSINT multilíngue: lista de queries traduzidas (EN/RU/JP/ZH), sites públicos para monitorar, e regras de normalização (já pronto para rodar em scrapers).
+
+Tudo acima — pacote completo (scripts + playbook + esquema DB).
+
+A — Fluxo operacional (resumo)
+
+Definir alvo público (ex.: ticker “BTC-USD”, exchange orderbook público, ou usuário público X).
+
+Coleta OSINT pública: mídias públicas (X/Twitter público, Reddit público, canais Telegram públicos, YouTube público, posts de Instagram públicos), news, filings (SEC EDGAR), relatórios on-chain (Etherscan, Glassnode, Dune public queries), snapshots de orderbook (exchanges públicas / CCXT), e indicadores de sentimento.
+
+Normalizar & armazenar: armazenar raw (parquet), metadados (Postgres), indexar texto (Elasticsearch).
+
+Enriquecer / vincular: named-entity recognition multilíngue, clustering de contas públicas, linking on-chain addresses a menções públicas (quando disponível e legal).
+
+Gerar sinais: p.ex. “tweet de whale + grande transferência on-chain + spike de volume” → sinal.
+
+Backtest / validação: usar dados históricos públicos e simular execução com slippage/fees.
+
+Paper trading e monitor: só após validação em paper trading com limites de risco.
+
+B — Fontes & técnicas (tudo público/legal)
+
+Mercado/price/order book: CCXT (exchanges), Binance public REST/WebSocket, Coinbase public endpoints, Kaiko (pago), market data via paid feeds (se comprar, ok).
+
+On-chain (cripto): Nodes públicas, Infura/Alchemy (API com chave), Etherscan API (txs públicas), Dune Analytics (queries públicas), Glassnode (pago), Whale Alert (twitter público + API).
+
+Redes sociais públicas:
+
+X/Twitter público: snscrape (scrape público de tweets sem usar credenciais).
+
+Reddit: Pushshift (dump público) + Reddit API (se desejar, com app).
+
+Telegram/YouTube/Discord: apenas canais públicos (Telegram public channels exportáveis; Discord apenas servidores públicos e canais abertos — respeitar TOS).
+
+Notícias & filings: SEC EDGAR (empresa pública), CVM (Brasil), EDGAR RSS, Google News, agregadores.
+
+Comunidades públicas: GitHub public repos (estratégias, configs), Medium, public Discord servers (apenas se canal público), public Telegram channels.
+
+Web archives & Whois: Wayback, whois para tracker de domínios de projetos que ostentam.
+
+Línguas: usar termos de busca em EN / RU / JP / ZH; traduzir queries e executar em motores locais (Google, Bing) e em scrapers de notícias.
+
+C — Queries por idioma (use em motores ou scrapers)
+
+Inglês: whale transfer BTC "sent" "moved" large transfer, big trader Binance "wallet" "dump", orderbook spike "whale".
+
+Russo: кит перевод биткоин крупный перевод, большой трейдер бинанс кошелек.
+
+Japonês: クジラ 転送 ビットコイン 大口, 大口トレーダー バイナンス.
+
+Chinês: 巨鲸 转账 比特币 大额 转账, 大户 交易 所 钱包.
+
+D — Arquitetura de dados mínima (reprodutível)
+
+Raw layer: S3/MinIO — parquet por fonte/date (ex.: tweets/YYYY-MM-DD.parquet).
+
+Metadata / Catalog: Postgres — tabelas: sources, datasets, jobs.
+
+Search / Enrichment: Elasticsearch — index de documentos (textos, títulos, mentions).
+
+Analytics / Backtest: Jupyter + vectorbt / backtrader / zipline, outputs em Parquet/CSV.
+
+Exemplo simples de schema Postgres (pseudocode):
+
+documents(id, source, created_at, author, text, language, raw_json, url)
+
+onchain_events(id, tx_hash, from_addr, to_addr, value, token, timestamp, link)
+
+market_ticks(id, exchange, symbol, ts, bid, ask, last, volume)
+
+signals(id, strategy, ts, payload_json, score)
+
+E — Snippets Python executáveis (coleta pública)
+
+Coletar tweets públicos com snscrape (não usa API oficial — coleta apenas tweets públicos).
+
+# instalar
+pip install snscrape pandas
+# tweets_scrape.py
+import snscrape.modules.twitter as sntwitter
+import pandas as pd
+from datetime import datetime, timedelta
+
+def scrape_tweets(query, max_tweets=1000):
+    tweets = []
+    for i, t in enumerate(sntwitter.TwitterSearchScraper(query).get_items()):
+        if i >= max_tweets:
+            break
+        tweets.append({
+            "id": t.id,
+            "date": t.date,
+            "user": t.user.username,
+            "content": t.content,
+            "url": t.url,
+        })
+    return pd.DataFrame(tweets)
+
+if __name__ == "__main__":
+    # exemplo: buscas por 'whale transfer' e 'BTC'
+    df = scrape_tweets('("whale" OR "whales" OR "large transfer") BTC lang:en', max_tweets=200)
+    print(df.head())
+    df.to_parquet("tweets_btc_whales.parquet", index=False)
+
+Coletar dados de orderbook / trades via CCXT (exchanges públicas)
+
+pip install ccxt pandas
+# ccxt_orderbook_example.py
+import ccxt
+import pandas as pd
+import time
+
+exchange = ccxt.binance()   # público
+symbol = "BTC/USDT"
+
+def fetch_orderbook():
+    ob = exchange.fetch_order_book(symbol)
+    ts = pd.Timestamp.utcnow()
+    top = {
+        "timestamp": ts,
+        "bid": ob['bids'][0][0] if ob['bids'] else None,
+        "ask": ob['asks'][0][0] if ob['asks'] else None,
+        "bid_size": ob['bids'][0][1] if ob['bids'] else None,
+        "ask_size": ob['asks'][0][1] if ob['asks'] else None,
+    }
+    return top
+
+if __name__ == "__main__":
+    rows = []
+    for _ in range(5):
+        rows.append(fetch_orderbook())
+        time.sleep(1)
+    df = pd.DataFrame(rows)
+    print(df)
+    df.to_parquet("orderbook_sample.parquet", index=False)
+
+On-chain: consultar transferências de ETH (Etherscan API — pública, requer API key gratuita)
+
+pip install requests pandas
+# etherscan_transfers.py
+import requests
+import pandas as pd
+
+API_KEY = "YOUR_ETHERSCAN_KEY"  # registre uma chave gratuita em etherscan.io
+address = ""  # opcional: address para filtrar
+
+url = f"https://api.etherscan.io/api?module=account&action=txlist&address={address}&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey={API_KEY}"
+resp = requests.get(url)
+data = resp.json()
+if data['status'] == '1':
+    df = pd.DataFrame(data['result'])
+    df.to_parquet("etherscan_txs.parquet", index=False)
+    print(df.head())
+else:
+    print("No results or rate-limited:", data)
+
+Observação: a API requer uma chave — é legal e pública. Se não quiser chave, usar Dune dashboards públicos ou nodos RPC públicos (Infura/Alchemy com chave).
+
+Agregador simples: correlacionar menção pública + transferência on-chain
+
+Estrutura: para cada tweet com keywords, extrair possíveis endereços (regex), então checar no Etherscan se houve transferência grande perto do timestamp. Isso é ligar pistas públicas, não invasão.
+
+F — Sinais & heurísticas (exemplos concretos)
+
+Whale transfer + public brag within ±1h → sinal de potencial impacto.
+
+Spike de mentions + sentiment positivo + volume on-chain → sinal de momentum.
+
+Orderbook imbalance (large ask/bid) + tweets negativos/positive → possível manipulação ou execução grande.
+
+Rede de contas públicas (clustering) que sempre postam grandes ganhos → monitorar padrões e timestamps de posts vs price moves.
+
+G — Validação / Backtest (o que vou entregar se você quiser)
+
+Implemento 2 estratégias de exemplo (momentum + whale-signal) com:
+
+Recolha histórica pública (yfinance/CCXT/Pushshift/Dune queries).
+
+Backtest com vectorbt (ou backtrader) incluindo slippage/fees.
+
+Relatório: equity curve, drawdown, métricas (Sharpe, maxDD), tabelas de trades.
+
+H — Regras de compliance & checklist curto
+
+Use apenas conteúdo público ou dados que você tenha licença para usar.
+
+Logs de coleta (quem, quando, query) para auditoria.
+
+Respeite rate limits e robots.txt ao fazer scraping.
+
+Para dados pagos, compre a fonte.
+
+Proteja PII: remova dados sensíveis e não tente “desanonimizar” pessoas sem base legal.
+
+I — Próximos passos (escolha um — eu executo já aqui na conversa)
+
+Escolha uma opção que eu já posso começar a entregar nesta resposta (eu não corro nada no background — mas eu posso gerar todo o código, queries, dashboards e instruções agora):
+
+Gerar pipeline completo (código) para coletar: tweets públicos (snscrape), orderbook CCXT (Binance), e on-chain (Etherscan) para um ativo público que você indicar (ex.: BTC/USDT ou AAPL). Eu entrego: scripts, schemas, e README.
+
+Criar 2 estratégias (momentum simples + whale-signal) implementadas em Python com backtest usando dados públicos que eu explico como baixar; incluo código de simulação.
+
+Montar playbook OSINT multilíngue: lista de queries traduzidas (EN/RU/JP/ZH), sites públicos para monitorar, e regras de normalização (já pronto para rodar em scrapers).
+
+Tudo acima — pacote completo (scripts + playbook + esquema DB).
+
+1) Arquivo único Python — salve como openmymind_pipeline.py
+#!/usr/bin/env python3
+"""
+OpenMyMind Project 007 - Pipeline único em Python
+Conteúdo: config, coletores (tweets, orderbook, on-chain, whalealert), validação
+cruzada (requiring >=2 sources), persistência SQLite, backtest simples (yfinance),
+e utilitários. Tudo em um arquivo para facilitar deploy/local run.
+
+INSTRUÇÕES:
+- Instale dependências (veja requirements.txt)
+- Opcional: exporte variáveis de ambiente ETHERSCAN_API_KEY, WHALEALERT_API_KEY, INFURA_KEY
+- Rode: python openmymind_pipeline.py
+
+AVISO: Este script usa apenas fontes PÚBLICAS e técnicas legais. NÃO acessa canais privados.
+"""
+
+import os
+import sys
+import time
+from datetime import datetime, timedelta
+from pathlib import Path
+import json
+import re
+
+# --------------------
+# Config (edite conforme necessário)
+# --------------------
+ASSET_SYMBOL = os.getenv("ASSET_SYMBOL", "BTC/USDT")   # formato CCXT
+SAMPLE_INTERVAL_SEC = int(os.getenv("SAMPLE_INTERVAL_SEC", "60"))
+DATA_DIR = Path(os.getenv("DATA_DIR", "data"))
+DATA_DIR.mkdir(exist_ok=True, parents=True)
+
+# thresholds
+ONCHAIN_LARGE_BTC = float(os.getenv("ONCHAIN_LARGE_BTC", "50.0"))  # threshold de 'whale' (ajuste)
+ONCHAIN_TIME_WINDOW_SEC = int(os.getenv("ONCHAIN_TIME_WINDOW_SEC", "3600"))
+ORDERBOOK_IMBALANCE_RATIO = float(os.getenv("ORDERBOOK_IMBALANCE_RATIO", "3.0"))
+TWEET_MIN_RETWEETS = int(os.getenv("TWEET_MIN_RETWEETS", "10"))
+TWEET_MIN_FOLLOWERS = int(os.getenv("TWEET_MIN_FOLLOWERS", "2000"))
+
+# weights para scoring de confiança
+CRED_WEIGHTS = {
+    "whale_alert": 0.6,
+    "onchain": 0.8,
+    "tweet": 0.4,
+    "orderbook": 0.5
+}
+
+# API Keys (opcionais)
+ETHERSCAN_API_KEY = os.getenv("ETHERSCAN_API_KEY", "")
+WHALEALERT_API_KEY = os.getenv("WHALEALERT_API_KEY", "")
+INFURA_KEY = os.getenv("INFURA_KEY", "")
+
+# DB (SQLite file)
+DB_FILE = Path(os.getenv("DB_FILE", "openmymind.db"))
+DB_URL = f"sqlite:///{DB_FILE}"
+
+# Backtest parameters
+BACKTEST_INITIAL_CAPITAL = float(os.getenv("BACKTEST_INITIAL_CAPITAL", "10000"))
+
+# --------------------
+# Imports tardios (dependências opcionais)
+# --------------------
+# Core libs
+import logging
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+
+# Third-party libs - algumas podem não estar instaladas; tratamos isso
+MISSING = []
+try:
+    import pandas as pd
+except Exception:
+    MISSING.append("pandas")
+try:
+    import numpy as np
+except Exception:
+    MISSING.append("numpy")
+try:
+    import ccxt
+except Exception:
+    MISSING.append("ccxt")
+try:
+    import snscrape.modules.twitter as sntwitter
+except Exception:
+    MISSING.append("snscrape")
+try:
+    import requests
+except Exception:
+    MISSING.append("requests")
+try:
+    import sqlalchemy
+    from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, Float, DateTime, JSON, Text
+    from sqlalchemy.orm import sessionmaker
+except Exception:
+    MISSING.append("sqlalchemy")
+# optional backtest: yfinance + vectorbt
+BACKTEST_CAN_RUN = True
+try:
+    import yfinance as yf
+except Exception:
+    BACKTEST_CAN_RUN = False
+    MISSING.append("yfinance")
+try:
+    import vectorbt as vbt
+except Exception:
+    # we'll fallback to pandas-based simple backtest if vectorbt missing
+    vbt = None
+
+if MISSING:
+    logging.warning("Módulos ausentes detectados: %s", ", ".join(MISSING))
+    logging.info("Instale-os com: pip install -r requirements.txt")
+    # not exiting: many features degrade gracefully
+
+# --------------------
+# Database (SQLite via SQLAlchemy) - persistência simples
+# --------------------
+engine = None
+Session = None
+def init_db():
+    global engine, Session
+    engine = create_engine(DB_URL, echo=False, connect_args={"check_same_thread": False})
+    Session = sessionmaker(bind=engine)
+    meta = MetaData()
+    # documents table
+    if not engine.dialect.has_table(engine, "documents"):
+        documents = Table('documents', meta,
+            Column('id', Integer, primary_key=True),
+            Column('source', String(100)),
+            Column('created_at', DateTime),
+            Column('author', String(200)),
+            Column('title', String(400)),
+            Column('text', Text),
+            Column('language', String(20)),
+            Column('raw', JSON)
+        )
+    # signals table
+    if not engine.dialect.has_table(engine, "signals"):
+        signals = Table('signals', meta,
+            Column('id', Integer, primary_key=True),
+            Column('strategy', String(200)),
+            Column('ts', DateTime),
+            Column('payload', JSON),
+            Column('score', Float)
+        )
+    meta.create_all(engine)
+    logging.info("DB inicializada em %s", DB_FILE)
+
+# --------------------
+# Collectors (public)
+# --------------------
+
+# 1) Tweets (snscrape) - coleta pública
+def scrape_tweets(query, max_tweets=500):
+    """
+    Retorna DataFrame com tweets públicos que batem no query.
+    Exemplo query: '"whale transfer" BTC lang:en' ou 'BTC lang:en'
+    """
+    rows = []
+    if "snscrape" not in sys.modules:
+        logging.warning("snscrape não disponível; pule coleta de tweets.")
+        return pd.DataFrame(rows)
+    for i, t in enumerate(sntwitter.TwitterSearchScraper(query).get_items()):
+        if i >= max_tweets:
+            break
+        rows.append({
+            "id": t.id,
+            "date": t.date.to_pydatetime(),
+            "user": t.user.username,
+            "displayname": t.user.displayname,
+            "followers": t.user.followersCount,
+            "retweets": t.retweetCount,
+            "content": t.content,
+            "url": t.url
+        })
+    df = pd.DataFrame(rows)
+    if not df.empty:
+        fn = DATA_DIR / f"tweets_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}.parquet"
+        df.to_parquet(fn, index=False)
+        logging.info("Tweets salvos em %s (rows=%d)", fn, len(df))
+    else:
+        logging.info("Nenhum tweet coletado para query: %s", query)
+    return df
+
+def extract_eth_addresses(text):
+    # regex para endereços Ethereum (0x + 40 hex)
+    return re.findall(r'0x[a-fA-F0-9]{40}', text or "")
+
+# 2) Orderbook via CCXT (public)
+def fetch_orderbook_snapshot(symbol=ASSET_SYMBOL, exchange_name="binance"):
+    if "ccxt" not in sys.modules:
+        logging.warning("ccxt não disponível; pule coleta de orderbook.")
+        return None
+    try:
+        exc = getattr(ccxt, exchange_name)()
+        ob = exc.fetch_order_book(symbol, limit=50)
+        ts = datetime.utcnow()
+        top_bid = ob['bids'][0] if ob['bids'] else [None, None]
+        top_ask = ob['asks'][0] if ob['asks'] else [None, None]
+        bid_depth = sum([b[1] for b in ob['bids'][:10]]) if ob['bids'] else 0.0
+        ask_depth = sum([a[1] for a in ob['asks'][:10]]) if ob['asks'] else 0.0
+        out = {
+            "ts": ts,
+            "exchange": exchange_name,
+            "symbol": symbol,
+            "bid": top_bid[0],
+            "bid_size": top_bid[1],
+            "ask": top_ask[0],
+            "ask_size": top_ask[1],
+            "bid_depth_top10": bid_depth,
+            "ask_depth_top10": ask_depth
+        }
+        # persist
+        df = pd.DataFrame([out])
+        fn = DATA_DIR / f"orderbook_{exchange_name}_{symbol.replace('/','')}_{ts.strftime('%Y%m%d%H%M%S')}.parquet"
+        df.to_parquet(fn, index=False)
+        logging.info("Orderbook salvo em %s", fn)
+        return out
+    except Exception as e:
+        logging.exception("Erro ao buscar orderbook: %s", e)
+        return None
+
+def orderbook_imbalance_ratio(snapshot):
+    if not snapshot:
+        return None
+    b = snapshot.get("bid_depth_top10", 0.0) or 1e-9
+    a = snapshot.get("ask_depth_top10", 0.0) or 1e-9
+    if b >= a:
+        return float(b / a)
+    else:
+        return float(a / b)
+
+# 3) On-chain collector (Etherscan example - requer API key opcional)
+ETHERSCAN_API = "https://api.etherscan.io/api"
+def get_etherscan_txs(address="", startblock=0, endblock=99999999, page=1, offset=100):
+    if not ETHERSCAN_API_KEY:
+        logging.info("ETHERSCAN_API_KEY não fornecido; pule coleta on-chain via Etherscan.")
+        return pd.DataFrame()
+    params = {
+        "module": "account",
+        "action": "txlist",
+        "address": address,
+        "startblock": startblock,
+        "endblock": endblock,
+        "page": page,
+        "offset": offset,
+        "sort": "desc",
+        "apikey": ETHERSCAN_API_KEY
+    }
+    try:
+        r = requests.get(ETHERSCAN_API, params=params, timeout=20)
+        data = r.json()
+        if data.get("status") == "1":
+            df = pd.DataFrame(data["result"])
+            if not df.empty:
+                df['timeStamp'] = pd.to_datetime(df['timeStamp'].astype(int), unit='s')
+                fn = DATA_DIR / f"etherscan_txs_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}.parquet"
+                df.to_parquet(fn, index=False)
+                logging.info("Etherscan txs salvos em %s", fn)
+            return df
+        else:
+            logging.info("Etherscan sem resultados: %s", data.get("message"))
+            return pd.DataFrame()
+    except Exception as e:
+        logging.exception("Erro Etherscan: %s", e)
+        return pd.DataFrame()
+
+# 4) Whale Alert collector (opcional)
+WHALE_ALERT_URL = "https://api.whale-alert.io/v1/transactions"
+def fetch_whale_alerts(min_value=1_000_000):
+    if not WHALEALERT_API_KEY:
+        logging.info("WHALEALERT_API_KEY não fornecido; pule Whale Alert.")
+        return pd.DataFrame()
+    try:
+        params = {"api_key": WHALEALERT_API_KEY, "min_value": min_value}
+        r = requests.get(WHALE_ALERT_URL, params=params, timeout=20)
+        data = r.json()
+        txs = data.get("transactions", [])
+        df = pd.DataFrame(txs)
+        if not df.empty:
+            df['timestamp'] = pd.to_datetime(df['timestamp'], unit='s')
+            fn = DATA_DIR / f"whalealerts_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}.parquet"
+            df.to_parquet(fn, index=False)
+            logging.info("WhaleAlert salvo em %s", fn)
+        return df
+    except Exception as e:
+        logging.exception("Erro Whale Alert: %s", e)
+        return pd.DataFrame()
+
+# --------------------
+# Validator / Cross-validate
+# --------------------
+def is_large_onchain(tx_row):
+    # heurística simples: procura por 'amount' ou 'value' e compara com threshold
+    try:
+        val = None
+        if isinstance(tx_row, dict):
+            if 'amount' in tx_row:
+                val = float(tx_row.get('amount', 0))
+            elif 'value' in tx_row:
+                # WhaleAlert reports 'amount' in crypto units for many events; Etherscan reports 'value' in wei
+                val = float(tx_row.get('value', 0))
+            elif 'tokenInfo' in tx_row and 'amount' in tx_row['tokenInfo']:
+                val = float(tx_row['tokenInfo']['amount'])
+        else:
+            # pandas Series
+            if 'amount' in tx_row.index:
+                val = float(tx_row['amount'])
+            elif 'value' in tx_row.index:
+                val = float(tx_row['value'])
+        if val is None:
+            return False
+        # If value probably in wei (Etherscan), normalize if very large
+        if val > 1e18:  # likely wei
+            val = val / 1e18
+        return val >= ONCHAIN_LARGE_BTC
+    except Exception:
+        return False
+
+def tweet_credible(row):
+    try:
+        f = int(row.get("followers", 0))
+        rts = int(row.get("retweets", 0))
+        return (f >= TWEET_MIN_FOLLOWERS) or (rts >= TWEET_MIN_RETWEETS)
+    except Exception:
+        return False
+
+def orderbook_implied_execution(snapshot):
+    try:
+        ratio = orderbook_imbalance_ratio(snapshot)
+        if not ratio:
+            return False, None
+        return (ratio >= ORDERBOOK_IMBALANCE_RATIO), ratio
+    except Exception:
+        return False, None
+
+def cross_validate_events(onchain_df, whale_df, tweets_df, orderbook_list):
+    """
+    Para cada onchain event, procura fontes corroborantes dentro de janela temporal.
+    Requer pelo menos 2 fontes diferentes para validar (onchain + whale OR onchain + tweet credível, etc.)
+    Retorna lista de dicts validados.
+    """
+    validated = []
+    oc = onchain_df if (onchain_df is not None and not onchain_df.empty) else pd.DataFrame()
+    wa = whale_df if (whale_df is not None and not whale_df.empty) else pd.DataFrame()
+    tw = tweets_df if (tweets_df is not None and not tweets_df.empty) else pd.DataFrame()
+    obs = orderbook_list or []
+
+    window = timedelta(seconds=ONCHAIN_TIME_WINDOW_SEC)
+
+    if oc.empty:
+        logging.info("Sem eventos onchain para validar.")
+        return validated
+
+    # normalize tweet dates
+    if not tw.empty and 'date' in tw.columns:
+        tw = tw.copy()
+        tw['date'] = pd.to_datetime(tw['date'])
+
+    for idx, row in oc.iterrows():
+        ts = None
+        if 'timeStamp' in row:
+            ts = pd.to_datetime(row['timeStamp'])
+        elif 'timestamp' in row:
+            ts = pd.to_datetime(row['timestamp'])
+        else:
+            continue
+        sources = []
+        score = 0.0
+        # onchain large?
+        if is_large_onchain(row):
+            sources.append('onchain')
+            score += CRED_WEIGHTS.get('onchain', 0)
+        # whale alerts near ts
+        near_wa = pd.DataFrame()
+        if not wa.empty and 'timestamp' in wa.columns:
+            near_wa = wa[(wa['timestamp'] >= (ts - window)) & (wa['timestamp'] <= (ts + window))]
+            if not near_wa.empty:
+                sources.append('whale_alert')
+                score += CRED_WEIGHTS.get('whale_alert', 0)
+        # credible tweets near ts
+        credible_tweet_found = False
+        near_tw = pd.DataFrame()
+        if not tw.empty:
+            near_tw = tw[(tw['date'] >= (ts - window)) & (tw['date'] <= (ts + window))]
+            if not near_tw.empty:
+                # any tweet credible?
+                if any(near_tw.apply(tweet_credible, axis=1)):
+                    credible_tweet_found = True
+                    sources.append('tweet')
+                    score += CRED_WEIGHTS.get('tweet', 0)
+        # orderbook matches
+        matched_ob = None
+        if obs:
+            for ob in obs:
+                ob_ts = ob.get('ts')
+                if ob_ts and abs((ob_ts - ts).total_seconds()) <= ONCHAIN_TIME_WINDOW_SEC:
+                    implied, ratio = orderbook_implied_execution(ob)
+                    if implied:
+                        sources.append('orderbook')
+                        score += CRED_WEIGHTS.get('orderbook', 0)
+                        matched_ob = ob
+                        break
+        # require at least 2 distinct sources
+        if len(set(sources)) >= 2:
+            validated.append({
+                "ts": ts.isoformat(),
+                "onchain": row.to_dict() if hasattr(row, "to_dict") else dict(row),
+                "matched_whalealerts": near_wa.to_dict('records') if not near_wa.empty else [],
+                "matched_tweets": near_tw.to_dict('records') if not near_tw.empty else [],
+                "matched_orderbook": matched_ob,
+                "sources": list(set(sources)),
+                "score": float(score)
+            })
+    logging.info("Cross-validation concluiu: %d eventos validados", len(validated))
+    return validated
+
+# --------------------
+# Signals persistence
+# --------------------
+def persist_signal_to_db(strategy, ts_iso, payload, score):
+    if engine is None:
+        logging.warning("DB não inicializada; persisto sinal como JSON em data/")
+        fn = DATA_DIR / f"signal_{strategy}_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}.json"
+        with open(fn, "w", encoding="utf-8") as f:
+            json.dump({"strategy": strategy, "ts": ts_iso, "payload": payload, "score": score}, f, default=str, indent=2)
+        logging.info("Sinal persistido em %s", fn)
+        return
+    meta = MetaData(bind=engine)
+    signals = Table('signals', meta, autoload_with=engine)
+    conn = engine.connect()
+    ins = signals.insert().values(strategy=strategy, ts=pd.to_datetime(ts_iso), payload=payload, score=score)
+    conn.execute(ins)
+    conn.close()
+    logging.info("Sinal persistido na DB: strategy=%s ts=%s score=%.3f", strategy, ts_iso, score)
+
+# --------------------
+# Backtest (simples)
+# --------------------
+def simple_backtest_on_signals(signal_times_iso):
+    """
+    Carrega close price historical (1h) para BTC-USD via yfinance e faz backtest simples:
+    - Buy at next bar after signal
+    - Hold fixed horizon (24h) or until end
+    - Fees e slippage simplificados
+    Usa vectorbt se instalado; caso contrário, usa simulação pandas.
+    """
+    if not BACKTEST_CAN_RUN:
+        logging.warning("Dependências para backtest (yfinance) ausentes. Pule backtest.")
+        return None, {}
+    # carregar preço hourly
+    try:
+        logging.info("Baixando histórico via yfinance (BTC-USD 1h 365d)...")
+        df = yf.download("BTC-USD", period="365d", interval="1h", progress=False)
+        price = df['Close'].tz_localize(None)
+    except Exception as e:
+        logging.exception("Erro ao baixar preço: %s", e)
+        return None, {}
+
+    # construir series de sinais
+    sig = pd.Series(0, index=price.index)
+    for iso in signal_times_iso:
+        try:
+            t = pd.to_datetime(iso)
+            idx = price.index.searchsorted(t)
+            if idx < len(price):
+                sig.iloc[idx] = 1
+        except Exception:
+            continue
+
+    if vbt is not None:
+        # vectorbt backtest
+        logging.info("Rodando backtest com vectorbt (se disponível)...")
+        pf = vbt.Portfolio.from_signals(price, entries=sig==1, exits=None, init_cash=BACKTEST_INITIAL_CAPITAL, fees=0.0005)
+        stats = pf.stats().to_dict()
+        # persist equity
+        equity = pf.total_equity()
+        fn = DATA_DIR / f"equity_curve_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}.parquet"
+        equity.reset_index().to_parquet(fn, index=False)
+        logging.info("Equity curve salva em %s", fn)
+        return pf, stats
+    else:
+        # fallback simples
+        logging.info("Rodando backtest simplificado sem vectorbt...")
+        cash = BACKTEST_INITIAL_CAPITAL
+        pos = 0.0
+        records = []
+        for i in range(len(price)):
+            if sig.iloc[i] == 1 and pos == 0:
+                # buy with all cash at next bar price
+                p = float(price.iloc[i])
+                if p <= 0:
+                    continue
+                pos = cash / p
+                cash = 0.0
+                records.append({"idx": price.index[i], "action": "buy", "price": p, "pos": pos})
+        # compute equity series
+        equity = (price * pos).fillna(0) + cash
+        fn = DATA_DIR / f"equity_curve_simple_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}.parquet"
+        equity.reset_index(name="equity").to_parquet(fn, index=False)
+        logging.info("Equity simple salva em %s", fn)
+        # basic stats
+        total_return = (equity.iloc[-1] / equity.iloc[0] - 1) if equity.iloc[0] != 0 else None
+        stats = {"total_return": total_return}
+        return equity, stats
+
+# --------------------
+# Run pipeline (single run)
+# --------------------
+def run_pipeline_once():
+    logging.info("Iniciando pipeline OpenMyMind - single run")
+    # init DB
+    init_db()
+
+    # 1) tweets
+    logging.info("Coletando tweets públicos (whale mentions)...")
+    tweets_df = scrape_tweets('("whale" OR "whales" OR "large transfer" OR "large transfer") BTC lang:en', max_tweets=500)
+
+    # 2) orderbook snapshot
+    logging.info("Coletando snapshot do orderbook via CCXT...")
+    ob = fetch_orderbook_snapshot(ASSET_SYMBOL, exchange_name="binance")
+    obs_list = [ob] if ob else []
+
+    # 3) on-chain (Etherscan) - se chave disponível (nota: Etherscan é ETH; para BTC use outra fonte)
+    logging.info("Coletando transações on-chain (Etherscan) se chave presente...")
+    onchain_df = get_etherscan_txs(address="", offset=100)  # você pode filtrar por address se desejar
+
+    # 4) Whale Alert (opcional)
+    logging.info("Coletando Whale Alert (se chave presente)...")
+    wa_df = fetch_whale_alerts(min_value=500_000)
+
+    # 5) validação cruzada
+    logging.info("Validando eventos cruzando fontes (require >=2 sources)...")
+    validated = cross_validate_events(onchain_df, wa_df, tweets_df, obs_list)
+
+    # persist signals
+    for v in validated:
+        persist_signal_to_db("whale_onchain_cross", v["ts"], v, v["score"])
+
+    # 6) backtest quick
+    if validated:
+        logging.info("Rodando backtest simples com os sinais validados...")
+        signal_times = [v["ts"] for v in validated]
+        pf, stats = simple_backtest_on_signals(signal_times)
+        logging.info("Backtest stats: %s", json.dumps(stats, default=str, indent=2))
+    else:
+        logging.info("Nenhum evento validado para backtest.")
+
+    logging.info("Pipeline finalizado.")
+
+# --------------------
+# CLI entry
+# --------------------
+if __name__ == "__main__":
+    # opções simples: run_once, collect_loop
+    if len(sys.argv) > 1 and sys.argv[1] == "loop":
+        # loop contínuo (cuidado com rate limits)
+        logging.info("Executando pipeline em loop (CTRL+C para parar). Interval segundos = %d", SAMPLE_INTERVAL_SEC)
+        try:
+            while True:
+                run_pipeline_once()
+                time.sleep(SAMPLE_INTERVAL_SEC)
+        except KeyboardInterrupt:
+            logging.info("Loop interrompido pelo usuário.")
+    else:
+        run_pipeline_once()
+2) requirements.txt (salve ao lado do arquivo)
+pandas
+numpy
+ccxt
+snscrape
+requests
+sqlalchemy
+pyarrow
+tqdm
+yfinance
+vectorbt    # opcional: se não quiser vectorbt, remova esta linha e o script fará fallback
+
+Observação: vectorbt pode requerer dependências C/compilação. Se preferir evitar, remova vectorbt e rely na simulação simples.
+
+3) Dockerfile (salve como Dockerfile)
+# Use imagem Python leve
+FROM python:3.11-slim
+
+# argumentos de build
+ARG DEBIAN_FRONTEND=noninteractive
+
+# atualizar e instalar dependências do sistema (se necessário)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# copiar arquivos
+WORKDIR /app
+COPY . /app
+
+# instalar requirements
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+# criar diretório data
+RUN mkdir -p /app/data
+
+# definir variáveis de ambiente sensíveis como vazias por padrão
+ENV ETHERSCAN_API_KEY=""
+ENV WHALEALERT_API_KEY=""
+ENV INFURA_KEY=""
+
+# entrypoint
+CMD ["python", "openmymind_pipeline.py"]
+4) docker-compose.yml (salve como docker-compose.yml)
+version: "3.8"
+services:
+  openmymind:
+    build: .
+    container_name: openmymind
+    environment:
+      - ETHERSCAN_API_KEY=${ETHERSCAN_API_KEY:-}
+      - WHALEALERT_API_KEY=${WHALEALERT_API_KEY:-}
+      - INFURA_KEY=${INFURA_KEY:-}
+      - DATA_DIR=/app/data
+    volumes:
+      - ./data:/app/data
+      - ./openmymind_pipeline.py:/app/openmymind_pipeline.py
+      - ./requirements.txt:/app/requirements.txt
+    restart: unless-stopped
+    # para rodar em modo loop: defina CMD override localmente ou execute docker-compose run...
+5) playbook.lib (salve como playbook.lib — JSON com queries multilíngues)
+{
+  "queries": {
+    "en": [
+      "\"whale transfer\" BTC",
+      "\"large transfer\" BTC",
+      "\"moved BTC\" wallet",
+      "BTC \"whale\" transfer"
+    ],
+    "ru": [
+      "кит перевод биткоин",
+      "большой перевод BTC",
+      "переместил BTC кошелек"
+    ],
+    "ja": [
+      "クジラ 転送 ビットコイン",
+      "大口 転送 BTC",
+      "BTC ウォレット 移動"
+    ],
+    "zh": [
+      "巨鲸 转账 比特币",
+      "大额 转账 BTC",
+      "BTC 钱包 转移"
+    ]
+  },
+  "notes": "Use essas queries com motores de busca públicos e scrapers apenas em canais públicos. Ajuste termos conforme idioma alvo."
+}
+6) Como salvar e rodar (passo-a-passo)
+
+Crie pasta do projeto e cole os arquivos:
+
+openmymind_pipeline.py
+
+requirements.txt
+
+Dockerfile
+
+docker-compose.yml
+
+playbook.lib
+
+(Opcional) configure chaves de API como variáveis de ambiente:
+
+export ETHERSCAN_API_KEY="sua_etherscan_key"
+export WHALEALERT_API_KEY="sua_whalealert_key"
+export INFURA_KEY="sua_infura_key"
+
+Instalar dependências localmente (recomendado para debug antes do Docker):
+
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+Rodar localmente:
+
+python openmymind_pipeline.py          # roda uma vez
+# ou
+python openmymind_pipeline.py loop     # roda em loop (cuidado com rate limits)
+
+Rodar via Docker:
+
+docker build -t openmymind:latest .
+docker run --rm -e ETHERSCAN_API_KEY="$ETHERSCAN_API_KEY" -e WHALEALERT_API_KEY="$WHALEALERT_API_KEY" -v $(pwd)/data:/app/data openmymind:latest
+
+ou com docker-compose:
+
+docker-compose up --build
+7) Notas importantes sobre validação "melhor entre as melhores"
+
+O pipeline só considera um evento high-confidence se >= 2 fontes independentes confirmarem (on-chain + WhaleAlert, ou on-chain + tweet credível, ou on-chain + orderbook imbalance).
+
+Ajuste ONCHAIN_LARGE_BTC, TWEET_MIN_FOLLOWERS, e ORDERBOOK_IMBALANCE_RATIO para elevar o filtro e reduzir ruído.
+
+Para melhor qualidade adquira dados pagos (Glassnode, Kaiko, Coin Metrics) e integre no pipeline; isso melhora drastically sinais "high-confidence".
+
+Sempre faça uma checagem humana final (human-in-the-loop) antes de executar ordens reais; este pipeline produz candidatos validados, não ordens automáticas.
+
+8) Próximos incrementos que posso gerar (se quiser)
+
+Docker Compose ampliado com Postgres + Elasticsearch + Grafana + UI (Streamlit).
+
+Módulo de reputação/credibilidade que rastreia contas e score histórico (machine learning).
+
+Reconhecimento de padrões multilíngue mais robusto (NLP) e named-entity linking para associar endereços on-chain a menções públicas (quando legal).
+
+Pipeline para múltiplos pares/ativos e agendamento via Airflow.

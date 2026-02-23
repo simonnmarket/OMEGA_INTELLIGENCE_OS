@@ -1,0 +1,36 @@
+TheodoraEA_Bridge.mq5			
+Trade.mqh			
+Object.mqh			
+StdLibErr.mqh			
+OrderInfo.mqh			
+HistoryOrderInfo.mqh			
+PositionInfo.mqh			
+DealInfo.mqh			
+file 'C:\Users\Lenovo\AppData\Roaming\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Include\JSON.mqh' not found	TheodoraEA_Bridge.mq5	13	11
+undeclared identifier	TheodoraEA_Bridge.mq5	41	5
+'InpServerURL' - some operator expected	TheodoraEA_Bridge.mq5	41	19
+undeclared identifier	TheodoraEA_Bridge.mq5	51	5
+'InpServerURL' - some operator expected	TheodoraEA_Bridge.mq5	51	22
+undeclared identifier	TheodoraEA_Bridge.mq5	84	5
+undeclared identifier	TheodoraEA_Bridge.mq5	84	10
+'json' - some operator expected	TheodoraEA_Bridge.mq5	84	10
+undeclared identifier	TheodoraEA_Bridge.mq5	85	5
+undeclared identifier	TheodoraEA_Bridge.mq5	86	5
+undeclared identifier	TheodoraEA_Bridge.mq5	87	5
+undeclared identifier	TheodoraEA_Bridge.mq5	88	5
+undeclared identifier	TheodoraEA_Bridge.mq5	89	5
+undeclared identifier	TheodoraEA_Bridge.mq5	90	5
+undeclared identifier	TheodoraEA_Bridge.mq5	92	27
+implicit conversion from 'unknown' to 'string'	TheodoraEA_Bridge.mq5	92	27
+undeclared identifier	TheodoraEA_Bridge.mq5	124	5
+undeclared identifier	TheodoraEA_Bridge.mq5	124	10
+'json' - some operator expected	TheodoraEA_Bridge.mq5	124	10
+undeclared identifier	TheodoraEA_Bridge.mq5	125	9
+';' - unexpected token	TheodoraEA_Bridge.mq5	127	76
+'(' - unbalanced left parenthesis	TheodoraEA_Bridge.mq5	125	7
+empty controlled statement found	TheodoraEA_Bridge.mq5	127	76
+undeclared identifier	TheodoraEA_Bridge.mq5	184	50
+')' - expression expected	TheodoraEA_Bridge.mq5	184	67
+undeclared identifier	TheodoraEA_Bridge.mq5	204	75
+')' - expression expected	TheodoraEA_Bridge.mq5	204	92
+25 errors, 2 warnings		25	2

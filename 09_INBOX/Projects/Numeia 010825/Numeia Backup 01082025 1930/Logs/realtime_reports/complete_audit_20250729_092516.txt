@@ -1,0 +1,275 @@
+=== AUDITORIA COMPLETA DO PROJETO NUMEIA ===
+Data: 07/29/2025 09:25:16
+Protocolo: TIER-0 COMPLETE SCAN
+Status: VERIFICAÇÃO SISTEMÁTICA
+
+=== RESUMO EXECUTIVO ===
+- Total de arquivos: 79
+- Diretórios analisados: 24
+- Dependências encontradas: 94
+- Arquivos faltantes: 45
+
+=== ANÁLISE POR DIRETÓRIO ===
+Numeia: 1 arquivos
+auditor: 4 arquivos
+core: 3 arquivos
+expert: 1 arquivos
+tools: 3 arquivos
+analysis: 9 arquivos
+audit: 4 arquivos
+compliance: 1 arquivos
+data: 1 arquivos
+decisionengine: 1 arquivos
+detection: 1 arquivos
+executionlogic: 2 arquivos
+integration: 1 arquivos
+intelligence: 6 arquivos
+modules: 1 arquivos
+neural: 3 arquivos
+optimization: 1 arquivos
+quantum: 17 arquivos
+risk: 2 arquivos
+security: 4 arquivos
+types: 3 arquivos
+visuals: 3 arquivos
+audit_ml_system: 3 arquivos
+utils: 4 arquivos
+=== DEPENDÊNCIAS ENCONTRADAS ===
+" + corrected_path + "
+  Usado por: Agent_Omega_v2.1.mqh, Agent_Omega_v3.0.mqh
+" + target_include + "
+  Usado por: Agent_Omega_v2.1.mqh, Agent_Omega_v3.0.mqh
+analysis/audit_validator.mq5
+  Usado por: force_maxima.mqh
+analysis/correlation_matrix.mqh
+  Usado por: decision_router.mqh, multi_timeframe_validator.mqh, market_regime_detector.mqh
+analysis/darkpool_monitor.mqh
+  Usado por: trade_signal_enum.mqh
+analysis/dependency_graph.mqh
+  Usado por: core_brain_manager.mqh, anti_reincidence_system.mqh, timestamp_formatter.mqh, NumeiaEA.mq5, audit_validator.mq5, Agent_Omega.mqh, Agent_Omega_v2.1.mqh, Agent_Omega_v3.0.mqh, neural_dependency_graph.mqh, security_integrity_validator.mqh, quantum_neural_core.mqh, quantum_neural_net.mqh, GeneticOptimizer.mqh, live_monitor.mq5
+analysis/hft_detector.mqh
+  Usado por: trade_signal_enum.mqh
+analysis/market_regime_detector.mqh
+  Usado por: logger_institutional.mqh, safe_mode_manager.mqh, trade_executor.mqh, decision_router.mqh, multi_timeframe_validator.mqh, correlation_matrix.mqh, thaler_bias_engine.mqh, decision_panel.mq5, auditstatuspanel.mq5, quantum_decision_panel.mq5, quantumfirewall.mqh
+analysis/neural_dependency_graph.mqh
+  Usado por: NumeiaEA.mq5, quantum_neural_bridge.mqh
+analysis/risk_metrics.mqh
+  Usado por: quantum_finance_framework.mqh
+Arrays\ArrayObj.mqh
+  Usado por: core_brain_manager.mqh, timestamp_formatter.mqh, log_panel.mqh, dependency_graph.mqh, quantum_finance_framework.mqh, quantum_neural_net.mqh, GeneticOptimizer.mqh
+audit/audit_nomenclature_validator.mqh
+  Usado por: ml_duplicate_detector.mqh
+audit/AuditIntegrityPanel.mq5
+  Usado por: NumeiaEA.mq5
+audit/compliance_checker.mqh
+  Usado por: auditstatuspanel.mq5
+audit/CoreIntegrityPanel.mq5
+  Usado por: NumeiaEA.mq5
+Canvas/Canvas.mqh
+  Usado por: log_panel.mqh
+ChartObjects/ChartObjectsTxtControls.mqh
+  Usado por: correlation_matrix.mqh
+ChartObjects\ChartObjectsBmpControls.mqh
+  Usado por: decision_panel.mq5, auditstatuspanel.mq5, quantum_decision_panel.mq5
+ChartObjects\ChartObjectsTxtControls.mqh
+  Usado por: core_brain_manager.mqh, force_maxima.mqh, quantum_liquidity_matrix.mqh, quantum_learning.mqh, quantum_adaptive_learning.mqh, decision_panel.mq5, auditstatuspanel.mq5, quantum_decision_panel.mq5, trade_signal_enum.mqh, risk_metrics.mqh, risk_profile.mqh, quantumfirewall.mqh, sha3_library.mqh, crisis_protocol.mqh, AuditIntegrityPanel.mq5, CoreIntegrityPanel.mq5, quantum_market_data.mqh, quantum_wavelet_transform.mqh, quantum_memory_cell.mqh, quantum_behavior_controller.mqh, quantum_state_manager.mqh, quantum_data_processor.mqh, quantum_finance_framework.mqh, quantum_neural_filter.mqh, quantum_pattern_scanner.mqh
+CORE/core_brain_manager.mqh
+  Usado por: force_maxima.mqh, NumeiaEA.mq5, audit_validator.mq5
+core/force_maxima.mqh
+  Usado por: NumeiaEA.mq5
+core/quantum_blockchain.mqh
+  Usado por: core_brain_manager.mqh, force_maxima.mqh, anti_reincidence_system.mqh, timestamp_formatter.mqh, log_panel.mqh, NumeiaEA.mq5, audit_validator.mq5, quantumfirewall.mqh, crisis_protocol.mqh, security_integrity_validator.mqh, quantum_processor.mqh, quantum_neural_net.mqh, GeneticOptimizer.mqh
+darkpool/dark_pool_connector.mqh
+  Usado por: quantum_liquidity_matrix.mqh
+DarkPoolScanner.mqh
+  Usado por: thaler_bias_engine.mqh
+Data/market_data_connector.mqh
+  Usado por: neural_signal_processor.mqh, anomaly_detector_ai.mqh, auditstatuspanel.mq5
+data/market_data_quantum.mqh
+  Usado por: quantum_wavelet_transform.mqh
+decisionengine/quantum_processor.mqh
+  Usado por: audit_validator.mq5
+detection/hft_detector.mqh
+  Usado por: quantum_pattern_scanner.mqh
+encoding/quantum_encoder.mqh
+  Usado por: sha3_library.mqh
+execution/safe_mode_manager.mqh
+  Usado por: quantumfirewall.mqh
+execution/trade_executor.mqh
+  Usado por: force_maxima.mqh, crisis_protocol.mqh
+executionlogic/trade_executor.mqh
+  Usado por: NumeiaEA.mq5, audit_validator.mq5
+Files\FileTxt.mqh
+  Usado por: logger_institutional.mqh
+GeneticOptimizer.mqh
+  Usado por: market_regime_detector.mqh
+intelligence/adaptive_learning.mqh
+  Usado por: quantum_genetic_algorithm.mqh
+intelligence/anomaly_detector_ai.mqh
+  Usado por: logger_institutional.mqh, trade_executor.mqh, neural_signal_processor.mqh, decision_panel.mq5, auditstatuspanel.mq5, quantum_decision_panel.mq5, quantumfirewall.mqh
+intelligence/quantum_learning.mqh
+  Usado por: timestamp_formatter.mqh, log_panel.mqh, NumeiaEA.mq5, audit_validator.mq5, dependency_graph.mqh, quantum_adaptive_learning.mqh, quantumfirewall.mqh, quantum_annealing_simulator.mqh, quantum_cache_manager.mqh, quantum_memory_cell.mqh, quantum_behavior_controller.mqh, quantum_neural_core.mqh, quantum_neural_net.mqh, GeneticOptimizer.mqh
+intelligence/thaler_bias_engine.mqh
+  Usado por: decision_router.mqh, market_regime_detector.mqh, thaler_bias_engine.mqh
+logs/audit_ml_system/error_pattern_analyzer.mqh
+  Usado por: intelligent_auditor.mqh, ml_error_registration.mqh
+Math\Alglib\alglib.mqh
+  Usado por: quantum_finance_framework.mqh
+Math\Alglib\dataanalysis.mqh
+  Usado por: market_regime_detector.mqh
+Math\Alglib\mcpd.mqh
+  Usado por: thaler_bias_engine.mqh
+neural/NeuroNet.mqh
+  Usado por: NumeiaEA.mq5, audit_validator.mq5
+neural/quantum_neural_filter.mqh
+  Usado por: quantum_wavelet_transform.mqh, quantum_data_processor.mqh
+neural/quantum_neural_net.mqh
+  Usado por: quantum_liquidity_matrix.mqh, quantum_adaptive_learning.mqh, quantum_cache_manager.mqh, quantum_behavior_controller.mqh, quantum_state_manager.mqh, quantum_pattern_scanner.mqh
+neural/quantum_neuralnet.mqh
+  Usado por: quantum_decision_panel.mq5, quantum_compliance.mqh
+NeuroNet.mqh
+  Usado por: neural_dependency_graph.mqh, thaler_bias_engine.mqh, quantum_neural_core.mqh
+optimization/GeneticOptimizer.mqh
+  Usado por: NumeiaEA.mq5, audit_validator.mq5
+quantum/hardware_accelerator.mqh
+  Usado por: sha3_library.mqh
+quantum/quantum_adaptive_learning.mqh
+  Usado por: quantum_processor.mqh, quantum_finance_framework.mqh
+quantum/quantum_annealing_simulator.mqh
+  Usado por: quantum_optimizer.mqh
+quantum/quantum_behavior_controller.mqh
+  Usado por: quantum_learning.mqh, quantum_processor.mqh
+quantum/quantum_blockchain.mqh
+  Usado por: risk_metrics.mqh, quantum_compliance.mqh
+quantum/quantum_cache_manager.mqh
+  Usado por: quantum_market_data.mqh, quantum_memory_cell.mqh
+quantum/quantum_core.mqh
+  Usado por: trade_signal_enum.mqh
+quantum/quantum_data_processor.mqh
+  Usado por: quantum_data_feed.mqh, quantum_processor.mqh
+quantum/quantum_entanglement.mqh
+  Usado por: quantum_liquidity_matrix.mqh, quantum_adaptive_learning.mqh, quantum_wavelet_transform.mqh, quantum_cache_manager.mqh, quantum_memory_cell.mqh, quantum_behavior_controller.mqh, quantum_state_manager.mqh, quantum_data_processor.mqh, quantum_pattern_scanner.mqh
+quantum/quantum_entanglement_simulator.mqh
+  Usado por: quantum_order_book.mqh, quantum_darkpool.mqh, quantum_hft_detector.mqh, quantum_data_feed.mqh, quantum_var_calculator.mqh, quantum_market_data.mqh, quantum_noise_filter.mqh
+Quantum/quantum_entropy_calculator.mqh
+  Usado por: anomaly_detector_ai.mqh
+quantum/quantum_finance_framework.mqh
+  Usado por: NumeiaEA.mq5, quantum_processor.mqh, quantum_neural_core.mqh
+quantum/quantum_firewall.mqh
+  Usado por: sha3_library.mqh
+quantum/quantum_gates.mqh
+  Usado por: quantum_state_manager.mqh
+quantum/quantum_genetic_algorithm.mqh
+  Usado por: quantum_optimizer.mqh
+quantum/quantum_liquidity_matrix.mqh
+  Usado por: quantum_darkpool.mqh, quantum_processor.mqh
+quantum/quantum_memory_cell.mqh
+  Usado por: quantum_learning.mqh, quantum_behavior_controller.mqh, GeneticOptimizer.mqh
+quantum/quantum_neural_bridge.mqh
+  Usado por: NumeiaEA.mq5
+quantum/quantum_neural_core.mqh
+  Usado por: quantum_neural_bridge.mqh
+quantum/quantum_noise_filter.mqh
+  Usado por: quantum_var_calculator.mqh
+quantum/quantum_optimizer.mqh
+  Usado por: quantum_annealing_simulator.mqh, quantum_genetic_algorithm.mqh
+quantum/quantum_orderbook.mqh
+  Usado por: quantum_liquidity_matrix.mqh
+quantum/quantum_pattern_scanner.mqh
+  Usado por: quantum_order_book.mqh, quantum_hft_detector.mqh, quantum_processor.mqh
+quantum/quantum_processor.mqh
+  Usado por: core_brain_manager.mqh, force_maxima.mqh, quantum_learning.mqh, quantum_decision_panel.mq5, quantum_wavelet_transform.mqh, quantum_behavior_controller.mqh, quantum_state_manager.mqh
+quantum/quantum_state_manager.mqh
+  Usado por: quantum_gate_system.mqh, quantum_entanglement_simulator.mqh
+quantum/quantum_wavelet_transform.mqh
+  Usado por: quantum_noise_filter.mqh, quantum_data_processor.mqh, quantum_processor.mqh
+risk/risk_profile.mqh
+  Usado por: logger_institutional.mqh, NumeiaEA.mq5, audit_validator.mq5, trade_executor.mqh, market_regime_detector.mqh, thaler_bias_engine.mqh, neural_signal_processor.mqh, quantum_learning.mqh, decision_panel.mq5, auditstatuspanel.mq5, quantum_decision_panel.mq5, quantum_var_calculator.mqh, quantumfirewall.mqh, quantum_processor.mqh
+security/crisis_protocol.mqh
+  Usado por: NumeiaEA.mq5
+security/quantum_blockchain.mqh
+  Usado por: compliancechecker.mqh
+security/quantum_firewall.mqh
+  Usado por: crisis_protocol.mqh
+security/QuantumBlockchain.mqh
+  Usado por: Agent_Omega.mqh, Agent_Omega_v2.1.mqh, Agent_Omega_v3.0.mqh
+security/quantumfirewall.mqh
+  Usado por: NumeiaEA.mq5, dependency_graph.mqh, quantum_decision_panel.mq5, quantum_annealing_simulator.mqh, quantum_genetic_algorithm.mqh, quantum_processor.mqh, quantum_neural_core.mqh
+security/security_integrity_validator.mqh
+  Usado por: NumeiaEA.mq5
+security/sha3_library.mqh
+  Usado por: quantum_blockchain.mqh, security_integrity_validator.mqh
+StdLib.mqh
+  Usado por: logger_institutional.mqh
+Trade\AccountInfo.mqh
+  Usado por: market_regime_detector.mqh
+Trade\Trade.mqh
+  Usado por: safe_mode_manager.mqh, trade_executor.mqh
+types/audit_issue_enum.mqh
+  Usado por: live_monitor.mq5
+types/trade_signal_enum.mqh
+  Usado por: core_brain_manager.mqh, force_maxima.mqh, NumeiaEA.mq5, trade_executor.mqh, decision_router.mqh, multi_timeframe_validator.mqh, quantum_liquidity_matrix.mqh, dependency_graph.mqh, thaler_bias_engine.mqh, neural_signal_processor.mqh, anomaly_detector_ai.mqh, quantum_learning.mqh, quantum_adaptive_learning.mqh, decision_panel.mq5, auditstatuspanel.mq5, quantum_decision_panel.mq5, risk_metrics.mqh, risk_profile.mqh, quantum_compliance.mqh, AuditIntegrityPanel.mq5, CoreIntegrityPanel.mq5, quantum_market_data.mqh, quantum_wavelet_transform.mqh, quantum_memory_cell.mqh, quantum_behavior_controller.mqh, quantum_state_manager.mqh, quantum_data_processor.mqh, quantum_processor.mqh, quantum_finance_framework.mqh, quantum_neural_filter.mqh, quantum_pattern_scanner.mqh
+utils/anti_reincidence_system.mqh
+  Usado por: NumeiaEA.mq5
+utils/logger_institutional.mqh
+  Usado por: error_pattern_analyzer.mqh, intelligent_auditor.mqh, ml_error_registration.mqh, core_brain_manager.mqh, quantum_blockchain.mqh, force_maxima.mqh, anti_reincidence_system.mqh, timestamp_formatter.mqh, log_panel.mqh, audit_engine.mq5, core_audit_engine.mq5, include_audit_engine.mq5, NumeiaEA.mq5, audit_validator.mq5, Agent_Omega.mqh, Agent_Omega_v2.1.mqh, Agent_Omega_v3.0.mqh, safe_mode_manager.mqh, trade_executor.mqh, decision_router.mqh, multi_timeframe_validator.mqh, market_regime_detector.mqh, correlation_matrix.mqh, quantum_order_book.mqh, quantum_darkpool.mqh, quantum_hft_detector.mqh, quantum_liquidity_matrix.mqh, dependency_graph.mqh, thaler_bias_engine.mqh, neural_signal_processor.mqh, anomaly_detector_ai.mqh, ml_duplicate_detector.mqh, quantum_learning.mqh, quantum_adaptive_learning.mqh, quantum_data_feed.mqh, decision_panel.mq5, auditstatuspanel.mq5, quantum_decision_panel.mq5, quantum_var_calculator.mqh, trade_signal_enum.mqh, risk_metrics.mqh, risk_profile.mqh, quantumfirewall.mqh, sha3_library.mqh, crisis_protocol.mqh, security_integrity_validator.mqh, quantum_compliance.mqh, AuditIntegrityPanel.mq5, CoreIntegrityPanel.mq5, compliancechecker.mqh, audit_nomenclature_validator.mqh, quantum_market_data.mqh, quantum_noise_filter.mqh, quantum_gate_system.mqh, quantum_optimizer.mqh, quantum_entanglement_simulator.mqh, quantum_annealing_simulator.mqh, quantum_genetic_algorithm.mqh, quantum_entanglement.mqh, quantum_wavelet_transform.mqh, quantum_cache_manager.mqh, quantum_memory_cell.mqh, quantum_behavior_controller.mqh, quantum_state_manager.mqh, quantum_data_processor.mqh, quantum_processor.mqh, quantum_finance_framework.mqh, quantum_neural_core.mqh, quantum_neural_filter.mqh, quantum_neural_net.mqh, quantum_pattern_scanner.mqh, GeneticOptimizer.mqh, live_monitor.mq5
+utils/timestamp_formatter.mqh
+  Usado por: logger_institutional.mqh, log_panel.mqh, audit_validator.mq5
+visual/quantum_decision_panel.mq5
+  Usado por: quantum_processor.mqh
+visuals/decision_panel.mq5
+  Usado por: audit_validator.mq5, safe_mode_manager.mqh
+visuals/log_panel.mqh
+  Usado por: logger_institutional.mqh
+visuals/quantum_decision_panel.mq5
+  Usado por: NumeiaEA.mq5, thaler_bias_engine.mqh
+=== ARQUIVOS FALTANTES ===
+❌ Math\Alglib\mcpd.mqh
+❌ Arrays\ArrayObj.mqh
+❌ execution/safe_mode_manager.mqh
+❌ quantum/quantum_gates.mqh
+❌ Trade\AccountInfo.mqh
+❌ decisionengine/quantum_processor.mqh
+❌ quantum/quantum_liquidity_matrix.mqh
+❌ quantum/quantum_blockchain.mqh
+❌ Canvas/Canvas.mqh
+❌ ChartObjects\ChartObjectsTxtControls.mqh
+❌ analysis/risk_metrics.mqh
+❌ ChartObjects/ChartObjectsTxtControls.mqh
+❌ quantum/quantum_pattern_scanner.mqh
+❌ analysis/hft_detector.mqh
+❌ Quantum/quantum_entropy_calculator.mqh
+❌ Data/market_data_connector.mqh
+❌ Files\FileTxt.mqh
+❌ security/QuantumBlockchain.mqh
+❌ quantum/quantum_adaptive_learning.mqh
+❌ ChartObjects\ChartObjectsBmpControls.mqh
+❌ intelligence/adaptive_learning.mqh
+❌ Trade\Trade.mqh
+❌ quantum/quantum_orderbook.mqh
+❌ security/quantum_firewall.mqh
+❌ Math\Alglib\alglib.mqh
+❌ quantum/hardware_accelerator.mqh
+❌ security/quantum_blockchain.mqh
+❌ quantum/quantum_core.mqh
+❌ " + target_include + "
+❌ visuals/log_panel.mqh
+❌ analysis/darkpool_monitor.mqh
+❌ encoding/quantum_encoder.mqh
+❌ darkpool/dark_pool_connector.mqh
+❌ DarkPoolScanner.mqh
+❌ " + corrected_path + "
+❌ audit/compliance_checker.mqh
+❌ execution/trade_executor.mqh
+❌ visual/quantum_decision_panel.mq5
+❌ quantum/quantum_firewall.mqh
+❌ StdLib.mqh
+❌ analysis/audit_validator.mq5
+❌ data/market_data_quantum.mqh
+❌ detection/hft_detector.mqh
+❌ Math\Alglib\dataanalysis.mqh
+❌ neural/quantum_neuralnet.mqh
+=== STATUS FINAL ===
+- Sistema: COM PROBLEMAS
+- Pronto para compilação: NÃO
+- Próximo passo: Compilar NumeiaEA.mq5

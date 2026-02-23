@@ -1,0 +1,27 @@
+================================================================================
+COMANDO PARA EXECUTAR SOLUÇÃO DEFINITIVA
+================================================================================
+
+cd C:\Users\Lenovo\Projects\Aurora; python SOLUCAO_DEFINITIVA_MT5.py
+
+================================================================================
+O QUE ESTE SCRIPT FAZ:
+================================================================================
+
+1. Descobre TODOS os símbolos de crypto disponíveis no MT5
+2. Testa executar uma ordem em cada um
+3. Identifica quais FUNCIONAM
+4. Gera mapeamento correto
+
+================================================================================
+RESULTADO ESPERADO:
+================================================================================
+
+✅ BTCUSD → BTCUSD.m (ou outro formato)
+✅ ETHUSD → ETHUSD.m (ou outro formato)
+... e assim por diante
+
+Depois, usamos estes símbolos CORRETOS no sistema principal.
+
+================================================================================
+

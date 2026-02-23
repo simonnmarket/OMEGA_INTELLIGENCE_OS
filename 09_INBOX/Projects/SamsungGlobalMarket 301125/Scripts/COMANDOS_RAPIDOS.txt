@@ -1,0 +1,42 @@
+========================================
+COMANDOS RÁPIDOS PARA EXECUTAR PROMETHEUS V2.3
+========================================
+
+OPÇÃO 1: Usando PowerShell (Copie e cole no PowerShell)
+--------------------------------------------------------
+cd C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia
+python prometheus_v2.3_gerenciamento_escalonado.py
+
+OPÇÃO 2: Usando o Script PowerShell
+--------------------------------------------------------
+cd C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia
+.\EXECUTAR_PROMETHEUS_V2.3.ps1
+
+OPÇÃO 3: Usando o Arquivo .BAT (Duplo Clique)
+--------------------------------------------------------
+INICIAR_PROMETHEUS_V2.3.bat
+
+OPÇÃO 4: Usando o Script Python Auxiliar
+--------------------------------------------------------
+cd C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia
+python run_prometheus_v2.3.py
+
+========================================
+IMPORTANTE ANTES DE EXECUTAR:
+========================================
+1. ✅ MetaTrader 5 deve estar ABERTO
+2. ✅ MetaTrader 5 deve estar CONECTADO à conta
+3. ✅ Python deve estar instalado e no PATH
+4. ✅ Bibliotecas instaladas: pip install MetaTrader5 numpy
+
+========================================
+VERIFICAR SE ESTÁ FUNCIONANDO:
+================================--------
+# Verificar se o log foi criado:
+Get-Content prometheus_telemetry_v2.3.log -Tail 10
+
+# Executar análise de performance:
+python prometheus_v2.4_analise_avancada.py
+
+========================================
+

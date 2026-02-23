@@ -1,0 +1,137 @@
+#property copyright "Quantum Sensory Trading System"
+#property link      "https://www.quantumsensory.com"
+#property version   "4.0"
+
+#include <Trade\Trade.mqh>
+
+// Estruturas de dados sensoriais
+struct MarketVision {
+    double trendStrength;        // Força da tendência (0-1)
+    double priceAction;          // Ação do preço (-1 a 1)
+    double volumeProfile;        // Perfil de volume (0-1)
+    double patternStrength;      // Força do padrão identificado (0-1)
+    double marketStructure;      // Estrutura de mercado (0-1)
+};
+
+struct MarketHearing {
+    double priceVelocity;       // Velocidade do preço (-1 a 1)
+    double volumeIntensity;     // Intensidade do volume (0-1)
+    double marketNoise;         // Ruído do mercado (0-1)
+    double orderFlow;           // Fluxo de ordens (-1 a 1)
+    double tickFrequency;       // Frequência de ticks (0-1)
+};
+
+struct MarketTouch {
+    double marketMomentum;      // Momento do mercado (-1 a 1)
+    double pressureLevel;       // Nível de pressão (0-1)
+    double volatilityTouch;     // Toque da volatilidade (0-1)
+    double supportResistance;   // Força do suporte/resistência (0-1)
+    double priceStability;      // Estabilidade do preço (0-1)
+};
+
+struct MarketSmell {
+    double riskLevel;           // Nível de risco (0-1)
+    double marketSentiment;     // Sentimento do mercado (-1 a 1)
+    double volatilitySmell;     // Cheiro da volatilidade (0-1)
+    double trendExhaustion;     // Exaustão da tendência (0-1)
+    double marketStress;        // Estresse do mercado (0-1)
+};
+
+struct MarketTaste {
+    double profitPotential;     // Potencial de lucro (0-1)
+    double riskReward;          // Relação risco/retorno (0-1)
+    double marketQuality;       // Qualidade do mercado (0-1)
+    double tradeOpportunity;    // Oportunidade de trade (0-1)
+    double marketMaturity;      // Maturidade do mercado (0-1)
+};
+
+struct IntegratedSensoryData {
+    MarketVision vision;
+    MarketHearing hearing;
+    MarketTouch touch;
+    MarketSmell smell;
+    MarketTaste taste;
+    double sensoryCoherence;    // Coerência entre os sentidos (0-1)
+    double overallPerception;   // Percepção geral do mercado (0-1)
+};
+
+// Inputs - Configurações Gerais
+input group "Configurações Gerais"
+input double RiskPercent = 2.0;       // Risco por operação (%)
+input int MaxTrades = 3;              // Máximo de trades simultâneos
+input bool UseVisualSystem = true;    // Usar sistema visual
+input bool UseHearingSystem = true;   // Usar sistema auditivo
+input bool UseTouchSystem = true;     // Usar sistema tátil
+input bool UseSmellSystem = true;     // Usar sistema olfativo
+input bool UseTasteSystem = true;     // Usar sistema gustativo
+
+input group "Configurações de Stop"
+input int StopLoss = 100;            // Stop Loss em pontos
+input int TakeProfit = 200;          // Take Profit em pontos
+input int BreakEvenStart = 50;       // Pontos para Ativar Break Even
+input int BreakEvenProfit = 10;      // Pontos de Lucro após Break Even
+input int TrailingStart = 100;       // Pontos para Ativar Trailing
+input int TrailingStep = 20;         // Passos do Trailing Stop
+input int MaxSpread = 50;            // Spread Máximo Permitido
+
+input group "Configurações de Absorção"
+input double AbsorptionPriceChange = 0.0005; // Mudança mínima de preço para absorção
+input double AbsorptionVolumeRatio = 0.8;    // Razão de volume para absorção
+input bool UseAbsorptionPattern = true;      // Usar padrão de absorção
+
+input group "Configurações de Liquidez"
+input double LiquidityZoneThickness = 0.0010; // Espessura da zona de liquidez
+input int MinZoneVolume = 1000;              // Volume mínimo para zona de liquidez
+input int MaxLiquidityZones = 5;             // Máximo de zonas de liquidez
+
+// Configurações globais
+namespace GlobalConfig {
+    // Thresholds e pesos
+    const double CoherenceThreshold = 0.7;    // Mínima coerência sensorial
+    const double MinimumConfidence = 0.8;     // Confiança mínima para trade
+    const double RiskThreshold = 0.8;         // Limite de risco
+    const double MinProfitRatio = 1.5;        // Razão mínima lucro/risco
+    
+    // Pesos dos sistemas sensoriais
+    const double VisionWeight = 0.25;
+    const double HearingWeight = 0.20;
+    const double TouchWeight = 0.20;
+    const double SmellWeight = 0.15;
+    const double TasteWeight = 0.20;
+    
+    // Parâmetros de análise
+    const int FastMA = 8;           // Média móvel rápida
+    const int SlowMA = 21;          // Média móvel lenta
+    const int RSIPeriod = 14;       // Período do RSI
+    const int BBPeriod = 20;        // Período das Bandas de Bollinger
+    const double BBDeviation = 2.0; // Desvio das Bandas de Bollinger
+    
+    // Timeframes para análise
+    const ENUM_TIMEFRAMES PrimaryTimeframe = PERIOD_M5;
+    const ENUM_TIMEFRAMES SecondaryTimeframe = PERIOD_M15;
+    const ENUM_TIMEFRAMES TertiaryTimeframe = PERIOD_H1;
+}
+
+// Estrutura para zonas de liquidez
+struct LiquidityZone {
+    double priceLevel;
+    double volume;
+    datetime lastTest;
+    bool isSupport;
+    bool isActive;
+};
+
+// Enumerações
+enum MarketState {
+    STATE_TRENDING,
+    STATE_RANGING,
+    STATE_VOLATILE,
+    STATE_UNCERTAIN
+};
+
+enum SignalStrength {
+    SIGNAL_WEAK,
+    SIGNAL_MODERATE,
+    SIGNAL_STRONG,
+    SIGNAL_VERY_STRONG
+}; 

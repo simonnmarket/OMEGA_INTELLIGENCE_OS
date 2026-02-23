@@ -1,0 +1,15 @@
+{
+  "symbol": "BTCUSD",
+  "action": "BUY",
+  "confidence": 0.7749999999999999,
+  "reason": "Multi-TF (3/6 alinhados) - Tend\u00eancia BULLISH",
+  "stop_loss": 109296.45857142856,
+  "take_profit": 111111.07357142857,
+  "timestamp": 1762100094,
+  "server_version": "COMPLETO_MTF",
+  "metadata": {
+    "confluence": 0.5,
+    "timeframes_aligned": 3,
+    "primary_trend": "BULLISH"
+  }
+}

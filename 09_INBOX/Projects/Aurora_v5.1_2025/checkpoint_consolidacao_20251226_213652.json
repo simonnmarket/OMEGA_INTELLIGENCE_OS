@@ -1,0 +1,89 @@
+{
+  "metadata": {
+    "projeto": "AURORA v5.1 ARCH-001",
+    "etapa": "BLOCO 3 - Consolidação Cirúrgica",
+    "nivel": "EXCELENCIA_MAXIMA",
+    "timestamp": "2025-12-26T21:36:52.731666",
+    "checkpoint_entrada": "checkpoint_selecao_20251226_204338.json",
+    "status": "CONCLUIDO"
+  },
+  "consolidacao": {
+    "executor_analisado": {
+      "caminho": "MT5_EXECUTOR_PROFISSIONAL.py",
+      "tamanho_bytes": 11023,
+      "linhas_codigo": 298,
+      "classes": 1,
+      "funcoes": 8,
+      "imports": 6,
+      "complexidade": "BAIXA"
+    },
+    "duplicatas_identificadas": {
+      "total_encontradas": 6,
+      "duplicatas_potenciais": 0,
+      "lista_duplicatas": []
+    },
+    "codigo_otimizado": {
+      "estatisticas_iniciais": {
+        "linhas_total": 298,
+        "linhas_vazias": 56,
+        "linhas_comentarios": 28,
+        "imports": 4
+      },
+      "estatisticas_finais": {
+        "linhas_total": 308,
+        "reducao_percent": 0,
+        "arquivo_otimizado": "mt5_executor_consolidado_20251226_213652.py",
+        "tamanho_kb": 10.9619140625
+      },
+      "imports_otimizados": 0,
+      "funcoes_identificadas": 8,
+      "arquivo_gerado": "mt5_executor_consolidado_20251226_213652.py"
+    }
+  },
+  "remocoes_cirurgicas": {
+    "total_analisadas": 0,
+    "remocoes_realizadas": [],
+    "remocoes_falhas": [],
+    "arquivos_removidos": 0,
+    "backup_dir": null
+  },
+  "validacoes": [
+    {
+      "etapa": "validacao_backup",
+      "status": "APROVADO",
+      "backup_arquivo": "backup_pre_arch001_20251226_204338.zip",
+      "tamanho_mb": 0.05162239074707031,
+      "hash_sha256": "fefcb074bad89b3a5b03c8c18fa264ed2bd54e1c1a09da18bd74fb582f41709d",
+      "timestamp": "2025-12-26T21:36:52.732681"
+    },
+    {
+      "teste": "EXECUTOR_CONSOLIDADO_EXISTE",
+      "status": "APROVADO",
+      "detalhes": "Arquivo: mt5_executor_consolidado_20251226_213652.py"
+    },
+    {
+      "teste": "SINTAXE_PYTHON_VALIDA",
+      "status": "APROVADO",
+      "detalhes": "Sintaxe Python válida"
+    },
+    {
+      "teste": "INTEGRIDADE_HASH",
+      "status": "APROVADO",
+      "detalhes": "SHA256: e593ac0e66f3c750..."
+    },
+    {
+      "teste": "FUNCOES_ESSENCIAIS",
+      "status": "APROVADO",
+      "detalhes": "Funções encontradas: ['init', 'shutdown', 'order']"
+    }
+  ],
+  "estatisticas": {},
+  "relatorios": {
+    "arquivo": "RELATORIO_CONSOLIDACAO_20251226_213652.md",
+    "tamanho_kb": 1.1123046875
+  },
+  "hashes_integridade": {
+    "executor_consolidado": "e593ac0e66f3c7506b1ee870d3075e1e49efb664ca3eaae547070dba39427f3b",
+    "backup_original": "fefcb074bad89b3a5b03c8c18fa264ed2bd54e1c1a09da18bd74fb582f41709d"
+  }
+}

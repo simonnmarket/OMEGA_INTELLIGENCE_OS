@@ -1,0 +1,68 @@
+# ============================================
+# .cursorignore - SamsungGlobalMarket
+# Otimização de Indexação do Cursor
+# Gerado: 2025-11-30
+# ============================================
+
+# === AMBIENTE VIRTUAL PYTHON ===
+venv/
+.venv/
+env/
+.env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# === ARQUIVOS COMPILADOS MQL5 ===
+*.ex5
+*.ex4
+
+# === LOGS E DADOS TEMPORÁRIOS ===
+logs/
+Logs/
+*.log
+*.tmp
+*.jsonl
+
+# === BACKUPS ===
+Backup/
+Backups/
+*.bak
+*_backup*
+*_old*
+*_backup_*
+
+# === DADOS E OUTPUTS GRANDES ===
+data/*.parquet
+data/*.csv
+Output/*.csv
+Output/*.json
+
+# === ORQUESTRAÇÃO (muitos logs) ===
+Orchestration/*.log
+Orchestration/**/*.log
+
+# === CONTROLE DE VERSÃO ===
+.git/
+.gitignore
+
+# === ARQUIVOS DE SISTEMA ===
+.vs/
+.vscode/
+*.db
+*.sqlite
+
+# === DOCUMENTAÇÃO EXTENSA ===
+Documentation/
+
+# === TESTES ===
+Tests/
+
+# === CACHE ===
+.cache/
+*.cache
+
+# === NODE (se houver) ===
+node_modules/
+

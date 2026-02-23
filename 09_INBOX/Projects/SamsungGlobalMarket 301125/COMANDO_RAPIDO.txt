@@ -1,0 +1,22 @@
+========================================
+COMANDO PARA INICIAR O SISTEMA
+========================================
+
+OPCAO 1: Duplo clique no arquivo:
+  C:\Users\Lenovo\.cursor\SamsungGlobalMarket\iniciar_sistema.bat
+
+OPCAO 2: Comando direto no PowerShell:
+  cd C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia
+  python numeia_executor_v2.py
+
+OPCAO 3: Caminho absoluto:
+  python C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia\numeia_executor_v2.py
+
+========================================
+ARQUIVO ESTA EM:
+C:\Users\Lenovo\.cursor\SamsungGlobalMarket\Server\Numeia\numeia_executor_v2.py
+
+NAO EM:
+C:\Users\Lenovo\numeia_executor_v2.py
+========================================
+

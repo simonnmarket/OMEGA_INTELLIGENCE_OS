@@ -1,0 +1,157 @@
+//+------------------------------------------------------------------+
+//| Sub-categoria: Volume Basic - Parte 2 Final                       |
+//+------------------------------------------------------------------+
+
+private:
+    void AnalyzeVSA() {
+        m_state.vsa.isClimax = DetectClimaxVolume();
+        m_state.vsa.isChurn = DetectChurnVolume();
+        m_state.vsa.isTest = DetectTestVolume();
+        m_state.vsa.isUpThrust = DetectUpThrust();
+        m_state.vsa.isSpringTest = DetectSpringTest();
+        m_state.vsa.effort = CalculateEffort();
+        m_state.vsa.result = CalculateResult();
+        
+        // Integração com TechnologyAdvances
+        m_techManager.UpdateVSAMetrics(m_state.vsa);
+    }
+    
+    void AnalyzeDelta() {
+        m_state.delta.buyVolume = CalculateBuyVolume();
+        m_state.delta.sellVolume = CalculateSellVolume();
+        m_state.delta.delta = m_state.delta.buyVolume - m_state.delta.sellVolume;
+        m_state.delta.cumDelta = UpdateCumulativeDelta();
+        m_state.delta.isDeltaPositive = (m_state.delta.delta > 0);
+        m_state.delta.strength = CalculateDeltaStrength();
+        m_state.delta.isDiverging = CheckDeltaDivergence();
+    }
+    
+    void AnalyzeML() {
+        // Machine Learning Analysis
+        m_state.ml.prediction = PredictVolumePattern();
+        m_state.ml.confidence = CalculateMLConfidence();
+        m_state.ml.accuracy = UpdateMLAccuracy();
+        m_state.ml.lastUpdate = TimeCurrent();
+        m_state.ml.isValid = ValidateMLPrediction();
+        
+        // Integração com TechnologyAdvances
+        m_techManager.UpdateMLMetrics(m_state.ml);
+    }
+    
+    void AnalyzeLiquidity() {
+        m_state.liquidity.marketDepth = CalculateMarketDepth();
+        m_state.liquidity.bidAskSpread = GetCurrentSpread();
+        m_state.liquidity.turnoverRate = CalculateTurnover();
+        m_state.liquidity.isLiquid = ValidateLiquidity();
+        m_state.liquidity.flowRate = CalculateFlowRate();
+    }
+    
+    void AnalyzeOrderFlow() {
+        m_state.orderFlow.buyPressure = CalculateBuyPressure();
+        m_state.orderFlow.sellPressure = CalculateSellPressure();
+        m_state.orderFlow.absorption = CalculateAbsorption();
+        m_state.orderFlow.isImbalance = DetectImbalance();
+        m_state.orderFlow.netFlow = CalculateNetFlow();
+    }
+    
+    void GenerateAndValidateSignals() {
+        // Sinais tradicionais
+        if(IsValidVSASignal()) GenerateVSASignal();
+        if(IsValidDeltaSignal()) GenerateDeltaSignal();
+        if(IsValidPatternSignal()) GeneratePatternSignal();
+        
+        // Sinais avançados
+        if(m_config.enableAdvancedAnalysis) {
+            if(IsValidLiquiditySignal()) GenerateLiquiditySignal();
+            if(IsValidOrderFlowSignal()) GenerateOrderFlowSignal();
+        }
+        
+        // Sinais ML
+        if(m_config.enableML && IsValidMLSignal()) {
+            GenerateMLSignal();
+        }
+        
+        // Processar alertas
+        ProcessAlerts();
+    }
+    
+    void GenerateMLSignal() {
+        VolumeSignal* signal = new VolumeSignal();
+        signal.categoryName = GetSubCategoryName();
+        signal.signalName = "ML_Volume";
+        signal.strength = m_state.ml.confidence;
+        signal.confidence = m_state.ml.accuracy;
+        signal.timestamp = TimeCurrent();
+        signal.description = GenerateMLDescription();
+        signal.isValid = m_state.ml.isValid;
+        
+        m_signals.Add(signal);
+        
+        // Notificar equipe responsável
+        if(signal.strength > 0.8) {
+            NotifyTeam(signal);
+        }
+    }
+    
+    void OptimizeAndMaintain() {
+        // Otimização de memória
+        if(m_dataManager.GetMemoryUsage() > m_dataManager.memoryThreshold) {
+            m_dataManager.OptimizeMemory();
+        }
+        
+        // Atualização de métricas de performance
+        UpdatePerformanceMetrics();
+        
+        // Manutenção de cache
+        CleanupOldSignals();
+        DefragmentArrays();
+    }
+    
+    void UpdatePerformanceMetrics() {
+        ExecutionMetrics metrics;
+        metrics.latency = GetExecutionLatency();
+        metrics.execution_accuracy = CalculateAccuracy();
+        metrics.cost_efficiency = CalculateCostEfficiency();
+        
+        m_techManager.UpdateMetrics(metrics);
+    }
+    
+    void NotifyTeam(const VolumeSignal* signal) {
+        if(m_responsibleTeam == NULL) return;
+        
+        string message = StringFormat(
+            "Volume Signal Alert\nType: %s\nStrength: %.2f\nConfidence: %.2f",
+            signal.signalName,
+            signal.strength,
+            signal.confidence
+        );
+        
+        // Integração com TeamStructure
+        for(int i = 0; i < ArraySize(m_responsibleTeam); i++) {
+            if(m_responsibleTeam[i].department == QUANTITATIVE_RESEARCH ||
+               m_responsibleTeam[i].department == ALGO_TRADING) {
+                SendNotification(m_responsibleTeam[i], message);
+            }
+        }
+    }
+    
+    void AssignResponsibleTeam() {
+        // Integração com TeamStructure
+        m_responsibleTeam = new TeamMember[2];
+        m_responsibleTeam[0].department = QUANTITATIVE_RESEARCH;
+        m_responsibleTeam[0].expertise = "Volume Analysis";
+        m_responsibleTeam[1].department = ALGO_TRADING;
+        m_responsibleTeam[1].expertise = "Execution";
+    }
+    
+    void Cleanup() {
+        delete m_dataCollector;
+        delete m_patternAnalyzer;
+        delete m_statsAnalyzer;
+        delete m_qualityAnalyzer;
+        delete m_alertManager;
+        delete m_dataManager;
+        delete m_errorHandler;
+        delete[] m_responsibleTeam;
+    }
+};

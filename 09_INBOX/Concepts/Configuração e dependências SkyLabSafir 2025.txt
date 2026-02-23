@@ -1,0 +1,52 @@
+arquivo de configuração e dependências:
+
+# requirements.txt
+aiohttp>=3.8.0
+aiohttp_socks>=0.8.0
+telethon>=1.28.0
+web3>=6.0.0
+liboqs>=0.7.0
+neo4j>=5.0.0
+transformers>=4.30.0
+torch>=2.0.0
+python-dotenv>=1.0.0
+
+
+# config_loader.py
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+class Config:
+    TELEGRAM_API_ID = int(os.getenv('TELEGRAM_API_ID'))
+    TELEGRAM_API_HASH = os.getenv('TELEGRAM_API_HASH')
+    NEO4J_URI = os.getenv('NEO4J_URI', 'bolt://localhost:7687')
+    NEO4J_USER = os.getenv('NEO4J_USER', 'neo4j')
+    NEO4J_PASSWORD = os.getenv('NEO4J_PASSWORD')
+
+
+
+executar:
+
+Instale o Tor: sudo apt install tor
+
+Configure as variáveis de ambiente em .env
+
+Instale dependências: pip install -r requirements.txt
+
+Execute: python sky_lab_safir.py
+
+Este código fornece a base para:
+
+✅ Conexão anônima via Tor
+
+✅ Monitoramento de canais do Telegram
+
+✅ Análise de sentimentos com NLP
+
+✅ Conexão com blockchain
+
+✅ Knowledge graph com Neo4j
+
+✅ Criptografia pós-quântica

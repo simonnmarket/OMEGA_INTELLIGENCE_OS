@@ -1,0 +1,309 @@
+===============================================================================
+                    SISTEMA DE REGISTRO DE MÓDULOS - NUMEIA EA
+===============================================================================
+Data: 28/06/2025
+Versão: 1.0
+Status: IMPLEMENTADO E FUNCIONAL
+
+===============================================================================
+OBJETIVO DO SISTEMA
+===============================================================================
+
+O ModuleRegistry é o CÉREBRO CENTRAL que mapeia e controla todas as 
+dependências e integrações do EA Numeia, evitando o EFEITO CASCATA 
+de atualizações não sincronizadas.
+
+PROBLEMA RESOLVIDO:
+- Antes: Mudanças em um módulo quebravam outros sem aviso
+- Agora: Sistema detecta e previne quebras de dependências
+
+===============================================================================
+ARQUITETURA DO SISTEMA
+===============================================================================
+
+1. MODULE REGISTRY (Core/ModuleRegistry.mqh)
+   ├── Registro automático de módulos
+   ├── Mapeamento de dependências
+   ├── Controle de integrações
+   ├── Validação de integridade
+   └── Análise de impacto
+
+2. SCRIPT DE REGISTRO (Scripts/RegisterAllModules.mq5)
+   ├── Registro automático de todos os módulos
+   ├── Configuração de dependências
+   ├── Estabelecimento de integrações
+   └── Validação inicial
+
+3. MONITOR EM TEMPO REAL (Scripts/DependencyMonitor.mq5)
+   ├── Monitoramento contínuo
+   ├── Detecção de mudanças
+   ├── Análise automática de impacto
+   └── Alertas em tempo real
+
+4. PAINEL VISUAL (Include/Visuals/DependencyDashboard.mq5)
+   ├── Interface gráfica
+   ├── Status em tempo real
+   ├── Visualização de dependências
+   └── Estatísticas do sistema
+
+===============================================================================
+FUNCIONALIDADES PRINCIPAIS
+===============================================================================
+
+✅ REGISTRO AUTOMÁTICO DE MÓDULOS
+   - Cada módulo é registrado com informações completas
+   - Nome, caminho, tipo, versão, descrição
+   - Status ativo/inativo
+   - Timestamp de última modificação
+
+✅ MAPEAMENTO DE DEPENDÊNCIAS
+   - Módulo A depende do Módulo B
+   - Tipo de dependência (include, class, function)
+   - Dependências críticas vs. opcionais
+   - Interface utilizada
+
+✅ CONTROLE DE INTEGRAÇÕES
+   - Módulo A integra com Módulo B
+   - Tipo de integração (execution, management, analysis)
+   - Fluxo de dados
+   - Integração bidirecional
+
+✅ VALIDAÇÃO DE INTEGRIDADE
+   - Verificação de dependências quebradas
+   - Detecção de módulos órfãos
+   - Identificação de dependências circulares
+   - Relatório de problemas
+
+✅ ANÁLISE DE IMPACTO
+   - Mudança em módulo X afeta módulos Y, Z, W
+   - Dependências críticas destacadas
+   - Cálculo de risco de mudança
+   - Recomendações de atualização
+
+✅ SINCRONIZAÇÃO AUTOMÁTICA
+   - Verificação periódica de mudanças
+   - Atualização automática do registry
+   - Detecção de arquivos modificados
+   - Notificação de impactos
+
+===============================================================================
+COMO USAR O SISTEMA
+===============================================================================
+
+1. REGISTRO INICIAL:
+   Execute: Scripts/RegisterAllModules.mq5
+   - Registra todos os módulos automaticamente
+   - Estabelece dependências conhecidas
+   - Valida integridade inicial
+
+2. MONITORAMENTO CONTÍNUO:
+   Execute: Scripts/DependencyMonitor.mq5
+   - Monitora mudanças em tempo real
+   - Analisa impactos automaticamente
+   - Gera alertas quando necessário
+
+3. VISUALIZAÇÃO:
+   Execute: Include/Visuals/DependencyDashboard.mq5
+   - Painel visual com status
+   - Dependências e integrações
+   - Estatísticas do sistema
+
+4. ANÁLISE MANUAL:
+   Use: ModuleRegistry.AnalyzeImpact("NomeDoModulo")
+   - Analisa impacto de mudanças específicas
+   - Lista módulos afetados
+   - Identifica dependências críticas
+
+===============================================================================
+ESTRUTURA DE DADOS
+===============================================================================
+
+struct ModuleInfo {
+   string moduleName;           // Nome do módulo
+   string filePath;             // Caminho do arquivo
+   string moduleType;           // Tipo (Core, Agent, Analysis, etc.)
+   datetime lastModified;       // Última modificação
+   bool isActive;               // Status ativo/inativo
+   string version;              // Versão do módulo
+   string description;          // Descrição funcional
+};
+
+struct DependencyInfo {
+   string sourceModule;         // Módulo que depende
+   string targetModule;         // Módulo dependido
+   string dependencyType;       // Tipo de dependência
+   bool isCritical;             // Dependência crítica
+   string interface;            // Interface utilizada
+};
+
+struct IntegrationInfo {
+   string moduleA;              // Primeiro módulo
+   string moduleB;              // Segundo módulo
+   string integrationType;      // Tipo de integração
+   string dataFlow;             // Fluxo de dados
+   bool bidirectional;          // Integração bidirecional
+};
+
+===============================================================================
+EXEMPLOS DE USO
+===============================================================================
+
+1. REGISTRAR NOVO MÓDULO:
+   ModuleRegistry* registry = GetModuleRegistry();
+   registry.RegisterModule("NovoModulo", "../Include/NovoModulo.mqh", "Analysis", "Descrição");
+
+2. REGISTRAR DEPENDÊNCIA:
+   registry.RegisterDependency("ModuloA", "ModuloB", "include", true);
+
+3. REGISTRAR INTEGRAÇÃO:
+   registry.RegisterIntegration("ModuloA", "ModuloB", "execution", "data_flow", true);
+
+4. ANALISAR IMPACTO:
+   registry.AnalyzeImpact("CoreBrainManager");
+
+5. VALIDAR INTEGRIDADE:
+   bool ok = registry.ValidateIntegrity();
+
+6. GERAR RELATÓRIO:
+   registry.GenerateDependencyReport();
+
+===============================================================================
+BENEFÍCIOS DO SISTEMA
+===============================================================================
+
+✅ PREVENÇÃO DE ERROS
+   - Detecta dependências quebradas antes da compilação
+   - Identifica módulos órfãos
+   - Previne dependências circulares
+
+✅ DESENVOLVIMENTO SEGURO
+   - Análise de impacto antes de mudanças
+   - Alertas em tempo real
+   - Documentação automática de dependências
+
+✅ MANUTENÇÃO FACILITADA
+   - Mapeamento completo do sistema
+   - Identificação de pontos críticos
+   - Rastreamento de mudanças
+
+✅ ESCALABILIDADE
+   - Sistema cresce automaticamente
+   - Novos módulos são registrados facilmente
+   - Dependências são mapeadas automaticamente
+
+✅ TRANSPARÊNCIA
+   - Visibilidade total das dependências
+   - Relatórios detalhados
+   - Interface visual intuitiva
+
+===============================================================================
+FLUXO DE TRABALHO RECOMENDADO
+===============================================================================
+
+1. DESENVOLVIMENTO:
+   - Crie novo módulo
+   - Execute RegisterAllModules.mq5
+   - Verifique integridade
+
+2. MODIFICAÇÃO:
+   - Execute DependencyMonitor.mq5
+   - Analise impacto antes de mudar
+   - Faça mudanças
+   - Valide integridade
+
+3. DEPLOY:
+   - Execute validação final
+   - Verifique painel visual
+   - Confirme sem erros
+
+4. MANUTENÇÃO:
+   - Monitore continuamente
+   - Analise relatórios
+   - Atualize conforme necessário
+
+===============================================================================
+CONFIGURAÇÕES AVANÇADAS
+===============================================================================
+
+AUTO_SYNC: true                    // Sincronização automática
+SCAN_INTERVAL: 30                  // Intervalo de verificação (segundos)
+ALERT_ON_CHANGES: true             // Alertas em mudanças
+STOP_ON_ERRORS: false              // Parar em erros críticos
+SHOW_DETAILED_LOGS: true           // Logs detalhados
+
+===============================================================================
+TROUBLESHOOTING
+===============================================================================
+
+PROBLEMA: "Dependência quebrada detectada"
+SOLUÇÃO: Verificar se o módulo alvo existe e está acessível
+
+PROBLEMA: "Módulo órfão detectado"
+SOLUÇÃO: Verificar se o módulo é realmente necessário ou adicionar dependências
+
+PROBLEMA: "Dependências circulares detectadas"
+SOLUÇÃO: Reestruturar dependências para evitar loops
+
+PROBLEMA: "Mudanças não detectadas"
+SOLUÇÃO: Verificar intervalo de scan e configurações de monitoramento
+
+===============================================================================
+STATUS ATUAL
+===============================================================================
+
+✅ IMPLEMENTADO:
+   - ModuleRegistry completo
+   - Script de registro automático
+   - Monitor em tempo real
+   - Painel visual
+   - Sistema de validação
+
+✅ FUNCIONAL:
+   - Registro de módulos
+   - Mapeamento de dependências
+   - Análise de impacto
+   - Validação de integridade
+   - Relatórios automáticos
+
+✅ TESTADO:
+   - Todos os módulos registrados
+   - Dependências mapeadas
+   - Integrações estabelecidas
+   - Sistema validado
+
+===============================================================================
+PRÓXIMOS PASSOS
+===============================================================================
+
+1. INTEGRAÇÃO COM CI/CD
+   - Validação automática em builds
+   - Relatórios de qualidade
+   - Alertas em pull requests
+
+2. ANÁLISE PREDITIVA
+   - Machine learning para prever impactos
+   - Sugestões de otimização
+   - Análise de complexidade
+
+3. DOCUMENTAÇÃO AUTOMÁTICA
+   - Geração de diagramas
+   - Documentação de APIs
+   - Guias de integração
+
+===============================================================================
+CONCLUSÃO
+===============================================================================
+
+O Sistema de Registro de Módulos é uma SOLUÇÃO COMPLETA que:
+
+✅ ELIMINA o efeito cascata de mudanças
+✅ GARANTE a integridade do sistema
+✅ FACILITA o desenvolvimento
+✅ MELHORA a manutenção
+✅ AUMENTA a confiabilidade
+
+O EA Numeia agora tem um SISTEMA PROFISSIONAL de controle de dependências
+que rivaliza com ferramentas institucionais de gestão de código.
+
+STATUS: ✅ SISTEMA OPERACIONAL E FUNCIONAL
+=============================================================================== 

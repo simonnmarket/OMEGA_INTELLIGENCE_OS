@@ -1,0 +1,184 @@
+{
+  "baseline_summary": {
+    "strategy": "Mean_Reversion_Bollinger_Bands",
+    "symbol": "EURUSD",
+    "timeframe": "H1",
+    "years_of_data": 10,
+    "walk_forward_periods": 15,
+    "timestamp": "20251117_011752"
+  },
+  "aggregate_metrics": {
+    "total_trades": 776,
+    "winning_trades": 433,
+    "losing_trades": 343,
+    "win_rate": 0.5579896907216495,
+    "profit_factor": 0.76213747099768,
+    "total_return": -49208.99999999992,
+    "expected_value": -63.41365979381433,
+    "avg_win": 364.1362586605081,
+    "avg_loss": 364.1362586605081,
+    "sharpe_ratio": -1.420093341251503,
+    "max_drawdown": 67141.00000000015,
+    "max_drawdown_pct": 14854.203539822984,
+    "total_profit": 157671.0,
+    "total_loss": 206879.99999999994
+  },
+  "walk_forward_averages": {
+    "avg_win_rate": 0.5086017005705051,
+    "avg_sharpe_ratio": -77.46320603858486,
+    "avg_total_return": -2246.599999999999,
+    "avg_max_drawdown": 4897.133333333336
+  },
+  "walk_forward_periods": [
+    {
+      "period_num": 1,
+      "start_date": "2017-11-23",
+      "end_date": "2018-05-22",
+      "total_trades": 55,
+      "win_rate": 0.6,
+      "total_return": -4196.000000000034,
+      "sharpe_ratio": -1.8467095274647307,
+      "max_drawdown": 5040.9999999999945
+    },
+    {
+      "period_num": 2,
+      "start_date": "2018-05-22",
+      "end_date": "2018-11-18",
+      "total_trades": 53,
+      "win_rate": 0.5471698113207547,
+      "total_return": -4285.000000000099,
+      "sharpe_ratio": -2.2476625228221727,
+      "max_drawdown": 7577.0000000000455
+    },
+    {
+      "period_num": 3,
+      "start_date": "2018-11-18",
+      "end_date": "2019-05-17",
+      "total_trades": 57,
+      "win_rate": 0.5789473684210527,
+      "total_return": 48.99999999998758,
+      "sharpe_ratio": 0.031174660697341476,
+      "max_drawdown": 6001.999999999942
+    },
+    {
+      "period_num": 4,
+      "start_date": "2019-05-17",
+      "end_date": "2019-11-13",
+      "total_trades": 55,
+      "win_rate": 0.43636363636363634,
+      "total_return": -11645.000000000047,
+      "sharpe_ratio": -7.603788196645559,
+      "max_drawdown": 11980.000000000067
+    },
+    {
+      "period_num": 5,
+      "start_date": "2019-11-13",
+      "end_date": "2020-05-11",
+      "total_trades": 22,
+      "win_rate": 0.36363636363636365,
+      "total_return": -683.0000000000259,
+      "sharpe_ratio": -0.44518704079915444,
+      "max_drawdown": 6762.000000000044
+    },
+    {
+      "period_num": 6,
+      "start_date": "2020-05-11",
+      "end_date": "2020-11-07",
+      "total_trades": 2,
+      "win_rate": 0.0,
+      "total_return": -4164.000000000008,
+      "sharpe_ratio": -1139.6801854419787,
+      "max_drawdown": 2111.0000000000055
+    },
+    {
+      "period_num": 7,
+      "start_date": "2020-11-07",
+      "end_date": "2021-05-06",
+      "total_trades": 2,
+      "win_rate": 0.5,
+      "total_return": -412.9999999999927,
+      "sharpe_ratio": -1.767638648912906,
+      "max_drawdown": 0.0
+    },
+    {
+      "period_num": 9,
+      "start_date": "2021-11-02",
+      "end_date": "2022-05-01",
+      "total_trades": 4,
+      "win_rate": 0.75,
+      "total_return": 3503.9999999999814,
+      "sharpe_ratio": 6.93803242637414,
+      "max_drawdown": 2409.0000000000036
+    },
+    {
+      "period_num": 10,
+      "start_date": "2022-05-01",
+      "end_date": "2022-10-28",
+      "total_trades": 3,
+      "win_rate": 0.3333333333333333,
+      "total_return": -1565.9999999999955,
+      "sharpe_ratio": -2.9715506310042215,
+      "max_drawdown": 2780.9999999999986
+    },
+    {
+      "period_num": 11,
+      "start_date": "2022-10-28",
+      "end_date": "2023-04-26",
+      "total_trades": 1,
+      "win_rate": 1.0,
+      "total_return": 2622.999999999988,
+      "sharpe_ratio": 0.0,
+      "max_drawdown": 0.0
+    },
+    {
+      "period_num": 12,
+      "start_date": "2023-04-26",
+      "end_date": "2023-10-23",
+      "total_trades": 16,
+      "win_rate": 0.125,
+      "total_return": -4722.000000000041,
+      "sharpe_ratio": -9.031144207502331,
+      "max_drawdown": 6063.000000000046
+    },
+    {
+      "period_num": 13,
+      "start_date": "2023-10-23",
+      "end_date": "2024-04-20",
+      "total_trades": 57,
+      "win_rate": 0.43859649122807015,
+      "total_return": -11067.999999999896,
+      "sharpe_ratio": -5.163830801291563,
+      "max_drawdown": 14090.999999999927
+    },
+    {
+      "period_num": 14,
+      "start_date": "2024-04-20",
+      "end_date": "2024-10-17",
+      "total_trades": 56,
+      "win_rate": 0.7142857142857143,
+      "total_return": 1936.0000000001792,
+      "sharpe_ratio": 1.3059196491176674,
+      "max_drawdown": 1793.9999999999836
+    },
+    {
+      "period_num": 15,
+      "start_date": "2024-10-17",
+      "end_date": "2025-04-15",
+      "total_trades": 58,
+      "win_rate": 0.5689655172413793,
+      "total_return": -1652.999999999921,
+      "sharpe_ratio": -0.803512179659603,
+      "max_drawdown": 4676.999999999956
+    },
+    {
+      "period_num": 16,
+      "start_date": "2025-04-15",
+      "end_date": "2025-10-12",
+      "total_trades": 55,
+      "win_rate": 0.6727272727272727,
+      "total_return": 2583.9999999999363,
+      "sharpe_ratio": 1.3379918831186883,
+      "max_drawdown": 2169.0000000000346
+    }
+  ]
+}

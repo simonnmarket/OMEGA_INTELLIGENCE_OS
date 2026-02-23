@@ -1,0 +1,388 @@
+import os
+import json
+import time
+import random
+import signal
+from pathlib import Path
+from collections import deque
+from decimal import Decimal, getcontext
+from threading import Thread, Event
+from queue import SimpleQueue
+
+import zmq
+
+
+def _find_mt5_files_dir() -> Path:
+    env = os.environ.get("MT5_FILES_DIR")
+    if env:
+        p = Path(env)
+        p.mkdir(parents=True, exist_ok=True)
+        return p
+    common = Path.home() / "AppData" / "Roaming" / "MetaQuotes" / "Terminal" / "Common" / "Files"
+    if common.exists():
+        common.mkdir(parents=True, exist_ok=True)
+        return common
+    # fallback local
+    proj_root = Path(__file__).resolve().parents[2]
+    files_dir = proj_root / "MQL5" / "Files"
+    files_dir.mkdir(parents=True, exist_ok=True)
+    return files_dir
+
+
+class AsyncLogger:
+    """Logger assíncrono não bloqueante.
+
+    Notas
+    -----
+    - Complexidade: O(1) por chamada de log (enqueue); flush em thread separada.
+    """
+
+    def __init__(self, logfile: Path):
+        self._q: SimpleQueue[str] = SimpleQueue()
+        self._stop = Event()
+        self._logfile = logfile
+        self._t = Thread(target=self._run, daemon=True)
+        self._t.start()
+
+    def info(self, msg: str) -> None:
+        ts = int(time.time())
+        self._q.put(f"{ts} {msg}\n")
+
+    def _run(self) -> None:
+        while not self._stop.is_set():
+            try:
+                lines = []
+                # batch para reduzir IO
+                for _ in range(128):
+                    try:
+                        lines.append(self._q.get_nowait())
+                    except Exception:
+                        break
+                if lines:
+                    self._logfile.parent.mkdir(parents=True, exist_ok=True)
+                    with self._logfile.open('a', encoding='utf-8', newline='') as f:
+                        f.writelines(lines)
+                else:
+                    time.sleep(0.01)
+            except Exception:
+                time.sleep(0.05)
+
+    def close(self) -> None:
+        self._stop.set()
+        try:
+            self._t.join(timeout=0.5)
+        except Exception:
+            pass
+
+
+class MarketModel:
+    """Modelo de decisão com precisão Decimal e aprendizado simples on-line.
+
+    Mantém estado por símbolo (preços, EMAs, ATR) e ajusta thresholds
+    conforme estabilidade do momentum recente.
+
+    Parâmetros
+    ----------
+    fast_period : int
+        Período EMA rápida.
+    slow_period : int
+        Período EMA lenta.
+    atr_period : int
+        Período ATR (TR sintético a partir de mid/spread).
+    precision : int
+        Casas decimais de precisão (Decimal).
+    """
+
+    def __init__(self, fast_period: int = 20, slow_period: int = 50, atr_period: int = 14, precision: int = 12):
+        getcontext().prec = precision
+        self.fast = fast_period
+        self.slow = slow_period
+        self.atrp = atr_period
+        self.buffers: dict[str, deque[Decimal]] = {}
+        self.last_mid: dict[str, Decimal] = {}
+        self.ema_fast: dict[str, Decimal] = {}
+        self.ema_slow: dict[str, Decimal] = {}
+        self.atr: dict[str, Decimal] = {}
+        self.conf_adj: dict[str, Decimal] = {}  # ajuste dinâmico do limiar
+        self.mom_score: dict[str, int] = {}     # contagem de acertos de momentum
+
+    def _update_ema(self, prev: Decimal | None, val: Decimal, period: int) -> Decimal:
+        """Atualiza EMA com Decimal.
+
+        Complexidade
+        ------------
+        O(1)
+        """
+        if prev is None:
+            return val
+        alpha = Decimal('2') / Decimal(period + 1)
+        return (val - prev) * alpha + prev
+
+    def _update_atr(self, sym: str, mid: Decimal, spread: Decimal) -> Decimal:
+        """TR sintético: |mid - last_mid| + spread; ATR como EMA(TR).
+
+        Complexidade
+        ------------
+        O(1)
+        """
+        last = self.last_mid.get(sym)
+        tr = (mid - last).copy_abs() + spread if last is not None else Decimal('0')
+        prev = self.atr.get(sym)
+        atr = self._update_ema(prev, tr, self.atrp)
+        self.atr[sym] = atr
+        return atr
+
+    def update(self, sym: str, bid: float, ask: float,
+               policy_conf_min=None,
+               policy_edge_bps=None) -> dict:
+        """Atualiza estado do símbolo e retorna decisão.
+
+        Parâmetros
+        ----------
+        sym : str
+            Símbolo.
+        bid, ask : float
+            Preços atuais.
+
+        Retorna
+        -------
+        dict
+            {'action','confidence','reasons'}
+
+        Complexidade
+        ------------
+        O(1) por tick.
+        """
+        dbid = Decimal(str(bid))
+        dask = Decimal(str(ask))
+        mid = (dbid + dask) / Decimal('2')
+        spread = (dask - dbid).copy_abs()
+
+        self.last_mid[sym] = mid
+        self.ema_fast[sym] = self._update_ema(self.ema_fast.get(sym), mid, self.fast)
+        self.ema_slow[sym] = self._update_ema(self.ema_slow.get(sym), mid, self.slow)
+        atr = self._update_atr(sym, mid, spread)
+
+        ef = self.ema_fast[sym]
+        es = self.ema_slow[sym]
+        trend_up = ef >= es
+        trend_strength = (ef - es).copy_abs() / (atr + Decimal('1e-9')) if atr is not None else Decimal('0')
+
+        # edge/cost heurístico
+        cost_bps = (spread / (mid + Decimal('1e-9'))) * Decimal('10000')
+        edge_bps = (trend_strength * Decimal('10'))  # escala heurística
+
+        # limiares dinâmicos (aplica PolicyPack se disponível)
+        base_conf = Decimal(str(policy_conf_min)) if policy_conf_min is not None else Decimal('0.60')
+        base_conf = base_conf + self.conf_adj.get(sym, Decimal('0'))
+        min_edge = Decimal(str(policy_edge_bps)) if policy_edge_bps is not None else Decimal('8.0')
+        min_edge = min_edge - Decimal(self.mom_score.get(sym, 0))
+        if min_edge < Decimal('3.0'):
+            min_edge = Decimal('3.0')
+
+        reasons = {
+            'trend_up': bool(trend_up),
+            'trend_strength': float(trend_strength),
+            'edge_bps': float(edge_bps),
+            'cost_bps': float(cost_bps),
+            'base_conf': float(base_conf),
+            'min_edge': float(min_edge),
+        }
+
+        action = 'HOLD'
+        confidence = base_conf
+
+        if edge_bps - cost_bps >= min_edge:
+            if trend_up:
+                action = 'BUY'
+            else:
+                action = 'SELL'
+            # confiança aumenta com força da tendência e margem edge-cost
+            confidence = (base_conf + min(Decimal('0.35'), trend_strength * Decimal('0.05') + (edge_bps - cost_bps) * Decimal('0.005')))
+        else:
+            # penalizar limiar caso edge esteja consistentemente baixo
+            self.mom_score[sym] = max(-3, self.mom_score.get(sym, 0) - 1)
+            self.conf_adj[sym] = max(Decimal('-0.08'), self.conf_adj.get(sym, Decimal('0')) - Decimal('0.005'))
+
+        # reforço simples: se ação concorda com momentum instantâneo, premiar
+        mom = (mid - self.last_mid.get(sym, mid))
+        if action == 'BUY' and mom >= 0:
+            self.mom_score[sym] = min(5, self.mom_score.get(sym, 0) + 1)
+            self.conf_adj[sym] = min(Decimal('0.10'), self.conf_adj.get(sym, Decimal('0')) + Decimal('0.003'))
+        elif action == 'SELL' and mom <= 0:
+            self.mom_score[sym] = min(5, self.mom_score.get(sym, 0) + 1)
+            self.conf_adj[sym] = min(Decimal('0.10'), self.conf_adj.get(sym, Decimal('0')) + Decimal('0.003'))
+
+        return {'action': action, 'confidence': float(confidence), 'reasons': reasons}
+
+
+def _classify_symbol(symbol: str) -> str:
+    s = symbol.upper()
+    if any(k in s for k in ["ETH", "BTC", "XRP", "ADA", "SOL", "DOT", "LTC"]):
+        return "crypto"
+    if any(k in s for k in ["US500", "US30", "US100", "EU50", "GER40", "UK100", "SW20", "US2000"]):
+        return "index"
+    if s.startswith("XAU") or s.startswith("XAG"):
+        return "metal"
+    if len(s) == 6 and s.isalpha():
+        return "forex"
+    return "other"
+
+
+def main() -> None:
+    port = int(os.environ.get("ZMQ_PORT", "5555"))
+    context = zmq.Context.instance()
+    socket = context.socket(zmq.REP)
+    socket.bind(f"tcp://127.0.0.1:{port}")
+
+    print(f"[PROMETHEUS_AI] Online at tcp://127.0.0.1:{port}")
+    files_dir = _find_mt5_files_dir()
+    last_hb = 0.0
+    logger = AsyncLogger(files_dir / "prometheus_ai.log")
+    model = MarketModel()
+
+    # PolicyPack support (optional)
+    policy_classes = {}
+    policy_symbols = {}
+    policy_last_load = 0.0
+    policy_path_env = os.environ.get("POLICY_PACK_PATH", "")
+    if policy_path_env:
+        policy_path = Path(policy_path_env)
+    else:
+        policy_path = files_dir / "Datasets" / "Prometheus" / "PolicyPack.json"
+
+    # Simple metrics accumulators (flushed to AI_Metrics.json)
+    met_reqs = 0
+    met_errs = 0
+    met_conf_sum = 0.0
+    met_conf_cnt = 0
+    met_proc_ema_ms = 0.0
+
+    def handle_sigint(signum, frame):
+        print("[PROMETHEUS_AI] Stopping...")
+        socket.close(0)
+        context.term()
+        try:
+            logger.close()
+        except Exception:
+            pass
+        raise SystemExit(0)
+
+    signal.signal(signal.SIGINT, handle_sigint)
+
+    while True:
+        try:
+            # heartbeat a cada 5s
+            now_ts = time.time()
+            if now_ts - last_hb >= 5.0:
+                last_hb = now_ts
+                try:
+                    hb = {
+                        "component": "prometheus_ai_server",
+                        "port": port,
+                        "timestamp": int(now_ts),
+                        "version": "prometheus-ai-0.2",
+                    }
+                    (files_dir / "AI_Server_Heartbeat.json").write_text(
+                        json.dumps(hb, ensure_ascii=False), encoding="utf-8"
+                    )
+                except Exception:
+                    pass
+
+            msg = socket.recv_string()  # JSON string
+            now = int(time.time())
+            try:
+                payload = json.loads(msg)
+            except Exception:
+                payload = {"raw": msg}
+
+            symbol = payload.get("symbol", "UNKNOWN")
+            bid = float(payload.get("bid", 0.0))
+            ask = float(payload.get("ask", 0.0))
+
+            # periodic policy reload (every 15s)
+            ts = time.time()
+            if ts - policy_last_load > 15.0:
+                try:
+                    if policy_path.exists():
+                        pack = json.loads(policy_path.read_text(encoding="utf-8"))
+                        pol = pack.get("policy", {}) if isinstance(pack, dict) else {}
+                        policy_classes = pol.get("classes", {}) if isinstance(pol, dict) else {}
+                        policy_symbols = pol.get("symbols", {}) if isinstance(pol, dict) else {}
+                    policy_last_load = ts
+                except Exception:
+                    policy_last_load = ts
+
+            # extract thresholds from policy
+            p_conf = None
+            p_edge = None
+            try:
+                if symbol in policy_symbols:
+                    p_conf = float(policy_symbols[symbol].get("conf_min", None))
+                    p_edge = float(policy_symbols[symbol].get("avg_edge_bps", None) or policy_symbols[symbol].get("edge_bps", None))
+                else:
+                    klass = _classify_symbol(symbol)
+                    if klass in policy_classes:
+                        p_conf = float(policy_classes[klass].get("conf_min", None))
+                        p_edge = float(policy_classes[klass].get("edge_bps", None))
+            except Exception:
+                p_conf = None
+                p_edge = None
+
+            t0 = time.perf_counter()
+            decision = model.update(symbol, bid, ask, policy_conf_min=p_conf, policy_edge_bps=p_edge)
+            t1 = time.perf_counter()
+
+            action = decision['action']
+            confidence = round(float(decision['confidence']), 4)
+
+            response = {
+                "symbol": symbol,
+                "timestamp": now,
+                "action": action,
+                "confidence": confidence,
+                "version": "prometheus-ai-0.3",
+            }
+            # opcional: incluir razões para auditoria
+            response.update(decision.get('reasons', {}))
+
+            logger.info(f"{symbol} action={action} conf={confidence}")
+            socket.send_string(json.dumps(response, ensure_ascii=False))
+
+            # update metrics
+            met_reqs += 1
+            met_conf_sum += confidence
+            met_conf_cnt += 1
+            proc_ms = (t1 - t0) * 1000.0
+            if met_proc_ema_ms <= 0.0:
+                met_proc_ema_ms = proc_ms
+            else:
+                met_proc_ema_ms = 0.9 * met_proc_ema_ms + 0.1 * proc_ms
+
+        except KeyboardInterrupt:
+            handle_sigint(None, None)
+        except Exception as exc:
+            print(f"[PROMETHEUS_AI][ERROR] {exc}")
+            try:
+                socket.send_string(json.dumps({"error": str(exc)}))
+            except Exception:
+                time.sleep(0.1)
+
+        finally:
+            # flush metrics
+            avg_conf = (met_conf_sum / met_conf_cnt) if met_conf_cnt > 0 else 0.0
+            ai_metrics = {
+                "requests": met_reqs,
+                "errors_total": met_errs,
+                "avg_proc_ms": round(met_proc_ema_ms, 3),
+                "avg_confidence": round(avg_conf, 4),
+            }
+            (files_dir / "AI_Metrics.json").write_text(
+                json.dumps(ai_metrics, ensure_ascii=False), encoding="utf-8"
+            )
+
+
+if __name__ == "__main__":
+    main()
+
+

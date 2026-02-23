@@ -1,0 +1,198 @@
+# =============================================================================
+# MODELO DE ESTRUTURA ORGANIZACIONAL BASEADO EM MATRIZ (ESTILO GOLDMAN SACHS)
+# =============================================================================
+
+class Funcionario:
+    """Representa um indivíduo na organização."""
+    def __init__(self, nome: str, cargo: str):
+        self.nome = nome
+        self.cargo = cargo
+        # Conexões que formam a matriz
+        self.unidade_negocio = None
+        self.vertical_mercado = None
+        self.funcao_suporte = None
+
+    def __repr__(self):
+        # Representação textual do objeto para facilitar a visualização
+        base = f"Funcionário: {self.nome} - {self.cargo}"
+        detalhes = []
+        if self.unidade_negocio:
+            detalhes.append(f"Unidade: {self.unidade_negocio.nome}")
+        if self.vertical_mercado:
+            detalhes.append(f"Vertical: {self.vertical_mercado.nome}")
+        if self.funcao_suporte:
+            detalhes.append(f"Função: {self.funcao_suporte.nome}")
+        return f"{base} | {' | '.join(detalhes)}"
+
+class UnidadeNegocio:
+    """Representa uma Divisão ou Unidade de Negócio principal."""
+    def __init__(self, nome: str):
+        self.nome = nome
+        self.membros = []
+
+    def adicionar_membro(self, funcionario: Funcionario):
+        if funcionario not in self.membros:
+            self.membros.append(funcionario)
+            funcionario.unidade_negocio = self
+
+class VerticalMercado:
+    """Representa uma especialização por setor ou mercado."""
+    def __init__(self, nome: str):
+        self.nome = nome
+        self.especialistas = []
+
+    def adicionar_especialista(self, funcionario: Funcionario):
+        if funcionario not in self.especialistas:
+            self.especialistas.append(funcionario)
+            funcionario.vertical_mercado = self
+
+class FuncaoSuporte:
+    """Representa um departamento de suporte centralizado."""
+    def __init__(self, nome: str):
+        self.nome = nome
+        self.equipe = []
+
+    def adicionar_membro(self, funcionario: Funcionario):
+        if funcionario not in self.equipe:
+            self.equipe.append(funcionario)
+            funcionario.funcao_suporte = self
+
+class Empresa:
+    """Orquestrador principal que contém toda a estrutura."""
+    def __init__(self, nome: str):
+        self.nome = nome
+        self.unidades_negocio = []
+        self.verticais_mercado = []
+        self.funcoes_suporte = []
+        self.funcionarios = []
+
+    # --- Métodos para criar as partes da estrutura ---
+    def criar_unidade_negocio(self, nome: str) -> UnidadeNegocio:
+        unidade = UnidadeNegocio(nome)
+        self.unidades_negocio.append(unidade)
+        return unidade
+
+    def criar_vertical_mercado(self, nome: str) -> VerticalMercado:
+        vertical = VerticalMercado(nome)
+        self.verticais_mercado.append(vertical)
+        return vertical
+
+    def criar_funcao_suporte(self, nome: str) -> FuncaoSuporte:
+        funcao = FuncaoSuporte(nome)
+        self.funcoes_suporte.append(funcao)
+        return funcao
+
+    def contratar_funcionario(self, nome: str, cargo: str) -> Funcionario:
+        funcionario = Funcionario(nome, cargo)
+        self.funcionarios.append(funcionario)
+        return funcionario
+
+    # --- Métodos para exibir a estrutura ---
+    def exibir_estrutura_completa(self):
+        print(f"\n{'='*20} ESTRUTURA DA EMPRESA: {self.nome.upper()} {'='*20}")
+        
+        print("\n--- [UNIDADES DE NEGÓCIO] ---")
+        for unidade in self.unidades_negocio:
+            print(f"\nUNIDADE: {unidade.nome}")
+            if not unidade.membros:
+                print("  (Nenhum membro alocado)")
+            for membro in unidade.membros:
+                especializacao = f" [Especialista em: {membro.vertical_mercado.nome}]" if membro.vertical_mercado else ""
+                print(f"  - {membro.nome} ({membro.cargo}){especializacao}")
+
+        print("\n--- [VERTICAIS DE MERCADO] ---")
+        for vertical in self.verticais_mercado:
+            print(f"\nVERTICAL: {vertical.nome}")
+            if not vertical.especialistas:
+                print("  (Nenhum especialista alocado)")
+            for especialista in vertical.especialistas:
+                print(f"  - {especialista.nome} ({especialista.cargo}) [Lotado em: {especialista.unidade_negocio.nome}]")
+
+        print("\n--- [FUNÇÕES DE SUPORTE] ---")
+        for funcao in self.funcoes_suporte:
+            print(f"\nFUNÇÃO: {funcao.nome}")
+            if not funcao.equipe:
+                print("  (Nenhum membro na equipe)")
+            for membro in funcao.equipe:
+                print(f"  - {membro.nome} ({membro.cargo})")
+        
+        print("\n" + "="*60)
+
+    def encontrar_equipe_projeto(self, unidade_nome: str, vertical_nome: str):
+        """Simula a montagem de uma equipe para um cliente específico."""
+        unidade = next((u for u in self.unidades_negocio if u.nome == unidade_nome), None)
+        vertical = next((v for v in self.verticais_mercado if v.nome == vertical_nome), None)
+        
+        if not unidade or not vertical:
+            print("Unidade de Negócio ou Vertical de Mercado não encontrada.")
+            return
+
+        print(f"\n--- MONTANDO EQUIPE PARA: {unidade.nome} + {vertical.nome} ---")
+        equipe = [f for f in self.funcionarios if f.unidade_negocio == unidade and f.vertical_mercado == vertical]
+        
+        if not equipe:
+            print("Nenhum especialista encontrado para esta combinação.")
+        else:
+            for membro in equipe:
+                print(f"  -> {membro.nome} ({membro.cargo})")
+        print("-" * 20)
+
+
+# =============================================================================
+# CENÁRIO DE EXEMPLO: "InovaTech Solutions"
+# =============================================================================
+if __name__ == "__main__":
+    # 1. Criar a empresa
+    minha_empresa = Empresa("InovaTech Solutions")
+
+    # 2. Definir a estrutura (Unidades, Verticais, Funções)
+    consultoria = minha_empresa.criar_unidade_negocio("Consultoria Estratégica")
+    desenvolvimento = minha_empresa.criar_unidade_negocio("Desenvolvimento de Software")
+
+    vertical_saude = minha_empresa.criar_vertical_mercado("Saúde")
+    vertical_varejo = minha_empresa.criar_vertical_mercado("Varejo")
+
+    funcao_ti = minha_empresa.criar_funcao_suporte("Tecnologia da Informação")
+    funcao_rh = minha_empresa.criar_funcao_suporte("Pessoas (RH)")
+
+    # 3. Contratar funcionários
+    ana = minha_empresa.contratar_funcionario("Ana Silva", "Consultora Sênior")
+    bruno = minha_empresa.contratar_funcionario("Bruno Costa", "Desenvolvedor Full-Stack")
+    carla = minha_empresa.contratar_funcionario("Carla Mendes", "Gerente de Projetos")
+    daniel = minha_empresa.contratar_funcionario("Daniel Souza", "Arquiteto de Software")
+    elisa = minha_empresa.contratar_funcionario("Elisa Pinheiro", "Analista de RH")
+    fernando = minha_empresa.contratar_funcionario("Fernando Lima", "Engenheiro de DevOps")
+
+    # 4. Alocar funcionários na estrutura MATRICIAL
+    # Ana é da Consultoria, mas é especialista em Saúde
+    consultoria.adicionar_membro(ana)
+    vertical_saude.adicionar_especialista(ana)
+
+    # Bruno é do Desenvolvimento, especialista em Varejo
+    desenvolvimento.adicionar_membro(bruno)
+    vertical_varejo.adicionar_especialista(bruno)
+
+    # Carla é da Consultoria, especialista em Varejo
+    consultoria.adicionar_membro(carla)
+    vertical_varejo.adicionar_especialista(carla)
+
+    # Daniel é do Desenvolvimento, especialista em Saúde
+    desenvolvimento.adicionar_membro(daniel)
+    vertical_saude.adicionar_especialista(daniel)
+
+    # Elisa e Fernando fazem parte das funções de suporte
+    funcao_rh.adicionar_membro(elisa)
+    funcao_ti.adicionar_membro(fernando)
+
+    # 5. Visualizar a estrutura completa
+    minha_empresa.exibir_estrutura_completa()
+
+    # 6. Simular um caso de uso: Montar uma equipe para um cliente do Varejo
+    print("\n>>> CASO DE USO: Um grande cliente do VAREJO precisa de uma solução de software e consultoria.")
+    minha_empresa.encontrar_equipe_projeto("Consultoria Estratégica", "Varejo")
+    minha_empresa.encontrar_equipe_projeto("Desenvolvimento de Software", "Varejo")
+
+
+
+
+

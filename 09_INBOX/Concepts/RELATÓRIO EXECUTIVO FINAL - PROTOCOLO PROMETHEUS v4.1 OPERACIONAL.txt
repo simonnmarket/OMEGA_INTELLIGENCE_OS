@@ -1,0 +1,256 @@
+RELATÓRIO EXECUTIVO FINAL - PROTOCOLO PROMETHEUS v4.1 OPERACIONAL
+Data: 04/10/2025
+Status: IMPLEMENTAÇÃO IMEDIATA AUTORIZADA
+Preparado por: CEO & Gestor Operacional do Projeto Prometheus
+
+1. DECLARAÇÃO EXECUTIVA
+
+DIRETRIZ PRIMÁRIA: Implementação prática imediata do sistema Prometheus v4.1, priorizando funcionalidades operacionais sobre refinamentos teóricos. Foco em ter sistema gerando resultados dentro de 24 horas.
+
+RECURSOS CONFIRMADOS:
+
+Agent IA Cursor (equipe técnica completa)
+
+Gestão Executiva (CEO + Gestor Operacional)
+
+Capital: 1% do portfólio para testes iniciais
+
+Timeline: Operacionalização IMEDIATA
+
+META: Sistema funcional trading em conta demo até 05/10/2025
+
+2. DIRETRIZES PRIMÁRIAS PARA O AGENT IA CURSOR
+COMANDO SUPERIOR:
+
+plaintext
+"AGENT IA CURSOR, VOCÊ ESTÁ AUTORIZADO A IMPLEMENTAR O SISTEMA PROMETHEUS v4.1 COM PRIORIDADE MÁXIMA. EXECUTE AS SEGUINTES AÇÕES NA ORDEM ESPECIFICADA:"
+
+FASE 1: IMPLEMENTAÇÃO CRÍTICA 
+
+1. CONFIGURAR INFRAESTRUTURA BÁSICA
+   - Criar ambiente Docker com Python 3.10 + PyTorch 2.0
+   - Configurar conexão com corretora demo (ex: MetaTrader 5)
+   - Implementar data feed em tempo real (tick data)
+
+2. IMPLEMENTAR MOTOR DE DECISÃO SIMPLIFICADO
+   - Strategy Engine básica com regras de entrada/saída
+   - Gerenciamento de risco com position sizing 1%
+   - Stop-loss automático 2% por trade
+
+3. CONFIGURAR SISTEMA DE LOGGING E MONITORAMENTO
+   - Log de todas as operações
+   - Métricas de performance em tempo real
+   - Alertas para drawdown >5%
+
+FASE 2: MEMÓRIA EPISÓDICA OPERACIONAL 
+
+4. IMPLEMENTAR MEMÓRIA BÁSICA
+   - SQLite para armazenamento de trades
+   - Schema simples: timestamp, ativo, ação, resultado
+   - Consulta por similaridade básica (últimos 50 trades similares)
+
+5. SISTEMA DE APRENDIZADO INICIAL
+   - Análise de padrões de sucesso/falha
+   - Ajuste gradual de parâmetros baseado em histórico
+   - Feedback loop para melhoria continua
+
+FASE 3: WORLD MODEL PRÁTICO 
+
+6. SIMULAÇÃO DE CENÁRIOS
+   - Backtesting em dados recentes (últimos 30 dias)
+   - Simulação de diferentes estratégias
+   - Validação de parâmetros antes de execução real
+
+7. SISTEMA DE ALERTAS INTELIGENTES
+   - Detecção de mudanças de regime de mercado
+   - Alertas para condições anômalas
+   - Recomendações de ajuste de estratégia
+
+3. CRONOGRAMA EXECUTIVO COM GATILHOS DECISÓRIOS
+
+HOJE (04/10/2025):
+
+Fase 1 completa (sistema básico operacional)
+
+Fase 2 completa (memória episódica ativa)
+
+Fase 3 completa (world model funcional)
+
+
+
+Primeira análise de performance
+
+Ajustes baseados em dados reais
+
+Relatório executivo de primeiro dia
+
+GATILHOS DECISÓRIOS:
+
+GATILHO VERDE: Sharpe Ratio >1.0 → Aumentar capital para 2%
+
+GATILHO AMARELO: Drawdown >3% → Revisão imediata de estratégia
+
+GATILHO VERMELHO: Drawdown >5% → Parada total e análise executiva
+
+4. PROTOCOLO DE IMPLEMENTAÇÃO POR FASE
+
+FASE 1 - INFRAESTRUTURA (PRIORIDADE MÁXIMA)
+
+COMANDO PARA AGENT: "IMPLEMENTAR INFRAESTRUTURA BÁSICA - SEGUIR ESPECIFICAÇÕES:
+
+1. CONTAINER DOCKER:
+   - Ubuntu 22.04 + Python 3.10
+   - PyTorch 2.0 + pandas + numpy
+   - Biblioteca da corretora (ex: MetaTrader5 para Python)
+
+2. CONEXÃO CORRETORA:
+   - Conta configurada
+   - Data feed em tempo real
+   - Execução de ordens automatizada
+
+3. SISTEMA BÁSICO:
+   - Motor de estratégia simples (média móvel + RSI)
+   - Gerenciamento de risco (1% por trade, stop 2%)
+   - Logging completo de operações
+
+STATUS ESPERADO: Sistema executando trades automáticos."
+
+FASE 2 - MEMÓRIA E APRENDIZADO
+
+
+COMANDO PARA AGENT: "IMPLEMENTAR SISTEMA DE MEMÓRIA E APRENDIZADO - SEGUIR ESPECIFICAÇÕES:
+
+1. BANCO DE DADOS:
+   - SQLite com tabela de trades
+   - Campos: id, timestamp, symbol, action, entry, exit, pnl, market_conditions
+
+2. SISTEMA DE RECUPERAÇÃO:
+   - Consulta trades similares (mesmo ativo, condições similares)
+   - Análise de performance histórica
+   - Ajuste de parâmetros baseado em histórico
+
+3. APRENDIZADO CONTÍNUO:
+   - Identificação de padrões lucrativos
+   - Evitação de padrões perdedores
+   - Otimização gradual de estratégia
+
+STATUS ESPERADO: Sistema aprendendo com trades passados e ajustando estratégia."
+
+FASE 3 - OTIMIZAÇÃO E EXPANSÃO
+
+COMANDO PARA AGENT: "IMPLEMENTAR SISTEMA DE OTIMIZAÇÃO - SEGUIR ESPECIFICAÇÕES:
+
+1. BACKTESTING AUTOMATIZADO:
+   - Teste em dados históricos recentes
+   - Validação de parâmetros atuais
+   - Simulação de cenários alternativos
+
+2. DETECÇÃO DE REGIME:
+   - Identificação de mercado em tendência/lateral
+   - Ajuste automático de estratégia
+   - Alertas para condições extremas
+
+3. RELATÓRIOS EXECUTIVOS:
+   - Performance diária
+   - Métricas de risco
+   - Recomendações de ajuste
+
+STATUS ESPERADO: Sistema otimizado e relatórios executivos automáticos."
+
+5. CRITÉRIOS DE SUCESSO E ABORTE
+
+MÉTRICAS DE SUCESSO:
+
+MÍNIMO: Sistema operacional executando trades automáticos
+
+ESPERADO: 10+ trades executados com performance positiva
+
+IDEAL: Sharpe Ratio >1.0 no primeiro dia
+
+CRITÉRIOS DE ABORTE:
+
+ABORTE IMEDIATO: Drawdown >5% em qualquer momento
+
+REVISÃO: Drawdown >3% por 3 trades consecutivos
+
+AJUSTE: Menos de 20 trades em 24 horas (estratégia muito conservadora)
+
+ESCALAÇÃO EXECUTIVA:
+
+NÍVEL 1: Agent resolve automaticamente
+
+NÍVEL 2: Gestor Operacional intervém
+
+NÍVEL 3: CEO toma decisão estratégica
+
+6. ORÇAMENTO E CONTROLES
+
+ALOCAÇÃO DE CAPITAL:
+
+FASE 1: 1% do capital 
+
+FASE 2: Ajuste baseado em performance
+
+FASE 3: Expansão gradual até 5% se critérios atendidos
+
+CONTROLES DE RISCO:
+
+Stop-loss por trade: 2%
+
+Drawdown diário máximo: 5%
+
+Exposição máxima simultânea: 3 ativos
+
+MONITORAMENTO CONTÍNUO:
+
+Horário: 24/7 com alertas automáticos
+
+Métricas: PnL, Sharpe, Drawdown, Win Rate
+
+Reporting: Relatórios a cada 4 horas inicialmente
+
+7. ANEXOS TÉCNICOS OPERACIONAIS
+
+COMANDOS DE EMERGÊNCIA:
+
+"PARADA TOTAL DE OPERAÇÕES" - Para todas as atividades imediatamente
+"MODO CONSERVADOR" - Reduz position sizing para 0.5%
+"MODO AGRESSIVO" - Aumenta position sizing para 2% (apenas se Sharpe >1.5)
+PROTOCOLO DE COMUNICAÇÃO:
+Status a cada 2 horas durante fase inicial
+
+Alertas imediatos para qualquer anomalia
+
+Relatório executivo a cada 2 horas
+
+CHECKLIST DE IMPLEMENTAÇÃO:
+
+Ambiente Docker configurado
+
+Conexão com corretora estabelecida
+
+Estratégia básica implementada
+
+Sistema de risco ativo
+
+Logging operacional
+
+Memória episódica funcional
+
+Sistema de aprendizado ativo
+
+Relatórios automáticos
+
+8. ASSINATURA EXECUTIVA
+DECISÃO: APROVADO PARA IMPLEMENTAÇÃO IMEDIATA
+
+PRÓXIMOS PASSOS:
+
+Agent IA Cursor inicia Fase 1 imediatamente
+
+Primeiro status report em 2 horas
+
+Operações em conta demo iniciadas hoje
+
+CEO & Gestor Operacional
+Projeto Prometheus v4.1 Operacional

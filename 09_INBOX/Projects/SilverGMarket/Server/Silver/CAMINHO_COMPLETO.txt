@@ -1,0 +1,42 @@
+============================================================
+CAMINHO COMPLETO - SILVER SYSTEM V3.0 ESCALONADO
+============================================================
+
+ARQUIVO PRINCIPAL:
+C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver\silver_system_v3.0_escalonado.py
+
+============================================================
+COMANDO COMPLETO PARA EXECUTAR:
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver"
+python silver_system_v3.0_escalonado.py
+
+============================================================
+OU EM UMA ÚNICA LINHA:
+============================================================
+
+cd "C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver"; python silver_system_v3.0_escalonado.py
+
+============================================================
+OU USE O ATALHO:
+============================================================
+
+Duplo clique em:
+C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver\EXECUTAR_SILVER_V3.0.bat
+
+============================================================
+OUTROS ARQUIVOS ÚTEIS:
+============================================================
+
+Script de Diagnóstico:
+C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver\VERIFICAR_MT5_TRADING.py
+
+Script de Análise:
+C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver\ANALISAR_RESULTADOS_AMANHA.py
+
+Log de Telemetria:
+C:\Users\Lenovo\.cursor\SilverGMarket\Server\Silver\silver_telemetry_v3.0.log
+
+============================================================
+

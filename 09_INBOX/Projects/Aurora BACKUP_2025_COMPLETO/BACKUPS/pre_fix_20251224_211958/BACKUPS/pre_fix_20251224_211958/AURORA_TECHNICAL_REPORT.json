@@ -1,0 +1,2140 @@
+{
+  "timestamp": "2025-12-16T12:25:27.961497",
+  "summary": {
+    "total_modules": 132,
+    "operational_modules": 132,
+    "non_operational_modules": 0,
+    "operational_rate": 100.0,
+    "total_lines_of_code": 16968,
+    "total_size_bytes": 629128,
+    "average_module_size_kb": 4.65,
+    "integration_score": 65.91
+  },
+  "integration_status": {
+    "v2_modules": 87,
+    "v1_modules": 9,
+    "wrapped_modules": 0,
+    "standalone_modules": 36,
+    "integration_percentage": 65.91
+  },
+  "by_directory": {
+    "modules": {
+      "total": 10,
+      "operational": 10,
+      "v2": 2,
+      "wrapped": 0
+    },
+    "00-Governanca": {
+      "total": 17,
+      "operational": 17,
+      "v2": 3,
+      "wrapped": 0
+    },
+    "04-Infraestrutura": {
+      "total": 15,
+      "operational": 15,
+      "v2": 0,
+      "wrapped": 0
+    },
+    "06-Monitoramento": {
+      "total": 8,
+      "operational": 8,
+      "v2": 0,
+      "wrapped": 0
+    },
+    "wrappers_v2": {
+      "total": 82,
+      "operational": 82,
+      "v2": 82,
+      "wrapped": 0
+    }
+  },
+  "operational_status": {
+    "active": 132,
+    "inactive": 0,
+    "active_modules": [
+      "modules/interfaces.py",
+      "modules/ncnt_base.py",
+      "modules/ncnt_module_template.py",
+      "modules/ncnt_module_template_v2.py",
+      "modules/__init__.py",
+      "modules/connectors/data_connector.py",
+      "modules/connectors/execution_connector.py",
+      "modules/connectors/risk_connector.py",
+      "modules/connectors/strategy_connector.py",
+      "modules/connectors/__init__.py",
+      "00-Governanca/audit_system_complete.py",
+      "00-Governanca/complete_activation_final.py",
+      "00-Governanca/complexity_guard.py",
+      "00-Governanca/fix_report_errors.py",
+      "00-Governanca/generate_complete_report.py",
+      "00-Governanca/generate_technical_report.py",
+      "00-Governanca/generate_ultra_complete_report.py",
+      "00-Governanca/genesis_includes.py",
+      "00-Governanca/genesis_includes_v3_complete.py",
+      "00-Governanca/governance_module.py",
+      "00-Governanca/integration_gate_v2.py",
+      "00-Governanca/integration_gate_v3.py",
+      "00-Governanca/regulatory_context.py",
+      "00-Governanca/restore_executive_report.py",
+      "00-Governanca/run_complete_audit.py",
+      "00-Governanca/test_module_v2.py",
+      "00-Governanca/__init__.py",
+      "04-Infraestrutura/moduleregistry.py",
+      "04-Infraestrutura/api/main.py",
+      "04-Infraestrutura/api/__init__.py",
+      "04-Infraestrutura/api/endpoints/strategies.py",
+      "04-Infraestrutura/api/endpoints/__init__.py",
+      "04-Infraestrutura/database/connection.py",
+      "04-Infraestrutura/database/models.py",
+      "04-Infraestrutura/database/__init__.py",
+      "04-Infraestrutura/tools/cli/ncnt_cli.py",
+      "04-Infraestrutura/tools/cli/__init__.py",
+      "04-Infraestrutura/tools/cli/commands/__init__.py",
+      "04-Infraestrutura/tools/scripts/backup.py",
+      "04-Infraestrutura/tools/scripts/deploy.py",
+      "04-Infraestrutura/tools/scripts/monitor.py",
+      "04-Infraestrutura/tools/scripts/__init__.py",
+      "06-Monitoramento/feedbackloop_module.py",
+      "06-Monitoramento/generate_validation_report.py",
+      "06-Monitoramento/neural_connection_monitor_v2.py",
+      "06-Monitoramento/run_validation_scan.py",
+      "06-Monitoramento/Feedback-Loop/action_items.py",
+      "06-Monitoramento/Feedback-Loop/post_mortem.py",
+      "06-Monitoramento/Feedback-Loop/rca_templates.py",
+      "06-Monitoramento/Feedback-Loop/__init__.py",
+      "wrappers_v2/ab_testing_wrapper.py",
+      "wrappers_v2/allocation_engine_wrapper.py",
+      "wrappers_v2/alpha_momentum_wrapper.py",
+      "wrappers_v2/api_gateway_wrapper.py",
+      "wrappers_v2/audit_system_complete_wrapper.py",
+      "wrappers_v2/audit_trail_wrapper.py",
+      "wrappers_v2/backtest_engine_wrapper.py",
+      "wrappers_v2/backtest_runner_v3_wrapper.py",
+      "wrappers_v2/base_strategy_wrapper.py",
+      "wrappers_v2/breakout_detection_wrapper.py",
+      "wrappers_v2/build_wrapper.py",
+      "wrappers_v2/capital_manager_wrapper.py",
+      "wrappers_v2/cicdpipeline_module_wrapper.py",
+      "wrappers_v2/circuit_breakers_wrapper.py",
+      "wrappers_v2/complete_integration_wrapper.py",
+      "wrappers_v2/complexity_guard_wrapper.py",
+      "wrappers_v2/compliance_module_wrapper.py",
+      "wrappers_v2/connection_wrapper.py",
+      "wrappers_v2/coreengine_module_wrapper.py",
+      "wrappers_v2/core_engine_wrapper.py",
+      "wrappers_v2/counterparty_onboarding_wrapper.py",
+      "wrappers_v2/create_structure_wrapper.py",
+      "wrappers_v2/dashboard_wrapper.py",
+      "wrappers_v2/data_layer_wrapper.py",
+      "wrappers_v2/data_onboarding_wrapper.py",
+      "wrappers_v2/delta_reports_wrapper.py",
+      "wrappers_v2/deploy_wrapper.py",
+      "wrappers_v2/executionwindow_module_wrapper.py",
+      "wrappers_v2/executive_presentation_wrapper.py",
+      "wrappers_v2/feedbackloop_module_wrapper.py",
+      "wrappers_v2/fix_report_errors_wrapper.py",
+      "wrappers_v2/generate_complete_report_wrapper.py",
+      "wrappers_v2/generate_ultra_complete_report_wrapper.py",
+      "wrappers_v2/genesis_includes_v3_complete_wrapper.py",
+      "wrappers_v2/genesis_includes_wrapper.py",
+      "wrappers_v2/governance_module_wrapper.py",
+      "wrappers_v2/incidentresponse_module_wrapper.py",
+      "wrappers_v2/innovationlab_module_wrapper.py",
+      "wrappers_v2/integrate_ncnt_wrapper.py",
+      "wrappers_v2/integration_gate_v2_wrapper.py",
+      "wrappers_v2/integration_gate_v3_wrapper.py",
+      "wrappers_v2/interface_wrapper.py",
+      "wrappers_v2/main_ncnt_wrapper.py",
+      "wrappers_v2/main_wrapper.py",
+      "wrappers_v2/mean_reversion_wrapper.py",
+      "wrappers_v2/models_wrapper.py",
+      "wrappers_v2/moduleregistry_wrapper.py",
+      "wrappers_v2/ncnt_base_wrapper.py",
+      "wrappers_v2/ncnt_cli_wrapper.py",
+      "wrappers_v2/ncnt_orchestrator_complete_wrapper.py",
+      "wrappers_v2/ncnt_scan_wrapper.py",
+      "wrappers_v2/ncnt_system_complete_wrapper.py",
+      "wrappers_v2/onboarding_module_wrapper.py",
+      "wrappers_v2/order_management_wrapper.py",
+      "wrappers_v2/posttradereconciliation_module_wrapper.py",
+      "wrappers_v2/premarketchecklist_module_wrapper.py",
+      "wrappers_v2/prototypes_wrapper.py",
+      "wrappers_v2/qabacktesting_module_wrapper.py",
+      "wrappers_v2/realtimedashboard_module_wrapper.py",
+      "wrappers_v2/reconciliation_wrapper.py",
+      "wrappers_v2/regulatory_context_wrapper.py",
+      "wrappers_v2/reg_tracker_wrapper.py",
+      "wrappers_v2/report_generator_wrapper.py",
+      "wrappers_v2/restore_executive_report_wrapper.py",
+      "wrappers_v2/risk_engine_wrapper.py",
+      "wrappers_v2/risk_module_wrapper.py",
+      "wrappers_v2/run_complete_audit_wrapper.py",
+      "wrappers_v2/smart_routing_wrapper.py",
+      "wrappers_v2/sops_module_wrapper.py",
+      "wrappers_v2/strategies_wrapper.py",
+      "wrappers_v2/strategy_module_wrapper.py",
+      "wrappers_v2/strategy_onboarding_wrapper.py",
+      "wrappers_v2/strategy_template_wrapper.py",
+      "wrappers_v2/test_module_v2_wrapper.py",
+      "wrappers_v2/test_wrapper.py",
+      "wrappers_v2/throttling_wrapper.py",
+      "wrappers_v2/tier1_validator_v3_complete_wrapper.py",
+      "wrappers_v2/tier1_validator_v3_wrapper.py",
+      "wrappers_v2/treasury_module_wrapper.py",
+      "wrappers_v2/visual_presentation_simple_wrapper.py",
+      "wrappers_v2/visual_presentation_wrapper.py",
+      "wrappers_v2/__init___wrapper.py"
+    ],
+    "inactive_modules": []
+  },
+  "problematic_modules": [],
+  "critical_modules": [
+    {
+      "path": "modules/ncnt_base.py",
+      "status": "standalone",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "modules/ncnt_module_template.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "modules/ncnt_module_template_v2.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "modules/connectors/risk_connector.py",
+      "status": "standalone",
+      "operational": true,
+      "has_compliance": false,
+      "has_monitoring": false
+    },
+    {
+      "path": "00-Governanca/audit_system_complete.py",
+      "status": "v1.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "00-Governanca/complete_activation_final.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "00-Governanca/complexity_guard.py",
+      "status": "standalone",
+      "operational": true,
+      "has_compliance": false,
+      "has_monitoring": true
+    },
+    {
+      "path": "00-Governanca/generate_complete_report.py",
+      "status": "v1.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "00-Governanca/generate_technical_report.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "00-Governanca/generate_ultra_complete_report.py",
+      "status": "v1.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "00-Governanca/genesis_includes_v3_complete.py",
+      "status": "standalone",
+      "operational": true,
+      "has_compliance": false,
+      "has_monitoring": true
+    },
+    {
+      "path": "00-Governanca/governance_module.py",
+      "status": "standalone",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": false
+    },
+    {
+      "path": "00-Governanca/integration_gate_v2.py",
+      "status": "v1.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "00-Governanca/integration_gate_v3.py",
+      "status": "v1.0",
+      "operational": true,
+      "has_compliance": false,
+      "has_monitoring": true
+    },
+    {
+      "path": "00-Governanca/regulatory_context.py",
+      "status": "standalone",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": false
+    },
+    {
+      "path": "00-Governanca/restore_executive_report.py",
+      "status": "v1.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "00-Governanca/run_complete_audit.py",
+      "status": "standalone",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": false
+    },
+    {
+      "path": "00-Governanca/test_module_v2.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": false
+    },
+    {
+      "path": "04-Infraestrutura/moduleregistry.py",
+      "status": "standalone",
+      "operational": true,
+      "has_compliance": false,
+      "has_monitoring": true
+    },
+    {
+      "path": "04-Infraestrutura/api/main.py",
+      "status": "standalone",
+      "operational": true,
+      "has_compliance": false,
+      "has_monitoring": true
+    },
+    {
+      "path": "04-Infraestrutura/api/endpoints/strategies.py",
+      "status": "standalone",
+      "operational": true,
+      "has_compliance": false,
+      "has_monitoring": true
+    },
+    {
+      "path": "04-Infraestrutura/tools/scripts/monitor.py",
+      "status": "standalone",
+      "operational": true,
+      "has_compliance": false,
+      "has_monitoring": true
+    },
+    {
+      "path": "06-Monitoramento/feedbackloop_module.py",
+      "status": "standalone",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "06-Monitoramento/generate_validation_report.py",
+      "status": "standalone",
+      "operational": true,
+      "has_compliance": false,
+      "has_monitoring": true
+    },
+    {
+      "path": "06-Monitoramento/neural_connection_monitor_v2.py",
+      "status": "v1.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "06-Monitoramento/run_validation_scan.py",
+      "status": "standalone",
+      "operational": true,
+      "has_compliance": false,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/ab_testing_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/allocation_engine_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/alpha_momentum_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/api_gateway_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/audit_system_complete_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/audit_trail_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/backtest_engine_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/backtest_runner_v3_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/base_strategy_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/breakout_detection_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/build_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/capital_manager_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/cicdpipeline_module_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/circuit_breakers_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/complete_integration_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/complexity_guard_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/compliance_module_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/connection_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/coreengine_module_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/core_engine_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/counterparty_onboarding_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/create_structure_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/dashboard_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/data_layer_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/data_onboarding_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/delta_reports_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/deploy_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/executionwindow_module_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/executive_presentation_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/feedbackloop_module_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/fix_report_errors_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/generate_complete_report_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/generate_ultra_complete_report_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/genesis_includes_v3_complete_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/genesis_includes_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/governance_module_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/incidentresponse_module_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/innovationlab_module_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/integrate_ncnt_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/integration_gate_v2_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/integration_gate_v3_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/interface_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/main_ncnt_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/main_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/mean_reversion_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/models_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/moduleregistry_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/ncnt_base_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/ncnt_cli_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/ncnt_orchestrator_complete_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/ncnt_scan_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/ncnt_system_complete_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/onboarding_module_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/order_management_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/posttradereconciliation_module_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/premarketchecklist_module_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/prototypes_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/qabacktesting_module_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/realtimedashboard_module_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/reconciliation_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/regulatory_context_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/reg_tracker_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/report_generator_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/restore_executive_report_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/risk_engine_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/risk_module_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/run_complete_audit_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/smart_routing_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/sops_module_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/strategies_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/strategy_module_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/strategy_onboarding_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/strategy_template_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/test_module_v2_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/test_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/throttling_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/tier1_validator_v3_complete_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/tier1_validator_v3_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/treasury_module_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/visual_presentation_simple_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/visual_presentation_wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    },
+    {
+      "path": "wrappers_v2/__init___wrapper.py",
+      "status": "v2.0",
+      "operational": true,
+      "has_compliance": true,
+      "has_monitoring": true
+    }
+  ],
+  "detailed_modules": {
+    "modules/interfaces.py": {
+      "operational": true,
+      "integration_status": "v1.0",
+      "size_bytes": 6867,
+      "lines": 186,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "modules/ncnt_base.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 7966,
+      "lines": 220,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "N/A"
+    },
+    "modules/ncnt_module_template.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 45472,
+      "lines": 1127,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "3.0.0"
+    },
+    "modules/ncnt_module_template_v2.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 45596,
+      "lines": 1134,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "3.0.0"
+    },
+    "modules/__init__.py": {
+      "operational": true,
+      "integration_status": "v1.0",
+      "size_bytes": 312,
+      "lines": 18,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "modules/connectors/data_connector.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 21,
+      "lines": 1,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "modules/connectors/execution_connector.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 26,
+      "lines": 1,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "modules/connectors/risk_connector.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 21,
+      "lines": 1,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "modules/connectors/strategy_connector.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 28,
+      "lines": 1,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "modules/connectors/__init__.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 25,
+      "lines": 1,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "00-Governanca/audit_system_complete.py": {
+      "operational": true,
+      "integration_status": "v1.0",
+      "size_bytes": 41901,
+      "lines": 1028,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "N/A"
+    },
+    "00-Governanca/complete_activation_final.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 5768,
+      "lines": 174,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0\"' in content:"
+    },
+    "00-Governanca/complexity_guard.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 16668,
+      "lines": 420,
+      "has_compliance": false,
+      "has_monitoring": true,
+      "version": "N/A"
+    },
+    "00-Governanca/fix_report_errors.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 6546,
+      "lines": 184,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "00-Governanca/generate_complete_report.py": {
+      "operational": true,
+      "integration_status": "v1.0",
+      "size_bytes": 29431,
+      "lines": 787,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "N/A"
+    },
+    "00-Governanca/generate_technical_report.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 15004,
+      "lines": 407,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0\"' in content:"
+    },
+    "00-Governanca/generate_ultra_complete_report.py": {
+      "operational": true,
+      "integration_status": "v1.0",
+      "size_bytes": 45466,
+      "lines": 1050,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "N/A"
+    },
+    "00-Governanca/genesis_includes.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 8848,
+      "lines": 255,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "00-Governanca/genesis_includes_v3_complete.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 26700,
+      "lines": 658,
+      "has_compliance": false,
+      "has_monitoring": true,
+      "version": "N/A"
+    },
+    "00-Governanca/governance_module.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 7010,
+      "lines": 191,
+      "has_compliance": true,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "00-Governanca/integration_gate_v2.py": {
+      "operational": true,
+      "integration_status": "v1.0",
+      "size_bytes": 16021,
+      "lines": 417,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "1.0.0"
+    },
+    "00-Governanca/integration_gate_v3.py": {
+      "operational": true,
+      "integration_status": "v1.0",
+      "size_bytes": 35457,
+      "lines": 877,
+      "has_compliance": false,
+      "has_monitoring": true,
+      "version": "N/A"
+    },
+    "00-Governanca/regulatory_context.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 7666,
+      "lines": 208,
+      "has_compliance": true,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "00-Governanca/restore_executive_report.py": {
+      "operational": true,
+      "integration_status": "v1.0",
+      "size_bytes": 13304,
+      "lines": 400,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "N/A"
+    },
+    "00-Governanca/run_complete_audit.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 3468,
+      "lines": 107,
+      "has_compliance": true,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "00-Governanca/test_module_v2.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 5503,
+      "lines": 134,
+      "has_compliance": true,
+      "has_monitoring": false,
+      "version": "2.0.0"
+    },
+    "00-Governanca/__init__.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 16,
+      "lines": 1,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "04-Infraestrutura/moduleregistry.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 9438,
+      "lines": 259,
+      "has_compliance": false,
+      "has_monitoring": true,
+      "version": "N/A"
+    },
+    "04-Infraestrutura/api/main.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 1015,
+      "lines": 49,
+      "has_compliance": false,
+      "has_monitoring": true,
+      "version": "N/A"
+    },
+    "04-Infraestrutura/api/__init__.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 89,
+      "lines": 9,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "04-Infraestrutura/api/endpoints/strategies.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 6577,
+      "lines": 204,
+      "has_compliance": false,
+      "has_monitoring": true,
+      "version": "N/A"
+    },
+    "04-Infraestrutura/api/endpoints/__init__.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 102,
+      "lines": 9,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "04-Infraestrutura/database/connection.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 2876,
+      "lines": 108,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "04-Infraestrutura/database/models.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 3036,
+      "lines": 71,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "04-Infraestrutura/database/__init__.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 399,
+      "lines": 19,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "04-Infraestrutura/tools/cli/ncnt_cli.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 15,
+      "lines": 1,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "04-Infraestrutura/tools/cli/__init__.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 0,
+      "lines": 1,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "04-Infraestrutura/tools/cli/commands/__init__.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 0,
+      "lines": 1,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "04-Infraestrutura/tools/scripts/backup.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 18,
+      "lines": 1,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "04-Infraestrutura/tools/scripts/deploy.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 18,
+      "lines": 1,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "04-Infraestrutura/tools/scripts/monitor.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 25,
+      "lines": 1,
+      "has_compliance": false,
+      "has_monitoring": true,
+      "version": "N/A"
+    },
+    "04-Infraestrutura/tools/scripts/__init__.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 0,
+      "lines": 1,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "06-Monitoramento/feedbackloop_module.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 18682,
+      "lines": 478,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "N/A"
+    },
+    "06-Monitoramento/generate_validation_report.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 822,
+      "lines": 27,
+      "has_compliance": false,
+      "has_monitoring": true,
+      "version": "N/A"
+    },
+    "06-Monitoramento/neural_connection_monitor_v2.py": {
+      "operational": true,
+      "integration_status": "v1.0",
+      "size_bytes": 25828,
+      "lines": 617,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "N/A"
+    },
+    "06-Monitoramento/run_validation_scan.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 1113,
+      "lines": 35,
+      "has_compliance": false,
+      "has_monitoring": true,
+      "version": "N/A"
+    },
+    "06-Monitoramento/Feedback-Loop/action_items.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 32,
+      "lines": 1,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "06-Monitoramento/Feedback-Loop/post_mortem.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 22,
+      "lines": 1,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "06-Monitoramento/Feedback-Loop/rca_templates.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 34,
+      "lines": 1,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "06-Monitoramento/Feedback-Loop/__init__.py": {
+      "operational": true,
+      "integration_status": "standalone",
+      "size_bytes": 0,
+      "lines": 1,
+      "has_compliance": false,
+      "has_monitoring": false,
+      "version": "N/A"
+    },
+    "wrappers_v2/ab_testing_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2007,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/allocation_engine_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2065,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/alpha_momentum_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2053,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/api_gateway_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2018,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/audit_system_complete_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2077,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/audit_trail_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2017,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/backtest_engine_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2049,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/backtest_runner_v3_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2070,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/base_strategy_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2045,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/breakout_detection_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2085,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/build_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 1967,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/capital_manager_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2049,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/cicdpipeline_module_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2072,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/circuit_breakers_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2054,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/complete_integration_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2055,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/complexity_guard_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2037,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/compliance_module_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2065,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/connection_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2002,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/coreengine_module_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2066,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/core_engine_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2018,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/counterparty_onboarding_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2109,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/create_structure_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2023,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/dashboard_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2008,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/data_layer_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2010,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/data_onboarding_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2045,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/delta_reports_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2031,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/deploy_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 1975,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/executionwindow_module_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2109,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/executive_presentation_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2071,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/feedbackloop_module_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2064,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/fix_report_errors_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2045,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/generate_complete_report_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2101,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/generate_ultra_complete_report_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2149,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/genesis_includes_v3_complete_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2133,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/genesis_includes_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2037,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/governance_module_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2045,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/incidentresponse_module_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2116,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/innovationlab_module_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2087,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/integrate_ncnt_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2007,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/integration_gate_v2_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2061,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/integration_gate_v3_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2061,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/interface_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2019,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/main_ncnt_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 1967,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/main_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 1949,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/mean_reversion_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2053,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/models_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 1970,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/moduleregistry_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2025,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/ncnt_base_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 1975,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/ncnt_cli_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 1987,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/ncnt_orchestrator_complete_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2115,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/ncnt_scan_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 1967,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/ncnt_system_complete_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2055,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/onboarding_module_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2061,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/order_management_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2058,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/posttradereconciliation_module_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2167,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/premarketchecklist_module_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2127,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/prototypes_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2007,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/qabacktesting_module_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2089,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/realtimedashboard_module_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2128,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/reconciliation_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2039,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/regulatory_context_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2053,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/reg_tracker_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2017,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/report_generator_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2057,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/restore_executive_report_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2101,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/risk_engine_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2014,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/risk_module_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2014,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/run_complete_audit_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2053,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/smart_routing_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2034,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/sops_module_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 1999,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/strategies_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2007,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/strategy_module_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2050,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/strategy_onboarding_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2077,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/strategy_template_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2093,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/test_module_v2_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2021,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/test_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 1959,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/throttling_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2013,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/tier1_validator_v3_complete_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2142,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/tier1_validator_v3_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2070,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/treasury_module_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2049,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/visual_presentation_simple_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2103,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/visual_presentation_wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 2047,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    },
+    "wrappers_v2/__init___wrapper.py": {
+      "operational": true,
+      "integration_status": "v2.0",
+      "size_bytes": 1987,
+      "lines": 62,
+      "has_compliance": true,
+      "has_monitoring": true,
+      "version": "2.0.0"
+    }
+  }
+}

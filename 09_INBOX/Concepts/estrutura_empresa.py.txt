@@ -1,0 +1,18 @@
+Para adaptar ao seu negócio, simplesmente modifique a seção if __name__ == "__main__"::
+
+Nome da Empresa: Mude "InovaTech Solutions" para o nome da sua empresa.
+Unidades de Negócio: Apague as existentes (consultoria, desenvolvimento) e crie as suas. Ex: marketing = minha_empresa.criar_unidade_negocio("Marketing Digital").
+Verticais de Mercado: Defina os mercados que você atua. Ex: educacao = minha_empresa.criar_vertical_mercado("Educação").
+Funções de Suporte: Crie seus departamentos. Ex: juridico = minha_empresa.criar_funcao_suporte("Jurídico").
+Funcionários: Adicione seus funcionários reais ou fictícios.
+Alocação: A parte mais importante. Use os métodos adicionar_membro() e adicionar_especialista() para conectar seus funcionários às diferentes dimensões da matriz.
+Passo 5: Próximos Passos e Considerações
+Vantagens deste Modelo:
+Agregação: Promove especialistas com conhecimento profundo em uma área de negócio E em um mercado.
+Flexibilidade: Permite montar equipes "sob demanda" para atender clientes complexos.
+Colaboração: Quebra silos entre departamentos.
+Complexidade: Este modelo é mais complexo de gerenciar do que uma hierarquia simples. Exige uma cultura forte de colaboração e uma gestão que entenda e incentive a matriz.
+Evolução do Código: Este é um modelo conceitual. Você pode evoluí-lo para:
+Salvar os dados em um banco de dados (como SQLite ou PostgreSQL).
+Criar uma interface web simples (com Flask ou Django) para gerenciar a estrutura.
+Adicionar mais atributos aos funcionários, como habilidades, projetos_atuais, etc.

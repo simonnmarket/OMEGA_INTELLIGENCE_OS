@@ -1,0 +1,94 @@
+// orchestra-dashboards/agent-performance.json
+{
+  "title": "Agent Performance Dashboard",
+  "panels": [
+    {
+      "title": "Agent Processing Time Distribution",
+      "type": "heatmap",
+      "targets": [{
+        "expr": "histogram_quantile(0.99, rate(agent_processing_time_seconds_bucket[2m])) by (agent_name)",
+        "legendFormat": "{{agent_name}}"
+      }]
+    },
+    {
+      "title": "Agent Decision Confidence",
+      "type": "gauge",
+      "targets": [{
+        "expr": "agent_decision_confidence by (agent_name)",
+        "legendFormat": "{{agent_name}}"
+      }]
+    },
+    {
+      "title": "Agent Error Rate",
+      "type": "bargauge",
+      "targets": [{
+        "expr": "rate(agent_errors_total[5m]) by (agent_name, error_type)",
+        "legendFormat": "{{agent_name}} - {{error_type}}"
+      }]
+    }
+  ]
+}
+
+
+// orchestra-dashboards/filter-efficiency.json
+{
+  "title": "Filter Efficiency Dashboard",
+  "panels": [
+    {
+      "title": "Filter Efficiency Ratio",
+      "type": "stat",
+      "targets": [{
+        "expr": "filter_efficiency_ratio by (filter_name)",
+        "legendFormat": "{{filter_name}}"
+      }]
+    },
+    {
+      "title": "Filter Throughput",
+      "type": "graph",
+      "targets": [{
+        "expr": "rate(filter_processed_items_total[1m]) by (filter_name)",
+        "legendFormat": "{{filter_name}}"
+      }]
+    },
+    {
+      "title": "Filter Rejection Rate",
+      "type": "piechart",
+      "targets": [{
+        "expr": "filter_rejection_rate by (filter_name, rejection_reason)",
+        "legendFormat": "{{filter_name}} - {{rejection_reason}}"
+      }]
+    }
+  ]
+}
+
+
+// orchestra-dashboards/maestro-orchestration.json
+{
+  "title": "Maestro Orchestration Dashboard",
+  "panels": [
+    {
+      "title": "Orchestra Harmony Score",
+      "type": "gauge",
+      "targets": [{
+        "expr": "orchestra_harmony_score",
+        "legendFormat": "Overall Harmony"
+      }]
+    },
+    {
+      "title": "Maestro Coordination Efficiency",
+      "type": "graph",
+      "targets": [{
+        "expr": "maestro_agent_coordination_score",
+        "legendFormat": "Coordination Score"
+      }]
+    },
+    {
+      "title": "Dissonance Events",
+      "type": "alertlist",
+      "targets": [{
+        "expr": "rate(orchestra_dissonance_events_total[5m]) by (conflict_type)",
+        "legendFormat": "{{conflict_type}}"
+      }]
+    }
+  ]
+}

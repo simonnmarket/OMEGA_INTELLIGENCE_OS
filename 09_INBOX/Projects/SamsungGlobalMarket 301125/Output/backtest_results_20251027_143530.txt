@@ -1,0 +1,77 @@
+====================================================================================================
+SAMSUNG GLOBAL MARKET - RESULTADOS DE BACKTESTING
+Data: 2025-10-27 14:35:30
+====================================================================================================
+
+
+Estratégia: S-OIL-PROVEN-V3-20240120
+--------------------------------------------------------------------------------
+Capital Inicial:    $100,000.00
+Capital Final:      $135,232.52
+Retorno Total:      35.23%
+Sharpe Ratio:       0.98
+Max Drawdown:       -21.73%
+Win Rate:           100.00%
+Total Trades:       1
+Profit Factor:      inf
+
+
+Estratégia: S-FUTURES-V3-20240121
+--------------------------------------------------------------------------------
+Capital Inicial:    $100,000.00
+Capital Final:      $100,000.00
+Retorno Total:      0.00%
+Sharpe Ratio:       0.00
+Max Drawdown:       0.00%
+Win Rate:           0.00%
+Total Trades:       0
+Profit Factor:      inf
+
+
+Estratégia: CROSS-CURRENCY-ARBITRAGE-V3
+--------------------------------------------------------------------------------
+Capital Inicial:    $100,000.00
+Capital Final:      $100,000.00
+Retorno Total:      0.00%
+Sharpe Ratio:       0.00
+Max Drawdown:       0.00%
+Win Rate:           0.00%
+Total Trades:       0
+Profit Factor:      inf
+
+
+Estratégia: CRYPTO-TRIANGULAR-ARBITRAGE-V3
+--------------------------------------------------------------------------------
+Capital Inicial:    $100,000.00
+Capital Final:      $100,000.00
+Retorno Total:      0.00%
+Sharpe Ratio:       0.00
+Max Drawdown:       0.00%
+Win Rate:           0.00%
+Total Trades:       0
+Profit Factor:      inf
+
+
+Estratégia: GOLD-QUANTUM-PERFECTION-V3
+--------------------------------------------------------------------------------
+Capital Inicial:    $100,000.00
+Capital Final:      $100,000.00
+Retorno Total:      0.00%
+Sharpe Ratio:       0.00
+Max Drawdown:       0.00%
+Win Rate:           0.00%
+Total Trades:       0
+Profit Factor:      inf
+
+
+Estratégia: MEAN-REVERSION-BTC/USD-V3
+--------------------------------------------------------------------------------
+Capital Inicial:    $100,000.00
+Capital Final:      $59,886.44
+Retorno Total:      -40.11%
+Sharpe Ratio:       -1.03
+Max Drawdown:       -63.13%
+Win Rate:           0.00%
+Total Trades:       1
+Profit Factor:      0.00
+

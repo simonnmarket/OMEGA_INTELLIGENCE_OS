@@ -1,0 +1,18 @@
+﻿{
+    "changes":  [
+                    {
+                        "date":  "17-01-2026",
+                        "timestamp":  "17-01-2026 23:16:56",
+                        "summary":  "FASE 0 COMPLETA: Documentacao PMI implementada. Criados: Project Charter, WBS (58 pacotes de trabalho), Mapa de Dependencias, Registro de Riscos (10 riscos identificados, R02 critico mitigado com Change Control), Processo de Controle de Mudancas. Total: 6 documentos PMI + Inventario. Estrutura completa para gestao profissional do projeto.",
+                        "file":  "2026-01-17_changes.md"
+                    },
+                    {
+                        "date":  "18-01-2026",
+                        "timestamp":  "18-01-2026 01:29:58",
+                        "summary":  "SESSAO 18-01-2026: Recebido e analisado template PROJECT_WORKFLOW_AND_ROADMAP_TEMPLATE.md. Recebida tabela estruturada com 18 itens (Estrutura 2 + Workflow 6 + Conectores 5 + Gargalos 5). CEO definiu direcao: ClickUp + GitHub + nivel cientifico. Template resolve criticas do Conselho (CTO/CQO). Gaps identificados: conectores especificos AURORA ausentes, metricas quantitativas, gates por fase.",
+                        "file":  "2026-01-18_changes.md"
+                    }
+                ],
+    "last_updated":  "18-01-2026 01:29:58",
+    "total_changes":  2
+}

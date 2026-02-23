@@ -1,0 +1,339 @@
+# 📋 TEMPLATE - PLANO DE AÇÃO E CHECKLIST - AURORA v5.1
+# Formato: YAML para fácil edição e processamento automático
+
+# ============================================================================
+# METADADOS DO PLANO
+# ============================================================================
+metadata:
+  document_id: "PLAN-AURORA-5.1-[DATA]"
+  classification: "Action Plan & Checklist"
+  format: "YAML Structured"
+  version: "1.0"
+  date: "[YYYY-MM-DD]"
+  status: "DRAFT"  # DRAFT | REVIEW | APPROVED | IN_PROGRESS | COMPLETED
+  responsible: "[NOME_RESPONSAVEL]"
+
+# ============================================================================
+# OBJETIVO DO PLANO
+# ============================================================================
+objetivo:
+  descricao: |
+    [DESCREVER OBJETIVO PRINCIPAL DESTE PLANO DE AÇÃO]
+  
+  justificativa: |
+    [EXPLICAR POR QUE ESTE PLANO É NECESSÁRIO]
+  
+  escopo:
+    - modulos_especificos: false
+    - diretrizes_protocolos: false
+    - infraestrutura: false
+    - compliance: false
+    - outro: ""
+
+# ============================================================================
+# CONTEXTO E VALIDAÇÃO PRÉVIA
+# ============================================================================
+validacao_previa:
+  protocolo_fonte_verdade:
+    executado: false
+    resultado: ""  # OK | ERRO
+    data: ""
+    observacoes: ""
+  
+  validacao_completa:
+    executado: false
+    resultado: ""  # OK | ERRO
+    data: ""
+    observacoes: ""
+  
+  status_sistema:
+    total_modulos: 0
+    modulos_active: 0
+    modulos_backlog: 0
+    modulos_inactive: 0
+    modulos_completed: 0
+
+# ============================================================================
+# MÓDULOS AFETADOS
+# ============================================================================
+modulos_afetados:
+  # Formato 1: Lista simples (recomendado para múltiplos módulos)
+  lista:
+    - id: "MOD-XXX"
+      nome: "[NOME_DO_MODULO]"
+      status_atual: "BACKLOG"  # BACKLOG | ACTIVE | INACTIVE | COMPLETED
+      acao_planejada: "[DESCRIÇÃO DA AÇÃO]"
+      prioridade: "ALTA"  # ALTA | MÉDIA | BAIXA
+      arquivos_afetados:
+        - "[CAMINHO_ARQUIVO_1]"
+        - "[CAMINHO_ARQUIVO_2]"
+      tipo_alteracao: "CÓDIGO"  # CÓDIGO | CONFIG | DOC
+      compliance_tags: []  # ["MiFID II", "Basel III"]
+    
+    - id: "MOD-YYY"
+      nome: "[NOME_DO_MODULO]"
+      status_atual: "ACTIVE"
+      acao_planejada: "[DESCRIÇÃO DA AÇÃO]"
+      prioridade: "MÉDIA"
+      arquivos_afetados: []
+      tipo_alteracao: "CONFIG"
+      compliance_tags: []
+
+# ============================================================================
+# VALIDAÇÃO DE TRANSIÇÕES FSM
+# ============================================================================
+validacao_transicoes:
+  - modulo_id: "MOD-XXX"
+    status_atual: "BACKLOG"
+    status_desejado: "ACTIVE"
+    transicao_permitida: false  # Será validado automaticamente
+    data_validacao: ""
+    observacoes: ""
+  
+  - modulo_id: "MOD-YYY"
+    status_atual: "ACTIVE"
+    status_desejado: "COMPLETED"
+    transicao_permitida: false
+    data_validacao: ""
+    observacoes: ""
+
+# ============================================================================
+# PIVOT PROTECTION
+# ============================================================================
+pivot_protection:
+  nenhum_inactive_sem_reativacao: true
+  modulos_inactive_para_reativar: []
+  justificativa_reativacao: ""
+
+# ============================================================================
+# EXECUÇÃO - REGISTRO DE INTENÇÃO
+# ============================================================================
+registro_intencao:
+  - modulo_id: "MOD-XXX"
+    action_desc: "[DESCREVER AÇÃO]"
+    status_type: "active"  # active | confirmed
+    actor: "[NOME_ATOR]"
+    regulatory_context: []  # ["MiFID II", "Basel III"]
+    executado: false
+    data: ""
+    timestamp: ""
+    resultado: ""  # SUCESSO | ERRO
+    observacoes: ""
+  
+  - modulo_id: "MOD-YYY"
+    action_desc: "[DESCREVER AÇÃO]"
+    status_type: "active"
+    actor: "[NOME_ATOR]"
+    regulatory_context: []
+    executado: false
+    data: ""
+    timestamp: ""
+    resultado: ""
+    observacoes: ""
+
+# ============================================================================
+# EXECUÇÃO - ALTERAÇÕES
+# ============================================================================
+alteracoes:
+  - modulo_id: "MOD-XXX"
+    tipo: "CÓDIGO"  # CÓDIGO | CONFIG | DOC
+    arquivos:
+      - caminho: "[CAMINHO_ARQUIVO]"
+        descricao: "[DESCRIÇÃO DA ALTERAÇÃO]"
+    implementado: false
+    data: ""
+    observacoes: ""
+  
+  - modulo_id: "MOD-YYY"
+    tipo: "CONFIG"
+    arquivos: []
+    implementado: false
+    data: ""
+    observacoes: ""
+
+# ============================================================================
+# TESTES OBRIGATÓRIOS
+# ============================================================================
+testes:
+  unitarios:
+    executados: false
+    cobertura: 0  # Percentual
+    todos_passando: false
+    observacoes: ""
+  
+  integracao:
+    executados: false
+    modulos_dependentes_testados: false
+    todos_passando: false
+    observacoes: ""
+  
+  stress:
+    executados: false
+    limites_carga_testados: false
+    performance_validada: false
+    observacoes: ""
+  
+  sistema_completo:
+    executado: false
+    integracao_verificada: false
+    sem_regressoes: false
+    observacoes: ""
+
+# ============================================================================
+# REGISTRO DE CONCLUSÃO
+# ============================================================================
+registro_conclusao:
+  - modulo_id: "MOD-XXX"
+    action_desc: "[AÇÃO] concluída com testes validados"
+    status_type: "completed"
+    actor: "[NOME_ATOR]"
+    metadata:
+      test_coverage: 0  # Percentual
+      stress_tested: false
+      integration_tested: false
+      version: "[VERSÃO]"
+    regulatory_context: []  # ["MiFID II"]
+    executado: false
+    data: ""
+    timestamp: ""
+    resultado: ""  # SUCESSO | ERRO
+    observacoes: ""
+  
+  - modulo_id: "MOD-YYY"
+    action_desc: "[AÇÃO] concluída com testes validados"
+    status_type: "completed"
+    actor: "[NOME_ATOR]"
+    metadata:
+      test_coverage: 0
+      stress_tested: false
+    executado: false
+    data: ""
+    timestamp: ""
+    resultado: ""
+    observacoes: ""
+
+# ============================================================================
+# COMPLIANCE E TAGS
+# ============================================================================
+compliance:
+  - modulo_id: "MOD-XXX"
+    tags:
+      - framework: "MiFID II"
+        version: "Artigo 16, 48"
+      - framework: "Basel III"
+        version: "Pillar 1"
+    adicionadas: false
+    data: ""
+  
+  - modulo_id: "MOD-YYY"
+    tags:
+      - framework: "[FRAMEWORK]"
+        version: "[VERSÃO]"
+    adicionadas: false
+    data: ""
+
+# ============================================================================
+# VALIDAÇÃO FINAL
+# ============================================================================
+validacao_final:
+  protocolo_fonte_verdade:
+    executado: false
+    resultado: ""  # OK | ERRO
+    data: ""
+  
+  validacao_completa:
+    executado: false
+    resultado: ""  # OK | ERRO
+    data: ""
+  
+  relatorio_governanca:
+    gerado: false
+    arquivo: ""
+    data: ""
+  
+  verificacao_consistencia:
+    nenhum_modulo_quebrado: false
+    nenhuma_dependencia_quebrada: false
+    modulos_status_correto: false
+    audit_trail_completo: false
+    metadados_atualizados: false
+
+# ============================================================================
+# RESUMO EXECUTIVO
+# ============================================================================
+resumo_executivo:
+  estatisticas:
+    modulos_afetados: 0
+    modulos_completados: 0
+    modulos_com_erro: 0
+    cobertura_testes_media: 0  # Percentual
+    tempo_total_execucao: ""  # HH:MM:SS
+    data_inicio: ""
+    data_conclusao: ""
+  
+  status_final_modulos:
+    - modulo_id: "MOD-XXX"
+      status_inicial: "BACKLOG"
+      status_final: "COMPLETED"
+      sucesso: false
+    
+    - modulo_id: "MOD-YYY"
+      status_inicial: "ACTIVE"
+      status_final: "COMPLETED"
+      sucesso: false
+
+# ============================================================================
+# PROBLEMAS E RESOLUÇÕES
+# ============================================================================
+problemas:
+  - numero: 1
+    modulo_id: "MOD-XXX"
+    problema: "[DESCRIÇÃO DO PROBLEMA]"
+    resolucao: "[SOLUÇÃO APLICADA]"
+    status: "PENDENTE"  # RESOLVIDO | PENDENTE
+  
+  - numero: 2
+    modulo_id: "MOD-YYY"
+    problema: "[DESCRIÇÃO DO PROBLEMA]"
+    resolucao: "[SOLUÇÃO APLICADA]"
+    status: "PENDENTE"
+
+# ============================================================================
+# OBSERVAÇÕES E NOTAS
+# ============================================================================
+observacoes: |
+  [ESPAÇO PARA OBSERVAÇÕES ADICIONAIS, LIÇÕES APRENDIDAS, ETC.]
+
+# ============================================================================
+# APROVAÇÃO
+# ============================================================================
+aprovacao:
+  preparado_por:
+    nome: ""
+    data: ""
+  
+  revisado_por:
+    nome: ""
+    data: ""
+  
+  aprovado_por:
+    nome: ""
+    data: ""
+  
+  executado_por:
+    nome: ""
+    data: ""
+  
+  validado_por:
+    nome: ""
+    data: ""
+
+# ============================================================================
+# REFERÊNCIAS
+# ============================================================================
+referencias:
+  - "PROTOCOLO_GOVERNANCA_VISUAL.md"
+  - "PROTOCOLO_ANTI_ERRO.md"
+  - "README_PROTOCOLO_ANTI_ERRO.md"
+  - "project_manifest.json"
+

@@ -1,0 +1,73 @@
+{
+    "timestamp": "2025-11-20T13:57:23.765679",
+    "status": "FALHA_PARCIAL",
+    "detalhes": {
+        "db": {
+            "status": "OK",
+            "arquivo": "openmymind.db"
+        },
+        "tweets": {
+            "status": "ERRO",
+            "erro": "4 requests to https://twitter.com/i/api/graphql/7jT5GT59P8IFjgxwqnEdQw/SearchTimeline?variables=%7B%22rawQuery%22%3A%22%28%5C%22whale%5C%22%20OR%20%5C%22large%20transfer%5C%22%29%22%2C%22count%22%3A20%2C%22product%22%3A%22Latest%22%2C%22withDownvotePerspective%22%3Afalse%2C%22withReactionsMetadata%22%3Afalse%2C%22withReactionsPerspective%22%3Afalse%7D&features=%7B%22rweb_lists_timeline_redesign_enabled%22%3Afalse%2C%22blue_business_profile_image_shape_enabled%22%3Afalse%2C%22responsive_web_graphql_exclude_directive_enabled%22%3Atrue%2C%22verified_phone_label_enabled%22%3Afalse%2C%22creator_subscriptions_tweet_preview_api_enabled%22%3Afalse%2C%22responsive_web_graphql_timeline_navigation_enabled%22%3Atrue%2C%22responsive_web_graphql_skip_user_profile_image_extensions_enabled%22%3Afalse%2C%22tweetypie_unmention_optimization_enabled%22%3Atrue%2C%22vibe_api_enabled%22%3Atrue%2C%22responsive_web_edit_tweet_api_enabled%22%3Atrue%2C%22graphql_is_translatable_rweb_tweet_is_translatable_enabled%22%3Atrue%2C%22view_counts_everywhere_api_enabled%22%3Atrue%2C%22longform_notetweets_consumption_enabled%22%3Atrue%2C%22tweet_awards_web_tipping_enabled%22%3Afalse%2C%22freedom_of_speech_not_reach_fetch_enabled%22%3Afalse%2C%22standardized_nudges_misinfo%22%3Atrue%2C%22tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled%22%3Afalse%2C%22interactive_text_enabled%22%3Atrue%2C%22responsive_web_text_conversations_enabled%22%3Afalse%2C%22longform_notetweets_rich_text_read_enabled%22%3Afalse%2C%22longform_notetweets_inline_media_enabled%22%3Afalse%2C%22responsive_web_enhance_cards_enabled%22%3Afalse%2C%22responsive_web_twitter_blue_verified_badge_is_enabled%22%3Atrue%7D failed, giving up."
+        },
+        "orderbook": {
+            "status": "OK",
+            "coletado": true,
+            "dados": {
+                "ts": "2025-11-20 13:57:23.441431",
+                "exchange": "binance",
+                "symbol": "BTC/USDT",
+                "bid": 91681.34,
+                "bid_size": 5.11325,
+                "ask": 91681.35,
+                "ask_size": 2.2393,
+                "bid_depth_top10": 7.27609,
+                "ask_depth_top10": 2.3007999999999997
+            }
+        },
+        "onchain": {
+            "status": "OK",
+            "registros": 0,
+            "coletados": false
+        },
+        "whale_alert": {
+            "status": "OK",
+            "registros": 0,
+            "coletados": false
+        },
+        "validacao": {
+            "status": "OK",
+            "eventos_validados": 0,
+            "exemplos": []
+        },
+        "persistencia": {
+            "status": "OK",
+            "sinais_persistidos": 0,
+            "total_validados": 0
+        },
+        "backtest": {
+            "status": "SKIP",
+            "razao": "Nenhum evento validado"
+        },
+        "neural": {
+            "status": "OK",
+            "predictions_shape": "(1, 1)",
+            "risk_params": {
+                "max_position_size": "(1,)",
+                "stop_loss": "(1,)",
+                "take_profit": "(1,)"
+            },
+            "batch_size": 0
+        },
+        "resumo": {
+            "total_etapas": 9,
+            "sucesso": false,
+            "erros_encontrados": 1,
+            "erros": [
+                "Tweets: 4 requests to https://twitter.com/i/api/graphql/7jT5GT59P8IFjgxwqnEdQw/SearchTimeline?variables=%7B%22rawQuery%22%3A%22%28%5C%22whale%5C%22%20OR%20%5C%22large%20transfer%5C%22%29%22%2C%22count%22%3A20%2C%22product%22%3A%22Latest%22%2C%22withDownvotePerspective%22%3Afalse%2C%22withReactionsMetadata%22%3Afalse%2C%22withReactionsPerspective%22%3Afalse%7D&features=%7B%22rweb_lists_timeline_redesign_enabled%22%3Afalse%2C%22blue_business_profile_image_shape_enabled%22%3Afalse%2C%22responsive_web_graphql_exclude_directive_enabled%22%3Atrue%2C%22verified_phone_label_enabled%22%3Afalse%2C%22creator_subscriptions_tweet_preview_api_enabled%22%3Afalse%2C%22responsive_web_graphql_timeline_navigation_enabled%22%3Atrue%2C%22responsive_web_graphql_skip_user_profile_image_extensions_enabled%22%3Afalse%2C%22tweetypie_unmention_optimization_enabled%22%3Atrue%2C%22vibe_api_enabled%22%3Atrue%2C%22responsive_web_edit_tweet_api_enabled%22%3Atrue%2C%22graphql_is_translatable_rweb_tweet_is_translatable_enabled%22%3Atrue%2C%22view_counts_everywhere_api_enabled%22%3Atrue%2C%22longform_notetweets_consumption_enabled%22%3Atrue%2C%22tweet_awards_web_tipping_enabled%22%3Afalse%2C%22freedom_of_speech_not_reach_fetch_enabled%22%3Afalse%2C%22standardized_nudges_misinfo%22%3Atrue%2C%22tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled%22%3Afalse%2C%22interactive_text_enabled%22%3Atrue%2C%22responsive_web_text_conversations_enabled%22%3Afalse%2C%22longform_notetweets_rich_text_read_enabled%22%3Afalse%2C%22longform_notetweets_inline_media_enabled%22%3Afalse%2C%22responsive_web_enhance_cards_enabled%22%3Afalse%2C%22responsive_web_twitter_blue_verified_badge_is_enabled%22%3Atrue%7D failed, giving up."
+            ]
+        }
+    },
+    "versao": "1.0",
+    "teste": "OpenMyMind Project 007 - Teste Completo"
+}

@@ -1,0 +1,31 @@
+{
+  "sistema": "Prometheus v6.0",
+  "status": "INICIANDO_PRODUCAO",
+  "timestamp": "2025-11-25T22:50:00+01:00",
+  "configuracao": {
+    "modo": "PRODUCTION",
+    "bloqueio_strategico": "ATIVO",
+    "apenas_buy_permitido": true,
+    "sell_bloqueado": true,
+    "afr_ml": "ATIVO",
+    "monitoramento": "ATIVO"
+  },
+  "arquivos_log": {
+    "log_principal": "prometheus_master_log_v6.0.jsonl",
+    "heartbeat": "prometheus_heartbeat.tmp",
+    "learning": "prometheus_v6_learning.json"
+  },
+  "comandos_monitoramento": {
+    "ver_logs": "Get-Content prometheus_master_log_v6.0.jsonl -Tail 20 -Wait",
+    "ver_heartbeat": "Get-Content prometheus_heartbeat.tmp",
+    "ver_status": "python verificar_status_producao.py"
+  },
+  "observacoes": [
+    "Sistema iniciado em modo produção",
+    "Bloqueio estratégico SELL ativo",
+    "Apenas ordens BUY serão executadas",
+    "Sistema AFR (ML) aprendendo continuamente",
+    "Monitoramento automático ativo"
+  ]
+}
+

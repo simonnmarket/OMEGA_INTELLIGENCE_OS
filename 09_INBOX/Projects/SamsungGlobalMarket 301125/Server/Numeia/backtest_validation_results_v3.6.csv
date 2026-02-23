@@ -1,0 +1,7 @@
+symbol,filter_used,profit_factor,win_rate,expectancy,max_drawdown,total_trades
+XAUUSD,False,4.6,69.7,0.0109,0.05,99
+XAUUSD,True,4.0,66.67,0.01,0.04,57
+BTCUSD,False,26.0,92.86,0.0179,0.01,14
+BTCUSD,True,999.99,100.0,0.02,0.0,6
+ETHUSD,False,999.99,100.0,0.002,0.0,23
+ETHUSD,True,999.99,100.0,0.002,0.0,5

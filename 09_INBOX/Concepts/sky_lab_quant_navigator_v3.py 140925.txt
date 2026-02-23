@@ -1,0 +1,956 @@
+import pandas as pd
+import numpy as np
+from datetime import datetime, timedelta
+import hashlib
+import threading
+import time
+import asyncio
+import joblib
+from typing import Dict, List, Optional, Tuple
+import ccxt.async_support as ccxt
+from flask import Flask, jsonify, request
+import xgboost as xgb
+import optuna
+from numba import jit, njit, prange
+from hmmlearn.hmm import GaussianHMM
+import vectorbt as vbt
+import redis
+import zmq
+import psutil
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense
+from functools import wraps
+import jwt
+import requests
+import MetaTrader5 as mt5
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import ta
+from dataclasses import dataclass
+import concurrent.futures
+from concurrent.futures import ThreadPoolExecutor
+import websocket
+import json
+import warnings
+warnings.filterwarnings('ignore')
+
+# === CONFIGURAÇÕES ===
+API_KEY = 'your_binance_api_key'  # Substitua pela sua chave
+API_SECRET = 'your_binance_api_secret'  # Substitua pelo seu segredo
+FRED_API_KEY = 'your_fred_api_key'  # Substitua pela chave FRED
+JWT_SECRET = 'your_jwt_secret_32_chars'  # Chave JWT (mínimo 32 caracteres)
+
+# === TIPOS E ESTRUTURAS ===
+@dataclass
+class InstitutionalBar:
+    timestamp: pd.Timestamp
+    open: float
+    high: float
+    low: float
+    close: float
+    volume: float
+    zscore: float
+    color_index: int
+    delta: float
+    is_big_player: bool
+
+@dataclass
+class MarketSwing:
+    start_index: int
+    end_index: int
+    start_price: float
+    end_price: float
+    volume: float
+    is_uptrend: bool
+    duration: int
+    strength: float
+    institutional_participation: float
+
+@dataclass
+class AlphaSignal:
+    timestamp: pd.Timestamp
+    symbol: str
+    signal_type: str
+    direction: int
+    confidence: float
+    entry_price: float
+    stop_loss: float
+    take_profit: float
+    volume_confidence: float
+    swing_confirmation: bool
+    institutional_flow: bool
+
+# === 1. INICIALIZAÇÃO INSTITUCIONAL ===
+class SystemInitializer:
+    def __init__(self):
+        self.exchanges = {}
+        self.redis = redis.Redis(host='localhost', port=6379, decode_responses=True)
+        self.zmq_context = zmq.Context()
+        self.zmq_sub = self.zmq_context.socket(zmq.SUB)
+        self.zmq_pub = self.zmq_context.socket(zmq.PUB)
+        self.performance = {
+            'latency': [],
+            'memory_mb': 0,
+            'cpu_percent': 0,
+            'signals_generated': 0,
+            'signals_triggered': 0,
+            'winning_signals': 0,
+            'losing_signals': 0
+        }
+        self.metrics = {
+            'roi_target': 0.15,
+            'max_drawdown': 0.05,
+            'sharpe_ratio_min': 1.5,
+            'win_rate_target': 0.65,
+            'latency_max': 0.001,
+            'uptime_target': 0.9999,
+            'error_rate_max': 0.0001,
+            'prediction_accuracy': 0.85,
+            'model_stability': 0.95,
+            'adaptation_rate': 0.90,
+            'quantum_correlation': 0.75
+        }
+        self.mt5_connected = mt5.initialize()
+        if not self.mt5_connected:
+            print("Falha ao inicializar MT5")
+        self.websocket_threads = []
+
+    async def connect_exchanges(self):
+        configs = [
+            ('binance', {'apiKey': API_KEY, 'secret': API_SECRET, 'enableRateLimit': True}),
+            ('kraken', {'apiKey': API_KEY, 'secret': API_SECRET, 'enableRateLimit': True}),
+        ]
+        for name, config in configs:
+            try:
+                exchange = getattr(ccxt, name)(config)
+                await exchange.load_markets()
+                self.exchanges[name] = exchange
+                self.redis.set(f'exchange_status:{name}', 'connected')
+            except Exception as e:
+                self.redis.set(f'exchange_status:{name}', f'failed: {str(e)}')
+        return len(self.exchanges) > 0
+
+    async def list_all_symbols(self, asset_type: Optional[str] = None, min_volume: float = 1_000_000) -> List[str]:
+        all_symbols = []
+        for exchange_name, exchange in self.exchanges.items():
+            try:
+                cache_key = f'symbols:{exchange_name}'
+                cached = self.redis.get(cache_key)
+                if cached:
+                    symbols = json.loads(cached)
+                else:
+                    markets = await exchange.load_markets()
+                    symbols = []
+                    for symbol, market in markets.items():
+                        if asset_type and market.get('type') != asset_type:
+                            continue
+                        if 'info' in market and 'quoteVolume' in market['info'] and float(market['info']['quoteVolume']) < min_volume:
+                            continue
+                        symbols.append(symbol)
+                    self.redis.setex(cache_key, 3600, json.dumps(symbols))
+                all_symbols.extend(symbols)
+            except Exception as e:
+                self.redis.set(f'symbols_error:{exchange_name}', str(e))
+        return list(set(all_symbols))
+
+    def monitor_performance(self):
+        self.performance['memory_mb'] = psutil.Process().memory_info().rss / 1024 / 1024
+        self.performance['cpu_percent'] = psutil.cpu_percent()
+        self.performance['uptime'] = 1.0 if len(self.exchanges) > 0 or self.mt5_connected else 0.0
+        self.redis.set('system_performance', json.dumps(self.performance))
+
+    def start_websocket(self, symbol: str, callback):
+        def on_message(ws, message):
+            data = json.loads(message)
+            callback(data)
+        def on_error(ws, error):
+            print(f"WebSocket error: {error}")
+        def on_close(ws, close_status_code, close_msg):
+            print(f"WebSocket closed: {close_status_code} - {close_msg}")
+        ws_url = f"wss://stream.binance.com:9443/ws/{symbol.lower().replace('/', '')}@kline_1m"
+        ws = websocket.WebSocketApp(ws_url, on_message=on_message, on_error=on_error, on_close=on_close)
+        threading.Thread(target=ws.run_forever, daemon=True).start()
+        self.websocket_threads.append(ws)
+
+# === 2. DETECTOR DE BIG PLAYERS ===
+class BigPlayerDetector:
+    def __init__(self, volume_period: int = 20, alert_level: float = 2.0):
+        self.ml_model = self._load_ml_model()
+        self.lstm_model = self._build_lstm()
+        self.hmm_model = GaussianHMM(n_components=4, covariance_type='diag', n_iter=1000)
+        self.volume_period = volume_period
+        self.alert_level = alert_level
+        self.swing_detector = InstitutionalSwingDetector()
+
+    def _load_ml_model(self):
+        try:
+            return joblib.load('bigplayer_model.joblib')
+        except:
+            model = xgb.XGBClassifier(max_depth=6, learning_rate=0.1, n_estimators=500)
+            X, y = self._generate_training_data()
+            model.fit(X, y)
+            joblib.dump(model, 'bigplayer_model.joblib')
+            return model
+
+    def _generate_training_data(self):
+        # Dados reais simulados para treinamento
+        np.random.seed(42)
+        X = np.random.rand(10000, 12) * 100
+        y = (X[:, 0] > 50).astype(int)  # Simula big players com volume alto
+        return X, y
+
+    def _build_lstm(self):
+        model = Sequential([
+            LSTM(128, input_shape=(20, 12), return_sequences=False),
+            Dense(64, activation='relu'),
+            Dense(1, activation='sigmoid')
+        ])
+        model.compile(optimizer='adam', loss='binary_crossentropy')
+        # Treinamento com dados simulados
+        X = np.random.rand(1000, 20, 12)
+        y = np.random.randint(0, 2, 1000)
+        model.fit(X, y, epochs=5, batch_size=32, verbose=0)
+        return model
+
+    @staticmethod
+    @njit(parallel=True, fastmath=True)
+    def calculate_volume_metrics(volumes: np.ndarray, period: int) -> Tuple[np.ndarray, np.ndarray]:
+        n = len(volumes)
+        zscores = np.zeros(n, dtype=np.float64)
+        avg_volumes = np.zeros(n, dtype=np.float64)
+        for i in prange(period, n):
+            window = volumes[i-period:i]
+            avg = np.mean(window)
+            std = np.std(window)
+            avg_volumes[i] = avg
+            zscores[i] = (volumes[i] - avg) / std if std > 0 else 0.0
+        return zscores, avg_volumes
+
+    @staticmethod
+    @njit(fastmath=True)
+    def detect_institutional_bars(opens: np.ndarray, closes: np.ndarray, volumes: np.ndarray, zscores: np.ndarray, alert_level: float) -> np.ndarray:
+        n = len(volumes)
+        institutional_bars = np.zeros(n, dtype=np.bool_)
+        for i in range(n):
+            high_volume = zscores[i] >= alert_level
+            delta = closes[i] - opens[i]
+            positive_delta = delta > 0 and volumes[i] > 0
+            institutional_bars[i] = high_volume and positive_delta
+        return institutional_bars
+
+    @staticmethod
+    @njit(fastmath=True)
+    def calculate_swing_strength(highs: np.ndarray, lows: np.ndarray, closes: np.ndarray, volumes: np.ndarray, min_swing_candles: int = 3, ticks_per_swing: float = 0.0015) -> Tuple[np.ndarray, np.ndarray]:
+        n = len(closes)
+        swing_up_strength = np.zeros(n, dtype=np.float64)
+        swing_down_strength = np.zeros(n, dtype=np.float64)
+        swing_dir = 0
+        swing_start_idx = 0
+        swing_start_price = closes[0]
+        swing_volume = 0.0
+        swing_candle_count = 0
+        for i in range(1, n):
+            delta = closes[i] - swing_start_price
+            if swing_dir == 0:
+                swing_dir = 1 if delta >= 0 else -1
+                swing_start_idx = i - 1
+                swing_start_price = closes[i - 1]
+                swing_volume = volumes[i]
+                swing_candle_count = 1
+            else:
+                swing_volume += volumes[i]
+                swing_candle_count += 1
+                reverse_condition = False
+                if swing_dir == 1:
+                    reverse_condition = delta <= -ticks_per_swing
+                else:
+                    reverse_condition = delta >= ticks_per_swing
+                if reverse_condition and swing_candle_count >= min_swing_candles:
+                    price_change = abs(closes[i] - swing_start_price)
+                    strength = (price_change * swing_volume) / swing_candle_count
+                    if swing_dir == 1:
+                        swing_up_strength[swing_start_idx:i] = strength
+                    else:
+                        swing_down_strength[swing_start_idx:i] = strength
+                    swing_dir = -swing_dir
+                    swing_start_idx = i
+                    swing_start_price = closes[i]
+                    swing_volume = volumes[i]
+                    swing_candle_count = 1
+        return swing_up_strength, swing_down_strength
+
+    @staticmethod
+    @njit(fastmath=True)
+    def analyze_candlestick_patterns(opens: np.ndarray, highs: np.ndarray, lows: np.ndarray, closes: np.ndarray) -> np.ndarray:
+        n = len(closes)
+        patterns = np.zeros(n, dtype=np.int32)
+        for i in range(1, n):
+            body = abs(closes[i] - opens[i])
+            upper_shadow = highs[i] - max(opens[i], closes[i])
+            lower_shadow = min(opens[i], closes[i]) - lows[i]
+            prev_body = abs(closes[i-1] - opens[i-1])
+            if body < 0.1 * (highs[i] - lows[i]):
+                patterns[i] = 1  # Doji
+            elif closes[i] > opens[i] and closes[i-1] < opens[i-1] and closes[i] > highs[i-1]:
+                patterns[i] = 2  # Bullish Engulfing
+            elif closes[i] < opens[i] and closes[i-1] > opens[i-1] and closes[i] < lows[i-1]:
+                patterns[i] = 3  # Bearish Engulfing
+            elif (highs[i] - lows[i]) > 2 * body and (closes[i] - lows[i]) > 0.6 * (highs[i] - lows[i]):
+                patterns[i] = 4  # Hammer
+            elif (highs[i] - lows[i]) > 2 * body and (highs[i] - closes[i]) > 0.6 * (highs[i] - lows[i]):
+                patterns[i] = 5  # Shooting Star
+        return patterns
+
+    @njit
+    def analyze_volume(self, volumes: np.ndarray, prices: np.ndarray) -> np.ndarray:
+        if len(volumes) < 20:
+            return np.array([1.0, 0.0, 0.0, 0.0])
+        avg_vol = np.mean(volumes[-20:-1])
+        volume_ratio = volumes[-1] / avg_vol if avg_vol > 0 else 1.0
+        vwap = np.sum(prices * volumes) / np.sum(volumes) if np.sum(volumes) > 0 else prices[-1]
+        vwap_deviation = (prices[-1] - vwap) / vwap if vwap > 0 else 0.0
+        cumulative_delta = np.sum(np.where(prices[-20:] > prices[-21:-1], volumes[-20:], -volumes[-20:]))
+        return np.array([volume_ratio, vwap_deviation, cumulative_delta, np.std(prices[-20:]) / prices[-1]])
+
+    async def analyze_order_flow(self, exchange, symbol) -> Dict:
+        try:
+            orderbook = await exchange.fetch_order_book(symbol, limit=100)
+            bids = sum([level[1] for level in orderbook['bids']])
+            asks = sum([level[1] for level in orderbook['asks']])
+            large_trades = sum([vol for price, vol in orderbook['bids'] + orderbook['asks'] if vol > 100])
+            imbalance = bids / asks if asks > 0 else 1.0
+            return {'imbalance': imbalance, 'large_trades': large_trades}
+        except:
+            return {'imbalance': 1.0, 'large_trades': 0.0}
+
+    def add_technical_indicators(self, df: pd.DataFrame) -> pd.DataFrame:
+        df = df.copy()
+        df['RSI'] = ta.momentum.RSIIndicator(df['close']).rsi()
+        macd = ta.trend.MACD(df['close'])
+        df['MACD'] = macd.macd()
+        df['MACD_Signal'] = macd.macd_signal()
+        df['MACD_Hist'] = macd.macd_diff()
+        bollinger = ta.volatility.BollingerBands(df['close'])
+        df['BB_Upper'] = bollinger.bollinger_hband()
+        df['BB_Middle'] = bollinger.bollinger_mavg()
+        df['BB_Lower'] = bollinger.bollinger_lband()
+        return df
+
+    async def detect_big_players(self, df: pd.DataFrame, exchange, symbol) -> Dict:
+        df = self.add_technical_indicators(df)
+        zscores, _ = self.calculate_volume_metrics(df['volume'].values, self.volume_period)
+        institutional_bars = self.detect_institutional_bars(df['open'].values, df['close'].values, df['volume'].values, zscores, self.alert_level)
+        df['institutional'] = institutional_bars
+        swings = self.swing_detector.detect_swings(df)
+        significant_swings = self.swing_detector.filter_significant_swings(swings)
+        volume_features = self.analyze_volume(df['volume'].values, df['close'].values)
+        order_flow = await self.analyze_order_flow(exchange, symbol)
+        hurst = self._calculate_hurst(df['close'].values)
+        swing_strength = sum(s.strength for s in significant_swings[-3:]) / 3 if significant_swings else 0.0
+        patterns = self.analyze_candlestick_patterns(df['open'].values, df['high'].values, df['low'].values, df['close'].values)
+        quantum_correlation = self._simulate_quantum_correlation(df['close'].values)
+        rsi = df['RSI'].iloc[-1] if not df['RSI'].isna().iloc[-1] else 50.0
+        macd_hist = df['MACD_Hist'].iloc[-1] if not df['MACD_Hist'].isna().iloc[-1] else 0.0
+        features = np.concatenate([
+            volume_features,
+            [order_flow['imbalance'], order_flow['large_trades'], hurst, swing_strength, zscores[-1], patterns[-1], quantum_correlation, rsi, macd_hist]
+        ])
+        prob_xgb = self.ml_model.predict_proba(features.reshape(1, -1))[0, 1]
+        lstm_input = np.array([features[-20:]]).reshape(1, 20, 12) if len(features) >= 20 else np.zeros((1, 20, 12))
+        prob_lstm = self.lstm_model.predict(lstm_input, verbose=0)[0, 0]
+        prob = (prob_xgb + prob_lstm) / 2
+        return {
+            'is_big_player': prob > 0.75,
+            'confidence': prob,
+            'volume_ratio': volume_features[0],
+            'vwap_deviation': volume_features[1],
+            'cumulative_delta': volume_features[2],
+            'order_imbalance': order_flow['imbalance'],
+            'large_trades': order_flow['large_trades'],
+            'hurst': hurst,
+            'swing_strength': swing_strength,
+            'zscore': zscores[-1],
+            'candlestick_pattern': patterns[-1],
+            'quantum_correlation': quantum_correlation,
+            'rsi': rsi,
+            'macd_hist': macd_hist
+        }
+
+    @njit
+    def _calculate_hurst(self, prices: np.ndarray) -> float:
+        if len(prices) < 100:
+            return 0.5
+        lags = np.arange(1, 20)
+        variances = np.array([np.var(np.diff(prices, n=int(lag))) for lag in lags])
+        log_vars = np.log(variances)
+        log_lags = np.log(lags)
+        return np.polyfit(log_lags, log_vars, 1)[0] / 2
+
+    def _simulate_quantum_correlation(self, prices: np.ndarray) -> float:
+        if len(prices) < 20:
+            return 0.75
+        self.hmm_model.fit(prices[-20:].reshape(-1, 1))
+        return self.hmm_model.score(prices[-20:].reshape(-1, 1)) / 100
+
+# === 3. DETECTOR DE SWINGS INSTITUCIONAIS ===
+class InstitutionalSwingDetector:
+    def __init__(self, ticks_per_swing: int = 15, min_swing_candles: int = 3, ma_period: int = 20, volume_factor: float = 1.3):
+        self.ticks_per_swing = ticks_per_swing
+        self.min_swing_candles = min_swing_candles
+        self.ma_period = ma_period
+        self.volume_factor = volume_factor
+        self.swing_history: List[MarketSwing] = []
+        self.max_history_size = 1000
+
+    def detect_swings(self, df: pd.DataFrame) -> List[MarketSwing]:
+        swings = []
+        highs = df['high'].values
+        lows = df['low'].values
+        closes = df['close'].values
+        volumes = df['volume'].values
+        institutional = df.get('institutional', np.zeros(len(df))).astype(bool)
+        n = len(closes)
+        swing_dir = 0
+        swing_start_idx = 0
+        swing_start_price = closes[0]
+        swing_volume = 0.0
+        swing_candle_count = 0
+        institutional_volume = 0.0
+        for i in range(1, n):
+            price_delta = closes[i] - swing_start_price
+            swing_volume += volumes[i]
+            if institutional[i]:
+                institutional_volume += volumes[i]
+            if swing_dir == 0:
+                swing_dir = 1 if price_delta >= 0 else -1
+                swing_start_idx = i - 1
+                swing_start_price = closes[i - 1]
+                swing_volume = volumes[i]
+                swing_candle_count = 1
+                institutional_volume = volumes[i] if institutional[i] else 0.0
+            else:
+                swing_candle_count += 1
+                reverse_condition = False
+                if swing_dir == 1:
+                    reverse_condition = price_delta <= -self.ticks_per_swing * 0.0001
+                else:
+                    reverse_condition = price_delta >= self.ticks_per_swing * 0.0001
+                if reverse_condition and swing_candle_count >= self.min_swing_candles:
+                    price_change_pct = abs(closes[i] - swing_start_price) / swing_start_price
+                    institutional_participation = institutional_volume / swing_volume if swing_volume > 0 else 0
+                    swing = MarketSwing(
+                        start_index=swing_start_idx,
+                        end_index=i,
+                        start_price=swing_start_price,
+                        end_price=closes[i],
+                        volume=swing_volume,
+                        is_uptrend=swing_dir == 1,
+                        duration=swing_candle_count,
+                        strength=price_change_pct * swing_volume,
+                        institutional_participation=institutional_participation
+                    )
+                    swings.append(swing)
+                    self._add_to_history(swing)
+                    swing_dir = -swing_dir
+                    swing_start_idx = i
+                    swing_start_price = closes[i]
+                    swing_volume = volumes[i]
+                    swing_candle_count = 1
+                    institutional_volume = volumes[i] if institutional[i] else 0.0
+        return swings
+
+    def _add_to_history(self, swing: MarketSwing):
+        self.swing_history.append(swing)
+        if len(self.swing_history) > self.max_history_size:
+            self.swing_history.pop(0)
+
+    def calculate_ma_volume(self) -> float:
+        if not self.swing_history:
+            return 0.0
+        recent_swings = self.swing_history[-self.ma_period:]
+        total_volume = sum(swing.volume for swing in recent_swings)
+        return total_volume / len(recent_swings)
+
+    def filter_significant_swings(self, swings: List[MarketSwing]) -> List[MarketSwing]:
+        ma_volume = self.calculate_ma_volume()
+        significant_swings = []
+        for swing in swings:
+            volume_ok = swing.volume >= ma_volume * self.volume_factor
+            institutional_ok = swing.institutional_participation >= 0.3
+            if volume_ok and institutional_ok:
+                significant_swings.append(swing)
+        return significant_swings
+
+# === 4. GERADOR DE SINAIS ALPHA ===
+class AlphaSignalGenerator:
+    def __init__(self):
+        self.flow_processor = BigPlayerDetector()
+        self.swing_detector = InstitutionalSwingDetector()
+
+    async def generate_signals(self, df: pd.DataFrame, symbol: str) -> List[AlphaSignal]:
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            volume_task = executor.submit(
+                self.flow_processor.calculate_volume_metrics,
+                df['volume'].values, 20
+            )
+            swing_task = executor.submit(
+                self.flow_processor.calculate_swing_strength,
+                df['high'].values, df['low'].values, df['close'].values, df['volume'].values
+            )
+            zscores, _ = volume_task.result()
+            swing_up, swing_down = swing_task.result()
+        institutional_bars = self.flow_processor.detect_institutional_bars(
+            df['open'].values, df['close'].values, df['volume'].values, zscores, 2.0
+        )
+        df = df.copy()
+        df['zscore'] = zscores
+        df['institutional'] = institutional_bars
+        df['swing_up_strength'] = swing_up
+        df['swing_down_strength'] = swing_down
+        patterns = self.flow_processor.analyze_candlestick_patterns(
+            df['open'].values, df['high'].values, df['low'].values, df['close'].values
+        )
+        df['candlestick_pattern'] = patterns
+        swings = self.swing_detector.detect_swings(df)
+        significant_swings = self.swing_detector.filter_significant_swings(swings)
+        signals = []
+        n = len(df)
+        for i in range(2, n):
+            current_bar = df.iloc[i]
+            prev_bar = df.iloc[i-1]
+            two_bars_ago = df.iloc[i-2]
+            rsi = current_bar['RSI'] if not pd.isna(current_bar['RSI']) else 50.0
+            macd_hist = current_bar['MACD_Hist'] if not pd.isna(current_bar['MACD_Hist']) else 0.0
+            if (current_bar['institutional'] and
+                current_bar['close'] > current_bar['open'] and
+                current_bar['close'] > prev_bar['high'] and
+                current_bar['volume'] > prev_bar['volume'] * 1.5 and
+                rsi < 70 and macd_hist > 0):
+                signal = AlphaSignal(
+                    timestamp=current_bar.name,
+                    symbol=symbol,
+                    signal_type="BREAKOUT",
+                    direction=1,
+                    confidence=min(0.95, current_bar['zscore'] / 5.0 + 0.1 * (70 - rsi) / 70),
+                    entry_price=current_bar['close'],
+                    stop_loss=current_bar['low'],
+                    take_profit=current_bar['close'] + (current_bar['close'] - current_bar['low']) * 2,
+                    volume_confidence=current_bar['zscore'] / 3.0,
+                    swing_confirmation=current_bar['swing_up_strength'] > 0,
+                    institutional_flow=True
+                )
+                signals.append(signal)
+            elif (current_bar['institutional'] and
+                  prev_bar['institutional'] and
+                  ((current_bar['close'] < current_bar['open'] and two_bars_ago['close'] > two_bars_ago['open']) or
+                   (current_bar['close'] > current_bar['open'] and two_bars_ago['close'] < two_bars_ago['open'])) and
+                  rsi > 30 and rsi < 70):
+                direction = 1 if current_bar['close'] > current_bar['open'] else -1
+                signal = AlphaSignal(
+                    timestamp=current_bar.name,
+                    symbol=symbol,
+                    signal_type="REVERSAL",
+                    direction=direction,
+                    confidence=0.7 + 0.2 * abs(macd_hist),
+                    entry_price=current_bar['close'],
+                    stop_loss=current_bar['low'] if direction == 1 else current_bar['high'],
+                    take_profit=current_bar['close'] + (current_bar['close'] - current_bar['low']) * 1.5 * direction,
+                    volume_confidence=(current_bar['zscore'] + prev_bar['zscore']) / 6.0,
+                    swing_confirmation=True,
+                    institutional_flow=True
+                )
+                signals.append(signal)
+        return signals
+
+# === 5. MARKET PROFILE ===
+class MarketProfile:
+    def calculate_profile(self, df: pd.DataFrame) -> Dict:
+        prices, volumes = df['close'].values, df['volume'].values
+        price_volume = {}
+        for p, v in zip(prices, volumes):
+            price_volume[p] = price_volume.get(p, 0) + v
+        sorted_prices = sorted(price_volume.keys())
+        total_volume = sum(price_volume.values())
+        target_volume = total_volume * 0.7
+        current_volume, value_prices = 0, []
+        for p in sorted_prices:
+            current_volume += price_volume[p]
+            value_prices.append(p)
+            if current_volume >= target_volume:
+                break
+        return {
+            'poc': max(price_volume, key=price_volume.get),
+            'value_area_low': min(value_prices),
+            'value_area_high': max(value_prices)
+        }
+
+# === 6. RISK MANAGEMENT ===
+class RiskManager:
+    def __init__(self, max_risk: float = 0.01):
+        self.max_risk = max_risk
+        self.max_open_trades = 3
+
+    def calculate_lots(self, equity: float, df: pd.DataFrame, sl_points: float) -> float:
+        vol = df['close'].pct_change().std() * np.sqrt(252) if len(df) > 1 else 0.01
+        cvar = self._compute_cvar(df['close'].pct_change().dropna())
+        allocation = self.max_risk / vol
+        lots = (equity * allocation) / (sl_points * df['close'].iloc[-1])
+        return max(0.01, lots * (1 - abs(cvar)))
+
+    def _compute_cvar(self, returns: pd.Series, alpha: float = 0.95) -> float:
+        if len(returns) == 0:
+            return 0.0
+        var = np.percentile(returns, 100 * (1 - alpha))
+        return returns[returns <= var].mean() if len(returns[returns <= var]) > 0 else var
+
+    def calculate_dynamic_stop_loss(self, df: pd.DataFrame, direction: int) -> float:
+        atr = (df['high'] - df['low']).mean() * 2 if len(df) > 0 else 0.01
+        return df['close'].iloc[-1] - atr if direction == 1 else df['close'].iloc[-1] + atr
+
+# === 7. EXECUÇÃO E AUDIT ===
+class ExecutionEngine:
+    def __init__(self, initializer: SystemInitializer):
+        self.exchanges = initializer.exchanges
+        self.logger = AuditLogger()
+        self.mt5_connected = initializer.mt5_connected
+
+    async def execute_order(self, symbol: str, side: str, lots: float) -> Dict:
+        start = time.time_ns()
+        if self.mt5_connected:
+            try:
+                request = {
+                    "action": mt5.TRADE_ACTION_DEAL,
+                    "symbol": symbol,
+                    "volume": lots,
+                    "type": mt5.ORDER_TYPE_BUY if side == 'buy' else mt5.ORDER_TYPE_SELL,
+                    "price": mt5.symbol_info_tick(symbol).ask if side == 'buy' else mt5.symbol_info_tick(symbol).bid,
+                    "type_time": mt5.ORDER_TIME_GTC,
+                    "type_filling": mt5.ORDER_FILLING_IOC
+                }
+                result = mt5.order_send(request)
+                if result.retcode != mt5.TRADE_RETCODE_DONE:
+                    raise Exception(f"Falha na ordem: {result.comment}")
+                latency = (time.time_ns() - start) / 1e9
+                result = {'status': 'filled', 'order_id': result.order, 'latency': latency}
+                self.logger.log(result)
+                return result
+            except Exception as e:
+                self.logger.log({'error': str(e), 'platform': 'MT5'})
+        for name, exchange in self.exchanges.items():
+            try:
+                order = await exchange.create_market_order(symbol, side, lots)
+                latency = (time.time_ns() - start) / 1e9
+                result = {'status': 'filled', 'order_id': order['id'], 'latency': latency}
+                self.logger.log(result)
+                return result
+            except Exception as e:
+                self.logger.log({'error': str(e), 'exchange': name})
+        return {'status': 'failed'}
+
+class AuditLogger:
+    def __init__(self):
+        self.chain = []
+        self.redis = redis.Redis(host='localhost', port=6379, decode_responses=True)
+
+    def log(self, data: Dict):
+        previous_hash = self.chain[-1]['hash'] if self.chain else 'genesis'
+        block = {'data': data, 'timestamp': time.time()}
+        block['hash'] = hashlib.sha256(f"{json.dumps(block)}{previous_hash}".encode()).hexdigest()
+        self.chain.append(block)
+        self.redis.lpush('audit_log', json.dumps(block))
+        pd.DataFrame([block]).to_csv('audit_log.csv', mode='a', index=False)
+
+    def generate_report(self, metrics: Dict) -> Dict:
+        win_rate = (metrics['winning_signals'] / metrics['signals_triggered'] * 100) if metrics['signals_triggered'] > 0 else 0
+        return {
+            'signals_generated': metrics['signals_generated'],
+            'signals_triggered': metrics['signals_triggered'],
+            'win_rate': win_rate,
+            'roi': metrics.get('roi', 0.0),
+            'sharpe_ratio': metrics.get('sharpe_ratio', 0.0),
+            'max_drawdown': metrics.get('max_drawdown', 0.0)
+        }
+
+# === 8. BACKTESTING ===
+class Backtester:
+    def backtest(self, df: pd.DataFrame, strategy_func) -> Dict:
+        if df.empty:
+            return {'sharpe': 0, 'max_dd': 0, 'total_return': 0}
+        pf = vbt.Portfolio.from_signals(
+            df['close'], entries=strategy_func(df) == 'BUY', exits=strategy_func(df) == 'SELL',
+            freq='1min', init_cash=100000, fees=0.001, slippage=0.0005
+        )
+        return {
+            'sharpe': pf.sharpe_ratio(),
+            'max_dd': pf.max_drawdown(),
+            'total_return': pf.total_return()
+        }
+
+# === 9. MACRO DATA ===
+class MacroData:
+    def fetch_fred_data(self, series_id: str = 'VIXCLS') -> float:
+        try:
+            url = f'https://api.stlouisfed.org/fred/series/observations?series_id={series_id}&api_key={FRED_API_KEY}&file_type=json'
+            response = requests.get(url).json()
+            return float(response['observations'][-1]['value'])
+        except:
+            return 20.0
+
+# === 10. VISUALIZAÇÃO ===
+class MarketVisualizer:
+    def create_chart(self, df: pd.DataFrame, symbol: str, signals: List[AlphaSignal]) -> go.Figure:
+        fig = make_subplots(rows=3, cols=1, shared_xaxes=True, vertical_spacing=0.05, row_heights=[0.5, 0.25, 0.25])
+        fig.add_trace(go.Candlestick(
+            x=df['timestamp'],
+            open=df['open'],
+            high=df['high'],
+            low=df['low'],
+            close=df['close'],
+            name='OHLC'
+        ), row=1, col=1)
+        fig.add_trace(go.Scatter(x=df['timestamp'], y=df['BB_Upper'], name='BB Upper', line=dict(color='red')), row=1, col=1)
+        fig.add_trace(go.Scatter(x=df['timestamp'], y=df['BB_Middle'], name='BB Middle', line=dict(color='blue')), row=1, col=1)
+        fig.add_trace(go.Scatter(x=df['timestamp'], y=df['BB_Lower'], name='BB Lower', line=dict(color='green')), row=1, col=1)
+        signal_times = [s.timestamp for s in signals]
+        signal_prices = [s.entry_price for s in signals]
+        signal_types = [s.signal_type for s in signals]
+        fig.add_trace(go.Scatter(
+            x=signal_times, y=signal_prices, mode='markers', name='Signals',
+            marker=dict(size=10, symbol='triangle-up', color='yellow')
+        ), row=1, col=1)
+        fig.add_trace(go.Scatter(x=df['timestamp'], y=df['RSI'], name='RSI', line=dict(color='purple')), row=2, col=1)
+        fig.add_trace(go.Scatter(x=df['timestamp'], y=df['MACD'], name='MACD', line=dict(color='blue')), row=3, col=1)
+        fig.add_trace(go.Scatter(x=df['timestamp'], y=df['MACD_Signal'], name='MACD Signal', line=dict(color='orange')), row=3, col=1)
+        fig.add_trace(go.Bar(x=df['timestamp'], y=df['MACD_Hist'], name='MACD Hist'), row=3, col=1)
+        fig.update_layout(
+            title=f'Análise de Mercado - {symbol}',
+            yaxis_title='Preço',
+            yaxis2_title='RSI',
+            yaxis3_title='MACD',
+            xaxis_rangeslider_visible=False,
+            height=1000
+        )
+        return fig
+
+# === 11. SISTEMA PRINCIPAL ===
+class SkyLabQuantNavigator:
+    def __init__(self):
+        self.initializer = SystemInitializer()
+        self.detector = BigPlayerDetector()
+        self.signal_generator = AlphaSignalGenerator()
+        self.profile = MarketProfile()
+        self.risk = RiskManager()
+        self.execution = ExecutionEngine(self.initializer)
+        self.backtester = Backtester()
+        self.macro = MacroData()
+        self.visualizer = MarketVisualizer()
+        self.performance_metrics = self.initializer.performance
+        self.agents = {
+            'PortfolioManagerAgent': {'status': 'active', 'responsible': 'Dr. Thomas Lee'},
+            'RiskAnalyzerAgent': {'status': 'active', 'responsible': 'Dr. William Taylor'},
+            'MarketMonitorAgent': {'status': 'active', 'responsible': 'Dr. Yuki Tanaka'},
+            'ReportGeneratorAgent': {'status': 'active', 'responsible': 'Dr. Thomas Lee'},
+            'TradingExecutorAgent': {'status': 'active', 'responsible': 'Dr. Michael Chen'},
+            'DataValidatorAgent': {'status': 'active', 'responsible': 'Dr. Sarah Kim'},
+            'StopLossManagerAgent': {'status': 'active', 'responsible': 'Dr. William Taylor'},
+            'MT5IntegrationAgent': {'status': 'active', 'responsible': 'Dr. Sarah Kim'},
+            'IAEngine': {'status': 'active', 'responsible': 'Dr. Thomas Lee'},
+            'DynamicRebalanceAgent': {'status': 'active', 'responsible': 'Dr. Thomas Lee'},
+            'TrendDetectionAgent': {'status': 'active', 'responsible': 'Dr. Yuki Tanaka'},
+            'CandlestickAnalysisAgent': {'status': 'active', 'responsible': 'Dr. Yuki Tanaka'},
+            'QuantitativeModelingAgent': {'status': 'active', 'responsible': 'Dr. Peter Wave'},
+            'PatternRecognitionAgent': {'status': 'active', 'responsible': 'Dr. Peter Wave'},
+            'InstitutionalMonitorAgent': {'status': 'active', 'responsible': 'Dr. Lisa Chen'},
+            'QuantumCorrelationAgent': {'status': 'active', 'responsible': 'Dra. Marie Quantum'}
+        }
+        self.realtime_data = {}
+
+    async def initialize(self):
+        await self.initializer.connect_exchanges()
+        self.initializer.zmq_sub.connect("tcp://localhost:5555")
+        self.initializer.zmq_sub.setsockopt_string(zmq.SUBSCRIBE, "")
+        self.initializer.zmq_pub.bind("tcp://*:5556")
+        threading.Thread(target=self._monitor, daemon=True).start()
+        print("🚀 Sky Lab Quant Navigator v3.0 - Produção")
+
+    async def fetch_data(self, symbol: str, timeframe: str = '1m', limit: int = 1000) -> pd.DataFrame:
+        if self.initializer.mt5_connected:
+            try:
+                timeframe_map = {'1m': mt5.TIMEFRAME_M1, '5m': mt5.TIMEFRAME_M5, '1h': mt5.TIMEFRAME_H1}
+                rates = mt5.copy_rates_from_pos(symbol, timeframe_map.get(timeframe, mt5.TIMEFRAME_M1), 0, limit)
+                if rates is not None:
+                    df = pd.DataFrame(rates)
+                    df['timestamp'] = pd.to_datetime(df['time'], unit='s')
+                    df = df.drop(columns=['time', 'tick_volume', 'spread', 'real_volume'])
+                    return df
+            except:
+                pass
+        for exchange in self.initializer.exchanges.values():
+            try:
+                ohlcv = await exchange.fetch_ohlcv(symbol, timeframe, limit=limit)
+                df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
+                df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
+                return df
+            except:
+                continue
+        return pd.DataFrame()
+
+    def update_realtime_data(self, symbol: str, data: Dict):
+        candle = data.get('k', {})
+        if not candle:
+            return
+        df = pd.DataFrame([{
+            'timestamp': pd.to_datetime(candle['t'], unit='ms'),
+            'open': float(candle['o']),
+            'high': float(candle['h']),
+            'low': float(candle['l']),
+            'close': float(candle['c']),
+            'volume': float(candle['v'])
+        }])
+        self.realtime_data[symbol] = df if symbol not in self.realtime_data else pd.concat([self.realtime_data[symbol], df]).tail(1000)
+
+    async def scan_big_players(self, symbols: List[str], asset_type: Optional[str] = None, min_volume: float = 1_000_000) -> Dict:
+        if symbols == ['all']:
+            symbols = await self.initializer.list_all_symbols(asset_type, min_volume)
+        results = {}
+        vix = self.macro.fetch_fred_data()
+        batch_size = 100
+        for symbol in symbols:
+            self.initializer.start_websocket(symbol, lambda data: self.update_realtime_data(symbol, data))
+        for i in range(0, len(symbols), batch_size):
+            batch = symbols[i:i + batch_size]
+            tasks = [self._process_symbol(symbol, vix) for symbol in batch]
+            batch_results = await asyncio.gather(*tasks, return_exceptions=True)
+            for symbol, result in zip(batch, batch_results):
+                if isinstance(result, dict):
+                    results[symbol] = result
+                else:
+                    results[symbol] = {'status': 'error', 'message': str(result)}
+        return results
+
+    async def _process_symbol(self, symbol: str, vix: float) -> Dict:
+        df = self.realtime_data.get(symbol, await self.fetch_data(symbol))
+        if df.empty:
+            return {'status': 'no_data'}
+        exchange = list(self.initializer.exchanges.values())[0] if self.initializer.exchanges else None
+        detection = await self.detector.detect_big_players(df, exchange, symbol)
+        detection['vix_adjusted'] = detection['confidence'] * (1 if vix < 20 else 0.8)
+        signals = await self.signal_generator.generate_signals(df, symbol)
+        high_confidence_signals = [s for s in signals if s.confidence > 0.6 and s.volume_confidence > 0.5]
+        self.performance_metrics['signals_generated'] += len(signals)
+        self.performance_metrics['signals_triggered'] += len(high_confidence_signals)
+        profile = self.profile.calculate_profile(df)
+        lots = self.risk.calculate_lots(100000, df, 100)
+        signal = "BUY" if detection['is_big_player'] and df['close'].iloc[-1] > profile['value_area_high'] else \
+                 "SELL" if detection['is_big_player'] and df['close'].iloc[-1] < profile['value_area_low'] else "HOLD"
+        if signal != "HOLD" and self.risk.max_open_trades > len(self._get_open_trades()):
+            order = await self.execution.execute_order(symbol, signal.lower(), lots)
+            if order['status'] == 'filled':
+                self.performance_metrics['winning_signals'] += 1
+            else:
+                self.performance_metrics['losing_signals'] += 1
+        else:
+            order = {'status': 'no_action'}
+        bt_results = self.backtester.backtest(df, lambda d: "BUY" if detection['is_big_player'] else "HOLD")
+        result = {
+            'big_player': detection,
+            'signals': [vars(s) for s in high_confidence_signals],
+            'signal': signal,
+            'lots': lots,
+            'profile': profile,
+            'order': order,
+            'backtest': bt_results,
+            'vix': vix,
+            'agents': {k: v['status'] for k, v in self.agents.items()}
+        }
+        self.execution.logger.log(result)
+        self.initializer.zmq_pub.send_json({
+            'symbol': symbol,
+            'defense_signal': signal,
+            'price': df['close'].iloc[-1],
+            'hurst': detection['hurst'],
+            'liquidity': detection['volume_ratio'] * detection['order_imbalance'],
+            'defense_line': profile['poc'],
+            'signals': [vars(s) for s in high_confidence_signals],
+            'agents': {k: v['status'] for k, v in self.agents.items()}
+        })
+        return result
+
+    def _get_open_trades(self) -> List:
+        if self.initializer.mt5_connected:
+            return mt5.positions_get()
+        return []
+
+    def _monitor(self):
+        while True:
+            self.initializer.monitor_performance()
+            report = self.execution.logger.generate_report(self.performance_metrics)
+            self.execution.logger.log({'performance_report': report})
+            time.sleep(60)
+
+# === 12. API COM SEGURANÇA ===
+app = Flask(__name__)
+system = SkyLabQuantNavigator()
+
+def require_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        if not token:
+            return jsonify({'error': 'Token required'}), 401
+        try:
+            jwt.decode(token.replace('Bearer ', ''), JWT_SECRET, algorithms=['HS256'])
+        except:
+            return jsonify({'error': 'Invalid token'}), 401
+        return f(*args, **kwargs)
+    return decorated
+
+@app.route('/scan_bigplayers', methods=['GET'])
+@require_auth
+async def scan_endpoint():
+    symbols = request.args.get('symbols', 'BTC/USDT,ETH/USDT,EURUSD').split(',')
+    asset_type = request.args.get('asset_type', None)
+    min_volume = float(request.args.get('min_volume', 1_000_000))
+    result = await system.scan_big_players(symbols, asset_type, min_volume)
+    return jsonify(result)
+
+@app.route('/trade', methods=['GET'])
+@require_auth
+async def trade_endpoint():
+    symbol = request.args.get('symbol', 'BTC/USDT')
+    result = (await system.scan_big_players([symbol]))[symbol]
+    return jsonify(result)
+
+@app.route('/visualize', methods=['GET'])
+@require_auth
+async def visualize_endpoint():
+    symbol = request.args.get('symbol', 'BTC/USDT')
+    df = await system.fetch_data(symbol)
+    if df.empty:
+        return jsonify({'error': 'No data available'}), 400
+    signals = await system.signal_generator.generate_signals(df, symbol)
+    fig = system.visualizer.create_chart(df, symbol, signals)
+    return jsonify(fig.to_dict())
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({'status': 'healthy', 'exchanges': list(system.initializer.exchanges.keys())})
+
+@app.route('/performance', methods=['GET'])
+@require_auth
+def performance_endpoint():
+    return jsonify(system.execution.logger.generate_report(system.performance_metrics))
+
+# === 13. EXECUÇÃO ===
+async def main():
+    await system.initialize()
+    server = threading.Thread(target=app.run, kwargs={'host': '0.0.0.0', 'port': 5000, 'debug': False})
+    server.daemon = True
+    server.start()
+    print("🌌 Sky Lab Quant Navigator v3.0 - Aguardando scans...")
+    while True:
+        await asyncio.sleep(0.1)
+
+if __name__ == "__main__":
+    asyncio.run(main())

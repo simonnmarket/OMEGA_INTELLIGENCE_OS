@@ -1,0 +1,162 @@
+Documento Técnico – Módulo de Análise Microestrutural
+
+Versão 1.0 – Footprint + Market Profile + Microestrutura
+
+1. Objetivo
+
+Desenvolver uma plataforma analítica / módulo interno capaz de analisar microestrutura de mercado e gerar sinais de fluxo e valor — combinando dados de order-flow (footprint), liquidez e distribuições de volume/preço (market/volume profile e estrutura de livro de ordens) — com a robustez e padrões de produção usados por instituições financeiras, bancos globais e vendors profissionais. Este documento serve como base fundacional, com especificações técnicas, metodológicas, arquiteturais e de validação.
+
+2. Escopo
+
+Inclui:
+
+Fundamentação teórica e mercado real (microestrutura, volume profile, order flow)
+
+Evidências de uso institucional e acadêmico
+
+Definição clara de indicadores, features e componentes do módulo
+
+Arquitetura de dados, pipeline e camadas lógicas
+
+Especificações de métricas e modelo de análise / decisão
+
+Metodologias de validação quantitativa / estatística
+
+Checklist de qualidade, requisitos mínimos e boas práticas
+
+Roadmap de desenvolvimento
+
+Não inclui, nesta fase:
+
+Código final
+
+Deploy de produção
+
+Estratégias proprietárias de trading/execution
+
+3. Fundamento Teórico & Justificativa
+3.1 Microestrutura de Mercado e Impacto do Order Flow
+
+Teoria e evidência acadêmica demonstram que o fluxo de ordens assinado (buy- vs sell-initated orders) impacta a formação de preços no curtíssimo prazo, e que características do livro de ordens (depth, liquidez, desequilíbrios) são determinantes para a dinâmica de preço.
+
+Modelos modernos refinam esse impacto para cenários com liquidez variável e diferentes regimes de volatilidade, mostrando que o impacto permanente de trades depende da liquidez local e histórico recente.
+
+3.2 Market / Volume Profile — Contexto de Valor e Estrutura de Mercado
+
+O conceito de Market Profile (desenvolvido por Peter Steidlmayer / Jim Dalton) fornece uma representação gráfica da ação do mercado como um leilão contínuo, permitindo identificar zonas de valor, POC (ponto de controle), Value Area (≈ 70% do volume/TPO), HVN/LVN (nós de alto/baixo volume).
+
+Market Profile ajuda a contextualizar preço: garante que não se analise apenas movimento de preço puro, mas sim se o movimento ocorre dentro de uma zona de valor, se há migração de valor, rejeição ou aceitação do novo nível, etc.
+
+3.3 Por que a Fusão Footprint + Market Profile é Justificável
+
+Combinar:
+
+Footprint / Order-Flow / LOB analytics — visões ultra-micro (nível de ordem, agressor, delta, liquidez dinâmica)
+
+Profile (Volume/Market) — visão estrutural, macro (níveis de valor, consenso de mercado, zonas institucionais)
+
+Isso permite capturar tanto a intenção imediata e agressiva (quem está pressionando o mercado agora) quanto a estrutura de valor e aceitação/rejeição institucional — essencial para distinguir movimentos de curto prazo de movimentos estruturais, proteger contra falsos sinais, e gerar sinais com maior probabilidade de persistência ou reversão.
+
+4. Evidência de Uso Real & Ferramentas
+
+Ferramentas profissionais/vendores como Bookmap usam heatmap de liquidez, order-flow footprint e detecção de “absorption / spoofing / liquidity voids”. Essas ferramentas são adotadas em trading desks, market-making e por traders institucionais.
+
+Market Profile continua sendo estudado e utilizado por traders profissionais como uma referência de valor, estrutura de mercado e comportamento institucional.
+
+Modelos acadêmicos recentes (ex: “Measuring price impact and information content of trades in a time-varying setting”) mostram que é possível modelar dinamicamente o impacto e informação de trades com dados microestruturais — suporte para usar order flow como variável analítica e quantitativa.
+
+Conclusão parcial: o uso combinado de order-flow/footprint + profile/volume, e análise de microestrutura, é prática real de mercado e tem respaldo teórico/empírico. A maioria das heurísticas específicas — thresholds, detecção de “absorption”, regras de entrada/saída — é proprietária, mas os fundamentos são públicos e documentados.
+
+5. Especificação Técnica do Módulo — Estrutura / Componentes
+5.1 Camadas / Módulos Lógicos
+
+Data Ingestion / Normalization Layer
+
+Fontes: trades tick-by-tick; best bid/ask (top-of-book); optionally multi-level LOB (nivéis de profundidade)
+
+Campos: timestamp (ms/µs), price, size, aggressor side (buy/sell) ou reconstrução via bid/ask + trade price
+
+Normalização e limpeza de dados; timezone, sessão, ativos
+
+Feature / Indicator Engine (Real-time + Aggregation)
+
+Footprint / Order Flow features: delta por nível, delta por candle, cumulative delta (CD), imbalance por nível, volume agressor vs passivo, detecção de picos (“spikes”) de volume, heatmap de liquidez, liquidez/ depth changes
+
+Profile features: Volume Profile & Market Profile por sessão/janela — POC, Value Area (VAH/VAL), High-Volume Nodes (HVN), Low-Volume Nodes (LVN), distribuição de volume por preço, shifts de POC/VA across janelas
+
+Signal Engine / Event Detector
+
+Lógica para identificar eventos com base em combinações de features: spikes, imbalance, absorption, POC shifts, breaks de valor, reentradas em value-area, rejeições, confirmações directionais, reversões etc.
+
+Regras configuráveis (thresholds, janelas de tempo, volume mínimo, condições de liquidez)
+
+Backtesting & Quant / Statistical Validation Layer
+
+Modelos estatísticos: regressão (logística, linear), classification (árvores, ML), teste de hipótese, predição de persistência (direção do movimento nas próximas N barras) com features do candle / perfil / flow
+
+Métricas: hit rate, retornos brutos e net of cost (impacto + slippage), significância estatística (p-value, AUC, etc.), robustez por regime de volatilidade
+
+Production / API / Interface / Monitoramento
+
+APIs para consulta de sinais, dashboards de visualização (heatmap + profile + price), logs, alertas, monitoramento de dados/latência/qualidade
+
+6. Métricas, Modelos e Validação Quantitativa
+
+Variável de interesse (“target”): persistência de movimento direcional após evento (ex.: retorno em N barras, direção do preço, mudança de POC/VA, etc.)
+
+Features preditoras: delta, cumulative delta, imbalance, volume at price nodes, shift de POC, depth changes, liquidity imbalances, contexto de profile (dentro/outside value area), volatilidade e liquidez local, padrão de heatmap (ex.: liquidez estática vs variação)
+
+Modelos estatísticos / ML: regressão logística ou linear, random forest / gradient boosting, possivelmente redes/neural nets para predição intraday, com validação out-of-sample, cross-validation, controle de overfitting
+
+Testes de robustez: across ativos (futuros, ações, FX), across sessões/volatilidade, across liquidity regimes, out-of-time-period; stress-test com eventos de alta volatilidade; análise de risco/benefício “net-of-cost” (impacto, slippage) — importante para adoção real institucional
+
+7. Requisitos de Dados e Infraestrutura
+
+Acesso a dados de alta frequência (tick-by-tick) e, idealmente, livro de ordens (LOB) — para reconstrução de agressor e profundidade real
+
+Latência baixa (preferencialmente < 20–50 ms para uso real-time)
+
+Storage eficiente (timeseries + histogramas / aggregates)
+
+Pipeline de ingestão, normalização, agregação e armazenamento com logs e monitoramento
+
+Ferramentas para backtesting com dados históricos (trade + book)
+
+8. Boas Práticas / Checklist de Qualidade
+
+Garantir integridade e consistência dos dados (timestamps, sincronização)
+
+Evitar vieses de look-ahead: só usar dados disponíveis no momento da decisão
+
+Separar claramente dados de treino / validação / produção
+
+Monitorar drift de dados (liquidez, volume, comportamento de mercado)
+
+Validar economicamente os sinais (net-of-cost, risco vs retorno)
+
+Documentar parâmetros, thresholds e lógica de negócio de forma transparente
+
+Modularidade: permitir desabilitar/alterar componentes (footprint-only, profile-only, mixed) para testes
+
+9. Roadmap Proposto
+Etapa	Objetivo
+Fundação (com este documento)	Documentação formal da arquitetura, escopo, requisitos, teoria e plano geral — concluído (versão 1.0)
+MVP	Implementar engine de footprint + volume/profile + cálculo de features básicas + visualização simples
+Backtesting & Validação Quant	Rodar histórico, estimar modelos, avaliar performance de sinais, gerar relatórios de métricas
+Refinamento & Produção Interna	API / dashboards / monitoramento / logs / alertas / interface para equipe quant/trading
+Versão Comercial / Escalável	Escalabilidade, documentação completa, testes automáticos, modularidade, deploy, compliance / auditoria interna
+10. Principais Referências e Fontes
+
+Livro/teoria Market Profile — Markets in Profile / Mind Over Markets — as bases conceituais de POC, Value Area, TPO, acceptance/rejection, etc.
+
+Artigos técnicos e guias de plataformas de order-flow / heatmap (ex: Bookmap) — uso prático de footprint, absorption, liquidez dinâmica, detecção de spoofing/voids.
+
+Pesquisa acadêmica recente sobre impacto de trades e microestrutura (“Measuring price impact and information content of trades in a time-varying setting”) — evidencia empírica de que order flow/trades têm impacto significativo e variam com liquidez e contexto.
+
+Literatura de microestrutura clássica — explicação teórica de como trades, LOB e dinâmica de liquidez influenciam preço e formação de mercado.
+
+Guias e artigos práticos sobre market profile, volume profile e uso institucional de profiling para estrutura de mercado, níveis de valor, zonas de suporte/resistência dinâmica.
+
+11. Conclusão
+
+Este documento representa a fundação técnica e conceitual — com padrões de qualidade global, práticas de mercado, suporte acadêmico e arquitetura de engenharia — para construir um módulo de análise microestrutural robusto, confiável e adaptável. A base está pronta para seguir para implementação, testes e validação institucional. A fusão de order-flow / footprint + market/volume profile + análise de liquidez / microestrutura oferece, em tese e na prática, a melhor combinação de visão de curto prazo (agressividade de ordens) e estrutura de valor / aceitação institucional — essencial para decisões de trading, execução, risco e estratégia.

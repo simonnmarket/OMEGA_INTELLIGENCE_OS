@@ -1,0 +1,2258 @@
+{
+  "data_verificacao": "2025-12-19T23:57:59.188994",
+  "sistema": "Aurora v5.0",
+  "versao": "5.0.2",
+  "total_modulos_encontrados": 240,
+  "modulos_operacionais": 240,
+  "modulos_com_falha": 0,
+  "taxa_sucesso_percent": 100.0,
+  "status_final": "aprovado_100_percent",
+  "modulos_detalhados": [
+    {
+      "modulo": "00-Governanca\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:57:59.419092",
+      "tamanho_bytes": 16,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "00-Governanca\\audit_system_complete.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:57:59.630025",
+      "tamanho_bytes": 41901,
+      "linhas_codigo": 1027
+    },
+    {
+      "modulo": "00-Governanca\\complete_activation_final.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:57:59.768999",
+      "tamanho_bytes": 5768,
+      "linhas_codigo": 173
+    },
+    {
+      "modulo": "00-Governanca\\complexity_guard.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:57:59.904763",
+      "tamanho_bytes": 16668,
+      "linhas_codigo": 419
+    },
+    {
+      "modulo": "00-Governanca\\fix_report_errors.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:00.064892",
+      "tamanho_bytes": 6546,
+      "linhas_codigo": 183
+    },
+    {
+      "modulo": "00-Governanca\\generate_complete_report.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:00.238142",
+      "tamanho_bytes": 29431,
+      "linhas_codigo": 786
+    },
+    {
+      "modulo": "00-Governanca\\generate_complete_technical_report.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:00.413260",
+      "tamanho_bytes": 19453,
+      "linhas_codigo": 488
+    },
+    {
+      "modulo": "00-Governanca\\generate_technical_report.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:00.579792",
+      "tamanho_bytes": 15004,
+      "linhas_codigo": 406
+    },
+    {
+      "modulo": "00-Governanca\\generate_ultra_complete_report.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:00.714811",
+      "tamanho_bytes": 45466,
+      "linhas_codigo": 1049
+    },
+    {
+      "modulo": "00-Governanca\\genesis_includes.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:00.850749",
+      "tamanho_bytes": 8848,
+      "linhas_codigo": 254
+    },
+    {
+      "modulo": "00-Governanca\\genesis_includes_v3_complete.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:01.001488",
+      "tamanho_bytes": 26700,
+      "linhas_codigo": 657
+    },
+    {
+      "modulo": "00-Governanca\\governance_module.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:01.181381",
+      "tamanho_bytes": 7010,
+      "linhas_codigo": 190
+    },
+    {
+      "modulo": "00-Governanca\\integration_gate_v2.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:01.322613",
+      "tamanho_bytes": 16021,
+      "linhas_codigo": 416
+    },
+    {
+      "modulo": "00-Governanca\\integration_gate_v3.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:01.514254",
+      "tamanho_bytes": 35457,
+      "linhas_codigo": 876
+    },
+    {
+      "modulo": "00-Governanca\\process_fix_file.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:01.682762",
+      "tamanho_bytes": 17241,
+      "linhas_codigo": 456
+    },
+    {
+      "modulo": "00-Governanca\\quantum_firewall.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:01.830243",
+      "tamanho_bytes": 9384,
+      "linhas_codigo": 247
+    },
+    {
+      "modulo": "00-Governanca\\regulatory_context.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:01.991729",
+      "tamanho_bytes": 7666,
+      "linhas_codigo": 207
+    },
+    {
+      "modulo": "00-Governanca\\restore_executive_report.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:02.154608",
+      "tamanho_bytes": 13304,
+      "linhas_codigo": 399
+    },
+    {
+      "modulo": "00-Governanca\\run_complete_audit.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:02.330427",
+      "tamanho_bytes": 3468,
+      "linhas_codigo": 106
+    },
+    {
+      "modulo": "00-Governanca\\script_1_command_injection_test.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:02.514539",
+      "tamanho_bytes": 7043,
+      "linhas_codigo": 180
+    },
+    {
+      "modulo": "00-Governanca\\script_2_smoke_test_critical_modules.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:02.689810",
+      "tamanho_bytes": 7085,
+      "linhas_codigo": 187
+    },
+    {
+      "modulo": "00-Governanca\\script_3_compliance_quick_validator.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:02.889943",
+      "tamanho_bytes": 8374,
+      "linhas_codigo": 210
+    },
+    {
+      "modulo": "00-Governanca\\script_4_integration_score_calculator.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:03.047594",
+      "tamanho_bytes": 7280,
+      "linhas_codigo": 190
+    },
+    {
+      "modulo": "00-Governanca\\script_5_master_test_runner.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:03.220008",
+      "tamanho_bytes": 7471,
+      "linhas_codigo": 220
+    },
+    {
+      "modulo": "00-Governanca\\test_module_v2.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:03.383061",
+      "tamanho_bytes": 5503,
+      "linhas_codigo": 133
+    },
+    {
+      "modulo": "00-Governanca\\tier1_risk_validator.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:03.554683",
+      "tamanho_bytes": 7645,
+      "linhas_codigo": 189
+    },
+    {
+      "modulo": "00-Governanca\\validate_upgrade_proposal.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:03.739566",
+      "tamanho_bytes": 15483,
+      "linhas_codigo": 398
+    },
+    {
+      "modulo": "01-Departamentos\\AGENTS\\CEO_Agent.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:03.924643",
+      "tamanho_bytes": 10658,
+      "linhas_codigo": 265
+    },
+    {
+      "modulo": "01-Departamentos\\AGENTS\\CFO_Agent.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:04.103093",
+      "tamanho_bytes": 4084,
+      "linhas_codigo": 116
+    },
+    {
+      "modulo": "01-Departamentos\\AGENTS\\CKO_Agent.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:04.296483",
+      "tamanho_bytes": 1481,
+      "linhas_codigo": 40
+    },
+    {
+      "modulo": "01-Departamentos\\AGENTS\\CTO_Agent.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:04.443012",
+      "tamanho_bytes": 1195,
+      "linhas_codigo": 34
+    },
+    {
+      "modulo": "01-Departamentos\\Compliance-Audit\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:04.595613",
+      "tamanho_bytes": 25,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Compliance-Audit\\audit_trail.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:04.810340",
+      "tamanho_bytes": 39,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Compliance-Audit\\compliance_module.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:05.016988",
+      "tamanho_bytes": 19503,
+      "linhas_codigo": 502
+    },
+    {
+      "modulo": "01-Departamentos\\Compliance-Audit\\reg_tracker.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:05.190850",
+      "tamanho_bytes": 40,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Compliance-Audit\\report_generator.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:05.381001",
+      "tamanho_bytes": 38,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Engineering-Infra\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:05.533734",
+      "tamanho_bytes": 37,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Engineering-Infra\\api_gateway.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:05.712238",
+      "tamanho_bytes": 31,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Engineering-Infra\\core_engine.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:05.903627",
+      "tamanho_bytes": 35,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Engineering-Infra\\coreengine_module.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:06.038028",
+      "tamanho_bytes": 6872,
+      "linhas_codigo": 188
+    },
+    {
+      "modulo": "01-Departamentos\\Engineering-Infra\\data_layer.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:06.204729",
+      "tamanho_bytes": 38,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:06.396265",
+      "tamanho_bytes": 30,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\order_management.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:06.543137",
+      "tamanho_bytes": 31,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\smart_routing.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:06.729678",
+      "tamanho_bytes": 33,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategies\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:06.904936",
+      "tamanho_bytes": 470,
+      "linhas_codigo": 18
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategies\\alpha_momentum.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:07.089114",
+      "tamanho_bytes": 6597,
+      "linhas_codigo": 171
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategies\\base_strategy.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:07.256892",
+      "tamanho_bytes": 2341,
+      "linhas_codigo": 75
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategies\\breakout_detection.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:07.390927",
+      "tamanho_bytes": 6352,
+      "linhas_codigo": 155
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategies\\mean_reversion.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:07.531099",
+      "tamanho_bytes": 6158,
+      "linhas_codigo": 155
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategy_module.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:07.713498",
+      "tamanho_bytes": 8712,
+      "linhas_codigo": 231
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategy_modules\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:07.843286",
+      "tamanho_bytes": 18,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategy_modules\\interface.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:08.008129",
+      "tamanho_bytes": 46,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Execution-Trading\\strategy_modules\\templates\\strategy_template.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:08.167319",
+      "tamanho_bytes": 38,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Innovation-Lab\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:08.312446",
+      "tamanho_bytes": 21,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Innovation-Lab\\ab_testing.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:08.479910",
+      "tamanho_bytes": 23,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Innovation-Lab\\innovationlab_module.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:08.679078",
+      "tamanho_bytes": 17975,
+      "linhas_codigo": 456
+    },
+    {
+      "modulo": "01-Departamentos\\Innovation-Lab\\prototypes.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:08.864793",
+      "tamanho_bytes": 19,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Risk-Controls\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:09.015544",
+      "tamanho_bytes": 25,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Risk-Controls\\circuit_breakers.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:09.187515",
+      "tamanho_bytes": 34,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Risk-Controls\\risk_engine.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:09.357952",
+      "tamanho_bytes": 49,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Risk-Controls\\risk_module.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:09.520457",
+      "tamanho_bytes": 23501,
+      "linhas_codigo": 572
+    },
+    {
+      "modulo": "01-Departamentos\\Risk-Controls\\tier1_validator_v3.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:09.680629",
+      "tamanho_bytes": 19351,
+      "linhas_codigo": 505
+    },
+    {
+      "modulo": "01-Departamentos\\Risk-Controls\\tier1_validator_v3_complete.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:09.852437",
+      "tamanho_bytes": 36248,
+      "linhas_codigo": 875
+    },
+    {
+      "modulo": "01-Departamentos\\Treasury-Capital\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:10.022942",
+      "tamanho_bytes": 36,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Treasury-Capital\\allocation_engine.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:10.181544",
+      "tamanho_bytes": 34,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Treasury-Capital\\capital_manager.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:10.354177",
+      "tamanho_bytes": 45,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "01-Departamentos\\Treasury-Capital\\treasury_module.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:10.568120",
+      "tamanho_bytes": 12863,
+      "linhas_codigo": 304
+    },
+    {
+      "modulo": "02-Processos-Chave\\backtesting\\backtest_runner_v3.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:10.752210",
+      "tamanho_bytes": 47098,
+      "linhas_codigo": 1166
+    },
+    {
+      "modulo": "02-Processos-Chave\\CI-CD\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:10.910216",
+      "tamanho_bytes": 34,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "02-Processos-Chave\\CI-CD\\cicdpipeline_module.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:11.070726",
+      "tamanho_bytes": 25889,
+      "linhas_codigo": 630
+    },
+    {
+      "modulo": "02-Processos-Chave\\CI-CD\\stages\\deploy.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:11.251019",
+      "tamanho_bytes": 14,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "02-Processos-Chave\\CI-CD\\stages\\test.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:11.411955",
+      "tamanho_bytes": 12,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "02-Processos-Chave\\Incident-Response\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:11.574682",
+      "tamanho_bytes": 33,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "02-Processos-Chave\\Incident-Response\\incidentresponse_module.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:11.784383",
+      "tamanho_bytes": 21761,
+      "linhas_codigo": 555
+    },
+    {
+      "modulo": "02-Processos-Chave\\Onboarding\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:11.969336",
+      "tamanho_bytes": 17,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "02-Processos-Chave\\Onboarding\\counterparty_onboarding.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:12.127827",
+      "tamanho_bytes": 28,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "02-Processos-Chave\\Onboarding\\data_onboarding.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:12.318224",
+      "tamanho_bytes": 21,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "02-Processos-Chave\\Onboarding\\onboarding_module.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:12.490798",
+      "tamanho_bytes": 24132,
+      "linhas_codigo": 567
+    },
+    {
+      "modulo": "02-Processos-Chave\\Onboarding\\strategy_onboarding.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:12.654368",
+      "tamanho_bytes": 28,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "02-Processos-Chave\\QA-Backtesting\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:12.811447",
+      "tamanho_bytes": 33,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "02-Processos-Chave\\QA-Backtesting\\backtest_engine.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:12.982624",
+      "tamanho_bytes": 22,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "02-Processos-Chave\\QA-Backtesting\\qabacktesting_module.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:13.166563",
+      "tamanho_bytes": 23107,
+      "linhas_codigo": 539
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Execution-Window\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:13.353138",
+      "tamanho_bytes": 23,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Execution-Window\\executionwindow_module.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:13.527337",
+      "tamanho_bytes": 22376,
+      "linhas_codigo": 581
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Execution-Window\\throttling.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:13.705680",
+      "tamanho_bytes": 24,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Post-Trade\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:13.878154",
+      "tamanho_bytes": 32,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Post-Trade\\delta_reports.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:14.016750",
+      "tamanho_bytes": 30,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Post-Trade\\posttradereconciliation_module.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:14.168269",
+      "tamanho_bytes": 32738,
+      "linhas_codigo": 815
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Post-Trade\\reconciliation.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:14.315717",
+      "tamanho_bytes": 29,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Pre-Market\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:14.504741",
+      "tamanho_bytes": 27,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Pre-Market\\premarketchecklist_module.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:14.670006",
+      "tamanho_bytes": 16721,
+      "linhas_codigo": 425
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Real-Time-Dashboard\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:14.827978",
+      "tamanho_bytes": 26,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Real-Time-Dashboard\\dashboard.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:15.006069",
+      "tamanho_bytes": 21,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "03-Operacoes-Diarias\\Real-Time-Dashboard\\realtimedashboard_module.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:15.184985",
+      "tamanho_bytes": 28687,
+      "linhas_codigo": 734
+    },
+    {
+      "modulo": "04-Infraestrutura\\api\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:15.380152",
+      "tamanho_bytes": 577,
+      "linhas_codigo": 21
+    },
+    {
+      "modulo": "04-Infraestrutura\\api\\database.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:15.562804",
+      "tamanho_bytes": 4045,
+      "linhas_codigo": 132
+    },
+    {
+      "modulo": "04-Infraestrutura\\api\\endpoints\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:15.712971",
+      "tamanho_bytes": 473,
+      "linhas_codigo": 22
+    },
+    {
+      "modulo": "04-Infraestrutura\\api\\endpoints\\strategies.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:15.866837",
+      "tamanho_bytes": 6577,
+      "linhas_codigo": 203
+    },
+    {
+      "modulo": "04-Infraestrutura\\api\\main.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:16.028736",
+      "tamanho_bytes": 1015,
+      "linhas_codigo": 48
+    },
+    {
+      "modulo": "04-Infraestrutura\\database\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:16.204293",
+      "tamanho_bytes": 399,
+      "linhas_codigo": 18
+    },
+    {
+      "modulo": "04-Infraestrutura\\database\\connection.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:16.367431",
+      "tamanho_bytes": 2876,
+      "linhas_codigo": 107
+    },
+    {
+      "modulo": "04-Infraestrutura\\database\\models.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:16.584947",
+      "tamanho_bytes": 3036,
+      "linhas_codigo": 70
+    },
+    {
+      "modulo": "04-Infraestrutura\\ML_MODELS\\MetaLearningAdapter.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:16.743622",
+      "tamanho_bytes": 1294,
+      "linhas_codigo": 39
+    },
+    {
+      "modulo": "04-Infraestrutura\\ML_MODELS\\PPOExecutionOptimizer.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:16.930524",
+      "tamanho_bytes": 1396,
+      "linhas_codigo": 41
+    },
+    {
+      "modulo": "04-Infraestrutura\\ML_MODELS\\TemporalFusionTransformer.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:17.091179",
+      "tamanho_bytes": 6338,
+      "linhas_codigo": 172
+    },
+    {
+      "modulo": "04-Infraestrutura\\moduleregistry.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:17.230627",
+      "tamanho_bytes": 9438,
+      "linhas_codigo": 258
+    },
+    {
+      "modulo": "04-Infraestrutura\\tools\\cli\\ncnt_cli.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:17.369312",
+      "tamanho_bytes": 15,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "04-Infraestrutura\\tools\\scripts\\deploy.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:17.505830",
+      "tamanho_bytes": 18,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "04-Infraestrutura\\tools\\scripts\\monitor.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:17.634598",
+      "tamanho_bytes": 25,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "05-Documentacao\\sops_module.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:17.778863",
+      "tamanho_bytes": 9600,
+      "linhas_codigo": 259
+    },
+    {
+      "modulo": "06-Monitoramento\\Feedback-Loop\\action_items.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:17.964153",
+      "tamanho_bytes": 32,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "06-Monitoramento\\Feedback-Loop\\post_mortem.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:18.140102",
+      "tamanho_bytes": 22,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "06-Monitoramento\\Feedback-Loop\\rca_templates.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:18.264436",
+      "tamanho_bytes": 34,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "06-Monitoramento\\feedbackloop_module.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:18.394535",
+      "tamanho_bytes": 18934,
+      "linhas_codigo": 483
+    },
+    {
+      "modulo": "06-Monitoramento\\generate_validation_report.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:18.553989",
+      "tamanho_bytes": 822,
+      "linhas_codigo": 26
+    },
+    {
+      "modulo": "06-Monitoramento\\neural_connection_monitor_v2.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:18.770586",
+      "tamanho_bytes": 25828,
+      "linhas_codigo": 616
+    },
+    {
+      "modulo": "06-Monitoramento\\run_validation_scan.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:18.934986",
+      "tamanho_bytes": 1113,
+      "linhas_codigo": 34
+    },
+    {
+      "modulo": "aurora_etapa_a.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:19.067526",
+      "tamanho_bytes": 31135,
+      "linhas_codigo": 802
+    },
+    {
+      "modulo": "aurora_etapa_b.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:19.199336",
+      "tamanho_bytes": 778,
+      "linhas_codigo": 20
+    },
+    {
+      "modulo": "aurora_etapa_c.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:19.353747",
+      "tamanho_bytes": 281,
+      "linhas_codigo": 10
+    },
+    {
+      "modulo": "aurora_etapa_d.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:19.515798",
+      "tamanho_bytes": 289,
+      "linhas_codigo": 10
+    },
+    {
+      "modulo": "aurora_etapa_e.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:19.675942",
+      "tamanho_bytes": 265,
+      "linhas_codigo": 10
+    },
+    {
+      "modulo": "AURORA_V5_CORRECAO_DEFINITIVA_100_PERCENT.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:19.833536",
+      "tamanho_bytes": 13649,
+      "linhas_codigo": 389
+    },
+    {
+      "modulo": "AURORA_V5_MAPEAMENTO_COMPLETO_274_MODULOS.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:19.961890",
+      "tamanho_bytes": 8859,
+      "linhas_codigo": 254
+    },
+    {
+      "modulo": "AURORA_V5_VALIDACAO_DEFINITIVA_100_PERCENT.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:20.095539",
+      "tamanho_bytes": 8347,
+      "linhas_codigo": 234
+    },
+    {
+      "modulo": "AURORA_V5_VERIFICACAO_FINAL_252_MODULOS.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:20.234775",
+      "tamanho_bytes": 15382,
+      "linhas_codigo": 398
+    },
+    {
+      "modulo": "complete_integration.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:20.392882",
+      "tamanho_bytes": 7213,
+      "linhas_codigo": 215
+    },
+    {
+      "modulo": "create_structure.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:20.551018",
+      "tamanho_bytes": 9359,
+      "linhas_codigo": 227
+    },
+    {
+      "modulo": "executive_presentation.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:20.727090",
+      "tamanho_bytes": 18762,
+      "linhas_codigo": 511
+    },
+    {
+      "modulo": "fase2_ativar_nucleo_tier0.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:20.880185",
+      "tamanho_bytes": 3296,
+      "linhas_codigo": 99
+    },
+    {
+      "modulo": "fase3_migracao_massa.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:21.038254",
+      "tamanho_bytes": 9189,
+      "linhas_codigo": 279
+    },
+    {
+      "modulo": "fase4_validacao_final.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:21.200250",
+      "tamanho_bytes": 4077,
+      "linhas_codigo": 122
+    },
+    {
+      "modulo": "fix_all_8_modules.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:21.372350",
+      "tamanho_bytes": 16505,
+      "linhas_codigo": 495
+    },
+    {
+      "modulo": "integrate_ncnt.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:21.540710",
+      "tamanho_bytes": 6258,
+      "linhas_codigo": 183
+    },
+    {
+      "modulo": "main.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:21.714772",
+      "tamanho_bytes": 1496,
+      "linhas_codigo": 53
+    },
+    {
+      "modulo": "main_ncnt.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:21.895993",
+      "tamanho_bytes": 1543,
+      "linhas_codigo": 58
+    },
+    {
+      "modulo": "modules\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:22.072519",
+      "tamanho_bytes": 312,
+      "linhas_codigo": 17
+    },
+    {
+      "modulo": "modules\\connectors\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:22.229178",
+      "tamanho_bytes": 25,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "modules\\connectors\\data_connector.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:22.403648",
+      "tamanho_bytes": 21,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "modules\\connectors\\execution_connector.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:22.584031",
+      "tamanho_bytes": 26,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "modules\\connectors\\risk_connector.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:22.744180",
+      "tamanho_bytes": 21,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "modules\\connectors\\strategy_connector.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:22.913961",
+      "tamanho_bytes": 28,
+      "linhas_codigo": 1
+    },
+    {
+      "modulo": "modules\\interfaces.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:23.111053",
+      "tamanho_bytes": 6867,
+      "linhas_codigo": 185
+    },
+    {
+      "modulo": "modules\\ncnt_base.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:23.310379",
+      "tamanho_bytes": 7966,
+      "linhas_codigo": 220
+    },
+    {
+      "modulo": "modules\\ncnt_module_template.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:23.487812",
+      "tamanho_bytes": 45472,
+      "linhas_codigo": 1126
+    },
+    {
+      "modulo": "modules\\ncnt_module_template_v2.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:23.658697",
+      "tamanho_bytes": 45596,
+      "linhas_codigo": 1133
+    },
+    {
+      "modulo": "ncnt_scan.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:23.861195",
+      "tamanho_bytes": 21545,
+      "linhas_codigo": 524
+    },
+    {
+      "modulo": "ncnt_system_complete.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:24.120949",
+      "tamanho_bytes": 322491,
+      "linhas_codigo": 7855
+    },
+    {
+      "modulo": "ncnt_wrapper_generator.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:24.284766",
+      "tamanho_bytes": 10238,
+      "linhas_codigo": 262
+    },
+    {
+      "modulo": "system_core\\__init__.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:24.422709",
+      "tamanho_bytes": 377,
+      "linhas_codigo": 18
+    },
+    {
+      "modulo": "system_core\\message_bus.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:24.573803",
+      "tamanho_bytes": 4025,
+      "linhas_codigo": 109
+    },
+    {
+      "modulo": "system_core\\ncnt_orchestrator_complete.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:24.759281",
+      "tamanho_bytes": 8735,
+      "linhas_codigo": 219
+    },
+    {
+      "modulo": "system_core\\orchestrator.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:24.967848",
+      "tamanho_bytes": 4061,
+      "linhas_codigo": 118
+    },
+    {
+      "modulo": "system_core\\registry.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:25.132754",
+      "tamanho_bytes": 3318,
+      "linhas_codigo": 90
+    },
+    {
+      "modulo": "tests\\test_strategies.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:25.279122",
+      "tamanho_bytes": 8009,
+      "linhas_codigo": 210
+    },
+    {
+      "modulo": "validate_239_modules.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:25.448394",
+      "tamanho_bytes": 11256,
+      "linhas_codigo": 293
+    },
+    {
+      "modulo": "visual_presentation.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:25.633618",
+      "tamanho_bytes": 9110,
+      "linhas_codigo": 273
+    },
+    {
+      "modulo": "visual_presentation_simple.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:25.792572",
+      "tamanho_bytes": 8859,
+      "linhas_codigo": 270
+    },
+    {
+      "modulo": "wrappers_v2\\__init___wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:25.960817",
+      "tamanho_bytes": 1987,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\ab_testing_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:26.151749",
+      "tamanho_bytes": 2007,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\allocation_engine_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:26.377083",
+      "tamanho_bytes": 2065,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\alpha_momentum_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:26.525951",
+      "tamanho_bytes": 2053,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\api_gateway_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:26.650865",
+      "tamanho_bytes": 2018,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\audit_system_complete_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:26.794106",
+      "tamanho_bytes": 2077,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\audit_trail_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:26.971080",
+      "tamanho_bytes": 2017,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\aurora_etapa_a_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:27.142116",
+      "tamanho_bytes": 8971,
+      "linhas_codigo": 244
+    },
+    {
+      "modulo": "wrappers_v2\\backtest_engine_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:27.305796",
+      "tamanho_bytes": 2049,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\backtest_runner_v3_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:27.495827",
+      "tamanho_bytes": 2070,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\base_strategy_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:27.652280",
+      "tamanho_bytes": 2045,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\breakout_detection_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:27.831330",
+      "tamanho_bytes": 2085,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\capital_manager_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:28.023035",
+      "tamanho_bytes": 2049,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\cicdpipeline_module_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:28.180573",
+      "tamanho_bytes": 2072,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\circuit_breakers_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:28.344672",
+      "tamanho_bytes": 2054,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\complete_integration_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:28.483106",
+      "tamanho_bytes": 2055,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\complexity_guard_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:28.611626",
+      "tamanho_bytes": 2037,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\compliance_module_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:28.742616",
+      "tamanho_bytes": 2065,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\connection_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:28.904213",
+      "tamanho_bytes": 2002,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\core_engine_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:29.057848",
+      "tamanho_bytes": 2018,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\coreengine_module_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:29.219412",
+      "tamanho_bytes": 2066,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\counterparty_onboarding_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:29.363929",
+      "tamanho_bytes": 2109,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\create_structure_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:29.493042",
+      "tamanho_bytes": 2023,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\dashboard_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:29.702195",
+      "tamanho_bytes": 2008,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\data_layer_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:29.878292",
+      "tamanho_bytes": 2010,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\data_onboarding_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:30.070867",
+      "tamanho_bytes": 2045,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\delta_reports_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:30.219003",
+      "tamanho_bytes": 2031,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\deploy_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:30.387414",
+      "tamanho_bytes": 1975,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\executionwindow_module_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:30.521165",
+      "tamanho_bytes": 2109,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\executive_presentation_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:30.680541",
+      "tamanho_bytes": 2071,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\feedbackloop_module_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:30.864478",
+      "tamanho_bytes": 2064,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\fix_report_errors_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:31.057252",
+      "tamanho_bytes": 2045,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\generate_complete_report_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:31.198064",
+      "tamanho_bytes": 2101,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\generate_ultra_complete_report_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:31.334949",
+      "tamanho_bytes": 2149,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\genesis_includes_v3_complete_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:31.513495",
+      "tamanho_bytes": 2133,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\genesis_includes_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:31.679270",
+      "tamanho_bytes": 2037,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\governance_module_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:31.848960",
+      "tamanho_bytes": 2045,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\incidentresponse_module_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:32.053222",
+      "tamanho_bytes": 2116,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\innovationlab_module_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:32.254749",
+      "tamanho_bytes": 2087,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\integrate_ncnt_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:32.464767",
+      "tamanho_bytes": 2007,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\integration_gate_v2_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:32.597422",
+      "tamanho_bytes": 2061,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\integration_gate_v3_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:32.761673",
+      "tamanho_bytes": 2061,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\interface_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:32.905923",
+      "tamanho_bytes": 2019,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\main_ncnt_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:33.090703",
+      "tamanho_bytes": 1967,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\main_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:33.262342",
+      "tamanho_bytes": 1949,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\mean_reversion_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:33.459577",
+      "tamanho_bytes": 2053,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\models_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:33.674537",
+      "tamanho_bytes": 1970,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\moduleregistry_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:33.822562",
+      "tamanho_bytes": 2025,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\ncnt_base_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:33.996946",
+      "tamanho_bytes": 1975,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\ncnt_cli_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:34.178108",
+      "tamanho_bytes": 1987,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\ncnt_orchestrator_complete_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:34.385878",
+      "tamanho_bytes": 2115,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\ncnt_scan_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:34.579859",
+      "tamanho_bytes": 1967,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\ncnt_system_complete_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:34.718951",
+      "tamanho_bytes": 2055,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\onboarding_module_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:34.862856",
+      "tamanho_bytes": 2061,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\order_management_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:35.024377",
+      "tamanho_bytes": 2058,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\posttradereconciliation_module_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:35.180992",
+      "tamanho_bytes": 2167,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\premarketchecklist_module_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:35.327506",
+      "tamanho_bytes": 2127,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\prototypes_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:35.530302",
+      "tamanho_bytes": 2007,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\qabacktesting_module_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:35.692652",
+      "tamanho_bytes": 2089,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\realtimedashboard_module_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:35.847550",
+      "tamanho_bytes": 2128,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\reconciliation_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:35.996093",
+      "tamanho_bytes": 2039,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\reg_tracker_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:36.204035",
+      "tamanho_bytes": 2017,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\regulatory_context_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:36.384063",
+      "tamanho_bytes": 2053,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\report_generator_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:36.535778",
+      "tamanho_bytes": 2057,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\restore_executive_report_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:36.718366",
+      "tamanho_bytes": 2101,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\risk_engine_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:36.868079",
+      "tamanho_bytes": 2014,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\risk_module_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:37.033183",
+      "tamanho_bytes": 2014,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\run_complete_audit_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:37.182430",
+      "tamanho_bytes": 2053,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\smart_routing_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:37.368305",
+      "tamanho_bytes": 2034,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\sops_module_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:37.545269",
+      "tamanho_bytes": 1999,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\strategies_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:37.691949",
+      "tamanho_bytes": 2007,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\strategy_module_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:37.846776",
+      "tamanho_bytes": 2050,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\strategy_onboarding_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:38.028368",
+      "tamanho_bytes": 2077,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\strategy_template_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:38.211551",
+      "tamanho_bytes": 2093,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\test_module_v2_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:38.374362",
+      "tamanho_bytes": 2021,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\test_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:38.614241",
+      "tamanho_bytes": 1959,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\throttling_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:38.794485",
+      "tamanho_bytes": 2013,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\tier1_validator_v3_complete_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:38.940767",
+      "tamanho_bytes": 2142,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\tier1_validator_v3_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:39.102588",
+      "tamanho_bytes": 2070,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\treasury_module_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:39.244680",
+      "tamanho_bytes": 2049,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\visual_presentation_simple_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:39.412907",
+      "tamanho_bytes": 2103,
+      "linhas_codigo": 61
+    },
+    {
+      "modulo": "wrappers_v2\\visual_presentation_wrapper.py",
+      "status": "operacional",
+      "tipo_falha": null,
+      "erro": null,
+      "timestamp": "2025-12-19T23:58:39.561706",
+      "tamanho_bytes": 2047,
+      "linhas_codigo": 61
+    }
+  ],
+  "modulos_criticos_status": {
+    "aurora_etapa_a.py": {
+      "status": "operacional",
+      "descricao": "Módulo principal da Etapa A",
+      "erro": null,
+      "tipo_falha": null
+    },
+    "main_ncnt.py": {
+      "status": "operacional",
+      "descricao": "Sistema NCNT principal",
+      "erro": null,
+      "tipo_falha": null
+    },
+    "ncnt_system_complete.py": {
+      "status": "operacional",
+      "descricao": "Sistema NCNT completo",
+      "erro": null,
+      "tipo_falha": null
+    },
+    "06-Monitoramento/feedbackloop_module.py": {
+      "status": "operacional",
+      "descricao": "Monitoramento",
+      "erro": null,
+      "tipo_falha": null
+    },
+    "system_core/ncnt_orchestrator_complete.py": {
+      "status": "operacional",
+      "descricao": "Orquestrador NCNT",
+      "erro": null,
+      "tipo_falha": null
+    },
+    "04-Infraestrutura/api/database.py": {
+      "status": "operacional",
+      "descricao": "Database API",
+      "erro": null,
+      "tipo_falha": null
+    },
+    "04-Infraestrutura/api/main.py": {
+      "status": "operacional",
+      "descricao": "API principal",
+      "erro": null,
+      "tipo_falha": null
+    },
+    "04-Infraestrutura/api/endpoints/strategies.py": {
+      "status": "operacional",
+      "descricao": "Endpoints",
+      "erro": null,
+      "tipo_falha": null
+    },
+    "00-Governanca/tier1_risk_validator.py": {
+      "status": "operacional",
+      "descricao": "Validador de risco",
+      "erro": null,
+      "tipo_falha": null
+    },
+    "00-Governanca/quantum_firewall.py": {
+      "status": "operacional",
+      "descricao": "Firewall quântico",
+      "erro": null,
+      "tipo_falha": null
+    },
+    "01-Departamentos/AGENTS/CEO_Agent.py": {
+      "status": "operacional",
+      "descricao": "Agente CEO",
+      "erro": null,
+      "tipo_falha": null
+    },
+    "01-Departamentos/AGENTS/CFO_Agent.py": {
+      "status": "operacional",
+      "descricao": "Agente CFO",
+      "erro": null,
+      "tipo_falha": null
+    },
+    "01-Departamentos/AGENTS/CTO_Agent.py": {
+      "status": "operacional",
+      "descricao": "Agente CTO",
+      "erro": null,
+      "tipo_falha": null
+    },
+    "01-Departamentos/AGENTS/CKO_Agent.py": {
+      "status": "operacional",
+      "descricao": "Agente CKO",
+      "erro": null,
+      "tipo_falha": null
+    }
+  }
+}

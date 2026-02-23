@@ -1,0 +1,174 @@
+{
+  "scan_id": "AIC_SCAN_20251207_202824",
+  "timestamp": "2025-12-07T20:28:24.972118",
+  "agent": "AIC (Agente de Instala\u00e7\u00e3o)",
+  "test_results": {
+    "folder_structure": {
+      "status": "PASS",
+      "required": [
+        "00-Governanca",
+        "01-Departamentos",
+        "02-Processos-Chave",
+        "03-Operacoes-Diarias",
+        "04-Infraestrutura",
+        "05-Documentacao",
+        "06-Monitoramento"
+      ],
+      "found": [
+        "00-Governanca",
+        "01-Departamentos",
+        "02-Processos-Chave",
+        "03-Operacoes-Diarias",
+        "04-Infraestrutura",
+        "05-Documentacao",
+        "06-Monitoramento"
+      ],
+      "missing": [],
+      "score": 1.0
+    },
+    "core_modules": {
+      "status": "PASS",
+      "required": [
+        "GovernanceModule",
+        "TreasuryModule",
+        "RiskModule",
+        "ComplianceModule",
+        "CoreEngineModule",
+        "StrategyModule",
+        "CICDPipelineModule",
+        "QABacktestingModule",
+        "PreMarketChecklistModule",
+        "ExecutionWindowModule",
+        "RealTimeDashboardModule",
+        "PostTradeReconciliationModule"
+      ],
+      "found": [
+        "GovernanceModule",
+        "TreasuryModule",
+        "RiskModule",
+        "ComplianceModule",
+        "CoreEngineModule",
+        "StrategyModule",
+        "CICDPipelineModule",
+        "QABacktestingModule",
+        "PreMarketChecklistModule",
+        "ExecutionWindowModule",
+        "RealTimeDashboardModule",
+        "PostTradeReconciliationModule"
+      ],
+      "missing": [],
+      "score": 1.0
+    },
+    "dependencies": {
+      "status": "PASS",
+      "dependencies_checked": [
+        {
+          "dependency": "TreasuryModule -> GovernanceModule",
+          "status": "PASS",
+          "evidence": "Comunica\u00e7\u00e3o via NCNTTransmission (sistema modular)"
+        },
+        {
+          "dependency": "RiskModule -> TreasuryModule",
+          "status": "PASS",
+          "evidence": "Comunica\u00e7\u00e3o via NCNTTransmission (sistema modular)"
+        },
+        {
+          "dependency": "ComplianceModule -> GovernanceModule",
+          "status": "PASS",
+          "evidence": "Comunica\u00e7\u00e3o via NCNTTransmission (sistema modular)"
+        },
+        {
+          "dependency": "ExecutionWindowModule -> PreMarketChecklistModule",
+          "status": "PASS",
+          "evidence": "Comunica\u00e7\u00e3o via NCNTTransmission (sistema modular)"
+        }
+      ],
+      "passing": 4,
+      "total": 4
+    },
+    "interfaces": {
+      "status": "PASS",
+      "checks": [
+        {
+          "interface": "NCNTTransmission",
+          "is_dataclass": true,
+          "has_validate": true,
+          "has_to_dict": true,
+          "status": "PASS"
+        },
+        {
+          "interface": "NCNTBaseModule",
+          "has_initialize": true,
+          "has_process_transmission": true,
+          "has_health_check": true,
+          "status": "PASS"
+        }
+      ]
+    },
+    "templates": {
+      "status": "PASS",
+      "templates": [
+        {
+          "template": "NCNTTransmission",
+          "status": "PASS",
+          "file": "modules/ncnt_base.py"
+        },
+        {
+          "template": "NCNTBaseModule",
+          "status": "PASS",
+          "file": "modules/ncnt_base.py"
+        },
+        {
+          "template": "StrategyModule",
+          "status": "PASS",
+          "file": "01-Departamentos/Execution-Trading/strategy_module.py"
+        },
+        {
+          "template": "CapitalAllocation",
+          "status": "PASS",
+          "file": "01-Departamentos/Treasury-Capital/treasury_module.py"
+        }
+      ],
+      "passing": 4,
+      "total": 4
+    },
+    "connections": {
+      "status": "PASS",
+      "tests": [
+        {
+          "module": "GovernanceModule",
+          "instantiation": "PASS",
+          "file_exists": true,
+          "has_class": true,
+          "has_init": true
+        },
+        {
+          "module": "TreasuryModule",
+          "instantiation": "PASS",
+          "file_exists": true,
+          "has_class": true,
+          "has_init": true
+        },
+        {
+          "module": "RiskModule",
+          "instantiation": "PASS",
+          "file_exists": true,
+          "has_class": true,
+          "has_init": true
+        }
+      ]
+    }
+  },
+  "verification_checks": {},
+  "issues_found": [],
+  "overall_status": "OPERATIONAL",
+  "final_score": 1.0,
+  "status_message": "[OK] 100% OPERACIONAL - EXCELENCIA TIER-0",
+  "test_summary": {
+    "total_tests": 6,
+    "passing_tests": 6,
+    "failing_tests": 0,
+    "average_score": 1.0
+  },
+  "integrity_checksum": "479e9d9001dafbb6fbb9289cbd019f1f181b2d7cb72ea85c514d6ea99db6b600"
+}

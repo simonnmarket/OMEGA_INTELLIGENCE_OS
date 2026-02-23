@@ -1,0 +1,64 @@
+//+------------------------------------------------------------------+
+//|                                                STOBarDetector.mqh |
+//|     Módulo Institucional - Detecção de Grandes Players (EA-ready)  |
+//+------------------------------------------------------------------+
+#ifndef __SATOS_BAR_DETECTOR__
+#define __SATOS_BAR_DETECTOR__
+
+enum PlayerStrength { None = 0, Light, Moderate, Strong, Institutional };
+
+//+------------------------------------------------------------------+
+//| Função principal de detecção de big player                       |
+//+------------------------------------------------------------------+
+PlayerStrength DetectBigPlayer(const int index,
+                               const long &volume[],
+                               const long &tick_volume[],
+                               const double &open[],
+                               const double &close[],
+                               int volumePeriod = 20,
+                               double alertZScore = 2.0,
+                               bool useDeltaFilter = true,
+                               int deltaThreshold = 1000)
+{
+   if (index < volumePeriod)
+      return None;
+
+   // Cálculo da média e desvio padrão
+   double sumVol = 0, sumSq = 0;
+   for (int j = 1; j <= volumePeriod; j++) {
+      double v = volume[index - j];
+      sumVol += v;
+      sumSq += v * v;
+   }
+   double avgVol = sumVol / volumePeriod;
+   double varVol = sumSq / volumePeriod - avgVol * avgVol;
+   double stdVol = MathSqrt(MathMax(varVol, 1e-6));
+   double zscore = (volume[index] - avgVol) / stdVol;
+
+   // Cálculo do delta se necessário
+   double delta = 0;
+   if (useDeltaFilter) {
+      if (close[index] > open[index])
+         delta = tick_volume[index];
+      else if (close[index] < open[index])
+         delta = -tick_volume[index];
+      else
+         delta = 0;
+   }
+
+   // Classificação institucional
+   if (zscore < 0.5)
+      return None;
+   else if (zscore < 1.0)
+      return Light;
+   else if (zscore < 1.5)
+      return Moderate;
+   else if (zscore < alertZScore)
+      return Strong;
+   else if (!useDeltaFilter || MathAbs(delta) >= deltaThreshold)
+      return Institutional;
+   else
+      return Strong;
+}
+
+#endif // __SATOS_BAR_DETECTOR__

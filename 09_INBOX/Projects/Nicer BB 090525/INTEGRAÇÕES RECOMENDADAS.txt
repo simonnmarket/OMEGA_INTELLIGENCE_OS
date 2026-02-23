@@ -1,0 +1,6 @@
+INTEGRAÇÕES RECOMENDADAS
+Integração	Descrição
+WaveDetector	Use o Quantum State como filtro para reforçar a classificação de ondas (impulsiva/corretiva/tsunami).
+VolumeDetector	Combine a força de volume com o Quantum State para criar um novo tipo de divergência quântica.
+PhysicsEngine (futuro)	Transfira o state para o módulo de força (𝐹𝑣) e utilize na equação 𝐸𝑞 = P ⋅ [𝐹𝑣 ⋅ 𝑉ℎ + 𝑆𝑓] + 𝑄𝑣.
+CSignalHub	Adicione CQuantumAnalyzer como provedor de sinal independente ou validatório (modo layer 2).

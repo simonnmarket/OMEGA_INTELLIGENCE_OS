@@ -1,0 +1,128 @@
+version: '3.8'
+
+services:
+  aurora-core:
+    build:
+      context: .
+      dockerfile: Dockerfile.core
+    container_name: aurora_core_tier0
+    networks:
+      - aurora_internal
+    env_file:
+      - .env.core
+    environment:
+      - VAULT_ADDR=http://vault:8200
+      - VAULT_TOKEN=${VAULT_TOKEN}
+      - REDIS_NODES=redis-1:6379,redis-2:6379,redis-3:6379
+    volumes:
+      - ./src:/app/src:ro
+      - ./config:/app/config:ro
+      - ./vault/policies:/app/vault/policies:ro
+      - health_data:/app/data/health
+    ports:
+      - "8081:8081"
+      - "9091:9091"
+    healthcheck:
+      test: ["CMD", "python", "/app/scripts/healthcheck.py"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    depends_on:
+      redis-1:
+        condition: service_healthy
+      vault:
+        condition: service_healthy
+
+  # Redis Cluster para Redlock (Distributed Locking)
+  redis-1:
+    image: redis:7-alpine
+    container_name: redis_1_tier0
+    networks:
+      - aurora_internal
+    command: redis-server --appendonly yes --cluster-enabled yes --cluster-config-file nodes.conf
+    volumes:
+      - redis_data_1:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    restart: unless-stopped
+
+  redis-2:
+    image: redis:7-alpine
+    container_name: redis_2_tier0
+    networks:
+      - aurora_internal
+    command: redis-server --appendonly yes --cluster-enabled yes --cluster-config-file nodes.conf
+    volumes:
+      - redis_data_2:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+    restart: unless-stopped
+
+  redis-3:
+    image: redis:7-alpine
+    container_name: redis_3_tier0
+    networks:
+      - aurora_internal
+    command: redis-server --appendonly yes --cluster-enabled yes --cluster-config-file nodes.conf
+    volumes:
+      - redis_data_3:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+    restart: unless-stopped
+
+  # HashiCorp Vault para secrets management
+  vault:
+    image: vault:1.15.0
+    container_name: vault_tier0
+    networks:
+      - aurora_internal
+    environment:
+      - VAULT_DEV_ROOT_TOKEN_ID=${VAULT_ROOT_TOKEN}
+      - VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200
+      - VAULT_ADDR=http://127.0.0.1:8200
+    volumes:
+      - vault_data:/vault/file
+      - ./vault/policies:/policies:ro
+    ports:
+      - "8200:8200"
+    cap_add:
+      - IPC_LOCK
+    healthcheck:
+      test: ["CMD", "vault", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  prometheus-core:
+    image: prom/prometheus:latest
+    container_name: prometheus_core_tier0
+    networks:
+      - aurora_internal
+    volumes:
+      - ./monitoring/prometheus.core.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+
+volumes:
+  health_data:
+  redis_data_1:
+  redis_data_2:
+  redis_data_3:
+  vault_data:
+  prometheus_data:
+
+networks:
+  aurora_internal:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+

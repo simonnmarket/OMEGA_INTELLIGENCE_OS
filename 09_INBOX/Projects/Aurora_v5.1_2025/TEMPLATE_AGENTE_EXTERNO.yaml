@@ -1,0 +1,116 @@
+# 📋 TEMPLATE PARA AGENTES EXTERNOS / CONSELHEIROS - AURORA v5.1
+# Este template permite que agentes externos enviem sugestões e atualizações
+# de forma estruturada, que serão processadas automaticamente pelo sistema
+
+# ============================================================================
+# METADADOS DO ENVIO
+# ============================================================================
+metadata:
+  document_id: "EXTERNAL-[DATA]-[ID]"
+  sender_name: "[NOME_DO_AGENTE_EXTERNO]"
+  sender_role: "[CONSELHEIRO/ESPECIALISTA/REVISOR]"
+  date: "[YYYY-MM-DD]"
+  version: "1.0"
+  purpose: "SUGESTAO"  # SUGESTAO | ATUALIZACAO | REVISAO | APROVACAO
+
+# ============================================================================
+# CONTEXTO E VALIDAÇÃO
+# ============================================================================
+contexto:
+  sistema_referencia: "AURORA v5.1"
+  total_modulos_sistema: 252
+  versao_governanca: "2.0-enterprise"
+  data_consulta: "[YYYY-MM-DD]"
+
+# ============================================================================
+# MÓDULOS AFETADOS
+# ============================================================================
+modulos_afetados:
+  # Lista de módulos que este envio afeta
+  - id: "MOD-XXX"
+    nome: "[NOME_DO_MODULO]"
+    acao: "SUGESTAO"  # SUGESTAO | ATUALIZACAO | REVISAO | APROVACAO
+    descricao: |
+      [DESCREVER SUGESTÃO/ATUALIZAÇÃO/REVISÃO DETALHADAMENTE]
+    
+    justificativa: |
+      [EXPLICAR POR QUE ESTA SUGESTÃO/ATUALIZAÇÃO É NECESSÁRIA]
+    
+    impacto_esperado: |
+      [DESCREVER IMPACTO ESPERADO DA MUDANÇA]
+    
+    risco_avaliado: "BAIXO"  # BAIXO | MÉDIO | ALTO
+    prioridade_sugerida: "EVOLUÇÃO"  # CRÍTICO | EMERGÊNCIA | ATIVO | EVOLUÇÃO
+
+# ============================================================================
+# SUGESTÕES DE ATUALIZAÇÃO
+# ============================================================================
+sugestoes:
+  # Sugestões de mudanças no sistema
+  - tipo: "PRIORIDADE"  # PRIORIDADE | BLINDAGEM | PROGRESSO | STATUS | COMPLIANCE
+    modulo_id: "MOD-XXX"
+    valor_anterior: "[VALOR_ATUAL]"
+    valor_sugerido: "[NOVO_VALOR]"
+    justificativa: "[EXPLICAR]"
+  
+  - tipo: "BLINDAGEM"
+    modulo_id: "MOD-XXX"
+    blindagem_tipo: "T"  # T=Testes, H=Homologação, I=Integração
+    valor_sugerido: true  # true ou false
+    justificativa: "[EXPLICAR]"
+
+# ============================================================================
+# ATUALIZAÇÕES DE STATUS
+# ============================================================================
+atualizacoes_status:
+  # Atualizações de status de módulos
+  - modulo_id: "MOD-XXX"
+    status_atual: "BACKLOG"  # BACKLOG | ACTIVE | INACTIVE | COMPLETED
+    status_sugerido: "ACTIVE"
+    justificativa: |
+      [EXPLICAR POR QUE ESTA MUDANÇA DE STATUS É NECESSÁRIA]
+    
+    testes_aplicados: false  # true se testes foram aplicados
+    cobertura_testes: 0  # Percentual se aplicável
+    observacoes: "[SE HOUVER]"
+
+# ============================================================================
+# TAGS DE COMPLIANCE
+# ============================================================================
+compliance_sugestoes:
+  # Sugestões de tags de compliance
+  - modulo_id: "MOD-XXX"
+    framework: "MiFID II"  # MiFID II | Basel III | SEC Rule 611 | GDPR
+    version: "Artigo 16, 48"
+    justificativa: "[EXPLICAR POR QUE ESTA TAG É NECESSÁRIA]"
+
+# ============================================================================
+# OBSERVAÇÕES E RECOMENDAÇÕES
+# ============================================================================
+observacoes: |
+  [ESPAÇO PARA OBSERVAÇÕES GERAIS, RECOMENDAÇÕES, CONCERNS, ETC.]
+
+recomendacoes: |
+  [RECOMENDAÇÕES ESPECÍFICAS PARA O SISTEMA]
+
+# ============================================================================
+# APROVAÇÃO E ASSINATURA
+# ============================================================================
+aprovacao:
+  preparado_por: "[NOME]"
+  data_preparacao: "[YYYY-MM-DD]"
+  revisado_por: "[NOME]"  # Se aplicável
+  data_revisao: "[YYYY-MM-DD]"
+  aprovado_por: "[NOME]"  # Se aplicável
+  data_aprovacao: "[YYYY-MM-DD]"
+  
+  assinatura_digital: ""  # Hash SHA3-256 do conteúdo (será calculado pelo processador)
+
+# ============================================================================
+# INSTRUÇÕES DE USO
+# ============================================================================
+# 1. Preencha este template com suas sugestões/atualizações
+# 2. Envie o arquivo YAML preenchido
+# 3. O sistema processará automaticamente com validações
+# 4. Você receberá um relatório de processamento
+

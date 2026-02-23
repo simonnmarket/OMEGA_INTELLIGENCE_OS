@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurora - Relatório Completo de Auditoria</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+            border: 3px solid #1e3c72;
+        }
+        h1 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .stat-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #1e3c72;
+        }
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .alert-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: left;
+        }
+        .alert-title {
+            color: #856404;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .link-box {
+            background: #f8f9fa;
+            border: 2px dashed #1e3c72;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+        .link {
+            color: #1e3c72;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            display: inline-block;
+            padding: 15px 30px;
+            background: #1e3c72;
+            color: white;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin: 10px 0;
+        }
+        .link:hover {
+            background: #2a5298;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.4);
+        }
+        .path {
+            font-family: 'Courier New', monospace;
+            color: #333;
+            font-size: 11px;
+            background: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            word-break: break-all;
+        }
+        .info {
+            color: #666;
+            font-size: 14px;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+        .copy-btn {
+            background: #1e3c72;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        .copy-btn:hover {
+            background: #2a5298;
+        }
+        .critical {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        .warning {
+            color: #f57c00;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Aurora - Relatório Completo</h1>
+        <p class="subtitle">Auditoria Completa do Sistema - Resolução de Conflitos de Interesse</p>
+        
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-number">121</div>
+                <div class="stat-label">Total de Módulos</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">14.0%</div>
+                <div class="stat-label">Score Integração</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">239</div>
+                <div class="stat-label">Achados Segurança</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">MEDIUM</div>
+                <div class="stat-label">Nível de Risco</div>
+            </div>
+        </div>
+        
+        <div class="alert-box">
+            <div class="alert-title">⚠️ ACHADOS CRÍTICOS</div>
+            <div style="color: #333; font-size: 14px; line-height: 1.6;">
+                <strong>Integração:</strong> <span class="critical">93 módulos não integrados</span><br>
+                <strong>Segurança:</strong> <span class="critical">2 achados críticos</span><br>
+                <strong>Compliance:</strong> <span class="warning">Falhas em 4 padrões</span><br>
+                <strong>Risco:</strong> <span class="warning">8 módulos de alto risco</span>
+            </div>
+        </div>
+        
+        <div class="link-box">
+            <p style="margin: 0 0 15px 0; color: #333; font-weight: 600; font-size: 16px;">Clique para abrir o relatório completo:</p>
+            <a href="file:///C:/Users/Lenovo/Projects/Aurora/05-Documentacao/Audit-Reports/AURORA_ULTRA_COMPLETE_REPORT_b6225600860cc46d.md" class="link" id="openLink">
+                📄 Abrir Relatório Ultra Completo (395 KB)
+            </a>
+        </div>
+        
+        <div class="path" id="filePath">
+            C:\Users\Lenovo\Projects\Aurora\05-Documentacao\Audit-Reports\AURORA_ULTRA_COMPLETE_REPORT_b6225600860cc46d.md
+        </div>
+        
+        <button class="copy-btn" onclick="copyPath()">📋 Copiar Caminho</button>
+        
+        <div class="info">
+            <p><strong>Status:</strong> ✅ 100% COMPLETO - TODAS AS INFORMAÇÕES INCLUÍDAS</p>
+            <p><strong>Data:</strong> 2025-12-15 00:51 CET</p>
+            <p><strong>Tamanho:</strong> 395.4 KB</p>
+            <p><strong>Conteúdo:</strong> Todos os 121 módulos auditados, todas as análises, todos os detalhes</p>
+        </div>
+    </div>
+    
+    <script>
+        function copyPath() {
+            const path = document.getElementById('filePath').textContent;
+            navigator.clipboard.writeText(path).then(function() {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Copiado!';
+                btn.style.background = '#28a745';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#1e3c72';
+                }, 2000);
+            }).catch(function(err) {
+                alert('Erro ao copiar. Caminho: ' + path);
+            });
+        }
+    </script>
+</body>
+</html>
+

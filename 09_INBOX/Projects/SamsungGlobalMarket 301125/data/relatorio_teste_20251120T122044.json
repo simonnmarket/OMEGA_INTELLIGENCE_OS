@@ -1,0 +1,74 @@
+{
+    "timestamp": "2025-11-20T12:20:44.299365",
+    "status": "FALHA_PARCIAL",
+    "detalhes": {
+        "db": {
+            "status": "ERRO",
+            "erro": "The argument passed to Dialect.has_table() should be a <class 'sqlalchemy.engine.base.Connection'>, got <class 'sqlalchemy.engine.base.Engine'>. Additionally, the Dialect.has_table() method is for internal dialect use only; please use ``inspect(some_engine).has_table(<tablename>>)`` for public API use."
+        },
+        "tweets": {
+            "status": "OK",
+            "registros": 0,
+            "coletados": false
+        },
+        "orderbook": {
+            "status": "OK",
+            "coletado": true,
+            "dados": {
+                "ts": "2025-11-20 12:20:36.740004",
+                "exchange": "binance",
+                "symbol": "BTC/USDT",
+                "bid": 91813.16,
+                "bid_size": 0.38309,
+                "ask": 91813.17,
+                "ask_size": 5.42613,
+                "bid_depth_top10": 0.39589,
+                "ask_depth_top10": 6.23974
+            }
+        },
+        "onchain": {
+            "status": "OK",
+            "registros": 0,
+            "coletados": false
+        },
+        "whale_alert": {
+            "status": "OK",
+            "registros": 0,
+            "coletados": false
+        },
+        "validacao": {
+            "status": "OK",
+            "eventos_validados": 0,
+            "exemplos": []
+        },
+        "persistencia": {
+            "status": "OK",
+            "sinais_persistidos": 0,
+            "total_validados": 0
+        },
+        "backtest": {
+            "status": "SKIP",
+            "razao": "Nenhum evento validado"
+        },
+        "neural": {
+            "status": "OK",
+            "predictions_shape": "(1, 1)",
+            "risk_params": {
+                "max_position_size": "(1,)",
+                "stop_loss": "(1,)",
+                "take_profit": "(1,)"
+            },
+            "batch_size": 0
+        },
+        "resumo": {
+            "total_etapas": 9,
+            "sucesso": false,
+            "erros_encontrados": 1,
+            "erros": [
+                "DB Init: The argument passed to Dialect.has_table() should be a <class 'sqlalchemy.engine.base.Connection'>, got <class 'sqlalchemy.engine.base.Engine'>. Additionally, the Dialect.has_table() method is for internal dialect use only; please use ``inspect(some_engine).has_table(<tablename>>)`` for public API use."
+            ]
+        }
+    },
+    "versao": "1.0",
+    "teste": "OpenMyMind Project 007 - Teste Completo"
+}

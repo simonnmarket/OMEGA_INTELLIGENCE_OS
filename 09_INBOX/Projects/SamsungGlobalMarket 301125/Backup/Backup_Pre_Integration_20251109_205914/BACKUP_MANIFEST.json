@@ -1,0 +1,57 @@
+{
+  "timestamp": "20251109_205914",
+  "backup_dir": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251109_205914",
+  "files": [
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\MetalsKitco_Service.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251109_205914\\Server\\MetalsKitco_Service.py",
+      "size": 1946,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\Numeia_v6_0_Tactical_Server.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251109_205914\\Server\\Numeia_v6_0_Tactical_Server.py",
+      "size": 28345,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\__init__.py",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251109_205914\\Server\\__init__.py",
+      "size": 191,
+      "type": "server"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Server\\Numeia_v6_0_Tactical.log",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251109_205914\\Logs\\Numeia_v6_0_Tactical.log",
+      "size": 0,
+      "type": "log"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\config.json",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251109_205914\\Config\\config.json",
+      "size": 190,
+      "type": "config"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\.env",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251109_205914\\Config\\.env",
+      "size": 428,
+      "type": "config"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\AppData\\Roaming\\MetaQuotes\\Terminal\\Common\\Files\\AIRequest.BTCUSD.json",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251109_205914\\EA_Communication\\AIRequest.BTCUSD.json",
+      "size": 143,
+      "type": "ea_communication"
+    },
+    {
+      "source": "C:\\Users\\Lenovo\\AppData\\Roaming\\MetaQuotes\\Terminal\\Common\\Files\\response.json",
+      "dest": "C:\\Users\\Lenovo\\.cursor\\SamsungGlobalMarket\\Backup\\Backup_Pre_Integration_20251109_205914\\EA_Communication\\response.json",
+      "size": 397,
+      "type": "ea_communication"
+    }
+  ],
+  "errors": [],
+  "total_files": 8,
+  "backup_complete": true
+}

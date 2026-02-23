@@ -1,0 +1,487 @@
+//+------------------------------------------------------------------+
+//| TheodoraEA.mq5 |
+//| Sistema de Trading Quântico Escalonado |
+//| Projeto: Theodora - Genesis |
+//| Autor: [Seu Nome] |
+//| Versão: 3.4 (TIER-0 Single File - Fix Array Out of Range) |
+//+------------------------------------------------------------------+
+#property copyright "Theodora Quantum Trading"
+#property link "https://www.theodora-quantum.com"
+#property version "3.4"
+#property strict
+#property description "EA Quântico com Escalonamento Direcional e Filtros Melhorados"
+// Inclusão da biblioteca de trading
+#include <Trade/Trade.mqh>
+//--- Parâmetros de Entrada
+input double RiskPercent = 1.0; // % da conta por operação
+input int MagicNumber = 11041982; // Número mágico
+input bool UseDynamicSL = true; // SL dinâmico com ATR
+input double ATRMultiplierSL = 2.0; // Multiplicador ATR para SL
+input double ATRMultiplierTP = 3.0; // Multiplicador ATR para TP
+input int ThermalEnergyPeriod = 20; // Período para energia térmica
+input double QuantumRiskQuantum = 0.001; // ħ_risk = 0.1% da conta
+input double HeisenbergThreshold = 0.0001; // ħ/2 para Heisenberg
+input int MaxOpenPositions = 10; // Máximo de posições escalonadas
+input int ScaleDistance = 20; // Distância em pontos entre ordens
+input double ScaleMultiplier = 1.5; // Multiplicador de lote
+input bool UsePyramidScaling = true; // Pirâmide de lotes
+input int ConfirmationTFs = 3; // Confirmações mínimas de timeframes (majority vote)
+input int RSIPeriod = 14; // Período RSI
+input double RSIOverbought = 70.0; // Nível RSI overbought
+input double RSIOversold = 30.0; // Nível RSI oversold
+input bool UseTrailingStop = true; // Ativar trailing stop
+input double TrailingStopStart = 20.0; // Pips para iniciar trailing
+input double TrailingStopStep = 10.0; // Passo do trailing stop
+//+------------------------------------------------------------------+
+//| Estruturas de Dados |
+//+------------------------------------------------------------------+
+// Estados quânticos do mercado
+enum ENUM_QUANTUM_STATE {
+   QSTATE_SUPERPOSITION, // Mercado em superposição (não opera)
+   QSTATE_BULL_COLLAPSED, // Colapsou para alta
+   QSTATE_BEAR_COLLAPSED // Colapsou para baixa
+};
+// Sinais de trading
+enum ENUM_APOLLO11_SIGNAL {
+   SIGNAL_NONE,
+   SIGNAL_BUY,
+   SIGNAL_SELL
+};
+// Tipos de ativo
+enum ENUM_ASSET_CLASS {
+   ASSET_STOCK,
+   ASSET_CRYPTO,
+   ASSET_COMMODITY,
+   ASSET_INDEX,
+   ASSET_CURRENCY,
+   ASSET_DERIVATIVE
+};
+//+------------------------------------------------------------------+
+//| Funções Auxiliares |
+//+------------------------------------------------------------------+
+// Calcula desvio padrão
+double StdDev(const double &array[], int period) {
+   double mean = 0, sum = 0;
+   int size = MathMin(period, ArraySize(array));
+   for(int i = 0; i < size; i++) mean += array[i];
+   mean /= size;
+   for(int i = 0; i < size; i++) sum += MathPow(array[i] - mean, 2);
+   return MathSqrt(sum / size);
+}
+// Calcula risco em múltiplos de quantum (Planck)
+double CalculateQuantumRisk(double account_risk) {
+   double quantum = AccountInfoDouble(ACCOUNT_EQUITY) * QuantumRiskQuantum;
+   int n = (int)MathFloor(account_risk / quantum);
+   return n * quantum;
+}
+// Detecta correlação entre símbolos
+double GetCorrelation(string symbol1, string symbol2, int period) {
+   double arr1[], arr2[];
+   ArrayResize(arr1, period);
+   ArrayResize(arr2, period);
+   CopyClose(symbol1, PERIOD_H1, 0, period, arr1);
+   CopyClose(symbol2, PERIOD_H1, 0, period, arr2);
+  
+   double sum1 = 0, sum2 = 0, sum1_sq = 0, sum2_sq = 0, sum_product = 0;
+   for(int i = 0; i < period; i++) {
+      sum1 += arr1[i];
+      sum2 += arr2[i];
+      sum1_sq += arr1[i] * arr1[i];
+      sum2_sq += arr2[i] * arr2[i];
+      sum_product += arr1[i] * arr2[i];
+   }
+  
+   double numerator = sum_product - (sum1 * sum2 / period);
+   double denominator = MathSqrt((sum1_sq - (sum1 * sum1) / period) * (sum2_sq - (sum2 * sum2) / period));
+  
+   return (denominator == 0) ? 0 : numerator / denominator;
+}
+//+------------------------------------------------------------------+
+//| Classes Internas |
+//+------------------------------------------------------------------+
+// Classe: QuantumUncertaintyEngine (Heisenberg)
+class QuantumUncertaintyEngine {
+private:
+   double hbar;
+public:
+   QuantumUncertaintyEngine(double h = 0.0001) : hbar(h) {}
+   bool IsMarketValid(double sigma_price, double sigma_momentum) {
+      return (sigma_price * sigma_momentum) >= hbar / 2;
+   }
+};
+// Classe: WaveFunctionCollapse (Bohr)
+class WaveFunctionCollapse {
+private:
+   double neutral_zone;
+public:
+   WaveFunctionCollapse(double zone = 0.1) : neutral_zone(zone) {}
+   ENUM_QUANTUM_STATE Collapse(double prob_bull, double prob_bear) {
+      if(prob_bull > 0.5 + neutral_zone) return QSTATE_BULL_COLLAPSED;
+      if(prob_bear > 0.5 + neutral_zone) return QSTATE_BEAR_COLLAPSED;
+      return QSTATE_SUPERPOSITION;
+   }
+};
+//+------------------------------------------------------------------+
+//| Variáveis Globais |
+//+------------------------------------------------------------------+
+CTrade g_trade;
+QuantumUncertaintyEngine *g_heisenberg = NULL;
+WaveFunctionCollapse *g_bohr = NULL;
+int g_atr_handle = INVALID_HANDLE;
+int g_rsi_handle = INVALID_HANDLE; // Novo handle para RSI
+double g_last_atr = 0.0;
+datetime g_last_trade_time = 0;
+MqlRates g_rates[];
+double g_last_signal_price = 0.0;
+int g_scale_level = 0;
+//+------------------------------------------------------------------+
+//| OnInit |
+//+------------------------------------------------------------------+
+int OnInit() {
+   // Configuração do trade
+   g_trade.SetExpertMagicNumber(MagicNumber);
+   g_trade.SetDeviationInPoints(10);
+   // Inicializar ATR
+   g_atr_handle = iATR(_Symbol, PERIOD_CURRENT, 14);
+   if(g_atr_handle == INVALID_HANDLE) {
+      Print("Erro ao criar handle ATR");
+      return INIT_FAILED;
+   }
+   // Inicializar RSI (novo)
+   g_rsi_handle = iRSI(_Symbol, PERIOD_CURRENT, RSIPeriod, PRICE_CLOSE);
+   if(g_rsi_handle == INVALID_HANDLE) {
+      Print("Erro ao criar handle RSI");
+      return INIT_FAILED;
+   }
+   // Inicializar motores quânticos
+   g_heisenberg = new QuantumUncertaintyEngine(HeisenbergThreshold);
+   g_bohr = new WaveFunctionCollapse(0.1);
+   Print("TheodoraEA v3.4 - Inicializado com sucesso! Fix array out of range.");
+   return INIT_SUCCEEDED;
+}
+//+------------------------------------------------------------------+
+//| OnDeinit |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason) {
+   // Liberar recursos
+   if(g_atr_handle != INVALID_HANDLE) {
+      IndicatorRelease(g_atr_handle);
+      g_atr_handle = INVALID_HANDLE;
+   }
+   if(g_rsi_handle != INVALID_HANDLE) {
+      IndicatorRelease(g_rsi_handle);
+      g_rsi_handle = INVALID_HANDLE;
+   }
+  
+   if(g_heisenberg != NULL) {
+      delete g_heisenberg;
+      g_heisenberg = NULL;
+   }
+  
+   if(g_bohr != NULL) {
+      delete g_bohr;
+      g_bohr = NULL;
+   }
+  
+   ObjectsDeleteAll(0, "Theodora_");
+}
+//+------------------------------------------------------------------+
+//| OnTick |
+//+------------------------------------------------------------------+
+void OnTick() {
+   static datetime last_tick = 0;
+   if(last_tick == TimeCurrent()) return;
+   last_tick = TimeCurrent();
+   if(!IsTradeAllowed()) return;
+   if(PositionsTotal() >= MaxOpenPositions) return;
+   UpdateATR();
+  
+   // Copiar dados de preço
+   if(CopyRates(_Symbol, PERIOD_CURRENT, 0, 100, g_rates) != 100) {
+      Print("Falha ao copiar dados de preço, erro: ", GetLastError());
+      return;
+   }
+   // Preparar arrays
+   double volume[], close[], high[], low[];
+   ArrayResize(volume, ThermalEnergyPeriod);
+   ArrayResize(close, ThermalEnergyPeriod);
+   ArrayResize(high, ThermalEnergyPeriod);
+   ArrayResize(low, ThermalEnergyPeriod);
+   for(int i = 0; i < ThermalEnergyPeriod; i++) {
+      volume[i] = (double)g_rates[i].tick_volume;
+      close[i] = g_rates[i].close;
+      high[i] = g_rates[i].high;
+      low[i] = g_rates[i].low;
+   }
+   // Confirmação em múltiplos timeframes (agora com majority vote)
+   if(!MultiTFConfirmation()) return;
+   // Heisenberg: ∆preço × ∆momento
+   double sigma_price = StdDev(close, 10);
+   double sigma_momentum = StdDev(volume, 10);
+  
+   if(g_heisenberg == NULL || !g_heisenberg.IsMarketValid(sigma_price, sigma_momentum)) {
+      return;
+   }
+   // Energia Térmica (Institutional Pulse)
+   double max_vol = ArrayMaximum(volume);
+   double thermal_energy = (max_vol > 1e-10) ? volume[0] / max_vol : 0.0;
+   // Canal Quântico (Gravitational Sphere)
+   double channel = 0, vol_sum = 0;
+   for(int i = 0; i < ThermalEnergyPeriod; i++) {
+      channel += close[i] * volume[i];
+      vol_sum += volume[i];
+   }
+   channel = (vol_sum > 1e-10) ? channel / vol_sum : close[0];
+   // Decisão (Bohr)
+   double prob_bull = thermal_energy * ((channel > SymbolInfoDouble(_Symbol, SYMBOL_BID)) ? 1.2 : 0.8);
+   double prob_bear = (1.0 - thermal_energy) * ((channel < SymbolInfoDouble(_Symbol, SYMBOL_ASK)) ? 1.2 : 0.8);
+  
+   ENUM_QUANTUM_STATE state = (g_bohr != NULL) ? g_bohr.Collapse(prob_bull, prob_bear) : QSTATE_SUPERPOSITION;
+   ENUM_APOLLO11_SIGNAL signal = SIGNAL_NONE;
+   if(state == QSTATE_BULL_COLLAPSED && prob_bull > 0.6) signal = SIGNAL_BUY;
+   else if(state == QSTATE_BEAR_COLLAPSED && prob_bear > 0.6) signal = SIGNAL_SELL;
+   // Filtro RSI adicional
+   if(signal != SIGNAL_NONE) {
+      double rsi_value = GetRSI();
+      if(signal == SIGNAL_BUY && rsi_value > RSIOverbought) signal = SIGNAL_NONE;
+      if(signal == SIGNAL_SELL && rsi_value < RSIOversold) signal = SIGNAL_NONE;
+   }
+   // Executar sinal
+   if(signal != SIGNAL_NONE && (TimeCurrent() - g_last_trade_time) > 60) {
+      if(ExecuteSignal(signal)) {
+         g_last_trade_time = TimeCurrent();
+         g_last_signal_price = (signal == SIGNAL_BUY) ? SymbolInfoDouble(_Symbol, SYMBOL_ASK) : SymbolInfoDouble(_Symbol, SYMBOL_BID);
+         g_scale_level = 0;
+      }
+   }
+   // Escalonamento direcional
+   if(g_last_signal_price > 0.0 && g_scale_level < 10) {
+      double current_price = SymbolInfoDouble(_Symbol, (signal == SIGNAL_BUY) ? SYMBOL_BID : SYMBOL_ASK);
+      double dist_points = MathAbs(current_price - g_last_signal_price) / _Point;
+     
+      if(dist_points >= ScaleDistance) {
+         double scale_lots = CalculateScaledLot();
+         if(scale_lots > 0) {
+            if(ExecuteScaledOrder(signal, scale_lots)) {
+               g_scale_level++;
+               g_last_signal_price = current_price;
+            }
+         }
+      }
+   }
+   // Gerenciar trailing stop
+   if(UseTrailingStop) ManageTrailingStop();
+   // Atualizar painel
+   UpdateDecisionPanel(state, prob_bull, prob_bear);
+}
+//+------------------------------------------------------------------+
+//| Atualizar ATR |
+//+------------------------------------------------------------------+
+void UpdateATR() {
+   double atr_values[];
+   ArraySetAsSeries(atr_values, true);
+   if(CopyBuffer(g_atr_handle, 0, 0, 1, atr_values) <= 0) {
+      g_last_atr = 0.0;
+   } else {
+      g_last_atr = atr_values[0];
+   }
+}
+//+------------------------------------------------------------------+
+//| Obter RSI |
+//+------------------------------------------------------------------+
+double GetRSI() {
+   double rsi_values[];
+   ArraySetAsSeries(rsi_values, true);
+   if(CopyBuffer(g_rsi_handle, 0, 0, 1, rsi_values) <= 0) {
+      Print("Erro ao obter RSI, erro: ", GetLastError());
+      return 50.0; // Valor neutro em caso de erro
+   }
+   return rsi_values[0];
+}
+//+------------------------------------------------------------------+
+//| Confirmação em múltiplos timeframes (agora majority vote) |
+//+------------------------------------------------------------------+
+bool MultiTFConfirmation() {
+   datetime current = TimeCurrent();
+   ENUM_TIMEFRAMES timeframes[] = {PERIOD_D1, PERIOD_H4, PERIOD_H1, PERIOD_M15};
+   int confirmation_count = 0;
+   int total_count = ArraySize(timeframes);
+  
+   for(int i = 0; i < total_count; i++) {
+      double ma_fast[], ma_slow[], close[];
+      ArraySetAsSeries(ma_fast, true);
+      ArraySetAsSeries(ma_slow, true);
+      ArraySetAsSeries(close, true);
+      int handle_fast = iMA(NULL, timeframes[i], 50, 0, MODE_SMA, PRICE_CLOSE);
+      int handle_slow = iMA(NULL, timeframes[i], 200, 0, MODE_SMA, PRICE_CLOSE);
+      if(CopyBuffer(handle_fast, 0, 0, 1, ma_fast) <= 0 || CopyBuffer(handle_slow, 0, 0, 1, ma_slow) <= 0 || CopyClose(NULL, timeframes[i], 0, 1, close) <= 0) {
+         Print("Erro ao obter dados de ", EnumToString(timeframes[i]), ", erro: ", GetLastError());
+         continue;
+      }
+      IndicatorRelease(handle_fast);
+      IndicatorRelease(handle_slow);
+     
+      if(close[0] > ma_fast[0] && ma_fast[0] > ma_slow[0]) confirmation_count++;
+      else if(close[0] < ma_fast[0] && ma_fast[0] < ma_slow[0]) confirmation_count--;
+   }
+  
+   return (MathAbs(confirmation_count) >= ConfirmationTFs);
+}
+//+------------------------------------------------------------------+
+//| Executar Sinal |
+//+------------------------------------------------------------------+
+bool ExecuteSignal(ENUM_APOLLO11_SIGNAL signal) {
+   // Verificar se já existe posição
+   if(PositionSelect(_Symbol)) return false;
+   double point = SymbolInfoDouble(_Symbol, SYMBOL_POINT);
+   double sl_points = UseDynamicSL ? g_last_atr / point : 150;
+   double lots = CalculateLots();
+   if(lots <= 0) return false;
+   MqlTradeRequest request = {};
+   MqlTradeResult result = {};
+  
+   request.action = TRADE_ACTION_DEAL;
+   request.symbol = _Symbol;
+   request.volume = MathMax(lots, SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN));
+   request.magic = MagicNumber;
+   request.deviation = 10;
+   if(signal == SIGNAL_BUY) {
+      request.type = ORDER_TYPE_BUY;
+      request.price = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+      request.sl = request.price - sl_points * point;
+      request.tp = request.price + sl_points * point * ATRMultiplierTP / ATRMultiplierSL;
+   } else if(signal == SIGNAL_SELL) {
+      request.type = ORDER_TYPE_SELL;
+      request.price = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+      request.sl = request.price + sl_points * point;
+      request.tp = request.price - sl_points * point * ATRMultiplierTP / ATRMultiplierSL;
+   }
+   if(!OrderSend(request, result)) {
+      Print("Falha ao enviar ordem, erro: ", GetLastError());
+      return false;
+   }
+   return true;
+}
+//+------------------------------------------------------------------+
+//| Executar Ordem Escalonada |
+//+------------------------------------------------------------------+
+bool ExecuteScaledOrder(ENUM_APOLLO11_SIGNAL signal, double lots) {
+   MqlTradeRequest request = {};
+   MqlTradeResult result = {};
+  
+   request.action = TRADE_ACTION_DEAL;
+   request.symbol = _Symbol;
+   request.volume = lots;
+   request.magic = MagicNumber;
+   request.deviation = 10;
+   if(signal == SIGNAL_BUY) {
+      request.type = ORDER_TYPE_BUY;
+      request.price = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+   } else if(signal == SIGNAL_SELL) {
+      request.type = ORDER_TYPE_SELL;
+      request.price = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+   }
+   if(!OrderSend(request, result)) {
+      Print("Falha ao enviar ordem escalonada, erro: ", GetLastError());
+      return false;
+   }
+   return true;
+}
+//+------------------------------------------------------------------+
+//| Calcular Lotes |
+//+------------------------------------------------------------------+
+double CalculateLots() {
+   double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+   double risk_amount = equity * RiskPercent / 100.0;
+   double tick_value = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+   double tick_size = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+   double point = SymbolInfoDouble(_Symbol, SYMBOL_POINT);
+   double sl_points = UseDynamicSL ? g_last_atr / point : 150;
+   double min_lot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
+   double max_lot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX);
+   double lot_step = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP);
+   // Evitar divisão por zero
+   if(sl_points <= 0 || tick_value <= 0 || tick_size <= 0 || point <= 0) {
+      return min_lot;
+   }
+   double lot = risk_amount / (sl_points * point * tick_value / tick_size);
+   lot = CalculateQuantumRisk(lot);
+   lot = MathMax(lot, min_lot);
+   lot = MathMin(lot, max_lot);
+  
+   // Arredondar para o step correto
+   lot = MathRound(lot / lot_step) * lot_step;
+   return lot;
+}
+//+------------------------------------------------------------------+
+//| Calcular Lote Escalonado |
+//+------------------------------------------------------------------+
+double CalculateScaledLot() {
+   double base_lots = CalculateLots();
+   double scale_lots = base_lots * MathPow(ScaleMultiplier, g_scale_level);
+   double max_lots = 10.0;
+   return MathMin(scale_lots, max_lots);
+}
+//+------------------------------------------------------------------+
+//| Gerenciar Trailing Stop |
+//+------------------------------------------------------------------+
+void ManageTrailingStop() {
+   double point = SymbolInfoDouble(_Symbol, SYMBOL_POINT);
+   for(int i = PositionsTotal() - 1; i >= 0; i--) {
+      if(PositionGetSymbol(i) == _Symbol && PositionGetInteger(POSITION_MAGIC) == MagicNumber) {
+         double current_sl = PositionGetDouble(POSITION_SL);
+         double current_price = (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY) ? SymbolInfoDouble(_Symbol, SYMBOL_BID) : SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+         double entry_price = PositionGetDouble(POSITION_PRICE_OPEN);
+         double profit_pips = MathAbs(current_price - entry_price) / point;
+         
+         if(profit_pips > TrailingStopStart) {
+            double new_sl;
+            if(PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY) {
+               new_sl = entry_price + (TrailingStopStart * point) + ((profit_pips - TrailingStopStart) / TrailingStopStep) * (TrailingStopStep * point);
+               if(new_sl > current_sl) {
+                  g_trade.PositionModify(PositionGetTicket(i), new_sl, PositionGetDouble(POSITION_TP));
+               }
+            } else {
+               new_sl = entry_price - (TrailingStopStart * point) - ((profit_pips - TrailingStopStart) / TrailingStopStep) * (TrailingStopStep * point);
+               if(new_sl < current_sl || current_sl == 0) {
+                  g_trade.PositionModify(PositionGetTicket(i), new_sl, PositionGetDouble(POSITION_TP));
+               }
+            }
+         }
+      }
+   }
+}
+//+------------------------------------------------------------------+
+//| Painel de Decisão Quântica |
+//+------------------------------------------------------------------+
+void UpdateDecisionPanel(ENUM_QUANTUM_STATE state, double prob_bull, double prob_bear) {
+   string panel = "Theodora_Panel";
+   if(ObjectFind(0, panel) < 0) {
+      ObjectCreate(0, panel, OBJ_LABEL, 0, 0, 0);
+      ObjectSetInteger(0, panel, OBJPROP_CORNER, CORNER_RIGHT_UPPER);
+      ObjectSetInteger(0, panel, OBJPROP_XDISTANCE, 10);
+      ObjectSetInteger(0, panel, OBJPROP_YDISTANCE, 20);
+      ObjectSetInteger(0, panel, OBJPROP_FONTSIZE, 10);
+      ObjectSetInteger(0, panel, OBJPROP_COLOR, clrWhite);
+   }
+   string state_str = (state == QSTATE_BULL_COLLAPSED) ? "BULL" :
+                     (state == QSTATE_BEAR_COLLAPSED) ? "BEAR" : "SUPERPOS";
+  
+   string text = "Theodora v3.4\n";
+   text += "Estado: " + state_str + "\n";
+   text += "Prob: " + DoubleToString(prob_bull, 2) + " | " + DoubleToString(prob_bear, 2) + "\n";
+   text += "Escala: " + IntegerToString(g_scale_level) + "\n";
+   text += "Hbar: " + DoubleToString(HeisenbergThreshold, 6) + "\n";
+   text += "RSI: " + DoubleToString(GetRSI(), 2);
+   ObjectSetString(0, panel, OBJPROP_TEXT, text);
+}
+//+------------------------------------------------------------------+
+//| Verificar se pode operar |
+//+------------------------------------------------------------------+
+bool IsTradeAllowed() {
+   return TerminalInfoInteger(TERMINAL_CONNECTED) &&
+          MQLInfoInteger(MQL_TRADE_ALLOWED) &&
+          SymbolInfoInteger(_Symbol, SYMBOL_TRADE_MODE) &&
+          AccountInfoInteger(ACCOUNT_TRADE_EXPERT);
+}
+//+------------------------------------------------------------------+

@@ -1,0 +1,107 @@
+'QuantumNeuralCore.mqh'			0
+'QuantumNeuralCore' - member function already defined	QuantumNeuralCore.mqh	264	5
+'input' - comma expected	QuantumNeuralCore.mqh	318	44
+'input' - comma expected	QuantumNeuralCore.mqh	358	32
+']' - declaration without type	QuantumNeuralCore.mqh	358	38
+']' - comma expected	QuantumNeuralCore.mqh	358	38
+'input' - comma expected	QuantumNeuralCore.mqh	379	49
+'CalculateFractalDimension' - member function already defined	QuantumNeuralCore.mqh	435	12
+'AdaptiveDimensionalityControl' - member function already defined	QuantumNeuralCore.mqh	450	10
+'Set' - undeclared identifier	QuantumNeuralCore.mqh	135	34
+',' - unexpected token	QuantumNeuralCore.mqh	135	39
+'i' - some operator expected	QuantumNeuralCore.mqh	135	38
+')' - unexpected token	QuantumNeuralCore.mqh	135	98
+'*' - illegal operation use	QuantumNeuralCore.mqh	135	54
+'+' - object pointer expected	QuantumNeuralCore.mqh	135	61
+expression has no effect	QuantumNeuralCore.mqh	135	54
+'Set' - undeclared identifier	QuantumNeuralCore.mqh	159	30
+',' - unexpected token	QuantumNeuralCore.mqh	159	48
+'temporalOffset' - some operator expected	QuantumNeuralCore.mqh	159	34
+')' - unexpected token	QuantumNeuralCore.mqh	159	75
+'*' - illegal operation use	QuantumNeuralCore.mqh	159	63
+'timeFactor' - object pointer expected	QuantumNeuralCore.mqh	159	65
+expression has no effect	QuantumNeuralCore.mqh	159	63
+'Set' - undeclared identifier	QuantumNeuralCore.mqh	166	34
+',' - unexpected token	QuantumNeuralCore.mqh	166	39
+'i' - some operator expected	QuantumNeuralCore.mqh	166	38
+')' - unexpected token	QuantumNeuralCore.mqh	166	81
+expression has no effect	QuantumNeuralCore.mqh	166	66
+'Set' - undeclared identifier	QuantumNeuralCore.mqh	205	34
+',' - unexpected token	QuantumNeuralCore.mqh	205	39
+'i' - some operator expected	QuantumNeuralCore.mqh	205	38
+')' - unexpected token	QuantumNeuralCore.mqh	205	67
+expression has no effect	QuantumNeuralCore.mqh	205	53
+'Set' - undeclared identifier	QuantumNeuralCore.mqh	210	32
+',' - unexpected token	QuantumNeuralCore.mqh	210	37
+'i' - some operator expected	QuantumNeuralCore.mqh	210	36
+')' - unexpected token	QuantumNeuralCore.mqh	210	52
+expression has no effect	QuantumNeuralCore.mqh	210	49
+'input' - unexpected token	QuantumNeuralCore.mqh	320	12
+'.' - unexpected token	QuantumNeuralCore.mqh	320	17
+'Total' - undeclared identifier	QuantumNeuralCore.mqh	320	18
+')' - expression expected	QuantumNeuralCore.mqh	320	24
+'input' - unexpected token	QuantumNeuralCore.mqh	326	28
+'.' - unexpected token	QuantumNeuralCore.mqh	326	33
+'Total' - undeclared identifier	QuantumNeuralCore.mqh	326	34
+')' - expression expected	QuantumNeuralCore.mqh	326	40
+'input' - unexpected token	QuantumNeuralCore.mqh	327	34
+'.' - unexpected token	QuantumNeuralCore.mqh	327	39
+'At' - undeclared identifier	QuantumNeuralCore.mqh	327	40
+'i' - some operator expected	QuantumNeuralCore.mqh	327	43
+'*' - semicolon expected	QuantumNeuralCore.mqh	327	46
+'*' - illegal operation use	QuantumNeuralCore.mqh	327	46
+'m_superpositionLevel' - object pointer expected	QuantumNeuralCore.mqh	327	48
+expression has no effect	QuantumNeuralCore.mqh	327	46
+'Set' - undeclared identifier	QuantumNeuralCore.mqh	329	34
+',' - unexpected token	QuantumNeuralCore.mqh	329	39
+'i' - some operator expected	QuantumNeuralCore.mqh	329	38
+')' - unexpected token	QuantumNeuralCore.mqh	329	52
+'input' - unexpected token	QuantumNeuralCore.mqh	339	28
+')' - unexpected token	QuantumNeuralCore.mqh	339	33
+';' - unexpected token	QuantumNeuralCore.mqh	339	34
+'input' - syntax error	QuantumNeuralCore.mqh	339	28
+';' - unexpected token	QuantumNeuralCore.mqh	343	37
+'{' - some operator expected	QuantumNeuralCore.mqh	342	39
+'input' - unexpected token	QuantumNeuralCore.mqh	361	22
+')' - unexpected token	QuantumNeuralCore.mqh	361	27
+'==' - operand expected	QuantumNeuralCore.mqh	361	29
+'0' - variable expected	QuantumNeuralCore.mqh	361	32
+   built-in: int ArraySize(const void&)	QuantumNeuralCore.mqh	361	32
+';' - unexpected token	QuantumNeuralCore.mqh	362	52
+'{' - some operator expected	QuantumNeuralCore.mqh	361	35
+'(' - unbalanced left parenthesis	QuantumNeuralCore.mqh	361	11
+'input' - unexpected token	QuantumNeuralCore.mqh	382	12
+'.' - unexpected token	QuantumNeuralCore.mqh	382	17
+'Total' - undeclared identifier	QuantumNeuralCore.mqh	382	18
+')' - expression expected	QuantumNeuralCore.mqh	382	24
+'input' - unexpected token	QuantumNeuralCore.mqh	385	29
+'.' - unexpected token	QuantumNeuralCore.mqh	385	34
+'Total' - undeclared identifier	QuantumNeuralCore.mqh	385	35
+')' - expression expected	QuantumNeuralCore.mqh	385	41
+'input' - unexpected token	QuantumNeuralCore.mqh	387	28
+'.' - unexpected token	QuantumNeuralCore.mqh	387	33
+'Total' - undeclared identifier	QuantumNeuralCore.mqh	387	34
+')' - expression expected	QuantumNeuralCore.mqh	387	40
+'input' - unexpected token	QuantumNeuralCore.mqh	389	34
+'[' - unexpected token	QuantumNeuralCore.mqh	389	39
+']' - unexpected token	QuantumNeuralCore.mqh	389	41
+']' - semicolon expected	QuantumNeuralCore.mqh	389	41
+']' - unexpected token	QuantumNeuralCore.mqh	389	41
+'*' - illegal operation use	QuantumNeuralCore.mqh	389	43
+'m_entanglementFactor' - object pointer expected	QuantumNeuralCore.mqh	389	45
+expression has no effect	QuantumNeuralCore.mqh	389	43
+'Set' - undeclared identifier	QuantumNeuralCore.mqh	419	34
+',' - unexpected token	QuantumNeuralCore.mqh	419	39
+'i' - some operator expected	QuantumNeuralCore.mqh	419	38
+')' - unexpected token	QuantumNeuralCore.mqh	419	53
+'Set' - undeclared identifier	QuantumNeuralCore.mqh	476	36
+',' - unexpected token	QuantumNeuralCore.mqh	476	41
+'i' - some operator expected	QuantumNeuralCore.mqh	476	40
+'/' - operand expected	QuantumNeuralCore.mqh	476	53
+')' - unexpected token	QuantumNeuralCore.mqh	476	83
+'Set' - undeclared identifier	QuantumNeuralCore.mqh	492	30
+',' - unexpected token	QuantumNeuralCore.mqh	492	35
+'i' - some operator expected	QuantumNeuralCore.mqh	492	34
+')' - unexpected token	QuantumNeuralCore.mqh	492	70
+expression has no effect	QuantumNeuralCore.mqh	492	52
+96 errors, 8 warnings		96	8

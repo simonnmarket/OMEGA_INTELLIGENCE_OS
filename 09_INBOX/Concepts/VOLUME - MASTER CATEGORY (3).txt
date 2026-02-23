@@ -1,0 +1,147 @@
+//+------------------------------------------------------------------+
+//| VOLUME - Master Category                                           |
+//+------------------------------------------------------------------+
+
+// Estruturas comuns para todas as sub-categorias
+struct VolumeSignal {
+    string categoryName;
+    string signalName;
+    double strength;
+    double confidence;
+    datetime timestamp;
+    string description;
+    bool isValid;
+};
+
+struct VolumeMetrics {
+    double value;
+    double average;
+    double delta;
+    double force;
+    datetime lastUpdate;
+};
+
+// Interface expandida para sub-categorias
+interface IVolumeSubCategory {
+public:
+    // Métodos principais
+    virtual bool Initialize() = 0;
+    virtual void Update() = 0;
+    virtual bool ValidateSignals() = 0;
+    virtual string GetSubCategoryName() = 0;
+    
+    // Métodos adicionais
+    virtual VolumeSignal* GetSignals() = 0;
+    virtual VolumeMetrics* GetMetrics() = 0;
+    virtual bool IsValidState() = 0;
+    virtual void Reset() = 0;
+};
+
+// Classe gerenciadora principal expandida
+class CVolumeManager {
+private:
+    CHashMap<string, IVolumeSubCategory*> m_subCategories;
+    CTechnologyManager* m_techManager;
+    CQuantumLogger* m_logger;
+    
+    // Cache de sinais
+    CArrayObj m_signals;
+    
+public:
+    CVolumeManager(CTechnologyManager* techManager, CQuantumLogger* logger)
+        : m_techManager(techManager), m_logger(logger) {
+        Initialize();
+    }
+    
+    ~CVolumeManager() {
+        DeleteSubCategories();
+    }
+    
+    bool Initialize() {
+        if(!ValidateComponents()) {
+            m_logger.Log("Failed to validate volume components", LOG_ERROR);
+            return false;
+        }
+        return InitializeSubCategories();
+    }
+    
+    bool RegisterSubCategory(IVolumeSubCategory* category) {
+        if(category == NULL) return false;
+        
+        string name = category.GetSubCategoryName();
+        if(name.empty()) {
+            m_logger.Log("Invalid category name", LOG_ERROR);
+            return false;
+        }
+        
+        if(!category.Initialize()) {
+            m_logger.Log("Failed to initialize category: " + name, LOG_ERROR);
+            return false;
+        }
+        
+        return m_subCategories.Add(name, category);
+    }
+    
+    IVolumeSubCategory* GetSubCategory(string name) {
+        IVolumeSubCategory* category = NULL;
+        m_subCategories.TryGetValue(name, category);
+        return category;
+    }
+    
+    void UpdateAll() {
+        for(int i = 0; i < m_subCategories.Count(); i++) {
+            IVolumeSubCategory* category = m_subCategories.Values(i);
+            if(category != NULL && category.IsValidState()) {
+                category.Update();
+                ProcessSignals(category);
+            }
+        }
+    }
+    
+    VolumeSignal* GetLatestSignals() {
+        return CollectActiveSignals();
+    }
+
+private:
+    bool ValidateComponents() {
+        return m_techManager != NULL && m_logger != NULL;
+    }
+    
+    bool InitializeSubCategories() {
+        // Inicializar todas as sub-categorias padrão
+        return true;
+    }
+    
+    void ProcessSignals(IVolumeSubCategory* category) {
+        if(!category.ValidateSignals()) return;
+        
+        VolumeSignal* signals = category.GetSignals();
+        if(signals != NULL) {
+            m_signals.Add(signals);
+            LogSignal(signals);
+        }
+    }
+    
+    void LogSignal(const VolumeSignal* signal) {
+        string logMessage = StringFormat(
+            "Volume Signal: %s|%s, Strength: %.2f, Confidence: %.2f",
+            signal.categoryName,
+            signal.signalName,
+            signal.strength,
+            signal.confidence
+        );
+        m_logger.Log(logMessage, LOG_INFO);
+    }
+    
+    VolumeSignal* CollectActiveSignals() {
+        // Coletar e retornar sinais ativos
+        return NULL; // Placeholder
+    }
+    
+    void DeleteSubCategories() {
+        for(int i = 0; i < m_subCategories.Count(); i++) {
+            delete m_subCategories.Values(i);
+        }
+        m_subCategories.Clear();
+    }
+};

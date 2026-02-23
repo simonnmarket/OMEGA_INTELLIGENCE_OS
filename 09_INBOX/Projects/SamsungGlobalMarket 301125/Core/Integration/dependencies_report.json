@@ -1,0 +1,59 @@
+{
+  "timestamp": "2025-11-02T18:35:55.431795",
+  "all_ok": true,
+  "total": 8,
+  "ok": 8,
+  "missing": 0,
+  "critical_missing": [],
+  "optional_missing": [],
+  "details": {
+    "ccxt": {
+      "status": "ok",
+      "version": "4.5.7",
+      "description": "Exchange connectivity (Binance, etc)",
+      "critical": true
+    },
+    "pandas": {
+      "status": "ok",
+      "version": "2.0.3",
+      "description": "Data manipulation and analysis",
+      "critical": true
+    },
+    "numpy": {
+      "status": "ok",
+      "version": "1.24.3",
+      "description": "Numerical computing",
+      "critical": true
+    },
+    "psutil": {
+      "status": "ok",
+      "version": "7.0.0",
+      "description": "Process and system utilities",
+      "critical": true
+    },
+    "yfinance": {
+      "status": "ok",
+      "version": "0.2.55",
+      "description": "Yahoo Finance market data",
+      "critical": false
+    },
+    "scipy": {
+      "status": "ok",
+      "version": "1.15.2",
+      "description": "Scientific computing",
+      "critical": false
+    },
+    "requests": {
+      "status": "ok",
+      "version": "2.31.0",
+      "description": "HTTP requests",
+      "critical": true
+    },
+    "asyncio": {
+      "status": "ok",
+      "version": "unknown",
+      "description": "Async operations",
+      "critical": true
+    }
+  }
+}
