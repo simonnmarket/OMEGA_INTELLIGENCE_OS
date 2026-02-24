@@ -37,10 +37,6 @@ class NumeiaPortfolioManager:
     
     @classmethod
     def calculate_rebalance(cls, current_equity: float, current_positions: Dict[str, float]) -> Dict[str, float]:
-        """
-        Calculates the required cash delta to achieve the target weights.
-        Returns a dictionary with assets and the amount to buy/sell (+ for buy, - for sell).
-        """
         target_values = {asset: current_equity * weight for asset, weight in cls.PORTFOLIO_TARGETS.items() if "CASH" not in asset}
         adjustments = {}
         
@@ -74,9 +70,6 @@ class Apollo11QuantumEngine:
     
     @staticmethod
     def calculate_thermal_energy(volumes: np.ndarray, period: int = 20) -> float:
-        """
-        Extracts localized thermal energy based on volume concentration.
-        """
         if len(volumes) < period:
             return 0.0
         recent_v = volumes[-period:]
@@ -87,9 +80,6 @@ class Apollo11QuantumEngine:
 
     @staticmethod
     def identify_poc(prices: np.ndarray, volumes: np.ndarray, period: int = 20) -> float:
-        """
-        Point of Control (POC): Price level with maximum volume in lookback window.
-        """
         if len(volumes) < period:
             return 0.0
         recent_v = volumes[-period:]
@@ -99,9 +89,6 @@ class Apollo11QuantumEngine:
 
     @staticmethod
     def measure_institutional_pulse(volumes: np.ndarray, period: int = 20) -> float:
-        """
-        Institutional Pulse: compares current volume against rolling average.
-        """
         if len(volumes) < period:
             return 1.0
         avg_vol = np.mean(volumes[-period:])
@@ -111,112 +98,76 @@ class Apollo11QuantumEngine:
         return pulse
 
 # =====================================================================
-# 3. QUANTUM SENSORY CORE: 5-SENSE MARKET PERCEPTION
+# 3. VOLATILITY & WHALE DETECTOR CORE (Sourced from Inbox Concepts)
 # =====================================================================
-class QuantumSensoryDetector:
+class WhaleAndVolatilityScanner:
     """
-    Integrates 5 senses (Vision, Hearing, Touch, Smell, Taste) 
-    to create a composite view of market regimes and flow.
+    Replaces the flawed QuantumSensory with proven logic from:
+    - VolatilityFilter.txt (Blocks whipsaw via ATR bounds)
+    - WhaleDetector.mqh (Enforces Institutional Volume Surge)
     """
     
     @staticmethod
-    def sense_vision(data: pd.DataFrame) -> float:
+    def check_volatility_filter(data: pd.DataFrame, max_atr_pct: float = 0.02) -> float:
         """
-        VISION (Order Flow / Blocks): Heavy block detection using volume spikes.
-        Calculates confidence 0.0 to 1.0 based on current volume vs SMA Volume.
+        VolatilityFilter (from VolatilityFilter.txt): 
+        If average ATR > MaxVolatility of asset price, the market is too erratic (whipsaw).
+        """
+        if len(data) < 20: return 0.5
+        high_low = data['high'] - data['low']
+        current_atr = high_low.rolling(14).mean().iloc[-1]
+        close = data['close'].iloc[-1]
+        
+        if pd.isna(current_atr) or close == 0: 
+            return 0.5
+            
+        atr_pct = current_atr / close
+        
+        # Absolute limit cutoff
+        if atr_pct > max_atr_pct:
+            return 0.0 # Whipsaw! Kill signal.
+            
+        return 1.0
+
+    @staticmethod
+    def check_whale_imbalance(data: pd.DataFrame) -> float:
+        """
+        WhaleDetector: Checks directional volume flows (Volume Accumulation).
         """
         if len(data) < 20 or 'tick_volume' not in data:
             return 0.5
-        avg_vol = data['tick_volume'].rolling(20).mean().iloc[-1]
-        last_vol = data['tick_volume'].iloc[-1]
-        if avg_vol == 0: return 0.0
-        confidence = min(last_vol / avg_vol, 1.0)
-        return confidence
         
-    @staticmethod
-    def sense_hearing(data: pd.DataFrame) -> float:
-        """
-        HEARING (Signal vs Noise): Analyzes clean market momentum using RSI.
-        High RSI extremes or smooth trends represent clear 'sounds', chop is 'noise'.
-        """
-        if len(data) < 15 or 'close' not in data:
-            return 0.5
+        # Look for steady volume accumulation (positive slope)
+        vol_tail = data['tick_volume'].tail(15).values
+        x = np.arange(15)
+        slope, _ = np.polyfit(x, vol_tail, 1)
         
-        # Simple RSI calculation
-        delta = data['close'].diff()
-        gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
-        loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
-        rs = gain / loss.replace(0, np.nan)
-        rsi = 100 - (100 / (1 + rs))
-        rsi_val = rsi.iloc[-1]
-        
-        if pd.isna(rsi_val): return 0.5
-        signal_strength = abs(50 - rsi_val) / 50.0  # Normalized 0 to 1
-        return signal_strength
-        
-    @staticmethod
-    def sense_touch(data: pd.DataFrame) -> float:
-        """
-        TOUCH (Resistance/Pressure): How hard the market hits SMA bounds or wicks.
-        """
-        if len(data) < 20: return 0.5
-        sma = data['close'].rolling(20).mean().iloc[-1]
-        close = data['close'].iloc[-1]
-        pressure = abs((close - sma) / sma) * 1000 # Scaling factor
-        return min(pressure, 1.0)
-
-    @staticmethod
-    def sense_smell(data: pd.DataFrame) -> float:
-        """
-        SMELL (Risk / Stress): Detects invisible danger using ATR spikes.
-        High stress reduces confidence.
-        """
-        if len(data) < 15: return 0.5
-        high_low = data['high'] - data['low']
-        atr = high_low.rolling(14).mean()
-        current_atr = atr.iloc[-1]
-        max_atr = atr.rolling(20).max().iloc[-1]
-        
-        if max_atr == 0 or pd.isna(current_atr): return 0.5
-        stress = current_atr / max_atr
-        return max(1.0 - stress, 0.3) # Confidence inversely proportional to risk
-
-    @staticmethod
-    def sense_taste(data: pd.DataFrame) -> float:
-        """
-        TASTE (Quality of Flow): Stochastic measurement of flow quality.
-        """
-        if len(data) < 14: return 0.5
-        low_min = data['low'].rolling(14).min()
-        high_max = data['high'].rolling(14).max()
-        stoch_k = 100 * (data['close'] - low_min) / (high_max - low_min)
-        stoch_val = stoch_k.iloc[-1]
-        
-        if pd.isna(stoch_val): return 0.5
-        quality = stoch_val / 100.0
-        return quality
+        if slope > 0:
+            # Volume is growing directionally (Whale shadow)
+            return 1.0
+        else:
+            # Stagnant or falling volume
+            return 0.3
 
     @classmethod
     def synthesize_perception(cls, data: pd.DataFrame) -> Dict[str, Any]:
         """
-        Weighs all 5 senses to determine market conditions.
+        Synthesizes the Institutional Inbox rules.
         """
-        v = cls.sense_vision(data)
-        h = cls.sense_hearing(data)
-        t = cls.sense_touch(data)
-        s = cls.sense_smell(data)
-        ts = cls.sense_taste(data)
+        volatility_conf = cls.check_volatility_filter(data, max_atr_pct=0.03) # 3% limit for test
+        whale_conf = cls.check_whale_imbalance(data)
         
-        overall = (v*0.30) + (h*0.20) + (t*0.25) + (s*0.15) + (ts*0.10)
-        
+        # Whipsaw instantly fails the coherence matrix
+        if volatility_conf == 0.0:
+            overall = 0.0 # Trapped in Noise
+        else:
+            overall = (volatility_conf * 0.3) + (whale_conf * 0.7)
+            
         return {
-            "vision_conf": v,
-            "hearing_conf": h,
-            "touch_conf": t,
-            "smell_conf": s,
-            "taste_conf": ts,
+            "volatility_status": "SAFE" if volatility_conf > 0.0 else "WHIPSAW",
+            "whale_confidence": whale_conf,
             "overall_coherence": overall,
-            "regime": "HARMONIC_FLOW" if overall > 0.60 else "DISSONANT_NOISE"
+            "regime": "HARMONIC_FLOW" if overall >= 0.60 else "DISSONANT_NOISE"
         }
 
 # =====================================================================
@@ -225,15 +176,11 @@ class QuantumSensoryDetector:
 class OMEGAHarmonizator:
     """
     The ultimate brain linking Numeia Asset Limits, Apollo11 Execution Logic, 
-    and Quantum Sensory detection.
+    and the new Whale & Volatility Scanner.
     """
     
     @classmethod
     def execute_global_scan(cls, mkt_data_dict: Dict[str, pd.DataFrame]) -> Dict[str, Any]:
-        """
-        Accepts data stream for all targets and determines global bias,
-        thermal energy distribution, and optimal entry avenues.
-        """
         orchestration_map = {}
         for symbol, df in mkt_data_dict.items():
             if df.empty or len(df) < 50:
@@ -242,8 +189,8 @@ class OMEGAHarmonizator:
             prices = df['close'].values
             vols = df.get('tick_volume', pd.Series([1]*len(df))).values
             
-            # 1. Sense Output
-            sensory_output = QuantumSensoryDetector.synthesize_perception(df)
+            # 1. Sense Output using INBOX Concepts
+            sensory_output = WhaleAndVolatilityScanner.synthesize_perception(df)
             
             # 2. Apollo Quantum Profile
             thermal = Apollo11QuantumEngine.calculate_thermal_energy(vols)
@@ -253,6 +200,7 @@ class OMEGAHarmonizator:
             orchestration_map[symbol] = {
                 "regime": sensory_output["regime"],
                 "coherence": round(sensory_output["overall_coherence"], 3),
+                "vol_status": sensory_output["volatility_status"],
                 "apollo_thermal": round(thermal, 2),
                 "apollo_pulse": round(pulse, 2),
                 "apollo_poc": poc
